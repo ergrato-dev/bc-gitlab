@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="280" viewBox="0 0 800 280">
+  <rect width="800" height="280" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Backup y Restore — Estrategia 3-2-1</text>
+  <!-- Backup flow -->
+  <rect x="20" y="55" width="140" height="55" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="90" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">gitlab-backup</text>
+  <text x="90" y="95" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">DB + repos + uploads</text>
+  <text x="168" y="82" font-family="monospace" font-size="14" fill="#555">→</text>
+  <rect x="185" y="55" width="140" height="55" rx="6" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="255" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">Almacenamiento Local</text>
+  <text x="255" y="95" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">/var/opt/gitlab/backups/</text>
+  <text x="333" y="82" font-family="monospace" font-size="14" fill="#555">→</text>
+  <rect x="350" y="55" width="140" height="55" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="420" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">rclone / rsync</text>
+  <text x="420" y="95" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Sincronizar a remoto</text>
+  <text x="498" y="82" font-family="monospace" font-size="14" fill="#555">→</text>
+  <rect x="515" y="55" width="265" height="55" rx="6" fill="#16213e" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="647" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#7f8c8d">Almacenamiento Externo</text>
+  <text x="647" y="95" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">S3 / NFS / MinIO / NAS</text>
+  <!-- 3-2-1 rule -->
+  <rect x="40" y="135" width="720" height="70" rx="8" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="400" y="158" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e24329">Regla 3-2-1 de Backups</text>
+  <text x="100" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">3</text><text x="115" y="180" font-family="monospace" font-size="10" fill="#a0a0a0">copias de los datos</text>
+  <text x="360" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">2</text><text x="375" y="180" font-family="monospace" font-size="10" fill="#a0a0a0">en medios diferentes</text>
+  <text x="610" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">1</text><text x="625" y="180" font-family="monospace" font-size="10" fill="#a0a0a0">fuera del sitio (off-site)</text>
+  <!-- Recover flow -->
+  <rect x="40" y="225" width="720" height="40" rx="6" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="250" text-anchor="middle" font-family="monospace" font-size="11" fill="#a0a0a0">Restore: gitlab-backup restore BACKUP=timestamp → gitlab-ctl reconfigure → gitlab-rake gitlab:check → verify</text>
+  <text x="400" y="273" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 11</text>
+</svg>

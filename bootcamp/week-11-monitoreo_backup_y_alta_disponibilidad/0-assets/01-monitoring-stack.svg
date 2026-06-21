@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Monitoreo — Prometheus + Grafana para GitLab CE</text>
+  <!-- GitLab -->
+  <rect x="20" y="55" width="200" height="90" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="120" y="78" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#e24329">GitLab CE</text>
+  <text x="120" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Exporters integrados:</text>
+  <text x="120" y="118" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">nginx, puma, gitaly, postgres,</text>
+  <text x="120" y="133" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">redis, sidekiq, node_exporter</text>
+  <!-- Scrape arrow -->
+  <text x="228" y="100" font-family="monospace" font-size="14" fill="#555">→</text>
+  <!-- Prometheus -->
+  <rect x="250" y="55" width="170" height="90" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="335" y="78" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fc6d26">Prometheus</text>
+  <text x="335" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Scraping cada 15s</text>
+  <text x="335" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">TSDB almacenamiento</text>
+  <text x="335" y="133" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">PromQL queries</text>
+  <!-- Grafana arrow -->
+  <text x="428" y="100" font-family="monospace" font-size="14" fill="#555">→</text>
+  <!-- Grafana -->
+  <rect x="450" y="55" width="170" height="90" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="535" y="78" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#554488">Grafana</text>
+  <text x="535" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Dashboards visuales</text>
+  <text x="535" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Alertas configuradas</text>
+  <text x="535" y="133" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Paneles personalizados</text>
+  <!-- Alert arrow -->
+  <text x="628" y="100" font-family="monospace" font-size="14" fill="#555">→</text>
+  <!-- Alertmanager -->
+  <rect x="645" y="55" width="135" height="90" rx="8" fill="#16213e" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="712" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#7f8c8d">Notificaciones</text>
+  <text x="712" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Slack / Email</text>
+  <text x="712" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">PagerDuty</text>
+  <text x="712" y="133" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Webhook</text>
+  <!-- Metrics -->
+  <rect x="50" y="175" width="700" height="105" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="198" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">Metricas Clave</text>
+  <text x="80" y="222" font-family="monospace" font-size="9" fill="#fc6d26">HTTP:</text><text x="145" y="222" font-family="monospace" font-size="9" fill="#a0a0a0">requests/s, latencia P95, errores 5xx</text>
+  <text x="80" y="240" font-family="monospace" font-size="9" fill="#554488">Sidekiq:</text><text x="145" y="240" font-family="monospace" font-size="9" fill="#a0a0a0">jobs procesados, en cola, fallidos</text>
+  <text x="80" y="258" font-family="monospace" font-size="9" fill="#e24329">PostgreSQL:</text><text x="145" y="258" font-family="monospace" font-size="9" fill="#a0a0a0">conexiones, cache hit, replication lag</text>
+  <text x="410" y="222" font-family="monospace" font-size="9" fill="#fc6d26">Redis:</text><text x="480" y="222" font-family="monospace" font-size="9" fill="#a0a0a0">memoria, comandos/s</text>
+  <text x="410" y="240" font-family="monospace" font-size="9" fill="#554488">Gitaly:</text><text x="480" y="240" font-family="monospace" font-size="9" fill="#a0a0a0">operaciones git/s, latencia</text>
+  <text x="410" y="258" font-family="monospace" font-size="9" fill="#e24329">Sistema:</text><text x="480" y="258" font-family="monospace" font-size="9" fill="#a0a0a0">CPU, RAM, disco, swap</text>
+  <text x="400" y="293" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 11</text>
+</svg>
