@@ -1,0 +1,66 @@
+# ============================================
+# Practica 04 — Security Scanning
+# ============================================
+
+stages:
+  - build
+  - test
+  - security
+  - publish
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+variables:
+  SAST_EXPERIMENTAL_FEATURES: "true"
+  SECURE_LOG_LEVEL: "info"
+
+# ── Build imagen Docker ──
+docker-build:
+  stage: build
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA} .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ── Container Scanning (Trivy) ──
+container-scanning:
+  stage: security
+  variables:
+    CS_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    CS_SEVERITY_THRESHOLD: "high"
+  needs:
+    - docker-build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ── Publish (solo si security pasa) ──
+publish:
+  stage: publish
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  script:
+    - docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA} ${CI_REGISTRY_IMAGE}:latest
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+    - echo "Imagen publicada con security scan OK"
+  needs:
+    - docker-build
+    - container-scanning
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

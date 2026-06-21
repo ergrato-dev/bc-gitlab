@@ -1,0 +1,13 @@
+{
+  "name": "@scope/bootcamp-app",
+  "version": "1.0.0",
+  "description": "Bootcamp GitLab CE — Package Registry Demo",
+  "main": "server.js",
+  "scripts": {
+    "test": "node -e \"console.log('Tests OK')\"",
+    "start": "node server.js"
+  },
+  "publishConfig": {
+    "@scope:registry": "http://localhost/api/v4/projects/${CI_PROJECT_ID}/packages/npm/"
+  }
+}
