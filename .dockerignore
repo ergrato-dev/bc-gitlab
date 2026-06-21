@@ -1,0 +1,178 @@
+# ============================================
+# .dockerignore — Bootcamp GitLab CE
+# Excluye archivos innecesarios del contexto
+# de build de Docker. Reduce el tamano y
+# acelera docker compose build.
+# ============================================
+
+# ============================================
+# GIT
+# ============================================
+
+.git/
+.gitignore
+.gitattributes
+.gitmodules
+
+# ============================================
+# DOCKER (volumenes y datos en runtime)
+# ============================================
+
+docker-data/
+gitlab-data/
+gitlab-logs/
+gitlab-config/
+runner-data/
+postgres-data/
+redis-data/
+prometheus-data/
+grafana-data/
+registry-cache-data/
+
+# ============================================
+# VARIABLES DE ENTORNO Y SECRETOS
+# ============================================
+
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+*.secret
+credentials.yml
+*.kubeconfig
+
+# ============================================
+# BACKUPS Y ARCHIVOS PESADOS
+# ============================================
+
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*gitlab_backup*
+backups/
+
+# ============================================
+# LOGS Y CACHE
+# ============================================
+
+logs/
+*.log
+log/
+.cache/
+*.cache
+
+# ============================================
+# IDEs Y EDITORES
+# ============================================
+
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# ============================================
+# SISTEMA OPERATIVO
+# ============================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# ============================================
+# DOCUMENTACION GENERADA
+# ============================================
+
+docs/_build/
+site/
+*_pdf
+_pdf/
+
+# ============================================
+# BOOTCAMP — Solo codigo, no assets generados
+# ============================================
+
+temp/
+tmp/
+scratch/
+notas-personales/
+**/_instructor-only/
+**/_apprentices-only/
+**/6-instructor/
+
+# Soluciones de proyectos
+bootcamp/**/3-proyecto/**/solution/
+**/3-proyecto/solution/
+
+# Scripts de automatizacion (no van en imagen)
+scripts/logs/
+
+# ============================================
+# DEPENDENCIAS (lenguajes)
+# ============================================
+
+# Node (md-to-pdf, export-pdf.sh)
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+.npm/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+coverage.xml
+htmlcov/
+.coverage
+*.cover
+
+# ============================================
+# INFRAESTRUCTURA COMO CODIGO
+# ============================================
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform.lock.hcl
+crash.log
+
+# ============================================
+# MISCELANEOS
+# ============================================
+
+*.bak
+*.backup
+*.old
+*.tmp
+*.prof
+README.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+LICENSE

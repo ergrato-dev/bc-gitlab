@@ -1,0 +1,175 @@
+# ============================================
+# DOCKER
+# ============================================
+
+# Docker volumes locales
+docker-data/
+gitlab-data/
+gitlab-logs/
+gitlab-config/
+runner-data/
+postgres-data/
+redis-data/
+
+# ============================================
+# VARIABLES DE ENTORNO Y SECRETOS
+# ============================================
+
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+secrets/
+*.secret
+credentials.yml
+
+# GitLab backups
+*.tar
+*gitlab_backup*
+
+# ============================================
+# LOGS Y CACHE
+# ============================================
+
+# Logs
+logs/
+*.log
+log/
+
+# Cache
+.cache/
+*.cache
+
+# ============================================
+# IDEs Y EDITORES
+# ============================================
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ============================================
+# SISTEMA OPERATIVO
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ============================================
+# DOCUMENTACION
+# ============================================
+
+# Sphinx
+docs/_build/
+
+# MkDocs
+site/
+
+*_pdf
+
+# ============================================
+# BOOTCAMP ESPECIFICO
+# ============================================
+
+# Archivos temporales de estudiantes
+temp/
+tmp/
+scratch/
+notas-personales/
+
+# Soluciones de proyectos (solo para instructores)
+bootcamp/**/3-proyecto/**/solution/
+**/3-proyecto/solution/
+
+# Logs de scripts de automatizacion
+scripts/logs/
+
+# Material de instructor
+**/_instructor-only/
+
+# Carpeta de material de instructor por semana
+**/6-instructor/
+
+# Material de aprendices
+**/_apprentices-only/
+
+# ============================================
+# MISCELANEOS
+# ============================================
+
+# Archivos de respaldo
+*.bak
+*.backup
+*.old
+
+# Archivos comprimidos
+*.zip
+*.tar.gz
+*.rar
+
+# Node (si se usa para herramientas)
+node_modules/
+package-lock.json
+
+# Python (scripts de automatizacion)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Terraform (si se usa)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Kubernetes (si se usa)
+*.kubeconfig

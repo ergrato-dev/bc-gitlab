@@ -1,0 +1,193 @@
+# ============================================
+# Bootcamp GitLab CE — Zero to Hero
+# Entorno DevOps completo con Docker Compose
+# ============================================
+#
+# Uso:
+#   cp .env.example .env
+#   docker compose up -d
+#   docker compose logs -f gitlab   # esperar ~5min primer inicio
+#
+# Acceso: http://localhost
+# Usuario: root
+# Contrasena: docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
+
+version: '3.8'
+
+services:
+  # ============================================
+  # GitLab CE — Plataforma DevOps principal
+  # ============================================
+  gitlab:
+    image: gitlab/gitlab-ce:${GITLAB_VERSION:-17-latest}
+    container_name: gitlab
+    hostname: ${GITLAB_HOST:-gitlab.local}
+    restart: unless-stopped
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        # ── Acceso ──
+        external_url '${GITLAB_EXTERNAL_URL:-http://localhost}'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT:-2224}
+        gitlab_rails['initial_root_password'] = '${GITLAB_ROOT_PASSWORD:-ChangeMe123!}'
+
+        # ── Funcionalidad ──
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_default_can_create_group'] = true
+
+        # ── PRIVACIDAD: Telemetria DESHABILITADA ──
+        gitlab_rails['usage_ping_enabled'] = false
+        gitlab_rails['sentry_enabled'] = false
+        gitlab_rails['snowplow_enabled'] = false
+        gitlab_rails['google_analytics_id'] = nil
+        gitlab_rails['third_party_offers_enabled'] = false
+        gitlab_rails['gitlab_environment'] = 'development'
+
+        # ── Datos y respaldo ──
+        gitlab_rails['backup_keep_time'] = 604800
+
+        # ── Web server ──
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+
+        # ── Base de datos ──
+        postgresql['shared_buffers'] = '256MB'
+
+        # ── Monitoreo LOCAL (Prometheus local, sin envio externo) ──
+        prometheus_monitoring['enable'] = true
+        node_exporter['enable'] = true
+        gitlab_exporter['enable'] = true
+        redis_exporter['enable'] = true
+        postgres_exporter['enable'] = true
+    ports:
+      - "${GITLAB_HTTP_PORT:-80}:80"
+      - "${GITLAB_HTTPS_PORT:-443}:443"
+      - "${GITLAB_SSH_PORT:-2224}:22"
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+    shm_size: '256m'
+    healthcheck:
+      test: curl -f http://localhost/-/health || exit 1
+      interval: 60s
+      timeout: 30s
+      retries: 10
+      start_period: 300s
+    networks:
+      - gitlab-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # GitLab Runner — Ejecutor de pipelines CI/CD
+  # ============================================
+  gitlab-runner:
+    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-latest}
+    container_name: gitlab-runner
+    restart: unless-stopped
+    depends_on:
+      gitlab:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-config:/etc/gitlab-runner
+    networks:
+      - gitlab-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # Registry cache — Acelera pulls de Docker Hub
+  # ============================================
+  registry-cache:
+    image: registry:2
+    container_name: registry-cache
+    restart: unless-stopped
+    environment:
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io
+      REGISTRY_PROXY_USERNAME: "${DOCKER_HUB_USER:-}"
+      REGISTRY_PROXY_PASSWORD: "${DOCKER_HUB_TOKEN:-}"
+    ports:
+      - "${REGISTRY_CACHE_PORT:-5000}:5000"
+    volumes:
+      - registry-cache-data:/var/lib/registry
+    networks:
+      - gitlab-network
+
+  # ============================================
+  # Prometheus — Recoleccion de metricas
+  # ============================================
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_VERSION:-latest}
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    networks:
+      - gitlab-network
+    profiles:
+      - monitoring
+
+  # ============================================
+  # Grafana — Dashboards de monitoreo
+  # ============================================
+  grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    networks:
+      - gitlab-network
+    profiles:
+      - monitoring
+
+# ============================================
+# Volumenes persistentes
+# ============================================
+volumes:
+  gitlab-config:
+    name: bc-gitlab-config
+  gitlab-logs:
+    name: bc-gitlab-logs
+  gitlab-data:
+    name: bc-gitlab-data
+  runner-config:
+    name: bc-gitlab-runner-config
+  registry-cache-data:
+    name: bc-gitlab-registry-cache
+  prometheus-data:
+    name: bc-gitlab-prometheus
+  grafana-data:
+    name: bc-gitlab-grafana
+
+# ============================================
+# Red interna
+# ============================================
+networks:
+  gitlab-network:
+    name: bc-gitlab-network
+    driver: bridge

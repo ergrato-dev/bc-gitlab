@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <rect width="800" height="400" fill="#1a1a2e"/>
+
+  <!-- Working Directory -->
+  <rect x="30" y="50" width="220" height="120" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="140" y="85" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Working Directory</text>
+  <text x="140" y="110" text-anchor="middle" font-family="monospace" font-size="13" fill="#a0a0a0">(modified)</text>
+  <text x="140" y="140" text-anchor="middle" font-family="monospace" font-size="12" fill="#7f8c8d">archivos reales</text>
+
+  <!-- Arrow working -> staging -->
+  <defs>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fc6d26"/>
+    </marker>
+  </defs>
+  <line x1="250" y1="110" x2="290" y2="110" stroke="#fc6d26" stroke-width="2" marker-end="url(#arrowOrange)"/>
+  <text x="270" y="100" text-anchor="middle" font-family="monospace" font-size="13" fill="#fc6d26">git add</text>
+
+  <!-- Staging Area -->
+  <rect x="300" y="50" width="220" height="120" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="2"/>
+  <text x="410" y="85" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Staging Area</text>
+  <text x="410" y="110" text-anchor="middle" font-family="monospace" font-size="13" fill="#a0a0a0">(staged)</text>
+  <text x="410" y="140" text-anchor="middle" font-family="monospace" font-size="12" fill="#7f8c8d">index</text>
+
+  <!-- Arrow staging -> repository -->
+  <line x1="520" y1="110" x2="560" y2="110" stroke="#554488" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="540" y="100" text-anchor="middle" font-family="monospace" font-size="13" fill="#554488">git commit</text>
+
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#554488"/>
+    </marker>
+  </defs>
+
+  <!-- Git Repository -->
+  <rect x="570" y="50" width="210" height="120" rx="8" fill="#16213e" stroke="#554488" stroke-width="2"/>
+  <text x="675" y="85" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Repository</text>
+  <text x="675" y="110" text-anchor="middle" font-family="monospace" font-size="13" fill="#a0a0a0">(committed)</text>
+  <text x="675" y="140" text-anchor="middle" font-family="monospace" font-size="12" fill="#7f8c8d">.git/objects</text>
+
+  <!-- Object types -->
+  <rect x="80" y="240" width="140" height="60" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="150" y="265" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#fc6d26">blob</text>
+  <text x="150" y="285" text-anchor="middle" font-family="monospace" font-size="12" fill="#a0a0a0">contenido archivo</text>
+
+  <rect x="250" y="240" width="140" height="60" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="320" y="265" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#fc6d26">tree</text>
+  <text x="320" y="285" text-anchor="middle" font-family="monospace" font-size="12" fill="#a0a0a0">directorio</text>
+
+  <rect x="420" y="240" width="140" height="60" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="490" y="265" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#e24329">commit</text>
+  <text x="490" y="285" text-anchor="middle" font-family="monospace" font-size="12" fill="#a0a0a0">snapshot + metadata</text>
+
+  <rect x="590" y="240" width="140" height="60" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="660" y="265" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#e24329">tag</text>
+  <text x="660" y="285" text-anchor="middle" font-family="monospace" font-size="12" fill="#a0a0a0">referencia nombrada</text>
+
+  <!-- Header -->
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">Estados y Objetos de Git</text>
+
+  <!-- Footer info -->
+  <text x="400" y="340" text-anchor="middle" font-family="monospace" font-size="12" fill="#7f8c8d">git add → git commit → SHA-1 object</text>
+
+  <text x="400" y="380" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 01</text>
+</svg>

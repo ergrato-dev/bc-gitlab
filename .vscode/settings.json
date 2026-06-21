@@ -1,0 +1,68 @@
+{
+    // ============================================
+    // PRIVACIDAD — TELEMETRIA DESHABILITADA
+    // ============================================
+
+    // VS Code
+    "telemetry.telemetryLevel": "off",
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "workbench.settings.enableNaturalLanguageSearch": false,
+    "workbench.enableExperiments": false,
+    "update.mode": "none",
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+
+    // GitHub Copilot (si se usa)
+    "github.copilot.enable": {
+        "*": false
+    },
+    "github.copilot.advanced": {
+        "debug.telemetry": false
+    },
+
+    // Git (no enviar datos de uso)
+    "git.telemetry": false,
+    "git.showUserEmailInExplorer": false,
+
+    // ============================================
+    // OPTIMIZACION DE RECURSOS
+    // ============================================
+
+    "workbench.editor.enablePreview": true,
+    "workbench.editor.enablePreviewFromQuickOpen": true,
+    "workbench.editor.enablePreviewFromCodeNavigation": true,
+    "workbench.editor.closeOnFileDelete": true,
+    "workbench.editor.limit.enabled": true,
+    "workbench.editor.limit.value": 2,
+    "workbench.editor.limit.perEditorGroup": true,
+    "workbench.editor.closeEmptyGroups": true,
+    "workbench.editor.revealIfOpen": true,
+    "files.maxMemoryForLargeFilesMB": 256,
+    "search.maxResults": 1000,
+
+    // ============================================
+    // TEMA VISUAL (GitLab CE Orange)
+    // ============================================
+
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#e86a56",
+        "activityBar.background": "#e86a56",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#73ec83",
+        "activityBarBadge.foreground": "#15202b",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#e86a56",
+        "statusBar.background": "#e24329",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#e86a56",
+        "statusBarItem.remoteBackground": "#e24329",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#e24329",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#e2432999",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#e24329"
+}
