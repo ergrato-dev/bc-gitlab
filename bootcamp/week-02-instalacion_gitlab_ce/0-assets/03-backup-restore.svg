@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="280" viewBox="0 0 800 280">
+  <rect width="800" height="280" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">Backup y Restore — Flujo Completo</text>
+
+  <!-- Backup Flow -->
+  <text x="130" y="65" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#fc6d26">BACKUP</text>
+
+  <rect x="20" y="80" width="220" height="70" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="130" y="105" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fc6d26">gitlab-backup create</text>
+  <text x="130" y="125" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">DB + repos + uploads</text>
+  <text x="130" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">→ /var/opt/gitlab/backups/</text>
+
+  <text x="250" y="115" text-anchor="middle" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <rect x="270" y="80" width="220" height="70" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="380" y="105" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fc6d26">docker compose cp</text>
+  <text x="380" y="125" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">extraer backup al host</text>
+  <text x="380" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">→ ./backups/ (host)</text>
+
+  <text x="500" y="115" text-anchor="middle" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <rect x="520" y="80" width="250" height="70" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="645" y="105" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#554488">Almacenamiento externo</text>
+  <text x="645" y="125" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">S3 / NFS / USB / rsync</text>
+  <text x="645" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">regla 3-2-1</text>
+
+  <!-- Restore Flow -->
+  <text x="130" y="190" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#e24329">RESTORE</text>
+
+  <rect x="20" y="205" width="220" height="55" rx="8" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="130" y="225" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">docker compose cp (inverso)</text>
+  <text x="130" y="245" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">host → contenedor</text>
+
+  <text x="250" y="232" text-anchor="middle" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <rect x="270" y="205" width="220" height="55" rx="8" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="380" y="222" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">gitlab-ctl stop puma</text>
+  <text x="380" y="240" text-anchor="middle" font-family="monospace" font-size="11" fill="#e24329">gitlab-ctl stop sidekiq</text>
+  <text x="380" y="255" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">detener escritores DB</text>
+
+  <text x="500" y="232" text-anchor="middle" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <rect x="520" y="205" width="250" height="55" rx="8" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="645" y="222" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">gitlab-backup restore</text>
+  <text x="645" y="240" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">+ reconfigure + restart</text>
+  <text x="645" y="255" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">+ restaurar secrets.json</text>
+
+  <text x="400" y="272" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 02</text>
+</svg>

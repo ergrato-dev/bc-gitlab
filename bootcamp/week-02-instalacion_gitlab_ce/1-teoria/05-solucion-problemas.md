@@ -108,15 +108,42 @@ Luego: `git clone git@gitlab.local:root/proyecto.git`
 ## Comandos de Diagnostico Rapido
 
 ```bash
-# Estado general de GitLab
-docker compose exec gitlab gitlab-ctl status
+# ── Salud general ──
+docker compose ps                                    # Estado Docker
+docker compose exec gitlab gitlab-ctl status         # Estado servicios internos
+docker compose exec gitlab gitlab-rake gitlab:check  # Sanity check
 
-# Verificar configuracion
-docker compose exec gitlab gitlab-rake gitlab:check
+# ── Logs ──
+docker compose logs gitlab --tail 50                 # Ultimas 50 lineas
+docker compose exec gitlab gitlab-ctl tail nginx     # Logs de nginx
+docker compose exec gitlab gitlab-ctl tail puma      # Logs de Puma (app)
+docker compose exec gitlab gitlab-ctl tail postgresql  # Logs de PostgreSQL
+docker compose exec gitlab gitlab-ctl tail gitaly    # Logs de Gitaly
 
-# Reinicio seguro
-docker compose exec gitlab gitlab-ctl restart
+# ── Recursos ──
+docker stats --no-stream                             # CPU/RAM de todos
+docker compose exec gitlab free -h                   # RAM dentro del container
+docker compose exec gitlab df -h /var/opt/gitlab     # Disco usado
 
-# Reconfigurar (aplica cambios de gitlab.rb)
-docker compose exec gitlab gitlab-ctl reconfigure
+# ── Base de datos ──
+docker compose exec gitlab gitlab-psql -c "SELECT version()"     # Version PG
+docker compose exec gitlab gitlab-psql -c "SELECT count(*) FROM projects"  # Num proyectos
+
+# ── Recuperacion ──
+docker compose exec gitlab gitlab-ctl reconfigure    # Reaplica gitlab.rb
+docker compose exec gitlab gitlab-ctl restart        # Reinicio seguro
+
+# ── Acceso de emergencia ──
+docker compose exec gitlab bash                      # Shell en container
+docker compose exec gitlab gitlab-rails console      # Consola Rails (avanzado)
+docker compose exec gitlab gitlab-rails runner "puts User.first.username"  # Script one-liner
 ```
+
+## Checklist de Troubleshooting
+
+1. [ ] `docker compose ps` — ¿contenedor corriendo?
+2. [ ] `curl -I http://localhost` — ¿responde HTTP?
+3. [ ] `docker compose exec gitlab gitlab-ctl status` — ¿servicios "run"?
+4. [ ] `docker stats --no-stream` — ¿RAM suficiente?
+5. [ ] `docker compose logs gitlab --tail 30` — ¿errores en logs?
+6. [ ] `ss -tuln | grep -E ':80 |:2224'` — ¿puertos libres?

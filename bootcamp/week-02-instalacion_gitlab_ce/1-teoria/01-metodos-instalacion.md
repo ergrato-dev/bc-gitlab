@@ -66,3 +66,17 @@ Operador para Red Hat OpenShift que automatiza el ciclo de vida de GitLab.
 ## Recomendacion para el Bootcamp
 
 Usaremos **Docker Compose** por ser el equilibrio ideal entre simplicidad y fidelidad al entorno real. Permite levantar una instancia completa en minutos y es facil de destruir/recrear durante las practicas.
+
+### Por que Docker Compose y no Omnibus en este bootcamp
+
+| Factor | Docker Compose | Omnibus |
+|--------|---------------|---------|
+| Instalacion | `docker compose up -d` | Script + paquete + sudo |
+| Desinstalacion | `docker compose down -v` | `apt remove` + limpiar `/var/opt/gitlab` |
+| Aislamiento | Contenedor aislado | Se mezcla con el SO |
+| Multiples instancias | Cambiando proyecto/puertos | Muy complejo |
+| Requisitos | Solo Docker | Linux dedicado |
+| Portabilidad | Mismo compose en cualquier SO | Depende del SO |
+| Telemetria | Deshabilitada por config | Puede estar activa |
+
+> La experiencia con Docker Compose es directamente transferible a produccion: los mismos volumenes, puertos y variables de entorno aplican en servidores reales.

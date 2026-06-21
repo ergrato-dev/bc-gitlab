@@ -47,10 +47,22 @@
 
 ## Entregables
 
-- [ ] GitLab CE corriendo en Docker
-- [ ] Acceso web funcional
+- [ ] GitLab CE corriendo en Docker (`docker compose ps` muestra "healthy")
+- [ ] Acceso web funcional en `http://localhost`
 - [ ] Password root cambiada
-- [ ] Proyecto de prueba creado
+- [ ] Proyecto de prueba creado con 1+ commit
+- [ ] Backup inicial ejecutado y verificado
+- [ ] `INSTALL.md` documentando el proceso
+
+## Verificacion Rapida
+
+```bash
+# Ejecuta esto al final de la semana para validar
+curl -s -o /dev/null -w "HTTP: %{http_code}\n" http://localhost
+docker compose ps
+docker compose exec gitlab gitlab-ctl status
+docker compose exec gitlab ls /var/opt/gitlab/backups/ | tail -3
+```
 
 ---
 
