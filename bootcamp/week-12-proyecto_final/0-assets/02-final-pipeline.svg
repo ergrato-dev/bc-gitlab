@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220">
+  <rect width="800" height="220" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Pipeline Final — 6 Stages Completos</text>
+  <rect x="15" y="55" width="110" height="45" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="70" y="75" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">build</text>
+  <text x="70" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Docker image</text>
+  <text x="132" y="78" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="148" y="55" width="110" height="45" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="203" y="75" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">test</text>
+  <text x="203" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Unit + Lint</text>
+  <text x="265" y="78" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="281" y="55" width="130" height="45" rx="6" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="346" y="75" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">security</text>
+  <text x="346" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">SAST+Secret+Container</text>
+  <text x="418" y="78" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="434" y="55" width="110" height="45" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="489" y="75" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">package</text>
+  <text x="489" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Tag + push</text>
+  <text x="551" y="78" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="567" y="55" width="110" height="45" rx="6" fill="#16213e" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="622" y="75" text-anchor="middle" font-family="monospace" font-size="11" fill="#a0a0a0">deploy-staging</text>
+  <text x="622" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Auto (main)</text>
+  <text x="684" y="78" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="700" y="55" width="85" height="45" rx="6" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="742" y="75" text-anchor="middle" font-family="monospace" font-size="11" fill="#e24329">deploy-prod</text>
+  <text x="742" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Manual (tag)</text>
+  <!-- Delivery checklist -->
+  <rect x="60" y="125" width="680" height="75" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="148" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">Estructura de Entrega</text>
+  <text x="80" y="172" font-family="monospace" font-size="9" fill="#fc6d26">docker-compose.yml</text>
+  <text x="250" y="172" font-family="monospace" font-size="9" fill="#554488">.gitlab-ci.yml + ci-templates/</text>
+  <text x="470" y="172" font-family="monospace" font-size="9" fill="#e24329">monitoring/ + backup/</text>
+  <text x="80" y="190" font-family="monospace" font-size="9" fill="#a0a0a0">docs/ (arquitectura, ops, DR) + README.md + defensa 15min</text>
+  <text x="400" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 12</text>
+</svg>
