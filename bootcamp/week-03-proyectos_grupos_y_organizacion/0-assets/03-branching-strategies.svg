@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">Branching Strategies — Comparacion Visual</text>
+
+  <!-- Git Flow -->
+  <rect x="15" y="55" width="240" height="225" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="135" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#fc6d26">Git Flow</text>
+  <line x1="35" y1="90" x2="235" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="135" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#e24329">main ●</text>
+  <text x="135" y="133" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">develop ○</text>
+  <text x="135" y="151" text-anchor="middle" font-family="monospace" font-size="10" fill="#554488">feature/* ▸</text>
+  <text x="135" y="169" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">release/* ◆</text>
+  <text x="135" y="187" text-anchor="middle" font-family="monospace" font-size="10" fill="#c0392b">hotfix/* ⚡</text>
+  <line x1="35" y1="198" x2="235" y2="198" stroke="#555" stroke-width="0.5"/>
+  <text x="135" y="218" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✓ Releases versionados</text>
+  <text x="135" y="235" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✗ Lento para CI/CD</text>
+  <text x="135" y="252" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">Complejidad: Alta</text>
+
+  <!-- GitHub Flow -->
+  <rect x="275" y="55" width="240" height="225" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="395" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#554488">GitHub Flow</text>
+  <line x1="295" y1="90" x2="495" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="395" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#e24329">main ● (siempre deployable)</text>
+  <text x="395" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#554488">feature/* ▸ (vida corta)</text>
+  <text x="395" y="165" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">fix/* ▸</text>
+  <line x1="295" y1="180" x2="495" y2="180" stroke="#555" stroke-width="0.5"/>
+  <text x="395" y="200" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✓ Simple, CI/CD nativo</text>
+  <text x="395" y="217" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✓ Ideal para equipos agiles</text>
+  <text x="395" y="234" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✗ Sin versionado tradicional</text>
+  <text x="395" y="252" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">Complejidad: Baja</text>
+
+  <!-- GitLab Flow -->
+  <rect x="535" y="55" width="250" height="225" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="660" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e24329">GitLab Flow ★</text>
+  <line x1="555" y1="90" x2="765" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="660" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#e24329">main ● (desarrollo)</text>
+  <text x="660" y="135" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">staging ◉</text>
+  <text x="660" y="155" text-anchor="middle" font-family="monospace" font-size="10" fill="#e24329">production ◎</text>
+  <text x="660" y="175" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">feature/* ▸ → main → staging</text>
+  <line x1="555" y1="188" x2="765" y2="188" stroke="#555" stroke-width="0.5"/>
+  <text x="660" y="207" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✓ Ambientes separados</text>
+  <text x="660" y="224" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">✓ CI/CD + versionado</text>
+  <text x="660" y="241" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">★ Recomendado bootcamp</text>
+  <text x="660" y="258" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#a0a0a0">Complejidad: Media</text>
+
+  <text x="400" y="292" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 03</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420">
+  <rect width="800" height="420" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">Roles y Permisos en GitLab</text>
+
+  <!-- Pyramid -->
+  <polygon points="400,55 140,355 660,355" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+
+  <!-- Owner -->
+  <rect x="340" y="65" width="120" height="40" rx="6" fill="#e24329" opacity="0.9"/>
+  <text x="400" y="90" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fff">Owner</text>
+
+  <!-- Maintainer -->
+  <rect x="320" y="125" width="160" height="40" rx="6" fill="#fc6d26" opacity="0.9"/>
+  <text x="400" y="150" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fff">Maintainer</text>
+
+  <!-- Developer -->
+  <rect x="300" y="185" width="200" height="40" rx="6" fill="#554488" opacity="0.9"/>
+  <text x="400" y="210" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fff">Developer</text>
+
+  <!-- Reporter -->
+  <rect x="280" y="245" width="240" height="40" rx="6" fill="#7f8c8d" opacity="0.9"/>
+  <text x="400" y="270" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fff">Reporter</text>
+
+  <!-- Guest -->
+  <rect x="260" y="305" width="280" height="40" rx="6" fill="#555" opacity="0.9"/>
+  <text x="400" y="330" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#aaa">Guest</text>
+
+  <!-- Permissions sidebar -->
+  <rect x="15" y="65" width="220" height="280" rx="6" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="125" y="88" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7f8c8d">Capacidades por Rol</text>
+  <line x1="25" y1="95" x2="225" y2="95" stroke="#555" stroke-width="0.5"/>
+
+  <text x="20" y="115" font-family="monospace" font-size="9" fill="#e24329">Owner:</text>
+  <text x="20" y="130" font-family="monospace" font-size="8" fill="#a0a0a0">  Control total, eliminar,</text>
+  <text x="20" y="143" font-family="monospace" font-size="8" fill="#a0a0a0">  transferir, cambiar visibilidad</text>
+
+  <text x="20" y="165" font-family="monospace" font-size="9" fill="#fc6d26">Maintainer:</text>
+  <text x="20" y="180" font-family="monospace" font-size="8" fill="#a0a0a0">  Merge MRs, push protegidas,</text>
+  <text x="20" y="193" font-family="monospace" font-size="8" fill="#a0a0a0">  gestionar miembros, settings</text>
+
+  <text x="20" y="215" font-family="monospace" font-size="9" fill="#554488">Developer:</text>
+  <text x="20" y="230" font-family="monospace" font-size="8" fill="#a0a0a0">  Push ramas no protegidas,</text>
+  <text x="20" y="243" font-family="monospace" font-size="8" fill="#a0a0a0">  crear MRs, issues, comentar</text>
+
+  <text x="20" y="265" font-family="monospace" font-size="9" fill="#7f8c8d">Reporter:</text>
+  <text x="20" y="280" font-family="monospace" font-size="8" fill="#a0a0a0">  Ver codigo, ver issues/MRs,</text>
+  <text x="20" y="293" font-family="monospace" font-size="8" fill="#a0a0a0">  comentar. No push.</text>
+
+  <text x="20" y="315" font-family="monospace" font-size="9" fill="#555">Guest:</text>
+  <text x="20" y="330" font-family="monospace" font-size="8" fill="#a0a0a0">  Ver issues, comentar,</text>
+  <text x="20" y="343" font-family="monospace" font-size="8" fill="#a0a0a0">  NO ver codigo</text>
+
+  <!-- Visibilidad -->
+  <rect x="580" y="65" width="200" height="90" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="680" y="88" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#fc6d26">Visibilidad</text>
+  <text x="680" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#e24329">Private</text>
+  <text x="680" y="120" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Solo miembros</text>
+  <text x="680" y="136" text-anchor="middle" font-family="monospace" font-size="9" fill="#554488">Internal</text>
+  <text x="680" y="148" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Usuarios autenticados</text>
+
+  <text x="400" y="410" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 03</text>
+</svg>
