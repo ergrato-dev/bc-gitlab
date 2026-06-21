@@ -1,0 +1,64 @@
+# ============================================
+# Practica 03 — Tags y Enrutamiento de Jobs
+# ============================================
+# Requiere al menos 2 runners con diferentes tags.
+
+stages:
+  - test
+  - build
+  - deploy
+
+# ── Frontend jobs → runner con tag [frontend] ──
+frontend-test:
+  stage: test
+  tags: [frontend, nodejs]
+  image: node:18-alpine
+  script:
+    - echo "Frontend test en runner frontend"
+    - node --version
+    - npm --version
+
+# ── Backend jobs → runner con tag [backend] ──
+backend-test:
+  stage: test
+  tags: [backend, python]
+  image: python:3.12-slim
+  script:
+    - echo "Backend test en runner backend"
+    - python --version
+    - pip --version
+
+# ── Build jobs ──
+frontend-build:
+  stage: build
+  tags: [frontend, nodejs]
+  image: node:18-alpine
+  script:
+    - echo "Building frontend..."
+    - echo "Build completado"
+
+backend-build:
+  stage: build
+  tags: [backend, python]
+  image: python:3.12-slim
+  script:
+    - echo "Building backend..."
+    - echo "Build completado"
+
+# ── Deploy → runner con tag [deploy] ──
+deploy-all:
+  stage: deploy
+  tags: [deploy, shell]
+  environment: production
+  script:
+    - echo "Deploy desde runner shell"
+    - hostname
+    - echo "Despliegue completado"
+
+# ── RETO: Job que quedara pending ──
+# gpu-train:
+#   stage: test
+#   tags: [gpu, cuda]           # Ningun runner tiene estos tags
+#   script:
+#     - echo "Entrenando modelo..."
+#   allow_failure: true

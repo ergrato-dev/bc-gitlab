@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320">
+  <rect width="800" height="320" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Tipos de GitLab Runner por Ambito</text>
+  <!-- Instance -->
+  <rect x="20" y="55" width="360" height="45" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="200" y="75" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">Instance Runner</text>
+  <text x="200" y="92" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Admin Area → Runners | Toda la instancia GitLab</text>
+  <!-- Shared -->
+  <rect x="20" y="115" width="360" height="45" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="200" y="135" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">Shared Runner</text>
+  <text x="200" y="152" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Todos los proyectos | Fair queuing | Admin gestiona</text>
+  <!-- Group -->
+  <rect x="20" y="175" width="360" height="45" rx="6" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="200" y="195" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">Group Runner</text>
+  <text x="200" y="212" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Grupo y subgrupos | Group Owner gestiona</text>
+  <!-- Specific -->
+  <rect x="20" y="235" width="360" height="45" rx="6" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="200" y="255" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">Specific Runner</text>
+  <text x="200" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Un solo proyecto | Maximo control y aislamiento</text>
+  <!-- Executors panel -->
+  <rect x="420" y="55" width="360" height="225" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="600" y="78" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#7f8c8d">Ejecutores (Executors)</text>
+  <line x1="440" y1="88" x2="760" y2="88" stroke="#555" stroke-width="0.5"/>
+  <rect x="440" y="100" width="320" height="28" rx="4" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="600" y="119" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">Docker — cada job en contenedor aislado ★</text>
+  <rect x="440" y="135" width="320" height="28" rx="4" fill="#1a1a2e" stroke="#554488" stroke-width="1"/>
+  <text x="600" y="154" text-anchor="middle" font-family="monospace" font-size="10" fill="#554488">Shell — comandos directo en host</text>
+  <rect x="440" y="170" width="320" height="28" rx="4" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="600" y="189" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">Kubernetes — jobs en pods efimeros</text>
+  <rect x="440" y="205" width="320" height="28" rx="4" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="600" y="224" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">SSH — comandos via SSH remoto</text>
+  <rect x="440" y="240" width="320" height="28" rx="4" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="600" y="259" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">VirtualBox / Parallels — VMs locales</text>
+  <text x="400" y="312" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 07</text>
+</svg>

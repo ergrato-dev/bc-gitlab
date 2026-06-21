@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="280" viewBox="0 0 800 280">
+  <rect width="800" height="280" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Tags y Job Routing</text>
+  <!-- Runners with tags -->
+  <rect x="20" y="55" width="230" height="90" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="135" y="78" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">runner-frontend</text>
+  <text x="135" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">tags: [docker, frontend, nodejs]</text>
+  <text x="135" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">image: node:18-alpine</text>
+
+  <rect x="20" y="155" width="230" height="90" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="135" y="178" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">runner-backend</text>
+  <text x="135" y="200" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">tags: [docker, backend, python]</text>
+  <text x="135" y="218" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">image: python:3.12-slim</text>
+
+  <!-- Router -->
+  <rect x="285" y="100" width="230" height="65" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="400" y="122" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#e24329">GitLab Job Router</text>
+  <text x="400" y="145" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Match: job.tags ⊆ runner.tags</text>
+
+  <!-- Arrows -->
+  <line x1="250" y1="86" x2="285" y2="115" stroke="#fc6d26" stroke-width="1.5"/>
+  <line x1="250" y1="190" x2="285" y2="145" stroke="#554488" stroke-width="1.5"/>
+
+  <!-- Jobs panel -->
+  <rect x="555" y="55" width="230" height="190" rx="6" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="670" y="78" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7f8c8d">Jobs con Tags</text>
+  <line x1="570" y1="86" x2="760" y2="86" stroke="#555" stroke-width="0.5"/>
+  <text x="670" y="110" font-family="monospace" font-size="9" fill="#fc6d26">job: frontend-test</text>
+  <text x="670" y="126" font-family="monospace" font-size="9" fill="#a0a0a0">tags: [frontend, nodejs]</text>
+  <text x="670" y="142" font-family="monospace" font-size="8" fill="#7f8c8d">→ runner-frontend ✓</text>
+  <text x="670" y="168" font-family="monospace" font-size="9" fill="#554488">job: backend-test</text>
+  <text x="670" y="184" font-family="monospace" font-size="9" fill="#a0a0a0">tags: [backend, python]</text>
+  <text x="670" y="200" font-family="monospace" font-size="8" fill="#7f8c8d">→ runner-backend ✓</text>
+  <text x="670" y="226" font-family="monospace" font-size="9" fill="#c0392b">job: gpu-train</text>
+  <text x="670" y="242" font-family="monospace" font-size="9" fill="#a0a0a0">tags: [gpu, cuda]</text>
+  <text x="670" y="258" font-family="monospace" font-size="8" fill="#c0392b">→ pending (ningun runner califica)</text>
+
+  <text x="400" y="273" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 07</text>
+</svg>

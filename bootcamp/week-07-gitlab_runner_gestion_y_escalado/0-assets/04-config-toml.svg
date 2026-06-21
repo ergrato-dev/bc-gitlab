@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220">
+  <rect width="800" height="220" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">config.toml — Estructura del Archivo de Configuracion</text>
+  <!-- Global -->
+  <rect x="20" y="50" width="240" height="70" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="140" y="72" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">Global</text>
+  <text x="140" y="92" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">concurrent = 4</text>
+  <text x="140" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">check_interval = 3</text>
+
+  <rect x="280" y="50" width="240" height="70" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="400" y="72" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">[[runners]] #1</text>
+  <text x="400" y="92" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">executor = "docker"</text>
+  <text x="400" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">tags = ["docker","frontend"]</text>
+
+  <rect x="540" y="50" width="240" height="70" rx="6" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="660" y="72" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">[[runners]] #2</text>
+  <text x="660" y="92" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">executor = "shell"</text>
+  <text x="660" y="108" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">tags = ["shell","deploy"]</text>
+
+  <!-- Flow -->
+  <rect x="100" y="145" width="600" height="55" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7f8c8d">GitLab API</text>
+  <text x="400" y="188" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">POST /api/v4/jobs/request → Runner toma job → ejecuta con executor → POST resultado</text>
+
+  <text x="400" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 07</text>
+</svg>

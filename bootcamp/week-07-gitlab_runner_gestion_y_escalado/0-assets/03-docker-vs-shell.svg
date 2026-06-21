@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="250" viewBox="0 0 800 250">
+  <rect width="800" height="250" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Docker Executor vs Shell Executor</text>
+  <!-- Docker side -->
+  <rect x="20" y="55" width="360" height="155" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="200" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fc6d26">Docker Executor</text>
+  <line x1="40" y1="90" x2="360" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="40" y="115" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Cada job → nuevo contenedor aislado</text>
+  <text x="40" y="133" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Imagen configurable: node, python, java...</text>
+  <text x="40" y="151" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Services: postgres, redis, etc.</text>
+  <text x="40" y="169" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Limpieza automatica post-job</text>
+  <text x="40" y="187" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Overhead de crear/destruir containers</text>
+  <text x="40" y="205" font-family="monospace" font-size="9" fill="#7f8c8d">✗ DIND requiere docker.sock</text>
+  <!-- Shell side -->
+  <rect x="420" y="55" width="360" height="155" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="600" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#554488">Shell Executor</text>
+  <line x1="440" y1="90" x2="760" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="440" y="115" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Sin overhead, ejecucion directa en host</text>
+  <text x="440" y="133" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Acceso completo al filesystem del host</text>
+  <text x="440" y="151" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Ideal para deploy scripts (rsync, scp, ssh)</text>
+  <text x="440" y="169" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Sin aislamiento (jobs comparten entorno)</text>
+  <text x="440" y="187" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Dependencias manuales en host</text>
+  <text x="440" y="205" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Riesgo: job puede afectar al sistema</text>
+  <!-- Recommendation -->
+  <rect x="180" y="225" width="440" height="18" rx="4" fill="#e24329" opacity="0.8"/>
+  <text x="400" y="238" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">★ Bootcamp: Docker para CI (build/test) | Shell para CD (deploy)</text>
+</svg>
