@@ -1,0 +1,13 @@
+install-deps:
+  stage: build
+  image: node:18-alpine
+  script:
+    - npm ci
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour

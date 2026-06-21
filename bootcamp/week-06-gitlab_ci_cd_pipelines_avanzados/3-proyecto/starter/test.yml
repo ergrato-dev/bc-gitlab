@@ -1,0 +1,15 @@
+unit-test:
+  stage: test
+  image: node:18-alpine
+  script:
+    - npm test
+  artifacts:
+    reports:
+      junit: junit.xml
+
+lint:
+  stage: test
+  image: node:18-alpine
+  script:
+    - npm run lint
+  allow_failure: true

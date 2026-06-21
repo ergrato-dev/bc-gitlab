@@ -1,0 +1,21 @@
+# ============================================
+# Include: build.yml
+# Copiar a .gitlab/ci/build.yml
+# ============================================
+install-deps:
+  stage: build
+  image: node:18-alpine
+  script:
+    - echo "Instalando dependencias..."
+    - npm init -y
+    - npm install --save express
+    - echo "Dependencias instaladas:"
+    - ls node_modules/ | head -5
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour

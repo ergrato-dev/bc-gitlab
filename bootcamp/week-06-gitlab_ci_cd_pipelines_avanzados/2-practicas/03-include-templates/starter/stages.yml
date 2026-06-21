@@ -1,0 +1,8 @@
+# ============================================
+# Include: stages.yml
+# Copiar a .gitlab/ci/stages.yml
+# ============================================
+stages:
+  - build
+  - test
+  - deploy

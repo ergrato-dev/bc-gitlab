@@ -1,0 +1,84 @@
+# ============================================
+# Practica 04 — Environments y Deployments
+# ============================================
+
+stages:
+  - build
+  - deploy
+
+variables:
+  STAGING_URL: "https://staging.bootcamp-app.example.com"
+  PRODUCTION_URL: "https://bootcamp-app.example.com"
+
+# ── Build ──
+build:
+  stage: build
+  script:
+    - echo "Building app..."
+    - mkdir -p dist
+    - echo "v${CI_PIPELINE_ID}-${CI_COMMIT_SHORT_SHA}" > dist/version.txt
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+# ── Deploy Staging (automatico desde develop) ──
+deploy-staging:
+  stage: deploy
+  script:
+    - echo "Deploy to ${STAGING_URL}"
+    - echo "Version: $(cat dist/version.txt)"
+  environment:
+    name: staging
+    url: ${STAGING_URL}
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+# ── Deploy Production (manual desde main) ──
+deploy-production:
+  stage: deploy
+  script:
+    - echo "Deploy to ${PRODUCTION_URL}"
+    - echo "Version: $(cat dist/version.txt)"
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
+      allow_failure: false
+
+# ── Stop Staging (accion de entorno) ──
+stop-staging:
+  stage: deploy
+  script:
+    - echo "Stopping staging environment..."
+  environment:
+    name: staging
+    action: stop
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
+
+# ── RETO: Review app para MRs ──
+# deploy-review:
+#   stage: deploy
+#   script:
+#     - echo "Deploy review app for MR !${CI_MERGE_REQUEST_IID}"
+#   environment:
+#     name: review/${CI_MERGE_REQUEST_IID}
+#     on_stop: stop-review
+#     auto_stop_in: 1 day
+#   rules:
+#     - if: $CI_MERGE_REQUEST_IID
+#
+# stop-review:
+#   stage: deploy
+#   script:
+#     - echo "Destroy review app ${CI_MERGE_REQUEST_IID}"
+#   environment:
+#     name: review/${CI_MERGE_REQUEST_IID}
+#     action: stop
+#   rules:
+#     - if: $CI_MERGE_REQUEST_IID
+#       when: manual

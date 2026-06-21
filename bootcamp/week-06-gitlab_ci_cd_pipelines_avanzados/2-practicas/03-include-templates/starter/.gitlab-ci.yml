@@ -1,0 +1,16 @@
+# ============================================
+# Practica 03 — Include Templates
+# ============================================
+# Crear estructura:
+#   .gitlab/ci/stages.yml
+#   .gitlab/ci/build.yml
+#   .gitlab/ci/test.yml
+#   .gitlab/ci/deploy.yml
+#   .gitlab-ci.yml (este archivo)
+
+# ── Archivo principal ──
+include:
+  - local: .gitlab/ci/stages.yml
+  - local: .gitlab/ci/build.yml
+  - local: .gitlab/ci/test.yml
+  - local: .gitlab/ci/deploy.yml

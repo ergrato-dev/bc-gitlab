@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320">
+  <rect width="800" height="320" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Rules — Control Condicional de Jobs</text>
+  <!-- Decision tree -->
+  <rect x="300" y="50" width="200" height="35" rx="6" fill="#e24329"/>
+  <text x="400" y="72" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#fff">git push (trigger)</text>
+  <!-- Branch rule -->
+  <line x1="400" y1="85" x2="150" y2="135" stroke="#fc6d26" stroke-width="1.5"/>
+  <line x1="400" y1="85" x2="400" y2="135" stroke="#fc6d26" stroke-width="1.5"/>
+  <line x1="400" y1="85" x2="650" y2="135" stroke="#fc6d26" stroke-width="1.5"/>
+  <rect x="30" y="135" width="240" height="60" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="150" y="158" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fc6d26">if: $CI_COMMIT_BRANCH == "main"</text>
+  <text x="150" y="178" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">→ deploy-production (manual)</text>
+  <rect x="290" y="135" width="220" height="60" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="400" y="158" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#554488">if: $CI_COMMIT_BRANCH == "develop"</text>
+  <text x="400" y="178" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">→ deploy-staging (automatic)</text>
+  <rect x="530" y="135" width="240" height="60" rx="6" fill="#16213e" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="650" y="158" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#7f8c8d">if: $CI_COMMIT_BRANCH =~ /feature\//</text>
+  <text x="650" y="178" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">→ test-rapido only</text>
+  <!-- Rule types -->
+  <rect x="30" y="220" width="740" height="80" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="245" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">Clauses disponibles en rules</text>
+  <text x="60" y="268" font-family="monospace" font-size="10" fill="#fc6d26">if:</text><text x="100" y="268" font-family="monospace" font-size="9" fill="#a0a0a0">Condicion con variables ($CI_COMMIT_BRANCH, $CI_PIPELINE_SOURCE)</text>
+  <text x="60" y="285" font-family="monospace" font-size="10" fill="#554488">changes:</text><text x="140" y="285" font-family="monospace" font-size="9" fill="#a0a0a0">Ejecutar si cambiaron archivos (src/frontend/**/*)</text>
+  <text x="350" y="268" font-family="monospace" font-size="10" fill="#7f8c8d">exists:</text><text x="410" y="268" font-family="monospace" font-size="9" fill="#a0a0a0">Ejecutar si existe un archivo</text>
+  <text x="350" y="285" font-family="monospace" font-size="10" fill="#e24329">when:</text><text x="410" y="285" font-family="monospace" font-size="9" fill="#a0a0a0">manual | delayed | always | never | on_success</text>
+  <text x="400" y="312" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 06</text>
+</svg>

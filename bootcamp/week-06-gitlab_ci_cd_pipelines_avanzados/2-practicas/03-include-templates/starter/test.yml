@@ -1,0 +1,19 @@
+# ============================================
+# Include: test.yml
+# Copiar a .gitlab/ci/test.yml
+# ============================================
+unit-test:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "Ejecutando pruebas unitarias..."
+    - test -d node_modules && echo "✓ dependencias disponibles" || echo "✗ FALTAN dependencias"
+    - node -e "require('express')" && echo "✓ Express funciona" || echo "✗ Error Express"
+
+lint:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "Linting..."
+    - echo "✓ Sin errores de lint (simulado)"
+  allow_failure: true

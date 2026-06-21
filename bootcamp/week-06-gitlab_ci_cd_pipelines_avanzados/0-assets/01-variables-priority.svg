@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Variables CI/CD — Prioridad y Alcance</text>
+  <!-- Pyramid -->
+  <polygon points="400,50 140,260 660,260" fill="#16213e" stroke="#e24329" stroke-width="1.5"/>
+  <rect x="335" y="60" width="130" height="35" rx="5" fill="#e24329" opacity="0.9"/>
+  <text x="400" y="83" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fff">Job (mayor prioridad)</text>
+  <rect x="310" y="110" width="180" height="35" rx="5" fill="#fc6d26" opacity="0.9"/>
+  <text x="400" y="133" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fff">Pipeline (.gitlab-ci.yml)</text>
+  <rect x="285" y="160" width="230" height="35" rx="5" fill="#554488" opacity="0.9"/>
+  <text x="400" y="183" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fff">Project (Settings → CI/CD)</text>
+  <rect x="260" y="210" width="280" height="35" rx="5" fill="#7f8c8d" opacity="0.9"/>
+  <text x="400" y="233" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#fff">Group (hereda a subgrupos)</text>
+  <!-- Sidebar -->
+  <rect x="15" y="55" width="110" height="230" rx="6" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="70" y="78" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#7f8c8d">Variable Types</text>
+  <text x="70" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#e24329">Protected</text>
+  <text x="70" y="115" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">solo ramas protegidas</text>
+  <text x="70" y="140" text-anchor="middle" font-family="monospace" font-size="9" fill="#fc6d26">Masked</text>
+  <text x="70" y="155" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">**** en logs</text>
+  <text x="70" y="180" text-anchor="middle" font-family="monospace" font-size="9" fill="#554488">Expandible</text>
+  <text x="70" y="195" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">$VAR → valor</text>
+  <text x="70" y="220" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Predefined</text>
+  <text x="70" y="235" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">CI_COMMIT_*, etc</text>
+  <text x="400" y="292" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 06</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Include — Modularizacion de Pipelines</text>
+  <!-- Monolith -->
+  <rect x="20" y="55" width="230" height="130" rx="8" fill="#16213e" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="135" y="78" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c0392b">Monolitico (antes)</text>
+  <text x="135" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">.gitlab-ci.yml (400+ lineas)</text>
+  <text x="135" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Dificil de mantener</text>
+  <text x="135" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">✗ No reutilizable</text>
+  <text x="135" y="152" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Merge conflicts frecuentes</text>
+  <text x="135" y="169" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">✗ Revision compleja en MRs</text>
+  <text x="260" y="120" font-family="monospace" font-size="18" fill="#e24329">→</text>
+  <!-- Modular -->
+  <rect x="285" y="55" width="495" height="130" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="532" y="78" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#e24329">Modularizado con include (despues)</text>
+  <text x="532" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">.gitlab-ci.yml (10 lineas — solo includes)</text>
+  <text x="532" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Cada modulo tiene 1 responsabilidad</text>
+  <text x="532" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Reutilizable entre proyectos</text>
+  <text x="532" y="152" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Menos conflictos en MRs</text>
+  <text x="532" y="169" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">✓ Templates oficiales (SAST, etc.)</text>
+  <!-- Include types -->
+  <rect x="30" y="205" width="740" height="75" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="228" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">Tipos de include</text>
+  <rect x="50" y="240" width="160" height="30" rx="4" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="130" y="260" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">local: .gitlab/ci/*.yml</text>
+  <rect x="225" y="240" width="160" height="30" rx="4" fill="#1a1a2e" stroke="#554488" stroke-width="1"/>
+  <text x="305" y="260" text-anchor="middle" font-family="monospace" font-size="10" fill="#554488">remote: https://...</text>
+  <rect x="400" y="240" width="160" height="30" rx="4" fill="#1a1a2e" stroke="#e24329" stroke-width="1"/>
+  <text x="480" y="260" text-anchor="middle" font-family="monospace" font-size="10" fill="#e24329">template: SAST.gitlab-ci.yml</text>
+  <rect x="575" y="240" width="180" height="30" rx="4" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="665" y="260" text-anchor="middle" font-family="monospace" font-size="10" fill="#7f8c8d">project: shared/ci-templates</text>
+  <text x="400" y="293" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 06</text>
+</svg>

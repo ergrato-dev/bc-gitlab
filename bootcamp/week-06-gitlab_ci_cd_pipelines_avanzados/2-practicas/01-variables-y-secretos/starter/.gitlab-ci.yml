@@ -1,0 +1,48 @@
+# ============================================
+# Practica 01 — Variables y Secretos
+# ============================================
+# Antes de ejecutar: Agrega estas variables en
+# Settings → CI/CD → Variables:
+#   SECRET_TOKEN = super-secreto-123 (✓ Masked ✓ Protected)
+#   DOCKER_USER  = tu-usuario
+
+stages:
+  - build
+  - test
+
+variables:
+  APP_NAME: "bootcamp-app"
+  APP_VERSION: "1.0.0"
+
+# ── Variables de pipeline (visibles en logs) ──
+mostrar-variables:
+  stage: build
+  script:
+    - echo "Aplicacion: ${APP_NAME}"
+    - echo "Version: ${APP_VERSION}"
+    - echo "Branch: ${CI_COMMIT_REF_NAME}"
+    - echo "Commit: ${CI_COMMIT_SHORT_SHA}"
+    - echo "Pipeline ID: ${CI_PIPELINE_ID}"
+
+# ── Variable enmascarada (**** en logs) ──
+# Agrega SECRET_TOKEN en Settings → CI/CD → Variables
+usar-secreto:
+  stage: test
+  script:
+    - echo "Token length: ${#SECRET_TOKEN} chars"
+    - echo "Token starts with: ${SECRET_TOKEN:0:4}..."
+    - echo "Token masked in logs: ${SECRET_TOKEN}"  # Aparece ****
+  rules:
+    - if: $SECRET_TOKEN != ""
+      when: on_success
+    - when: never
+
+# ── RETO: Variable protegida (solo en main) ──
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - echo "Deploying with token..."
+#     - echo "Token masked: ${SECRET_TOKEN}"
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
+#       when: manual

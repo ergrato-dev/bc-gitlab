@@ -1,0 +1,14 @@
+# ============================================
+# Proyecto Semana 06 — Pipeline CI/CD Avanzado
+# ============================================
+# Archivo principal (.gitlab-ci.yml)
+# Incluye modulos de .gitlab/ci/
+
+include:
+  - local: .gitlab/ci/stages.yml
+  - local: .gitlab/ci/build.yml
+  - local: .gitlab/ci/test.yml
+  - local: .gitlab/ci/deploy.yml
+
+variables:
+  APP_NAME: "bootcamp-app"
