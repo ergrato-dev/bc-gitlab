@@ -1,0 +1,79 @@
+# ============================================
+# Practica 04 — Compliance Pipeline
+# ============================================
+
+stages:
+  - compliance
+  - build
+  - test
+  - security
+  - deploy
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+# ── Compliance check obligatorio ──
+compliance-check:
+  stage: compliance
+  script:
+    - echo "=== Compliance Check ==="
+    - echo "Proyecto: ${CI_PROJECT_PATH}"
+    - echo "Branch: ${CI_COMMIT_BRANCH}"
+    - |
+      ERRORS=0
+      if ! grep -q "Security/SAST" .gitlab-ci.yml; then
+        echo "✗ FAIL: SAST no configurado en el pipeline"
+        ERRORS=$((ERRORS+1))
+      else
+        echo "✓ PASS: SAST configurado"
+      fi
+    - |
+      if ! grep -q "Security/Secret-Detection" .gitlab-ci.yml; then
+        echo "✗ FAIL: Secret Detection no configurado"
+        ERRORS=$((ERRORS+1))
+      else
+        echo "✓ PASS: Secret Detection configurado"
+      fi
+    - |
+      if [ $ERRORS -gt 0 ]; then
+        echo "=== COMPLIANCE FAILED (${ERRORS} errores) ==="
+        exit 1
+      fi
+    - echo "=== COMPLIANCE PASSED ==="
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+
+# ── Compliance Report ──
+compliance-report:
+  stage: compliance
+  script:
+    - echo "# Compliance Report" > compliance-report.md
+    - echo "**Proyecto:** ${CI_PROJECT_PATH}" >> compliance-report.md
+    - echo "**Fecha:** $(date)" >> compliance-report.md
+    - echo "**Pipeline:** ${CI_PIPELINE_ID}" >> compliance-report.md
+    - echo "**Branch:** ${CI_COMMIT_BRANCH}" >> compliance-report.md
+    - echo "" >> compliance-report.md
+    - echo "## Checks" >> compliance-report.md
+    - echo "| Check | Status |" >> compliance-report.md
+    - echo "|-------|--------|" >> compliance-report.md
+    - grep -q "Security/SAST" .gitlab-ci.yml && echo "| SAST | ✓ |" >> compliance-report.md || echo "| SAST | ✗ |" >> compliance-report.md
+    - grep -q "Security/Secret" .gitlab-ci.yml && echo "| Secret Detection | ✓ |" >> compliance-report.md || echo "| Secret Detection | ✗ |" >> compliance-report.md
+    - cat compliance-report.md
+  artifacts:
+    paths:
+      - compliance-report.md
+    expire_in: 30 days
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+
+# ── Deploy (solo si compliance paso) ──
+deploy:
+  stage: deploy
+  script:
+    - echo "Despliegue aprobado por compliance"
+  environment:
+    name: production
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual

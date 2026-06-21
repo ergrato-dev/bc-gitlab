@@ -1,0 +1,36 @@
+# ============================================
+# Practica 03 — SAST + Secret Detection
+# ============================================
+
+stages:
+  - test
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+# ── Configuracion SAST ──
+sast:
+  variables:
+    SAST_EXCLUDED_PATHS: "spec, test, tests, tmp, docs"
+    SAST_BRAKEMAN_LEVEL: 2
+  artifacts:
+    reports:
+      sast: gl-sast-report.json
+
+# ── Configuracion Secret Detection ──
+secret_detection:
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+
+# ── Job de verificacion ──
+verify-security:
+  stage: test
+  script:
+    - echo "=== Verificando reportes de seguridad ==="
+    - test -f gl-sast-report.json && echo "✓ SAST report generado" || echo "✗ SAST report faltante"
+    - test -f gl-secret-detection-report.json && echo "✓ Secret Detection report generado" || echo "✗ Secret report faltante"
+  needs:
+    - sast
+    - secret_detection
+  allow_failure: true

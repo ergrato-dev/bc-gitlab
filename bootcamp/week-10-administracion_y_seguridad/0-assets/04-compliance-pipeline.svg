@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220">
+  <rect width="800" height="220" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Compliance Pipeline — Flujo Obligatorio</text>
+  <rect x="20" y="55" width="170" height="40" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="105" y="80" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fc6d26">Project Pipeline</text>
+  <text x="198" y="75" font-family="monospace" font-size="12" fill="#555">+</text>
+  <rect x="220" y="55" width="200" height="40" rx="6" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="320" y="80" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e24329">Compliance Pipeline (Group)</text>
+  <text x="428" y="75" font-family="monospace" font-size="14" fill="#555">→</text>
+  <rect x="450" y="55" width="330" height="40" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="615" y="80" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">SAST + Secret + 2 Approvals + No MFA?</text>
+  <!-- Requirements -->
+  <rect x="40" y="120" width="720" height="80" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="145" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">Checks de Compliance Obligatorios</text>
+  <rect x="60" y="158" width="160" height="28" rx="4" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="140" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="#fc6d26">✓ SAST enabled</text>
+  <rect x="235" y="158" width="180" height="28" rx="4" fill="#1a1a2e" stroke="#554488" stroke-width="1"/>
+  <text x="325" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="#554488">✓ 2+ MR approvals</text>
+  <rect x="430" y="158" width="160" height="28" rx="4" fill="#1a1a2e" stroke="#e24329" stroke-width="1"/>
+  <text x="510" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="#e24329">✓ License OK</text>
+  <rect x="605" y="158" width="140" height="28" rx="4" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="675" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">✓ Pipeline green</text>
+  <text x="400" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 10</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="250" viewBox="0 0 800 250">
+  <rect width="800" height="250" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Security Scanning en Pipeline — Stack Completo</text>
+  <!-- Stages -->
+  <rect x="20" y="55" width="100" height="35" rx="5" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="70" y="77" text-anchor="middle" font-family="monospace" font-size="11" fill="#fc6d26">build</text>
+  <text x="128" y="73" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="145" y="55" width="100" height="35" rx="5" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="195" y="77" text-anchor="middle" font-family="monospace" font-size="11" fill="#554488">test</text>
+  <text x="253" y="73" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="270" y="55" width="250" height="35" rx="5" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="395" y="77" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#e24329">security</text>
+  <text x="528" y="73" font-family="monospace" font-size="12" fill="#555">→</text>
+  <rect x="545" y="55" width="100" height="35" rx="5" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="595" y="77" text-anchor="middle" font-family="monospace" font-size="11" fill="#fc6d26">deploy</text>
+  <!-- Security jobs in parallel -->
+  <rect x="50" y="115" width="700" height="115" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="138" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#e24329">Stage: security (4 jobs en paralelo)</text>
+  <rect x="70" y="155" width="145" height="55" rx="5" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="142" y="175" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fc6d26">SAST</text>
+  <text x="142" y="193" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">Codigo fuente</text>
+  <text x="142" y="205" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">bandit, eslint, spotbugs...</text>
+  <rect x="235" y="155" width="145" height="55" rx="5" fill="#1a1a2e" stroke="#554488" stroke-width="1"/>
+  <text x="307" y="175" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#554488">Secret Detection</text>
+  <text x="307" y="193" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">API keys, tokens, passwords</text>
+  <text x="307" y="205" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">+100 patrones</text>
+  <rect x="400" y="155" width="145" height="55" rx="5" fill="#1a1a2e" stroke="#7f8c8d" stroke-width="1"/>
+  <text x="472" y="175" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#7f8c8d">Dependency Scan</text>
+  <text x="472" y="193" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">CVEs en librerias</text>
+  <text x="472" y="205" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">npm, Maven, pip, go mod</text>
+  <rect x="565" y="155" width="165" height="55" rx="5" fill="#1a1a2e" stroke="#e24329" stroke-width="1"/>
+  <text x="647" y="175" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e24329">License Compliance</text>
+  <text x="647" y="193" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">MIT, GPL, Apache...</text>
+  <text x="647" y="205" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">SPDX identifier</text>
+  <text x="400" y="243" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 10</text>
+</svg>
