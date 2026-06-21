@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">.gitlab-ci.yml — Estructura y Keywords</text>
+
+  <!-- YAML structure -->
+  <rect x="20" y="55" width="350" height="225" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="195" y="78" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fc6d26">Keywords Globales</text>
+  <line x1="40" y1="88" x2="350" y2="88" stroke="#555" stroke-width="0.5"/>
+
+  <text x="40" y="110" font-family="monospace" font-size="10" fill="#e24329">stages:</text>
+  <text x="120" y="110" font-family="monospace" font-size="9" fill="#a0a0a0">Define orden (build, test, deploy)</text>
+
+  <text x="40" y="130" font-family="monospace" font-size="10" fill="#fc6d26">image:</text>
+  <text x="120" y="130" font-family="monospace" font-size="9" fill="#a0a0a0">Docker image por defecto</text>
+
+  <text x="40" y="150" font-family="monospace" font-size="10" fill="#554488">variables:</text>
+  <text x="120" y="150" font-family="monospace" font-size="9" fill="#a0a0a0">Variables globales CI/CD</text>
+
+  <text x="40" y="170" font-family="monospace" font-size="10" fill="#7f8c8d">before_script:</text>
+  <text x="120" y="170" font-family="monospace" font-size="9" fill="#a0a0a0">Setup comun a todos los jobs</text>
+
+  <text x="40" y="190" font-family="monospace" font-size="10" fill="#7f8c8d">after_script:</text>
+  <text x="120" y="190" font-family="monospace" font-size="9" fill="#a0a0a0">Limpieza post-job</text>
+
+  <text x="40" y="210" font-family="monospace" font-size="10" fill="#7f8c8d">cache:</text>
+  <text x="120" y="210" font-family="monospace" font-size="9" fill="#a0a0a0">Acelerar builds (node_modules)</text>
+
+  <text x="40" y="235" font-family="monospace" font-size="10" fill="#a0a0a0">  key: $CI_COMMIT_REF_SLUG</text>
+  <text x="40" y="252" font-family="monospace" font-size="10" fill="#a0a0a0">  paths: [node_modules/]</text>
+
+  <!-- Job keywords -->
+  <rect x="400" y="55" width="380" height="225" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="590" y="78" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#554488">Keywords por Job</text>
+  <line x1="420" y1="88" x2="760" y2="88" stroke="#555" stroke-width="0.5"/>
+
+  <text x="420" y="110" font-family="monospace" font-size="10" fill="#e24329">job_name:</text>
+  <text x="510" y="110" font-family="monospace" font-size="9" fill="#a0a0a0">Identificador unico</text>
+
+  <text x="420" y="130" font-family="monospace" font-size="10" fill="#fc6d26">stage: test</text>
+  <text x="510" y="130" font-family="monospace" font-size="9" fill="#a0a0a0">A que stage pertenece</text>
+
+  <text x="420" y="150" font-family="monospace" font-size="10" fill="#554488">image: node:18</text>
+  <text x="510" y="150" font-family="monospace" font-size="9" fill="#a0a0a0">Override de imagen global</text>
+
+  <text x="420" y="170" font-family="monospace" font-size="10" fill="#7f8c8d">script:</text>
+  <text x="510" y="170" font-family="monospace" font-size="9" fill="#a0a0a0">Comandos (UNICO obligatorio)</text>
+
+  <text x="420" y="190" font-family="monospace" font-size="10" fill="#e24329">artifacts:</text>
+  <text x="510" y="190" font-family="monospace" font-size="9" fill="#a0a0a0">paths, expire_in, reports</text>
+
+  <text x="420" y="210" font-family="monospace" font-size="10" fill="#fc6d26">needs:</text>
+  <text x="510" y="210" font-family="monospace" font-size="9" fill="#a0a0a0">Dependencias (DAG)</text>
+
+  <text x="420" y="230" font-family="monospace" font-size="10" fill="#554488">allow_failure: true</text>
+  <text x="510" y="230" font-family="monospace" font-size="9" fill="#a0a0a0">No detener pipeline si falla</text>
+
+  <text x="420" y="250" font-family="monospace" font-size="10" fill="#7f8c8d">services: [postgres, redis]</text>
+  <text x="510" y="250" font-family="monospace" font-size="9" fill="#a0a0a0">Contenedores auxiliares</text>
+
+  <text x="420" y="270" font-family="monospace" font-size="10" fill="#7f8c8d">environment: staging</text>
+  <text x="510" y="270" font-family="monospace" font-size="9" fill="#a0a0a0">Entorno de despliegue</text>
+
+  <text x="400" y="293" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 05</text>
+</svg>

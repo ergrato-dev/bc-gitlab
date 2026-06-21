@@ -1,0 +1,64 @@
+# ============================================
+# Practica 02 — Multiples Stages y Jobs
+# ============================================
+# Copia como .gitlab-ci.yml en tu proyecto.
+
+stages:
+  - build
+  - test
+  - deploy
+
+# ── Stage 1: Build ──
+compilar:
+  stage: build
+  script:
+    - echo "Compilando proyecto..."
+    - mkdir -p dist
+    - echo "v1.0.0" > dist/version.txt
+    - echo "<!DOCTYPE html><html><head><title>Bootcamp App</title></head><body><h1>CI/CD Pipeline Funcionando</h1><p>Version $(cat dist/version.txt)</p></body></html>" > dist/index.html
+    - echo "Archivos generados:"
+    - ls -la dist/
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+# ── Stage 2: Test (jobs paralelos) ──
+test-unitario:
+  stage: test
+  script:
+    - echo "Ejecutando pruebas unitarias..."
+    - test -f dist/index.html && echo "✓ PASS: index.html existe" || echo "✗ FAIL: index.html no encontrado"
+    - test -f dist/version.txt && echo "✓ PASS: version.txt existe" || echo "✗ FAIL: version.txt no encontrado"
+    - grep -q "Bootcamp App" dist/index.html && echo "✓ PASS: titulo correcto" || echo "✗ FAIL: titulo incorrecto"
+
+test-version:
+  stage: test
+  script:
+    - echo "Verificando version..."
+    - VERSION=$(cat dist/version.txt)
+    - echo "Version detectada: $VERSION"
+    - echo "Esperada: v1.0.0 o superior"
+    - echo "$VERSION" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+' && echo "✓ PASS: formato de version valido" || echo "✗ FAIL"
+
+# ── Stage 3: Deploy (simulado) ──
+desplegar:
+  stage: deploy
+  script:
+    - echo "Desplegando a staging..."
+    - ls -la dist/
+    - echo "Contenido de index.html:"
+    - cat dist/index.html
+    - echo "Despliegue completado exitosamente"
+  environment:
+    name: staging
+    url: http://localhost
+
+# ── RETO: Agregar stage 'notify' ──
+# notify:
+#   stage: notify
+#   script:
+#     - echo "Pipeline completado exitosamente!"
+#     - echo "Branch: ${CI_COMMIT_REF_NAME}"
+#     - echo "Pipeline ID: ${CI_PIPELINE_ID}"
+#   when: on_success

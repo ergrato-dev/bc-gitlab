@@ -1,0 +1,62 @@
+# ============================================
+# Practica 04 — Artifacts y Cache
+# ============================================
+
+stages:
+  - build
+  - test
+  - package
+
+# ── Build: instalar dependencias ──
+instalar-deps:
+  stage: build
+  image: node:18-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm init -y
+    - npm install express
+    - echo "Dependencias instaladas:"
+    - ls node_modules/ | head -10
+  artifacts:
+    paths:
+      - node_modules/
+      - package.json
+    expire_in: 1 hour
+
+# ── Test: verificar dependencias ──
+ejecutar-tests:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "Verificando dependencias..."
+    - test -d node_modules && echo "✓ node_modules disponible" || echo "✗ node_modules no encontrado"
+    - test -f package.json && echo "✓ package.json OK" || echo "✗ package.json no encontrado"
+    - node -e "require('express')" && echo "✓ Express se carga correctamente" || echo "✗ Error al cargar Express"
+
+# ── Package: empaquetar app ──
+empaquetar:
+  stage: package
+  image: alpine:latest
+  script:
+    - apk add --no-cache zip
+    - echo "Empaquetando aplicacion..."
+    - zip -r app.zip node_modules/ package.json
+    - echo "Tamano del paquete:"
+    - ls -lh app.zip
+  artifacts:
+    paths:
+      - app.zip
+    expire_in: 30 days
+    name: "app-${CI_COMMIT_SHORT_SHA}"
+
+# ── RETO: Agregar dependencies para controlar artifacts ──
+# ejecutar-tests-minimo:
+#   stage: test
+#   image: node:18-alpine
+#   dependencies:
+#     - instalar-deps             # Solo recibe artifacts de build, no del deploy
+#   script:
+#     - node -e "require('express')"

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220">
+  <rect width="800" height="220" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">Artifacts vs Cache — Diferencias Clave</text>
+
+  <rect x="25" y="55" width="350" height="145" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="200" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#fc6d26">Artifacts</text>
+  <line x1="45" y1="90" x2="355" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="45" y="112" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Pasar datos entre stages (build → test)</text>
+  <text x="45" y="130" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Descargar desde UI y API</text>
+  <text x="45" y="148" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Retencion configurable (expire_in)</text>
+  <text x="45" y="166" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Reports especiales: JUnit, SAST, coverage</text>
+  <text x="45" y="184" font-family="monospace" font-size="10" fill="#a0a0a0">Almacenado por pipeline</text>
+
+  <rect x="420" y="55" width="355" height="145" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="597" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#554488">Cache</text>
+  <line x1="440" y1="90" x2="750" y2="90" stroke="#555" stroke-width="0.5"/>
+  <text x="440" y="112" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Acelerar instalacion de dependencias</text>
+  <text x="440" y="130" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Compartido entre pipelines</text>
+  <text x="440" y="148" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Best-effort (no garantizado)</text>
+  <text x="440" y="166" font-family="monospace" font-size="10" fill="#a0a0a0">✓ Key por rama, job, o archivo</text>
+  <text x="440" y="184" font-family="monospace" font-size="10" fill="#a0a0a0">NO usar para datos criticos entre stages</text>
+
+  <text x="400" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 05</text>
+</svg>

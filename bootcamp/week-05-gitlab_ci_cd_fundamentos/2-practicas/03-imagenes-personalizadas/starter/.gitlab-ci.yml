@@ -1,0 +1,59 @@
+# ============================================
+# Practica 03 — Imagenes Docker en CI
+# ============================================
+
+stages:
+  - build
+  - test
+
+# ── Job con Node.js ──
+build-node:
+  stage: build
+  image: node:18-alpine
+  script:
+    - node --version
+    - npm --version
+    - echo "console.log('Hello from Bootcamp CI/CD');" > app.js
+    - node app.js
+  artifacts:
+    paths:
+      - app.js
+    expire_in: 1 hour
+
+# ── Job con Python ──
+test-python:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - python --version
+    - pip --version
+    - echo "print('Python en GitLab CI funciona correctamente')" > check.py
+    - python check.py
+
+# ── RETO: Job con servicio PostgreSQL ──
+# Descomenta para probar conexion a base de datos:
+# 
+# test-db:
+#   stage: test
+#   image: node:18
+#   services:
+#     - postgres:15-alpine
+#   variables:
+#     POSTGRES_DB: testdb
+#     POSTGRES_USER: tester
+#     POSTGRES_PASSWORD: testpass
+#   script:
+#     - apt-get update -qq && apt-get install -y -qq postgresql-client
+#     - PGPASSWORD=testpass psql -h postgres -U tester -d testdb -c "SELECT 1 AS connection_test;"
+#     - echo "Conexion a PostgreSQL exitosa"
+
+# ── RETO: Job con Redis ──
+# test-redis:
+#   stage: test
+#   image: alpine:latest
+#   services:
+#     - redis:7-alpine
+#   script:
+#     - apk add --no-cache redis
+#     - redis-cli -h redis PING
+#     - echo "Conexion a Redis exitosa"

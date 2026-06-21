@@ -10,9 +10,32 @@
 
 ## Requisitos Previos
 
-- GitLab CE funcional (Semana 02)
-- GitLab Runner registrado (se registrara en esta semana)
+- GitLab CE funcional con Docker Compose (Semana 02)
+- GitLab Runner registrado y activo (se registra abajo)
 - Proyectos en GitLab (Semana 03)
+- Git y ramas (Semana 01)
+
+## Registrar GitLab Runner (PRERREQUISITO)
+
+Antes de empezar con CI/CD, necesitas un Runner que ejecute los jobs. El `docker-compose.yml` del bootcamp ya incluye uno:
+
+```bash
+# 1. Obtener token de registro desde GitLab UI:
+#    Admin Area → CI/CD → Runners → New instance runner
+#    (o Project → Settings → CI/CD → Runners para runner especifico)
+# 2. Registrar el runner:
+docker compose exec gitlab-runner gitlab-runner register \
+  --non-interactive \
+  --url http://gitlab \
+  --registration-token "TU_TOKEN" \
+  --executor docker \
+  --docker-image alpine:latest \
+  --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
+  --description "bootcamp-runner"
+
+# 3. Verificar que el Runner aparece como activo (circulo verde) en:
+#    Admin Area → CI/CD → Runners
+```
 
 ## Estructura de la Semana
 

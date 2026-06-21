@@ -1,0 +1,87 @@
+# ============================================
+# Proyecto Semana 05 — Pipeline CI Completo
+# ============================================
+# Pipeline para proyecto Node.js con stages:
+# build → test (unit + lint) → package
+
+stages:
+  - build
+  - test
+  - package
+
+# ── Variables globales ──
+variables:
+  NODE_ENV: test
+
+# ── Setup comun ──
+before_script:
+  - echo "Pipeline iniciado: ${CI_PIPELINE_ID}"
+  - echo "Branch: ${CI_COMMIT_REF_NAME}"
+
+# ============================================
+# Stage: BUILD
+# ============================================
+build:
+  stage: build
+  image: node:18-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - echo "Build completado"
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+# ============================================
+# Stage: TEST
+# ============================================
+lint:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "Linting..."
+    - npm run lint 2>/dev/null || echo "⚠ lint no configurado (configurar en package.json)"
+  allow_failure: true
+
+unit-test:
+  stage: test
+  image: node:18-alpine
+  script:
+    - echo "Ejecutando pruebas unitarias..."
+    - npm test 2>/dev/null || echo "⚠ tests no configurados (crear tests/)"
+  artifacts:
+    when: always
+    reports:
+      junit: junit.xml
+    paths:
+      - junit.xml
+    expire_in: 7 days
+
+# ============================================
+# Stage: PACKAGE
+# ============================================
+package:
+  stage: package
+  image: node:18-alpine
+  script:
+    - npm prune --production
+    - tar -czf app-${CI_COMMIT_SHORT_SHA}.tar.gz .
+    - echo "Paquete generado:"
+    - ls -lh app-*.tar.gz
+  artifacts:
+    name: "build-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - app-*.tar.gz
+    expire_in: 30 days
+
+# ============================================
+# Verificacion rapida
+# ============================================
+# Despues del push, verifica en:
+#   CI/CD → Pipelines (estado del pipeline)
+#   CI/CD → Jobs (logs de cada job)
+#   CI/CD → Artifacts (descargar app-*.tar.gz)

@@ -1,0 +1,29 @@
+# ============================================
+# Practica 01 — Primer Pipeline
+# ============================================
+# Copia este archivo como .gitlab-ci.yml en la
+# raiz de tu proyecto, haz commit y push.
+# ============================================
+
+stages:
+  - saludar
+
+# ── Job basico ──
+hola-mundo:
+  stage: saludar
+  script:
+    - echo "Hola, CI/CD!"
+    - date
+    - whoami
+    - echo "Pipeline ejecutado en $(uname -s)"
+
+# ── RETO: Descomenta para agregar variable ──
+# variables:
+#   SALUDO: "Desde GitLab CI"
+# 
+# hola-mundo:
+#   stage: saludar
+#   script:
+#     - echo "Hola, ${SALUDO}!"
+#     - echo "Branch: ${CI_COMMIT_REF_NAME}"
+#     - echo "Commit: ${CI_COMMIT_SHORT_SHA}"

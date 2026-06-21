@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320">
+  <rect width="800" height="320" fill="#1a1a2e"/>
+  <text x="400" y="30" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#e24329">CI/CD — Continuous Integration vs Delivery vs Deployment</text>
+
+  <!-- CI -->
+  <rect x="20" y="55" width="230" height="110" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="135" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fc6d26">Continuous Integration</text>
+  <line x1="35" y1="88" x2="235" y2="88" stroke="#555" stroke-width="0.5"/>
+  <text x="135" y="108" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">Push → Build → Test</text>
+  <text x="135" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Code merge → auto build</text>
+  <text x="135" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Unit + integration tests</text>
+  <text x="135" y="158" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Linting + security scanning</text>
+
+  <text x="258" y="110" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <!-- CD - Delivery -->
+  <rect x="280" y="55" width="240" height="110" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="400" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#554488">Continuous Delivery</text>
+  <line x1="295" y1="88" x2="505" y2="88" stroke="#555" stroke-width="0.5"/>
+  <text x="400" y="108" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">CI + Release Ready</text>
+  <text x="400" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Staging environment autodeploy</text>
+  <text x="400" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Production: manual click</text>
+  <text x="400" y="158" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Code always "releasable"</text>
+
+  <text x="528" y="110" font-family="monospace" font-size="16" fill="#555">→</text>
+
+  <!-- CD - Deployment -->
+  <rect x="550" y="55" width="230" height="110" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="665" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e24329">Continuous Deployment</text>
+  <line x1="565" y1="88" x2="765" y2="88" stroke="#555" stroke-width="0.5"/>
+  <text x="665" y="108" text-anchor="middle" font-family="monospace" font-size="10" fill="#a0a0a0">Delivery + Auto-prod</text>
+  <text x="665" y="126" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Every green build → prod</text>
+  <text x="665" y="142" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Zero manual steps</text>
+  <text x="665" y="158" text-anchor="middle" font-family="monospace" font-size="9" fill="#7f8c8d">Requires extreme trust in tests</text>
+
+  <!-- Pipeline diagram -->
+  <rect x="40" y="190" width="720" height="110" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="215" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#7f8c8d">Anatomia de un Pipeline GitLab CI</text>
+
+  <rect x="60" y="235" width="120" height="45" rx="5" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="120" y="255" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fc6d26">build</text>
+  <text x="120" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">compile + deps</text>
+
+  <rect x="210" y="235" width="120" height="45" rx="5" fill="#1a1a2e" stroke="#554488" stroke-width="1"/>
+  <text x="270" y="255" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#554488">test</text>
+  <text x="270" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">unit + lint + coverage</text>
+
+  <rect x="360" y="235" width="120" height="45" rx="5" fill="#1a1a2e" stroke="#fc6d26" stroke-width="1"/>
+  <text x="420" y="255" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fc6d26">security</text>
+  <text x="420" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">SAST + secrets</text>
+
+  <rect x="510" y="235" width="120" height="45" rx="5" fill="#1a1a2e" stroke="#e24329" stroke-width="1"/>
+  <text x="570" y="255" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e24329">package</text>
+  <text x="570" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">docker build + push</text>
+
+  <rect x="660" y="235" width="80" height="45" rx="5" fill="#1a1a2e" stroke="#e24329" stroke-width="1.5"/>
+  <text x="700" y="255" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e24329">deploy</text>
+  <text x="700" y="272" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">staging</text>
+
+  <text x="400" y="312" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 05</text>
+</svg>
