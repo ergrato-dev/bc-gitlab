@@ -1,0 +1,74 @@
+# ============================================
+# Practica 02 — GraphQL Queries
+# Copiar y pegar en: /-/graphql-explorer
+# ============================================
+
+# Query 1: Proyectos con ultimos pipelines
+# ------------------------------------------
+query {
+  projects(membership: true, first: 5) {
+    nodes {
+      name
+      fullPath
+      pipelines(first: 2, status: SUCCESS) {
+        nodes {
+          status
+          ref
+          createdAt
+        }
+      }
+    }
+  }
+}
+
+# Query 2: Issues abiertos con labels y assignees
+# ------------------------------------------
+query {
+  project(fullPath: "root/api-test-project") {
+    issues(state: opened, first: 10) {
+      nodes {
+        title
+        createdAt
+        labels { nodes { title } }
+        assignees { nodes { name } }
+      }
+    }
+  }
+}
+
+# Query 3: Miembros de un grupo
+# ------------------------------------------
+query {
+  group(fullPath: "bootcamp-org") {
+    groupMembers {
+      nodes {
+        user {
+          name
+          username
+        }
+        accessLevel {
+          stringValue
+        }
+      }
+    }
+  }
+}
+
+# Mutation: Crear issue
+# (Ejecutar en GraphiQL con autenticacion)
+# ------------------------------------------
+mutation {
+  createIssue(input: {
+    projectPath: "root/api-test-project",
+    title: "Issue creado via GraphQL",
+    labels: ["feature", "api"]
+  }) {
+    issue {
+      id
+      iid
+      title
+      webUrl
+    }
+    errors
+  }
+}

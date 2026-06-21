@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240">
+  <rect width="800" height="240" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">python-gitlab — Automatizacion con Python</text>
+  <!-- Code example -->
+  <rect x="20" y="50" width="380" height="170" rx="8" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="210" y="73" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fc6d26">python-gitlab (recomendado)</text>
+  <text x="40" y="98" font-family="monospace" font-size="9" fill="#a0a0a0">import gitlab</text>
+  <text x="40" y="115" font-family="monospace" font-size="9" fill="#a0a0a0">gl = gitlab.Gitlab(url, token)</text>
+  <text x="40" y="132" font-family="monospace" font-size="9" fill="#a0a0a0"># CRUD: gl.projects.create/delete</text>
+  <text x="40" y="149" font-family="monospace" font-size="9" fill="#a0a0a0"># Issues: project.issues.create</text>
+  <text x="40" y="166" font-family="monospace" font-size="9" fill="#a0a0a0"># Pipelines: project.pipelines.list</text>
+  <text x="40" y="183" font-family="monospace" font-size="9" fill="#a0a0a0"># MRs: project.mergerequests.list</text>
+  <text x="40" y="200" font-family="monospace" font-size="9" fill="#7f8c8d"># Excepciones: GitlabError, 401, 429</text>
+  <!-- REST direct -->
+  <rect x="420" y="50" width="360" height="170" rx="8" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="600" y="73" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#554488">requests (alternativa)</text>
+  <text x="440" y="98" font-family="monospace" font-size="9" fill="#a0a0a0">import requests</text>
+  <text x="440" y="115" font-family="monospace" font-size="9" fill="#a0a0a0">headers = {"PRIVATE-TOKEN": token}</text>
+  <text x="440" y="132" font-family="monospace" font-size="9" fill="#a0a0a0">r = requests.get(</text>
+  <text x="440" y="149" font-family="monospace" font-size="9" fill="#a0a0a0">  f"{url}/api/v4/projects",</text>
+  <text x="440" y="166" font-family="monospace" font-size="9" fill="#a0a0a0">  headers=headers)</text>
+  <text x="440" y="183" font-family="monospace" font-size="9" fill="#a0a0a0">projects = r.json()</text>
+  <text x="440" y="200" font-family="monospace" font-size="9" fill="#7f8c8d"># Manejo manual de paginacion</text>
+  <text x="400" y="233" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 09</text>
+</svg>
