@@ -1,0 +1,223 @@
+# ============================================
+# gl-epti — GitLab CE Lab Optimizado
+# Bootcamp Zero to Hero
+# ============================================
+# Entorno GitLab on-premises completo, aislado,
+# con todas las funcionalidades habilitadas.
+#
+# Uso:
+#   docker build -t gl-epti:17 .
+#   docker compose -f docker-compose.gl-epti.yml up -d
+#
+# Acceso: http://localhost
+# SSH:    ssh://git@localhost:2224
+#
+# Contrasena root en primer inicio:
+#   docker compose -f docker-compose.gl-epti.yml exec gl-epti grep 'Password:' /etc/gitlab/initial_root_password
+# ============================================
+
+version: '3.8'
+
+services:
+  # ============================================
+  # gl-epti — GitLab CE Lab principal
+  # ============================================
+  gl-epti:
+    image: gl-epti:17
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GITLAB_VERSION: "${GITLAB_VERSION:-19.1.1-ce.0}"
+    container_name: gl-epti
+    hostname: gl-epti.local
+    restart: unless-stopped
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        # ── Acceso ──
+        external_url '${GITLAB_EXTERNAL_URL:-http://localhost}'
+        gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT:-2224}
+        gitlab_rails['initial_root_password'] = '${GITLAB_ROOT_PASSWORD:-ChangeMe123!}'
+
+        # ── Funcionalidad completa ──
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_default_can_create_group'] = true
+        gitlab_rails['impersonation_enabled'] = true
+        gitlab_rails['backup_keep_time'] = 604800
+        gitlab_rails['gitlab_environment'] = 'development'
+
+        # ── PRIVACIDAD: Telemetria DESHABILITADA ──
+        gitlab_rails['usage_ping_enabled'] = false
+        gitlab_rails['sentry_enabled'] = false
+        gitlab_rails['snowplow_enabled'] = false
+        gitlab_rails['google_analytics_id'] = nil
+        gitlab_rails['third_party_offers_enabled'] = false
+        prometheus_monitoring['enable'] = true
+        node_exporter['enable'] = true
+        gitlab_exporter['enable'] = true
+        redis_exporter['enable'] = true
+        postgres_exporter['enable'] = true
+
+        # ── Web server ──
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+        nginx['client_max_body_size'] = '256m'
+
+        # ── DB optimizada para lab ──
+        postgresql['shared_buffers'] = '256MB'
+        postgresql['max_worker_processes'] = 2
+
+        # ── Redis ──
+        redis['maxmemory'] = '128mb'
+        redis['maxmemory_policy'] = 'allkeys-lru'
+
+        # ── Sidekiq ──
+        sidekiq['max_concurrency'] = 10
+
+        # ── Puma ──
+        puma['worker_processes'] = 2
+        puma['min_threads'] = 1
+        puma['max_threads'] = 4
+
+        # ── Container Registry integrado ──
+        registry_external_url 'http://localhost:5050'
+        registry['enable'] = true
+
+        # ── GitLab Pages ──
+        gitlab_pages['enable'] = true
+        pages_external_url 'http://localhost:8090'
+
+        # ── Mail deshabilitado (lab local) ──
+        gitlab_rails['gitlab_email_enabled'] = false
+
+    ports:
+      - "${GITLAB_HTTP_PORT:-80}:80"
+      - "${GITLAB_HTTPS_PORT:-443}:443"
+      - "${GITLAB_SSH_PORT:-2224}:22"
+      - "${REGISTRY_PORT:-5050}:5050"
+      - "${PAGES_PORT:-8090}:8090"
+    volumes:
+      - gl-epti-config:/etc/gitlab
+      - gl-epti-logs:/var/log/gitlab
+      - gl-epti-data:/var/opt/gitlab
+    shm_size: '256m'
+    healthcheck:
+      test: curl -f http://localhost/-/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 300s
+    networks:
+      - gl-epti-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # GitLab Runner — Ejecutor de pipelines CI/CD
+  # ============================================
+  gl-epti-runner:
+    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-latest}
+    container_name: gl-epti-runner
+    restart: unless-stopped
+    depends_on:
+      gl-epti:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gl-epti-runner-config:/etc/gitlab-runner
+    networks:
+      - gl-epti-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # Registry cache — Acelera pulls de Docker Hub
+  # ============================================
+  gl-epti-registry-cache:
+    image: registry:2
+    container_name: gl-epti-registry-cache
+    restart: unless-stopped
+    environment:
+      REGISTRY_PROXY_REMOTEURL: https://registry-1.docker.io
+      REGISTRY_PROXY_USERNAME: "${DOCKER_HUB_USER:-}"
+      REGISTRY_PROXY_PASSWORD: "${DOCKER_HUB_TOKEN:-}"
+    ports:
+      - "${REGISTRY_CACHE_PORT:-5001}:5000"
+    volumes:
+      - gl-epti-registry-cache-data:/var/lib/registry
+    networks:
+      - gl-epti-network
+
+  # ============================================
+  # Prometheus — Monitoreo local
+  # ============================================
+  gl-epti-prometheus:
+    image: prom/prometheus:${PROMETHEUS_VERSION:-latest}
+    container_name: gl-epti-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus-gl-epti.yml:/etc/prometheus/prometheus.yml:ro
+      - gl-epti-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - "${PROMETHEUS_PORT:-9091}:9090"
+    networks:
+      - gl-epti-network
+    profiles:
+      - monitoring
+
+  # ============================================
+  # Grafana — Dashboards
+  # ============================================
+  gl-epti-grafana:
+    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    container_name: gl-epti-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    volumes:
+      - gl-epti-grafana-data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    networks:
+      - gl-epti-network
+    profiles:
+      - monitoring
+
+# ============================================
+# Volumenes persistentes (aislados del bootcamp)
+# ============================================
+volumes:
+  gl-epti-config:
+    name: gl-epti-config
+  gl-epti-logs:
+    name: gl-epti-logs
+  gl-epti-data:
+    name: gl-epti-data
+  gl-epti-runner-config:
+    name: gl-epti-runner-config
+  gl-epti-registry-cache-data:
+    name: gl-epti-registry-cache-data
+  gl-epti-prometheus-data:
+    name: gl-epti-prometheus-data
+  gl-epti-grafana-data:
+    name: gl-epti-grafana-data
+
+# ============================================
+# Red interna aislada
+# ============================================
+networks:
+  gl-epti-network:
+    name: gl-epti-network
+    driver: bridge

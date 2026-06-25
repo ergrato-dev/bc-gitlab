@@ -1,0 +1,87 @@
+# ============================================
+# gl-epti — Comandos rápidos para el Lab
+# Uso: make -f Makefile.gl-epti <comando>
+# ============================================
+
+COMPOSE = docker compose -f docker-compose.gl-epti.yml
+
+.PHONY: build up down logs ps status health shell backup reset clean
+
+# ── Build ──
+build:
+	@echo "Construyendo imagen gl-epti..."
+	docker build -t gl-epti:17 .
+	@echo "[OK] Imagen gl-epti:17 construida"
+
+# ── Levantar ──
+up:
+	$(COMPOSE) up -d
+	@echo "Esperando que gl-epti este healthy (~5 min primer inicio)..."
+	@echo "Monitorea con: make -f Makefile.gl-epti logs"
+
+# ── Detener ──
+down:
+	$(COMPOSE) down
+
+# ── Logs ──
+logs:
+	$(COMPOSE) logs -f gl-epti
+
+# ── Estado ──
+ps:
+	$(COMPOSE) ps
+
+status:
+	@$(COMPOSE) exec gl-epti gitlab-ctl status
+
+# ── Health ──
+health:
+	@$(COMPOSE) exec gl-epti gl-epti-health
+
+# ── Password ──
+password:
+	@$(COMPOSE) exec gl-epti grep 'Password:' /etc/gitlab/initial_root_password
+
+# ── Shell ──
+shell:
+	$(COMPOSE) exec gl-epti bash
+
+# ── Backup ──
+backup:
+	$(COMPOSE) exec gl-epti gl-epti-backup
+
+# ── Reset ──
+reset:
+	$(COMPOSE) exec gl-epti gl-epti-reset
+
+# ── Monitoreo ──
+monitoring-up:
+	$(COMPOSE) --profile monitoring up -d
+
+monitoring-down:
+	$(COMPOSE) --profile monitoring down
+
+# ── Destruir todo ──
+clean:
+	$(COMPOSE) down -v
+	@echo "Todos los volumenes eliminados."
+
+# ── Info ──
+info:
+	@echo "=== gl-epti Lab Info ==="
+	@echo ""
+	@echo "URLs:"
+	@echo "  GitLab:        http://localhost"
+	@echo "  Registry:      http://localhost:5050"
+	@echo "  Pages:         http://localhost:8090"
+	@echo "  SSH:           ssh://git@localhost:2224"
+	@echo ""
+	@echo "Monitoreo (--profile monitoring):"
+	@echo "  Prometheus:    http://localhost:9091"
+	@echo "  Grafana:       http://localhost:3001 (admin/admin)"
+	@echo ""
+	@echo "Comandos:"
+	@echo "  make -f Makefile.gl-epti up           Levantar lab"
+	@echo "  make -f Makefile.gl-epti down         Detener lab"
+	@echo "  make -f Makefile.gl-epti password     Ver contrasena root"
+	@echo "  make -f Makefile.gl-epti monitoring-up Monitoreo"
