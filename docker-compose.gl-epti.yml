@@ -6,7 +6,7 @@
 # con todas las funcionalidades habilitadas.
 #
 # Uso:
-#   docker build -t gl-epti:17 .
+#   docker build -t gl-epti:19 .
 #   docker compose -f docker-compose.gl-epti.yml up -d
 #
 # Acceso: http://localhost
@@ -16,14 +16,12 @@
 #   docker compose -f docker-compose.gl-epti.yml exec gl-epti grep 'Password:' /etc/gitlab/initial_root_password
 # ============================================
 
-version: '3.8'
-
 services:
   # ============================================
   # gl-epti — GitLab CE Lab principal
   # ============================================
   gl-epti:
-    image: gl-epti:17
+    image: gl-epti:19
     build:
       context: .
       dockerfile: Dockerfile

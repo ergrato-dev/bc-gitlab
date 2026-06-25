@@ -5,13 +5,13 @@
 
 COMPOSE = docker compose -f docker-compose.gl-epti.yml
 
-.PHONY: build up down logs ps status health shell backup reset clean
+.PHONY: build up down logs ps status health shell backup reset audit register clean
 
 # ── Build ──
 build:
 	@echo "Construyendo imagen gl-epti..."
-	docker build -t gl-epti:17 .
-	@echo "[OK] Imagen gl-epti:17 construida"
+	docker build -t gl-epti:19 .
+	@echo "[OK] Imagen gl-epti:19 construida"
 
 # ── Levantar ──
 up:
@@ -53,6 +53,19 @@ backup:
 # ── Reset ──
 reset:
 	$(COMPOSE) exec gl-epti gl-epti-reset
+
+# ── Auditoria de seguridad / CVEs ──
+audit:
+	$(COMPOSE) exec gl-epti gl-epti-audit
+
+# ── Registrar runner en GitLab ──
+register:
+	$(COMPOSE) exec gl-epti-runner gitlab-runner register \
+		--non-interactive \
+		--url "http://gl-epti" \
+		--executor docker \
+		--docker-image docker:latest \
+		--docker-volumes /var/run/docker.sock:/var/run/docker.sock
 
 # ── Monitoreo ──
 monitoring-up:

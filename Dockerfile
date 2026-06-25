@@ -3,8 +3,8 @@
 # Bootcamp Zero to Hero
 # ============================================
 # Build:
-#   docker build -t gl-epti:17 .
-#   docker build --build-arg GITLAB_VERSION=17.11.8-ce.0 -t gl-epti:17.11 .
+#   docker build -t gl-epti:19 .
+#   docker build --build-arg GITLAB_VERSION=19.1.1-ce.0 -t gl-epti:19.1 .
 # ============================================
 
 ARG GITLAB_VERSION=19.1.1-ce.0
@@ -15,8 +15,9 @@ LABEL org.opencontainers.image.description="GitLab CE on-premises optimizado par
 LABEL org.opencontainers.image.source="https://github.com/ergrato-dev/bc-gitlab"
 LABEL org.opencontainers.image.version="19"
 
-# ── Capa de herramientas de laboratorio ──
+# ── Parches de seguridad del SO base + herramientas de lab ──
 RUN apt-get update \
+    && apt-get upgrade -y --no-install-recommends \
     && apt-get install -y --no-install-recommends \
         jq \
         curl \
@@ -28,6 +29,18 @@ RUN apt-get update \
         less \
         netcat-openbsd \
         dnsutils \
+        gnupg \
+        iproute2 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# ── Trivy: escaner de CVEs (auditoria dentro del contenedor) ──
+RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
+        | gpg --dearmor -o /usr/share/keyrings/trivy.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
+        > /etc/apt/sources.list.d/trivy.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends trivy \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -36,10 +49,6 @@ COPY --chmod=755 scripts/lab/ /usr/local/bin/
 
 # ── Configuraciones pre-armadas ──
 COPY config/lab/ /opt/lab-config/
-
-# ── Healthcheck mejorado ──
-HEALTHCHECK --interval=30s --timeout=10s --retries=20 --start-period=300s \
-    CMD curl -fs http://localhost/-/health || exit 1
 
 # ── Variables por defecto (sobrescribibles en runtime) ──
 ENV LAB_MODE=true

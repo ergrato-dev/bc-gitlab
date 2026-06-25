@@ -1,9 +1,10 @@
 #!/bin/bash
-# gl-epti-reset — Reinicia configuración de GitLab (útil para labs)
+# gl-epti-reset — Reinicia configuracion de GitLab (util para labs)
 # USO: docker compose -f docker-compose.gl-epti.yml exec gl-epti gl-epti-reset
+set -euo pipefail
 
 echo "=== gl-epti Reset ==="
-echo "Esto reinicia la configuracion de GitLab sin borrar datos."
+echo "Reconfigurando y reiniciando GitLab sin borrar datos."
 echo ""
 
 gitlab-ctl reconfigure
@@ -11,4 +12,4 @@ gitlab-ctl restart
 
 echo ""
 echo "[DONE] GitLab reconfigurado y reiniciado."
-echo "Verifica con: docker compose -f docker-compose.gl-epti.yml logs -f gl-epti"
+echo "Verifica con: gl-epti-health"

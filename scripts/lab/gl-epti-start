@@ -1,5 +1,5 @@
 #!/bin/bash
-# start.sh — Inicia todos los servicios de GitLab en el lab
+# gl-epti-start — Inicia servicios GitLab dentro del contenedor
 set -euo pipefail
 
 echo "=== gl-epti: Iniciando servicios GitLab ==="

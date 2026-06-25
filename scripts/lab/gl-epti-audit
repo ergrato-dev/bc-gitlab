@@ -1,0 +1,95 @@
+#!/bin/bash
+# gl-epti-audit — Auditoria de seguridad y CVEs del lab
+# Requiere Trivy (incluido en la imagen gl-epti)
+set -euo pipefail
+
+echo "=== gl-epti Security Audit ==="
+echo "$(date)"
+echo ""
+
+# ── CVE scan via Trivy ──
+echo "--- CVE Scan: OS packages (HIGH + CRITICAL) ---"
+if command -v trivy &>/dev/null; then
+    trivy rootfs \
+        --severity HIGH,CRITICAL \
+        --no-progress \
+        --format table \
+        /
+else
+    echo "[WARN] Trivy no disponible — reconstruye la imagen: docker build -t gl-epti:19 ."
+fi
+
+echo ""
+
+# ── Actualizaciones de seguridad pendientes ──
+echo "--- Actualizaciones de seguridad pendientes ---"
+apt-get update -qq 2>/dev/null
+PENDING=$(apt-get -s upgrade 2>/dev/null | grep -i "^Inst" | grep -i "security" || true)
+if [ -n "$PENDING" ]; then
+    echo "[WARN] Actualizaciones disponibles:"
+    echo "$PENDING" | sed 's/^/  /'
+else
+    echo "[OK] Sin actualizaciones de seguridad pendientes"
+fi
+
+echo ""
+
+# ── Permisos de archivos sensibles ──
+echo "--- Permisos de archivos sensibles ---"
+check_perm() {
+    local path="$1" expected="$2"
+    if [ -e "$path" ]; then
+        local actual
+        actual=$(stat -c '%a' "$path")
+        if [ "$actual" = "$expected" ]; then
+            printf "  [OK]   %-55s %s\n" "$path" "$actual"
+        else
+            printf "  [WARN] %-55s esperado=%s actual=%s\n" "$path" "$expected" "$actual"
+        fi
+    else
+        printf "  [SKIP] %s (no existe)\n" "$path"
+    fi
+}
+
+check_perm /etc/gitlab/gitlab.rb                                       600
+check_perm /etc/gitlab/gitlab-secrets.json                             600
+check_perm /var/opt/gitlab/gitlab-rails/etc/secret_key_base           600
+check_perm /var/opt/gitlab/.ssh/authorized_keys                        600
+check_perm /var/opt/gitlab/gitlab-shell/config.yml                    640
+
+echo ""
+
+# ── Variables de entorno sensibles expuestas ──
+echo "--- Variables de entorno ---"
+SENSITIVE=$(printenv | grep -iE '(password|secret|token|private_key)=' \
+    | grep -vE '^(LAB_|GITLAB_OMNIBUS_CONFIG=)' || true)
+if [ -n "$SENSITIVE" ]; then
+    echo "[WARN] Variables sensibles detectadas en el entorno:"
+    echo "$SENSITIVE" | sed 's/=.*/=***REDACTED***/' | sed 's/^/  /'
+else
+    echo "[OK] Sin variables sensibles expuestas"
+fi
+
+echo ""
+
+# ── Puertos en escucha ──
+echo "--- Puertos en escucha ---"
+ss -tlnp 2>/dev/null | tail -n +2 | awk '{print "  " $4 " (" $1 ")"}' \
+    || echo "  [SKIP] ss no disponible"
+
+echo ""
+
+# ── Versión de GitLab ──
+echo "--- Version GitLab ---"
+if [ -f /opt/gitlab/version-manifest.txt ]; then
+    head -1 /opt/gitlab/version-manifest.txt | sed 's/^/  /'
+fi
+if command -v gitlab-rake &>/dev/null; then
+    gitlab-rake gitlab:env:info 2>/dev/null \
+        | grep -E "(GitLab version|Ruby|Rails|PostgreSQL)" \
+        | sed 's/^/  /' \
+        || true
+fi
+
+echo ""
+echo "=== Auditoria completada ==="

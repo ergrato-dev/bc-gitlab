@@ -5,7 +5,7 @@ set -euo pipefail
 echo "=== gl-epti Lab Status ==="
 echo ""
 
-# GitLab services
+# GitLab services via gitlab-ctl
 if gitlab-ctl status &>/dev/null; then
     echo "[OK] GitLab services running"
     gitlab-ctl status 2>/dev/null | while read -r line; do
@@ -17,11 +17,18 @@ fi
 
 echo ""
 
-# Rails check
-if gitlab-rake gitlab:check 2>/dev/null | grep -q 'Checking.*finished'; then
-    echo "[OK] GitLab Rails health"
+# API health (fast — no rails boot required)
+if curl -fs http://localhost/-/health &>/dev/null; then
+    echo "[OK] GitLab API healthy (/-/health)"
 else
-    echo "[WARN] GitLab Rails check incomplete"
+    echo "[WARN] GitLab API not responding"
+fi
+
+# Readiness check (verifica DB, cache, queues)
+if curl -fs http://localhost/-/readiness &>/dev/null; then
+    echo "[OK] GitLab readiness OK (/-/readiness)"
+else
+    echo "[WARN] GitLab readiness check failed"
 fi
 
 echo ""
@@ -33,3 +40,6 @@ df -h /var/opt/gitlab /etc/gitlab /var/log/gitlab 2>/dev/null | tail -n +2
 echo ""
 echo "--- Memory ---"
 free -h | grep 'Mem:'
+
+echo ""
+echo "Para auditoria de seguridad: gl-epti-audit"

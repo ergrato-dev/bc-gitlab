@@ -1,5 +1,5 @@
 #!/bin/bash
-# stop.sh — Detiene todos los servicios de GitLab en el lab
+# gl-epti-stop — Detiene servicios GitLab dentro del contenedor
 set -euo pipefail
 
 echo "=== gl-epti: Deteniendo servicios GitLab ==="
@@ -8,4 +8,4 @@ gitlab-ctl stop
 
 echo ""
 echo "[OK] Servicios GitLab detenidos."
-echo "Para reiniciar: start.sh"
+echo "Para reiniciar: gl-epti-start"

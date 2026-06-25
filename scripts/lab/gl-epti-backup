@@ -1,16 +1,19 @@
 #!/bin/bash
-# gl-epti-backup — Backup rápido del lab
+# gl-epti-backup — Backup rapido del lab
+# El directorio de backup lo controla gitlab_rails['backup_path'] en gitlab.rb
+# Por defecto: /var/opt/gitlab/backups
 set -euo pipefail
 
+BACKUP_DIR="/var/opt/gitlab/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-BACKUP_DIR=${1:-/var/opt/gitlab/backups}
 
 echo "=== gl-epti Backup ==="
 echo "Timestamp: ${TIMESTAMP}"
+echo "Destino:   ${BACKUP_DIR}"
 echo ""
 
 gitlab-backup create STRATEGY=copy
 
 echo ""
-echo "[DONE] Backup created in ${BACKUP_DIR}"
+echo "[DONE] Backup creado."
 ls -lh "${BACKUP_DIR}"/*gitlab_backup* 2>/dev/null | tail -1
