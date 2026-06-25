@@ -84,7 +84,7 @@ info:
 	@echo "=== gl-epti Lab Info ==="
 	@echo ""
 	@echo "URLs:"
-	@echo "  GitLab:        http://localhost"
+	@echo "  GitLab:        http://localhost:8888"
 	@echo "  Registry:      http://localhost:5050"
 	@echo "  Pages:         http://localhost:8090"
 	@echo "  SSH:           ssh://git@localhost:2224"

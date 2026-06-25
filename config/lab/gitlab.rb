@@ -6,7 +6,7 @@
 # ============================================
 
 # ── Acceso ──
-external_url 'http://localhost'
+external_url 'http://localhost:8888'
 gitlab_rails['gitlab_shell_ssh_port'] = 2224
 
 # ── Funcionalidad completa ──
