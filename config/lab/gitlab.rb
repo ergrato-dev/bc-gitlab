@@ -57,6 +57,7 @@ registry['enable'] = true
 # ── Pages (hosting estatico) ──
 gitlab_pages['enable'] = true
 pages_external_url 'http://localhost:8090'
+gitlab_pages['listen_proxy'] = '0.0.0.0:8091'
 
 # ── Mail (deshabilitado en lab) ──
 gitlab_rails['gitlab_email_enabled'] = false
