@@ -117,7 +117,7 @@ services:
   # GitLab Runner — Ejecutor de pipelines CI/CD
   # ============================================
   gl-epti-runner:
-    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-latest}
+    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine}
     container_name: gl-epti-runner
     restart: unless-stopped
     depends_on:
