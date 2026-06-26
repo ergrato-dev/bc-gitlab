@@ -38,7 +38,7 @@ week-XX-tema_principal/
 
 ## Entorno de Desarrollo
 
-Todo el bootcamp usa **Docker Compose** como plataforma de ejecucion. No se necesita instalar nada en el sistema host:
+Todo el bootcamp usa **Docker Compose** como plataforma de ejecución. No se necesita instalar nada en el sistema host:
 
 ```bash
 # Levantar GitLab CE + Runner + Registry cache
@@ -47,5 +47,7 @@ docker compose up -d
 # Agregar monitoreo (Prometheus + Grafana)
 docker compose --profile monitoring up -d
 ```
+
+Para semanas de administración avanzada (10-11) existe además el entorno **gl-epti** con scripts de auditoría y backup pre-instalados. Ver [docs/README.md](../docs/README.md#entornos-disponibles).
 
 [Volver al README principal](../README.md)
