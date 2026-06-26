@@ -1,7 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
-  <rect width="800" height="200" fill="#1a1a2e"/>
-  <rect width="800" height="6" fill="#fc6d26"/>
-  <text x="400" y="80" text-anchor="middle" font-family="Inter, Roboto, sans-serif" font-size="36" font-weight="bold" fill="#e24329">Bootcamp GitLab CE</text>
-  <text x="400" y="130" text-anchor="middle" font-family="Inter, Roboto, sans-serif" font-size="24" fill="#ffffff">Zero to Hero</text>
-  <rect x="250" y="160" width="300" height="4" fill="#554488"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="200" viewBox="0 0 900 200">
+
+  <!-- Background -->
+  <rect width="900" height="200" fill="#0d1117"/>
+
+  <!-- Top accent bar -->
+  <rect width="900" height="4" fill="#fc6d26"/>
+
+  <!-- Bottom accent bar -->
+  <rect y="196" width="900" height="4" fill="#fc6d26"/>
+
+  <!-- GitLab Tanuki — geometric simplified -->
+  <!-- Center body: dark red-orange -->
+  <polygon points="107,25 127,175 87,175" fill="#e24329"/>
+  <!-- Left wing: brand orange -->
+  <polygon points="107,25 87,175 48,112" fill="#fc6d26"/>
+  <!-- Right wing: brand orange -->
+  <polygon points="107,25 127,175 166,112" fill="#fc6d26"/>
+  <!-- Left ear tip: amber -->
+  <polygon points="48,112 22,158 87,175" fill="#fca326"/>
+  <!-- Right ear tip: amber -->
+  <polygon points="166,112 192,158 127,175" fill="#fca326"/>
+
+  <!-- Vertical separator -->
+  <line x1="215" y1="28" x2="215" y2="172" stroke="#21262d" stroke-width="1.5"/>
+
+  <!-- BOOTCAMP heading -->
+  <text x="235" y="85"
+        font-family="Arial Black, Arial, Helvetica, sans-serif"
+        font-size="50" font-weight="900"
+        fill="#f0f6fc" letter-spacing="-2">BOOTCAMP</text>
+
+  <!-- GITLAB CE subheading -->
+  <text x="238" y="127"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="30" font-weight="700"
+        fill="#fc6d26" letter-spacing="6">GITLAB CE</text>
+
+  <!-- Tagline -->
+  <text x="239" y="157"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="11" fill="#484f58" letter-spacing="1">ZERO TO HERO  ·  12 SEMANAS  ·  72 HORAS</text>
+
+  <!-- Pipeline section -->
+  <!-- Label centered over three stages -->
+  <text x="714" y="36" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="8" fill="#30363d" letter-spacing="3">.GITLAB-CI.YML</text>
+
+  <!-- Stage: BUILD -->
+  <circle cx="636" cy="88" r="24" fill="#0d1117" stroke="#fc6d26" stroke-width="2.5"/>
+  <text x="636" y="92" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="8" font-weight="700" fill="#fc6d26">BUILD</text>
+
+  <!-- Connector 1 -->
+  <line x1="660" y1="88" x2="690" y2="88" stroke="#30363d" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Stage: TEST -->
+  <circle cx="714" cy="88" r="24" fill="#0d1117" stroke="#e8a838" stroke-width="2.5"/>
+  <text x="714" y="92" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="8" font-weight="700" fill="#e8a838">TEST</text>
+
+  <!-- Connector 2 -->
+  <line x1="738" y1="88" x2="768" y2="88" stroke="#30363d" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Stage: DEPLOY -->
+  <circle cx="792" cy="88" r="24" fill="#0d1117" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="792" y="92" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="8" font-weight="700" fill="#3fb950">DEPLOY</text>
+
+  <!-- Stage sublabels -->
+  <text x="636" y="124" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="7" fill="#30363d">stage: build</text>
+  <text x="714" y="124" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="7" fill="#30363d">stage: test</text>
+  <text x="792" y="124" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="7" fill="#30363d">stage: deploy</text>
+
+  <!-- Tech badges -->
+  <rect x="608" y="143" width="56" height="18" rx="3" fill="#161b22" stroke="#21262d"/>
+  <text x="636" y="156" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#6e7681">Docker</text>
+
+  <rect x="686" y="143" width="56" height="18" rx="3" fill="#161b22" stroke="#21262d"/>
+  <text x="714" y="156" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#6e7681">GitLab 17</text>
+
+  <rect x="764" y="143" width="56" height="18" rx="3" fill="#161b22" stroke="#21262d"/>
+  <text x="792" y="156" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#6e7681">Prometheus</text>
+
 </svg>

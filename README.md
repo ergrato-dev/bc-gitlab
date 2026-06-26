@@ -1,5 +1,9 @@
 # Bootcamp GitLab CE — Zero to Hero
 
+<div align="center">
+  <img src="./assets/bootcamp-header.svg" alt="Bootcamp GitLab CE — Zero to Hero" width="900"/>
+</div>
+
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](./LICENSE)
 [![12 Semanas](https://img.shields.io/badge/semanas-12-yellow.svg)](#)
 [![72 Horas](https://img.shields.io/badge/horas-72-orange.svg)](#)
