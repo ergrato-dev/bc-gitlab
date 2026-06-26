@@ -19,15 +19,21 @@
 
 Antes de empezar con CI/CD, necesitas un Runner que ejecute los jobs. El `docker-compose.yml` del bootcamp ya incluye uno:
 
+> **GitLab 17.x usa el nuevo sistema de tokens.** El `--registration-token` legacy fue eliminado en GitLab 17.0. Sigue los pasos a continuacion.
+
 ```bash
-# 1. Obtener token de registro desde GitLab UI:
+# 1. Crear el runner desde la UI de GitLab y obtener el authentication token:
 #    Admin Area → CI/CD → Runners → New instance runner
-#    (o Project → Settings → CI/CD → Runners para runner especifico)
-# 2. Registrar el runner:
+#    - Selecciona "Run untagged jobs" para este lab
+#    - Click "Create runner" → copia el token (formato: glrt-XXXXXXXXXXXX)
+#
+#    (Para runner de proyecto: Settings → CI/CD → Runners → New project runner)
+
+# 2. Registrar el runner con el nuevo token:
 docker compose exec gitlab-runner gitlab-runner register \
   --non-interactive \
   --url http://gitlab \
-  --registration-token "TU_TOKEN" \
+  --token "glrt-XXXXXXXXXXXX" \
   --executor docker \
   --docker-image alpine:latest \
   --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
@@ -35,7 +41,10 @@ docker compose exec gitlab-runner gitlab-runner register \
 
 # 3. Verificar que el Runner aparece como activo (circulo verde) en:
 #    Admin Area → CI/CD → Runners
+docker compose exec gitlab-runner gitlab-runner list
 ```
+
+> **Diferencia clave**: el campo es `--token` (authentication token), NO `--registration-token` (eliminado en GitLab 17.0).
 
 ## Estructura de la Semana
 
