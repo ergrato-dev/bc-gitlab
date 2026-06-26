@@ -16,7 +16,7 @@
 
 Desplegar y configurar una plataforma DevOps completa que incluya:
 
-### Infraestructura (35%)
+### Infraestructura (30%)
 - GitLab CE con Docker Compose
 - GitLab Runner con ejecutor Docker
 - Container Registry configurado
@@ -29,16 +29,22 @@ Desplegar y configurar una plataforma DevOps completa que incluya:
 - Environments (staging, production)
 
 ### Seguridad (20%)
-- SAST y Secret Detection en pipeline
+- SAST y Secret Detection en pipeline (templates CE)
 - RBAC con roles definidos
 - MFA habilitado
-- Container Scanning
+- Container Scanning (template CE)
 
-### Monitoreo y Respaldo (20%)
+### Monitoreo y Respaldo (15%)
 - Prometheus + Grafana dashboards
 - Backup automático diario
 - Restore probado
 - Logs centralizados
+
+### Documentación (10%)
+- README.md del proyecto completo
+- Diagrama de arquitectura
+- Manual de operaciones
+- Plan de Disaster Recovery
 
 ## Estructura de Entrega
 
