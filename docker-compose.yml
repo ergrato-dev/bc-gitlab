@@ -12,8 +12,6 @@
 # Usuario: root
 # Contrasena: docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
 
-version: '3.8'
-
 services:
   # ============================================
   # GitLab CE — Plataforma DevOps principal
