@@ -1,188 +1,125 @@
-# Proyecto Semana 01 — Repositorio Personal Profesional
+# 🚀 Proyecto Semana 01 — Repositorio Personal Profesional
 
-## Objetivo
+⏱️ **Tiempo estimado**: 1 hora
+👤 **Modalidad**: Individual
+⭐⭐ **Dificultad**: Básico-Intermedio
 
-Configurar un repositorio Git personal en GitLab CE que sirva como portafolio DevOps. Este proyecto demuestra que dominas el flujo basico de Git y GitLab.
+---
 
-## Requisitos
+## 📋 Descripción
 
-Crear el proyecto `mi-portafolio-devops` en GitLab CE con la siguiente estructura:
+Crea un repositorio personal en GitLab CE que funcione como tu **portafolio DevOps**. Este repositorio te acompañará durante todo el bootcamp: cada semana agregar áreas de ramas, pipelines, configuraciones y documentación de lo aprendido.
+
+El objetivo no es tener el repositorio perfecto desde el inicio, sino demostrar que dominas el flujo Git + GitLab CE y construir la base de algo que irá creciendo.
+
+---
+
+## 🎯 Objetivos del Proyecto
+
+- Demostrar dominio del flujo completo de Git: `init` → `add` → `commit` → `push`
+- Practicar Conventional Commits en mensajes reales
+- Crear y fusionar ramas usando Merge Requests en GitLab CE
+- Estructurar un repositorio profesional con README informativo, .gitignore y documentación
+
+---
+
+## 🏗️ Estructura Requerida
 
 ```
 mi-portafolio-devops/
-├── README.md           # Titulo, descripcion, badges, stack
-├── .gitignore          # Reglas de ignorado apropiadas
-├── src/
-│   └── hello.sh        # Script bash de ejemplo
+├── README.md              # Presentación profesional del portafolio
+├── .gitignore             # Reglas de ignorado apropiadas para bash/scripts
 ├── docs/
-│   └── notas.md        # Notas de aprendizaje
-└── .gitlab-ci.yml      # Placeholder para CI/CD (se usa en semana 05)
+│   └── aprendizaje.md    # Reflexión sobre lo aprendido en la semana
+└── scripts/
+    └── hola.sh           # Script básico de shell que se puede ejecutar
 ```
 
-## Instrucciones
+---
 
-### Fase 1: Crear proyecto en GitLab CE
+## 📋 Instrucciones Detalladas
 
-1. Crear **blank project** llamado `mi-portafolio-devops`
-2. Visibility: Private
-3. **NO** marcar "Initialize with README" (lo crearemos manualmente)
+Ver [instrucciones.md](./instrucciones.md) para los comandos exactos paso a paso.
 
-### Fase 2: Inicializar localmente
+**Resumen de fases**:
 
-```bash
-# Crear carpeta local
-mkdir mi-portafolio-devops
-cd mi-portafolio-devops
-git init
+1. **Crear proyecto** en GitLab CE (sin README inicial)
+2. **Inicializar localmente** con `git init` y conectar al remoto
+3. **Crear estructura** de archivos con contenido real
+4. **Commits semánticos**: al menos 5 commits descriptivos con Conventional Commits
+5. **Trabajar con ramas**: `main` + `dev` + al menos 1 rama `feature/`
+6. **Merge Request**: crear una MR en GitLab CE y hacer el merge
+7. **Push final**: el estado completo del proyecto en el remoto
 
-# Conectar con GitLab CE
-git remote add origin git@gitlab.local:root/mi-portafolio-devops.git
-```
+---
 
-### Fase 3: Crear estructura de archivos
+## 📄 Contenido Esperado por Archivo
 
-```bash
-# Crear directorios
-mkdir -p src docs
+### `README.md` — Presentación del Portafolio
 
-# README.md
-cat > README.md << 'EOF'
-# Mi Portafolio DevOps
+Debe incluir:
+- Tu nombre y descripción breve (1-2 oraciones)
+- Lo que aprenderás/aprendiste en el bootcamp
+- Stack tecnológico (GitLab CE, Docker, Bash, etc.)
+- Estado actual del repositorio (semana 01: fundamentos)
+- Tabla de contenido o estructura del repo
 
-[![GitLab CE](https://img.shields.io/badge/GitLab-CE-fc6d26?logo=gitlab)](http://localhost)
-[![Bootcamp](https://img.shields.io/badge/bootcamp-zero--to--hero-brightgreen)]()
+### `.gitignore` — Reglas de Ignorado
 
-Proyecto personal creado durante el Bootcamp GitLab CE Zero to Hero.
+Debe incluir reglas para:
+- Sistema operativo: `.DS_Store`, `Thumbs.db`
+- Archivos temporales: `*.log`, `*.tmp`, `temp/`
+- Editor: `*.swp`, `.vscode/` (o el editor que uses)
+- Secretos: `.env` (muy importante)
 
-## Stack
+### `docs/aprendizaje.md` — Reflexión de la Semana
 
-- GitLab CE (Docker)
-- Git + SSH
-- Bash scripting
-EOF
+Debe incluir:
+- Los 3 conceptos más importantes que aprendiste
+- El error más común que cometiste y cómo lo resolviste
+- Qué comando de Git te parece más útil y por qué
+- Una pregunta que aún no tienes clara
 
-# .gitignore
-cat > .gitignore << 'EOF'
-# Archivos temporales
-*.log
-*.tmp
-temp/
+### `scripts/hola.sh` — Script Funcional
 
-# Sistema operativo
-.DS_Store
-Thumbs.db
+Debe ser ejecutable (`chmod +x`) y mostrar al menos:
+- Un mensaje de bienvenida
+- La fecha y hora actual
+- Información del sistema (o cualquier otra info útil)
 
-# Editor
-*.swp
-*.swo
-*~
-EOF
+---
 
-# Script de ejemplo
-cat > src/hello.sh << 'EOF'
-#!/usr/bin/env bash
-echo "Hola desde mi portafolio DevOps!"
-echo "Fecha: $(date)"
-echo "GitLab CE corriendo en Docker"
-EOF
-chmod +x src/hello.sh
+## ✅ Criterios de Evaluación
 
-# Notas
-cat > docs/notas.md << 'EOF'
-# Notas de Aprendizaje
+| Criterio | Peso | Indicadores |
+|----------|------|-------------|
+| **README.md profesional** | 30% | Incluye nombre, descripción, stack; está bien formateado en Markdown; tiene contenido real (no el template) |
+| **Commits semánticos** | 30% | Mínimo 5 commits; siguen formato `tipo: descripción`; mensajes descriptivos; uno por propósito |
+| **Ramas y MR** | 20% | Rama `dev` existe; al menos 1 MR creada y fusionada en GitLab CE; se ve el historial de ramas en `git log` |
+| **Documentación** | 20% | `docs/aprendizaje.md` tiene contenido real y reflexivo; `scripts/hola.sh` es ejecutable y funciona |
 
-## Semana 01 — Fundamentos de Git y GitLab CE
+**Puntuación mínima para aprobar**: 70/100
 
-- Git es un sistema de control de versiones distribuido
-- GitLab CE integra repositorios, CI/CD, registry y mas
-- SSH es el metodo recomendado para autenticacion
-- El flujo basico es: clone → edit → add → commit → push
-- Las ramas permiten desarrollo aislado
-EOF
+---
 
-# Placeholder CI/CD
-cat > .gitlab-ci.yml << 'EOF'
-# Pipeline placeholder — Se implementara en Semana 05
-stages:
-  - hello
+## 📦 Entregables
 
-hello-world:
-  stage: hello
-  script:
-    - echo "Pipeline funcionando en GitLab CE"
-    - bash src/hello.sh
-EOF
-```
+- [ ] URL del repositorio en GitLab CE: `http://localhost/root/mi-portafolio-devops` (o tu usuario)
+- [ ] Output de `git log --oneline --graph --all` mostrando al menos 5 commits y ramas
+- [ ] Captura de la Merge Request cerrada/merged en GitLab CE
+- [ ] `scripts/hola.sh` ejecutado: `bash scripts/hola.sh`
 
-### Fase 4: Primer commit
+---
 
-```bash
-git add -A
-git status
+## 💡 Tips para Destacar
 
-git commit -m "feat: inicializar portafolio DevOps
+- Agrega badges al README (GitLab CE, bootcamp, etc.)
+- Escribe la reflexión honestamente — es para tu propio aprendizaje
+- Haz commits pequeños y frecuentes en lugar de uno solo enorme
+- El nombre del proyecto puede ser más creativo que `mi-portafolio-devops`
 
-- README.md con badges y descripcion
-- .gitignore con reglas basicas
-- src/hello.sh: script de ejemplo
-- docs/notas.md: notas de aprendizaje
-- .gitlab-ci.yml: placeholder para CI/CD"
-```
+---
 
-### Fase 5: Push inicial
+## ➡️ Siguiente Semana
 
-```bash
-git branch -M main
-git push -u origin main
-```
-
-### Fase 6: Trabajar con ramas
-
-```bash
-# Crear rama develop para trabajo futuro
-git checkout -b develop
-
-# Agregar algo en develop
-echo "" >> docs/notas.md
-echo "## Proximos temas" >> docs/notas.md
-echo "- Instalacion de GitLab CE" >> docs/notas.md
-echo "- Proyectos y grupos" >> docs/notas.md
-
-git add docs/notas.md
-git commit -m "docs: agregar proximos temas a notas"
-git push -u origin develop
-
-# Volver a main
-git checkout main
-```
-
-### Fase 7: Merge de develop a main
-
-```bash
-git merge develop
-git push origin main
-```
-
-## Entregables
-
-- [ ] URL del repositorio en GitLab CE (`http://localhost/root/mi-portafolio-devops`)
-- [ ] Captura del historial de commits:
-  ```bash
-  git log --oneline --graph --all
-  ```
-- [ ] Captura de las ramas:
-  ```bash
-  git branch -a
-  ```
-- [ ] Captura del proyecto en GitLab CE mostrando los archivos
-
-## Criterios de Evaluacion
-
-| Criterio | Peso | Check |
-|----------|------|-------|
-| Proyecto creado en GitLab CE | 15% | [ ] |
-| README.md con badges y contenido | 20% | [ ] |
-| .gitignore con reglas apropiadas | 10% | [ ] |
-| Al menos 2 ramas (main + develop) | 15% | [ ] |
-| 5+ commits con mensajes descriptivos | 25% | [ ] |
-| Codigo de ejemplo funcional | 15% | [ ] |
+Al terminar este proyecto estarás listo para la [Semana 02 — Instalación de GitLab CE](../../week-02-instalacion_gitlab_ce/).

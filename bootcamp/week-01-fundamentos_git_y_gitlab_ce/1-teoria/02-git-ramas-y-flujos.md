@@ -1,194 +1,342 @@
-# 02 — Git: Ramas, Merges y Conflictos
+# 📖 02 — Git: Ramas, Merge y Rebase
 
-## Objetivos
+## 🎯 Objetivos de Aprendizaje
 
-- Entender el concepto de ramas y su proposito
-- Dominar operaciones con ramas (crear, cambiar, fusionar, eliminar)
-- Resolver conflictos de merge
-- Conocer flujos de trabajo comunes (Git Flow, GitHub Flow, Trunk-based)
+Al finalizar esta lección serás capaz de:
 
-## Ramas en Git
+- Explicar qué es una rama y cuándo crearla
+- Crear, cambiar, fusionar y eliminar ramas con fluidez
+- Distinguir entre merge fast-forward y merge de tres vías
+- Aplicar rebase con seguridad en ramas locales
+- Resolver conflictos de merge paso a paso
+- Usar `git stash` para guardar trabajo temporal
+- Describir el flujo GitLab Flow y por qué lo usamos en este bootcamp
 
-Una rama es un apuntador movil a un commit. Permite desarrollar funcionalidades de forma aislada sin afectar la rama principal. Git crea ramas en milisegundos (solo escribe un archivo de 40 bytes con el hash del commit).
+---
 
-### Por que usar ramas
+## 📖 ¿Qué es una Rama?
 
-- **Aislamiento**: Trabajar sin afectar `main`
-- **Experimentacion**: Probar ideas sin riesgo
-- **Colaboracion**: Cada feature en su rama
-- **CI/CD**: Pipelines por rama (staging, production)
+**Analogía**: Imagina que estás escribiendo una novela. La trama principal va en el cuaderno azul (rama `main`). Quieres experimentar con un final alternativo sin arruinar el cuaderno azul, entonces abres un cuaderno rojo (rama `feature/final-alternativo`) y escribes allí. Si el final alternativo queda bien, copias esas páginas al cuaderno azul (merge). Si no, tiras el cuaderno rojo sin afectar nada.
 
-## Comandos de Ramas
+**Técnicamente**: Una rama es simplemente un **puntero móvil** a un commit. Crear una rama no copia ningún archivo; solo escribe un archivo de 41 bytes en `.git/refs/heads/`. Por eso crear ramas en Git es instantáneo.
 
-```bash
-# ── Listar ramas ──
-git branch                    # Ramas locales (* = actual)
-git branch -a                 # Incluye remotas
-git branch -v                 # Con ultimo commit
-
-# ── Crear rama ──
-git branch feature/login      # Crear (sin cambiar)
-git checkout -b feature/login # Crear y cambiar
-git switch -c feature/login   # Alternativa moderna (Git 2.23+)
-
-# ── Cambiar de rama ──
-git checkout feature/login    # Tradicional
-git switch feature/login      # Moderno (mas simple)
-git switch -                  # Volver a rama anterior
-
-# ── Fusionar ramas ──
-git checkout main
-git merge feature/login       # Fusiona feature/login en main
-
-# ── Eliminar rama ──
-git branch -d feature/login   # Seguro (solo si ya fue fusionada)
-git branch -D feature/login   # Forzado (pierde commits no fusionados)
-
-# ── Renombrar rama ──
-git branch -m nombre-nuevo           # Renombrar rama actual
-git branch -m viejo-nombre nuevo     # Renombrar otra rama
+```
+main:     A ─── B ─── C
+                        \
+feature:                 D ─── E   ← (HEAD apunta aquí si estoy en feature)
 ```
 
-## Merge vs Rebase
+### ✅ Cuándo Crear una Rama
 
-### Merge (fusion tradicional)
+- Para cada nueva funcionalidad (`feature/login-oauth`)
+- Para cada corrección de bug (`fix/error-timeout`)
+- Para experimentos que pueden descartarse
+- Para trabajar sin interrumpir a los demás en `main`
 
-Crea un **merge commit** que une dos historiales. El historial muestra exactamente cuando y como se fusionaron las ramas.
+---
+
+## 🛠️ Comandos de Ramas
 
 ```bash
-git checkout main
-git merge feature/login
+# ¿QUÉ VAMOS A HACER?: Listar todas las ramas locales
+# ¿POR QUÉ LO HACEMOS?: Para ver en qué ramas existe trabajo activo
+# ¿PARA QUÉ SIRVE?: Orientarse antes de cambiar de rama o hacer merge
+git branch
 
-# Historial resultante:
-# *   abc123 (HEAD -> main) Merge branch 'feature/login'
-# |\
-# | * def456 (feature/login) Agregar validacion de login
-# | * ghi789 Preparar endpoint de login
-# |/
-# * jkl012 Configuracion inicial
+# Listar ramas locales Y remotas
+git branch -a
+
+# Listar con información del último commit de cada una
+git branch -v
+
+# ¿QUÉ VAMOS A HACER?: Crear una rama nueva y cambiar a ella en un solo paso
+# ¿POR QUÉ LO HACEMOS?: Para empezar a trabajar en una funcionalidad de forma aislada
+# ¿PARA QUÉ SIRVE?: Evitar commits en main directamente (buena práctica de equipo)
+git switch -c feature/mi-funcionalidad
+
+# Forma clásica (equivalente al anterior, más usada en tutoriales antiguos)
+git checkout -b feature/mi-funcionalidad
+
+# Cambiar a una rama existente (forma moderna)
+git switch main
+
+# Volver a la rama donde estabas antes (el guión = "anterior")
+git switch -
+
+# ¿QUÉ VAMOS A HACER?: Eliminar una rama que ya fue fusionada
+# ¿POR QUÉ LO HACEMOS?: Para mantener el repositorio limpio
+# ¿PARA QUÉ SIRVE?: Higiene del repo — eliminar ramas que ya cumplieron su propósito
+git branch -d feature/mi-funcionalidad
+
+# Eliminar rama aunque NO haya sido fusionada (⚠️ pierdes los commits)
+git branch -D feature/experimento-fallido
+
+# Renombrar la rama actual
+git branch -m nuevo-nombre
 ```
 
-**Ventaja**: Preserva el historial real, seguro para ramas compartidas.
-**Desventaja**: Historial con muchos merge commits puede ser ruidoso.
+---
 
-### Rebase
+## 🔀 Merge: Fusionar Ramas
 
-Reaplica los commits de una rama sobre la punta de otra. El historial queda lineal.
+El merge integra el trabajo de una rama en otra. Git tiene dos estrategias principales:
+
+### Fast-Forward Merge (sin commit de merge)
+
+Ocurre cuando la rama destino no ha avanzado desde que se creó la rama feature. Git simplemente mueve el puntero hacia adelante.
+
+```
+Antes del merge:
+  main:    A ─── B
+                  \
+  feature:         C ─── D
+
+Después de git merge feature (fast-forward):
+  main:    A ─── B ─── C ─── D
+```
 
 ```bash
-git checkout feature/login
+# ¿QUÉ VAMOS A HACER?: Fusionar la rama feature en main (fast-forward si es posible)
+# ¿POR QUÉ LO HACEMOS?: Para integrar el trabajo terminado a la rama principal
+# ¿PARA QUÉ SIRVE?: Consolidar cambios aprobados en la rama de producción
+git switch main
+git merge feature/mi-funcionalidad
+```
+
+### Three-Way Merge (con commit de merge)
+
+Ocurre cuando ambas ramas han avanzado desde el punto de divergencia. Git crea un commit especial con dos padres.
+
+```
+Antes del merge:
+  main:    A ─── B ─── E
+                  \
+  feature:         C ─── D
+
+Después de git merge feature (three-way):
+  main:    A ─── B ─── E ─── M   ← M es el "merge commit" con dos padres
+                  \           /
+  feature:         C ─── D ──
+```
+
+```bash
+# Si quieres SIEMPRE crear un merge commit (incluso cuando fast-forward sería posible)
+git merge --no-ff feature/mi-funcionalidad
+
+# Útil para preservar la historia de que hubo una rama (visible en git log --graph)
+```
+
+---
+
+## 🔄 Rebase: Historial Limpio y Lineal
+
+**Analogía**: Rebase es como si rebobinaras tu trabajo, le pegaras encima los commits nuevos de `main`, y luego volveras a aplicar tus commits uno por uno. El resultado parece que empezaste a trabajar desde el estado más reciente de `main`.
+
+```
+Antes del rebase:
+  main:    A ─── B ─── E
+                  \
+  feature:         C ─── D
+
+Después de git rebase main (estando en feature):
+  main:    A ─── B ─── E
+                         \
+  feature:                C' ─── D'   ← commits reescritos (nuevos hashes)
+```
+
+```bash
+# ¿QUÉ VAMOS A HACER?: Reaplicar los commits de feature sobre la punta de main
+# ¿POR QUÉ LO HACEMOS?: Para que el historial quede lineal (sin commits de merge)
+# ¿PARA QUÉ SIRVE?: Historial más limpio y fácil de leer (preferido en muchos equipos)
+git switch feature/mi-funcionalidad
 git rebase main
-git checkout main
-git merge feature/login  # Fast-forward (no crea merge commit)
 
-# Historial resultante:
-# * def456 (HEAD -> main, feature/login) Agregar validacion de login
-# * ghi789 Preparar endpoint de login
-# * jkl012 Configuracion inicial
+# Luego en main: fast-forward merge (no crea merge commit)
+git switch main
+git merge feature/mi-funcionalidad
 ```
 
-**Ventaja**: Historial limpio y lineal.
-**Desventaja**: Reescribe historial. **NUNCA usar rebase en ramas compartidas/publicadas.**
+### ⚠️ Regla de Oro del Rebase
 
-### Regla de Oro del Rebase
+> **NUNCA** hagas rebase de commits que ya están en el repositorio remoto y que otros pueden estar usando.
 
-> Si la rama es solo tuya y no la has pusheado: puedes rebasear.
-> Si otros trabajan en la rama o ya esta en remoto: usa merge.
+| Situación | Usar |
+|-----------|------|
+| Rama solo tuya, no pusheada | `git rebase` ✅ |
+| Rama compartida o ya en remoto | `git merge` ✅ |
+| Rama de MR abierta en GitLab | Consulta con el equipo |
 
-## Resolucion de Conflictos
+---
 
-Un conflicto ocurre cuando Git no puede fusionar automaticamente dos cambios al mismo archivo.
+## ⚡ Resolución de Conflictos
 
-### Escenario tipico
+Un conflicto ocurre cuando Git no puede decidir automáticamente cómo combinar cambios en el mismo lugar de un archivo. No es un error — es información: dos personas modificaron lo mismo.
+
+### Crear un Conflicto (para practicar)
 
 ```bash
-# Dos personas editan la misma linea en ramas diferentes
+# Rama A modifica el archivo
+git switch -c rama-a
+echo "Versión A del archivo" > config.txt
+git add config.txt && git commit -m "config: versión A"
 
-# Persona A (en feature/a):
-echo "Version A" > config.txt
-git add . && git commit -m "Config: version A"
+# Rama B modifica el mismo archivo
+git switch main
+git switch -c rama-b
+echo "Versión B del archivo" > config.txt
+git add config.txt && git commit -m "config: versión B"
 
-# Persona B (en feature/b):
-echo "Version B" > config.txt
-git add . && git commit -m "Config: version B"
+# Intentar fusionar → CONFLICTO
+git switch main
+git merge rama-a   # OK (fast-forward)
+git merge rama-b   # ¡CONFLICTO!
 ```
 
-### Resolver el conflicto
+### Anatomía de un Conflicto
 
-```bash
-git checkout main
-git merge feature/a   # OK
-git merge feature/b   # CONFLICTO!
-
-# El archivo se marca con marcadores:
-# <<<<<<< HEAD
-# Version A
-# =======
-# Version B
-# >>>>>>> feature/b
+```
+<<<<<<< HEAD
+Versión A del archivo
+=======
+Versión B del archivo
+>>>>>>> rama-b
 ```
 
-**Pasos para resolver:**
+- `<<<<<<< HEAD`: Lo que hay en tu rama actual (`main`)
+- `=======`: Separador
+- `>>>>>>> rama-b`: Lo que viene de la rama que estás fusionando
 
-1. Editar el archivo eliminando los marcadores `<<<<<<<`, `=======`, `>>>>>>>`
-2. Decidir que contenido mantener (o combinar ambos)
-3. `git add <archivo>` para marcarlo como resuelto
-4. `git commit` para completar el merge
+### Resolver el Conflicto Paso a Paso
 
 ```bash
-# Abortar un merge conflictivo si no sabes resolverlo
+# Paso 1: Ver qué archivos tienen conflictos
+git status
+# (aparecen en rojo con "both modified")
+
+# Paso 2: Abrir el archivo y editar manualmente
+# Eliminar los marcadores <<<<<<<, =======, >>>>>>>
+# Dejar el contenido final que quieres
+nano config.txt   # o abre en tu editor preferido
+
+# Paso 3: Marcar como resuelto
+git add config.txt
+
+# Paso 4: Completar el merge
+git commit
+# Git propone un mensaje automático, puedes aceptarlo
+
+# Si prefieres cancelar el merge y empezar de cero
 git merge --abort
 ```
 
+> 💡 **Tip VS Code**: VS Code detecta conflictos automáticamente y muestra botones "Accept Current Change", "Accept Incoming Change", "Accept Both Changes". Úsalos para resolver más rápido.
+
+---
+
+## 📦 git stash: Guardar Trabajo Temporal
+
+**Analogía**: El stash es como una gaveta donde guardas trabajo a medio terminar cuando de repente necesitas cambiar de tarea urgente.
+
 ```bash
-# Herramienta visual de merge (recomendada)
-git mergetool
+# ¿QUÉ VAMOS A HACER?: Guardar los cambios actuales sin hacer commit
+# ¿POR QUÉ LO HACEMOS?: Porque necesitamos cambiar de rama pero no queremos perder el trabajo
+# ¿PARA QUÉ SIRVE?: Cambiar de contexto sin commits sucios o incompletos
+git stash
+
+# Guardar con una descripción para identificarlo después
+git stash push -m "WIP: formulario de login sin validar"
+
+# Ver la lista de stashes guardados
+git stash list
+
+# Recuperar el último stash (lo aplica y lo elimina de la lista)
+git stash pop
+
+# Recuperar un stash específico (lo aplica pero lo mantiene en la lista)
+git stash apply stash@{1}
+
+# Eliminar un stash sin aplicarlo
+git stash drop stash@{0}
+
+# Eliminar todos los stashes
+git stash clear
 ```
 
-## Flujos de Trabajo Comunes
+**Flujo típico de uso**:
+```bash
+# Estoy trabajando en feature/login...
+git stash push -m "WIP: login a medias"
 
-### Git Flow (Vincent Driessen, 2010)
+# Cambio a main para hotfix urgente
+git switch main
+# ... arreglo el bug urgente, commit, push ...
 
-Ideal para software con versiones publicas (librerias, productos):
+# Vuelvo a mi feature
+git switch feature/login
+git stash pop    # recupero mi trabajo
+```
 
-- `main`: Codigo en produccion
-- `develop`: Rama de integracion
-- `feature/*`: Nuevas funcionalidades (desde develop, vuelve a develop)
-- `release/*`: Preparacion de releases (desde develop, vuelve a main + develop)
-- `hotfix/*`: Correcciones urgentes (desde main, vuelve a main + develop)
+---
 
-**Ventaja**: Muy estructurado. **Desventaja**: Complejo, lento para CI/CD continuo.
+## 🌊 GitLab Flow: El Flujo de Este Bootcamp
 
-### GitHub Flow (GitHub, 2011)
+Existen varios flujos de trabajo con Git (Git Flow, GitHub Flow, Trunk-based). Para este bootcamp usamos **GitLab Flow**, que es el más apropiado cuando trabajamos directamente con GitLab CE.
 
-Ideal para aplicaciones web con despliegue continuo:
+**Principios de GitLab Flow**:
 
-- `main`: Siempre desplegable
-- Ramas descriptivas: `feature/`, `fix/`, `docs/`
-- Pull Requests para revisar antes de merge
+```
+main (siempre desplegable)
+  │
+  ├─ feature/nueva-funcionalidad  → Merge Request → merge a main
+  ├─ fix/bug-critico              → Merge Request → merge a main
+  └─ docs/actualizar-readme       → Merge Request → merge a main
 
-**Ventaja**: Simple, rapido. **Desventaja**: Menos control para releases versionados.
+Para entornos (opcional en este bootcamp):
+  main → production (rama de producción protegida)
+```
 
-### Trunk-based Development
+**Reglas del flujo**:
+1. `main` siempre está en estado desplegable
+2. Todo trabajo nuevo va en una rama con nombre descriptivo
+3. El merge a `main` se hace vía **Merge Request** en GitLab (con revisión de código)
+4. Los commits en `main` disparan el pipeline de CI/CD
+5. Se usa Conventional Commits para mensajes
 
-Ideal para equipos maduros con CI/CD rapido:
-
-- Una sola rama principal (`main`/`trunk`)
-- Ramas de vida corta (< 1 dia)
-- Feature flags para codigo incompleto
-
-## Nombres de Ramas (Buenas Practicas)
+**Convención de nombres de ramas**:
 
 ```bash
-# Prefijos comunes
-feature/agregar-login      # Nueva funcionalidad
-fix/error-validacion       # Correccion de bug
-docs/actualizar-readme     # Documentacion
-chore/actualizar-librerias # Tareas de mantenimiento
-refactor/extraer-servicio  # Refactorizacion
-hotfix/corregir-xss        # Correccion urgente
+feature/agregar-login         # Nueva funcionalidad
+fix/error-validacion-email    # Corrección de bug
+docs/actualizar-readme        # Solo documentación
+chore/actualizar-dependencias # Mantenimiento
+refactor/extraer-servicio     # Refactorización
 
-# Incluir numero de issue (si usas tracker)
+# Con número de issue (si usas el tracker de GitLab)
 feature/42-login-oauth
-fix/137-error-timeout
+fix/137-timeout-api
 ```
+
+---
+
+## 🤔 Preguntas de Reflexión
+
+1. Crea una rama `feature/experimento`, haz dos commits y luego elimínala sin fusionar. ¿Qué le pasó a esos commits? ¿Cómo los recuperarías?
+2. ¿Cuál es la diferencia entre un merge fast-forward y un merge de tres vías? ¿Cuándo se usa cada uno?
+3. ¿Por qué el rebase "reescribe la historia"? ¿Qué problemas causa si otros ya descargaron esos commits?
+4. En tu trabajo actual (o en un proyecto personal), ¿qué flujo de ramas sería más apropiado: GitLab Flow, Git Flow o Trunk-based Development? ¿Por qué?
+5. Tienes cambios a medio hacer en `feature/login` y te piden urgentemente revisar un bug en `main`. ¿Cuáles son tus opciones? ¿Cuál preferirías y por qué?
+
+---
+
+## 📚 Recursos Adicionales
+
+- [Pro Git — Capítulo 3: Ramificaciones en Git](https://git-scm.com/book/es/v2/Ramificaciones-en-Git-%C2%BFQu%C3%A9-es-una-rama%3F)
+- [GitLab Flow](https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/) — Documentación oficial
+- [Learn Git Branching](https://learngitbranching.js.org/?locale=es_ES) — Práctica interactiva de ramas y rebase
+- [Git MERGE vs REBASE — Academind](https://www.youtube.com/watch?v=0chZFIZLR_0) — Video explicativo (9 min)
+
+---
+
+## ➡️ Siguiente Lección
+
+[03 — GitLab CE: Overview →](./03-gitlab-ce-overview.md)
