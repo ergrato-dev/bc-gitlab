@@ -39,22 +39,11 @@ Con triggers:
 
 ### Multi-Project Pipelines
 
-Un proyecto dispara el pipeline de **otro proyecto diferente**:
-
-```
-Proyecto A ──trigger──→ Proyecto B
-(librería)               (aplicación que consume la lib)
-```
+Un proyecto dispara el pipeline de **otro proyecto diferente**. Ejemplo: el pipeline de la librería (Proyecto A) dispara automáticamente el pipeline de la aplicación que la consume (Proyecto B), verificando que la nueva versión no rompe nada.
 
 ### Parent-Child Pipelines
 
-Un pipeline dispara sub-pipelines **dentro del mismo proyecto**:
-
-```
-Pipeline principal (parent)
-  └── child-pipeline-1  (generado dinámicamente)
-  └── child-pipeline-2  (generado dinámicamente)
-```
+Un pipeline principal dispara sub-pipelines dentro del **mismo proyecto**. Los child pipelines se ejecutan en paralelo y el parent puede esperar sus resultados antes de continuar.
 
 ---
 
@@ -256,26 +245,9 @@ Proyecto → Settings → CI/CD → Pipeline triggers → Add new trigger
 
 ## 🔍 Ver Pipelines Encadenados en la UI
 
-GitLab muestra la cadena de pipelines en la UI:
+GitLab muestra la cadena de pipelines en la UI. En un multi-project pipeline, el job bridge del upstream muestra un enlace al pipeline downstream con su estado en tiempo real. Si se usa `strategy: depend`, el estado del bridge refleja el resultado del downstream.
 
-```
-Pipeline #100 (Proyecto A — librería)
-  ├── test: ✅ passed
-  ├── publish: ✅ passed
-  └── trigger-webapp: ✅ downstream ──→ Pipeline #200 (Proyecto B — webapp)
-                                            ├── install: ✅ passed
-                                            ├── test: ✅ passed
-                                            └── deploy: ✅ passed
-```
-
-Y para parent-child:
-```
-Pipeline #300 (parent)
-  └── child-frontend: ✅ ──→ Pipeline #301 (child)
-                                 └── build: ✅ / test: ✅
-  └── child-backend:  ✅ ──→ Pipeline #302 (child)
-                                 └── build: ✅ / test: ✅ / deploy: ✅
-```
+En un parent-child pipeline, la UI del pipeline padre muestra los child pipelines anidados con su propio grafo de stages y jobs. Al hacer click en cada child se navega a su detalle completo.
 
 ---
 
@@ -310,25 +282,6 @@ trigger-safe:
 ```
 
 ---
-
-## 🖼️ Diagrama: Multi-Project Pipeline
-
-> **Flujo completo:**
->
-> ```
-> [Librería v2.1.0 push]
->         ↓
-> Pipeline Librería
->   test ✓ → publish ✓ → trigger-webapp ─────────────→ Pipeline Webapp
->                       │                                  install ✓
->                       └─ trigger-api-server ────────→ Pipeline API
->                                                          install ✓
->                                                          test ✓
->
-> strategy: depend = el trigger job espera resultado
-> → Si Webapp falla: el job trigger-webapp se marca failed
-> → El pipeline de Librería refleja ese fallo
-> ```
 
 ---
 

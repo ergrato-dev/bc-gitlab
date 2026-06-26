@@ -16,13 +16,20 @@ Un pipeline sin variables es como una receta de cocina donde cada paso lleva la 
 
 Las variables CI/CD permiten:
 
+Sin variables:
+```yaml
+image: node:18-alpine
+docker push registry.gl/app:1.0.0
+curl https://api.staging.com
+TOKEN=abc123xyz
 ```
-Sin variables                        Con variables
-──────────────────────────────────   ────────────────────────────────────
-image: node:18-alpine                image: node:${NODE_VERSION}-alpine
-docker push registry.gl/app:1.0.0   docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
-curl https://api.staging.com         curl ${API_URL}
-TOKEN=abc123xyz                      TOKEN=${DEPLOY_TOKEN}  ← valor en Settings
+
+Con variables:
+```yaml
+image: node:${NODE_VERSION}-alpine
+docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+curl ${API_URL}
+TOKEN=${DEPLOY_TOKEN}  # ← valor en Settings
 ```
 
 **Resultado:** un solo cambio en Settings → CI/CD → Variables actualiza todos los jobs sin tocar el `.gitlab-ci.yml`.
@@ -172,18 +179,16 @@ docker-build:
 
 Cuando una misma variable está definida en múltiples lugares, **gana la de mayor prioridad** (menor número = mayor prioridad):
 
-```
-Prioridad  │  Origen
-───────────┼──────────────────────────────────────────
-    1       │  Variables del job (en el job mismo)
-    2       │  Variables de trigger (pasadas via trigger:variables)
-    3       │  Variables globales del .gitlab-ci.yml
-    4       │  Variables del proyecto (Settings → CI/CD)
-    5       │  Variables del grupo padre
-    6       │  Variables del grupo abuelo (herencia)
-    7       │  Variables de instancia (Admin Area)
-    8       │  Variables predefinidas de GitLab
-```
+| Prioridad | Origen |
+|-----------|--------|
+| **1** (mayor) | Variables del job (definidas en el job mismo) |
+| **2** | Variables de trigger (pasadas via `trigger:variables`) |
+| **3** | Variables globales del `.gitlab-ci.yml` |
+| **4** | Variables del proyecto (Settings → CI/CD) |
+| **5** | Variables del grupo padre |
+| **6** | Variables del grupo abuelo (herencia) |
+| **7** | Variables de instancia (Admin Area) |
+| **8** (menor) | Variables predefinidas de GitLab |
 
 **Ejemplo práctico:**
 

@@ -63,17 +63,12 @@ deploy-production:
 
 **Resultado en la UI (`Operate → Environments`):**
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│ Environments                                              [+]  │
-├────────────────────────────────────────────────────────────────┤
-│ ● production  https://mi-app.example.com                      │
-│   ✅ a1b2c3d4  feat: add auth  hace 3 días  Ana G.  [Rollback]│
-├────────────────────────────────────────────────────────────────┤
-│ ● staging     https://staging.mi-app.example.com              │
-│   ✅ f9e8d7c6  fix: login bug  hace 2 horas  Pedro M.         │
-└────────────────────────────────────────────────────────────────┘
-```
+En `Operate → Environments` aparece un listado de los environments activos con el estado de su último deployment, la URL clickeable, el commit y el usuario que deployó. Cada environment tiene disponible un botón de rollback al deployment anterior.
+
+| Environment | URL | Último deployment |
+|-------------|-----|-------------------|
+| production | https://mi-app.example.com | ✅ `a1b2c3d4` — feat: add auth — hace 3 días — Ana G. |
+| staging | https://staging.mi-app.example.com | ✅ `f9e8d7c6` — fix: login bug — hace 2 horas — Pedro M. |
 
 ---
 
