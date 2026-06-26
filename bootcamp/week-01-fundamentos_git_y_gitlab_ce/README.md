@@ -13,19 +13,19 @@
 
 - **Docker 27+** y **Docker Compose 2.32+** instalados
 - **Git 2.46+** instalado
-- **GitLab CE corriendo** via Docker Compose (se levanta en 1 paso)
 - Terminal de comandos
 - 8 GB RAM minimo
 
-> **Levanta GitLab antes de empezar:**
+> **GitLab CE se instala en detalle en Semana 02.** Para esta semana basta con levantarlo una vez:
 > ```bash
 > cd bc-gitlab
 > cp .env.example .env
 > docker compose up -d
-> # Esperar ~5 min. Obtener contrasena:
+> # Esperar ~5 min. Obtener contrasena root:
 > docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
 > ```
 > GitLab CE estara en `http://localhost`. Usa `root` + la contrasena obtenida.
+> La Semana 02 explica el `docker-compose.yml` en detalle y todos los parametros de configuracion.
 
 ## Estructura de la Semana
 
