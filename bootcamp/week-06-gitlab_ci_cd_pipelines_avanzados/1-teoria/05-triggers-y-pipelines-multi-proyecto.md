@@ -1,74 +1,360 @@
-# 05 — Triggers y Pipelines Multi-Proyecto
+# 📖 05 — Triggers y Pipelines Multi-Proyecto
 
-## Triggers de pipeline
+## 🎯 Objetivos de aprendizaje
 
-Un trigger permite iniciar un pipeline desde otro proyecto o sistema externo mediante un token.
+- ✅ Entender cuándo y por qué usar pipelines multi-proyecto
+- ✅ Configurar triggers downstream con `trigger:project` y `trigger:include`
+- ✅ Distinguir parent-child pipelines de multi-project pipelines
+- ✅ Pasar variables entre pipelines upstream y downstream
+- ✅ Usar `strategy: depend` para encadenar el resultado entre pipelines
 
-### Crear un trigger
-Settings → CI/CD → Pipeline triggers → Add trigger
+---
 
-### Usar un trigger desde otro `.gitlab-ci.yml`
+## 🤔 ¿Por Qué Pipelines Multi-Proyecto?
+
+Un sistema de software real raramente es un solo repositorio. Hay librerías compartidas, servicios independientes, y dependencias entre equipos:
+
+```
+Escenario real:
+  Equipo Libs  → mantiene libcomp (librería compartida)
+  Equipo Front → mantiene webapp (consume libcomp)
+  Equipo Back  → mantiene api-server (consume libcomp)
+
+Sin triggers:
+  1. Equipo Libs publica libcomp v2.1.0
+  2. Equipo Front debe notar manualmente el cambio y actualizar
+  3. Semana después: webapp tiene bug porque usa libcomp antigua
+
+Con triggers:
+  1. Equipo Libs publica libcomp v2.1.0
+  2. El pipeline de libcomp DISPARA automáticamente los pipelines de webapp y api-server
+  3. En minutos: ambos equipos saben si la nueva versión rompe algo
+```
+
+**Analogía:** Los triggers son como las notificaciones push de una app. No tienes que revisar manualmente si hay cambios — cuando pasa algo relevante, te notifica.
+
+---
+
+## 📐 Tipos de Pipelines Encadenados
+
+### Multi-Project Pipelines
+
+Un proyecto dispara el pipeline de **otro proyecto diferente**:
+
+```
+Proyecto A ──trigger──→ Proyecto B
+(librería)               (aplicación que consume la lib)
+```
+
+### Parent-Child Pipelines
+
+Un pipeline dispara sub-pipelines **dentro del mismo proyecto**:
+
+```
+Pipeline principal (parent)
+  └── child-pipeline-1  (generado dinámicamente)
+  └── child-pipeline-2  (generado dinámicamente)
+```
+
+---
+
+## 🔫 Multi-Project Pipelines
+
+### Configurar el trigger en el upstream (Proyecto A)
+
 ```yaml
-# Proyecto A: disparador
-trigger-downstream:
-  stage: deploy
+# Proyecto A: librería que dispara el pipeline de la app
+# .gitlab-ci.yml del Proyecto A
+
+stages:
+  - test
+  - publish
+  - notify-consumers
+
+test:
+  stage: test
+  script: npm test
+
+publish:
+  stage: publish
+  script:
+    - npm publish
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+/
+
+# Job bridge — dispara el pipeline downstream
+trigger-webapp:
+  stage: notify-consumers
   trigger:
-    project: grupo/proyecto-b
-    branch: main
-    strategy: depend  # Opcional: espera resultado
+    project: frontend/webapp    # ← ruta completa del proyecto downstream
+    branch: main                # ← en qué rama disparar (default: rama por defecto)
+    strategy: depend            # ← esperar resultado y reflejar estado
   variables:
-    UPSTREAM_COMMIT: $CI_COMMIT_SHA
+    LIBCOMP_VERSION: $CI_COMMIT_TAG    # ← pasar variables al downstream
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+/
 ```
 
 ### Opciones de `strategy`
-- No declarada (default): El job se marca exitoso inmediatamente
-- `depend`: El job espera a que el pipeline downstream termine y refleja su estado
 
-### Usar trigger via API
-```bash
-curl -X POST \
-  --form token=$CI_JOB_TOKEN \
-  --form ref=main \
-  "https://gitlab.example.com/api/v4/projects/42/trigger/pipeline"
-```
-
-## Pipelines parent-child
-
-Permite dividir un pipeline grande en sub-pipelines que se ejecutan en el mismo proyecto:
+| `strategy` | Comportamiento del job upstream |
+|------------|--------------------------------|
+| *(no declarada)* | El job bridge se marca **exitoso inmediatamente** sin esperar al downstream |
+| `depend` | El job bridge espera al downstream. Si el downstream falla, el upstream también falla |
 
 ```yaml
-# .gitlab-ci.yml principal
-generate-config:
-  stage: build
-  script: ./generate-child-pipeline.sh
-  artifacts:
-    paths:
-      - child-pipeline.yml
+# Con strategy: depend — encadenamiento de estado
+trigger-integration-tests:
+  stage: verify
+  trigger:
+    project: qa/integration-tests
+    branch: main
+    strategy: depend    # ← el pipeline upstream "hereda" el resultado del downstream
+  variables:
+    UPSTREAM_COMMIT: $CI_COMMIT_SHA
+    UPSTREAM_PROJECT: $CI_PROJECT_PATH
+```
 
-child-pipeline:
-  stage: test
+---
+
+## 👶 Parent-Child Pipelines
+
+Dividir un pipeline grande en sub-pipelines del mismo proyecto. Útil para monorepos:
+
+```yaml
+# .gitlab-ci.yml (parent pipeline)
+stages:
+  - trigger-children
+
+# Disparar child pipelines definidos en archivos locales
+child-frontend:
+  stage: trigger-children
   trigger:
     include:
-      - artifact: child-pipeline.yml
-        job: generate-config
+      - local: .gitlab/pipelines/frontend.yml
+    strategy: depend
+
+child-backend:
+  stage: trigger-children
+  trigger:
+    include:
+      - local: .gitlab/pipelines/backend.yml
+    strategy: depend
+
+child-infra:
+  stage: trigger-children
+  trigger:
+    include:
+      - local: .gitlab/pipelines/infra.yml
     strategy: depend
 ```
-
-## Pipelines multi-proyecto
-
-Caso de uso tipico:
-1. Equipo A construye una libreria (Proyecto A)
-2. Equipo B consume la libreria (Proyecto B)
-3. Cuando Proyecto A publica una nueva version, dispara automáticamente el pipeline de Proyecto B
 
 ```yaml
-# Proyecto A: libreria
-publish-and-trigger:
-  stage: deploy
+# .gitlab/pipelines/frontend.yml (child pipeline)
+stages:
+  - build
+  - test
+
+build-frontend:
+  stage: build
+  image: node:18-alpine
   script:
-    - npm publish
-  trigger:
-    project: frontend/app
-    branch: main
-    strategy: depend
+    - npm ci
+    - npm run build
+
+test-frontend:
+  stage: test
+  image: node:18-alpine
+  script:
+    - npm test
 ```
+
+---
+
+## 🔄 Child Pipelines Dinámicos
+
+Los child pipelines pueden generarse dinámicamente desde scripts — útil cuando los sub-pipelines dependen de qué archivos cambiaron:
+
+```yaml
+# .gitlab-ci.yml
+stages:
+  - generate
+  - trigger
+
+# Paso 1: Script genera el archivo YAML del child pipeline
+generate-pipeline:
+  stage: generate
+  script:
+    # ¿QUÉ HACE?: Analiza qué services cambiaron y genera un pipeline específico
+    # ¿POR QUÉ?: En un monorepo con 20 microservicios, no queremos testear todos
+    # ¿PARA QUÉ?: Solo testear y deployar los services que realmente cambiaron
+    - python3 scripts/generate-ci.py --changed-files="$(git diff --name-only HEAD~1)" \
+      > generated-pipeline.yml
+  artifacts:
+    paths:
+      - generated-pipeline.yml
+
+# Paso 2: Usar el YAML generado como child pipeline
+trigger-dynamic:
+  stage: trigger
+  trigger:
+    include:
+      - artifact: generated-pipeline.yml
+        job: generate-pipeline   # ← tomar el artifact del job anterior
+    strategy: depend
+  needs: [generate-pipeline]
+```
+
+---
+
+## 📨 Pasar Variables a Downstream
+
+```yaml
+# Upstream → Downstream: pasar variables con trigger:variables
+trigger-downstream:
+  stage: notify
+  trigger:
+    project: qa/smoke-tests
+    strategy: depend
+  variables:
+    UPSTREAM_COMMIT_SHA: $CI_COMMIT_SHA
+    UPSTREAM_PIPELINE_ID: $CI_PIPELINE_ID
+    UPSTREAM_PROJECT_URL: $CI_PROJECT_URL
+    DEPLOY_ENV: "staging"
+    APP_VERSION: $CI_COMMIT_TAG
+
+# El downstream puede acceder a estas como variables normales:
+# $UPSTREAM_COMMIT_SHA, $DEPLOY_ENV, etc.
+```
+
+---
+
+## 🔗 Triggers via API
+
+Además de los `trigger:` jobs, puedes disparar un pipeline desde cualquier sistema externo via API:
+
+```bash
+# ¿QUÉ HACE?: Dispara el pipeline del proyecto 42 en la rama main
+# ¿POR QUÉ?: Permite que sistemas externos (Jenkins, webhook de GitHub, etc.) disparen pipelines de GitLab
+# ¿PARA QUÉ?: Integración con herramientas fuera de GitLab
+curl -X POST \
+  --form token="${PIPELINE_TRIGGER_TOKEN}" \
+  --form ref=main \
+  --form "variables[DEPLOY_ENV]=production" \
+  --form "variables[APP_VERSION]=2.1.0" \
+  "http://localhost/api/v4/projects/42/trigger/pipeline"
+```
+
+**Crear el trigger token:**
+```
+Proyecto → Settings → CI/CD → Pipeline triggers → Add new trigger
+→ Guarda el token (solo visible una vez)
+→ Úsalo como PIPELINE_TRIGGER_TOKEN en tus scripts externos
+```
+
+---
+
+## 🔍 Ver Pipelines Encadenados en la UI
+
+GitLab muestra la cadena de pipelines en la UI:
+
+```
+Pipeline #100 (Proyecto A — librería)
+  ├── test: ✅ passed
+  ├── publish: ✅ passed
+  └── trigger-webapp: ✅ downstream ──→ Pipeline #200 (Proyecto B — webapp)
+                                            ├── install: ✅ passed
+                                            ├── test: ✅ passed
+                                            └── deploy: ✅ passed
+```
+
+Y para parent-child:
+```
+Pipeline #300 (parent)
+  └── child-frontend: ✅ ──→ Pipeline #301 (child)
+                                 └── build: ✅ / test: ✅
+  └── child-backend:  ✅ ──→ Pipeline #302 (child)
+                                 └── build: ✅ / test: ✅ / deploy: ✅
+```
+
+---
+
+## ⚖️ Multi-Project vs Parent-Child
+
+| Criterio | Multi-Project | Parent-Child |
+|----------|--------------|--------------|
+| Proyectos | Diferentes repositorios | Mismo repositorio |
+| Caso de uso | Notificar consumidores de una lib | Monorepo con múltiples servicios |
+| Variables compartidas | Via `trigger:variables` | Heredadas automáticamente del parent |
+| Artifacts compartidos | No directamente | Via `needs:` con `project:` |
+| Visibilidad en UI | Pipelines separados enlazados | Pipelines anidados en el mismo proyecto |
+
+---
+
+## 🛡️ Seguridad en Triggers
+
+```yaml
+# CI_JOB_TOKEN — forma segura de disparar pipelines entre proyectos del mismo GitLab
+# No necesita crear un trigger token manualmente
+trigger-safe:
+  stage: notify
+  script:
+    - |
+      curl -X POST \
+        --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+        --form ref=main \
+        "http://localhost/api/v4/projects/42/trigger/pipeline"
+
+# Requiere que el proyecto destino permita acceso desde CI_JOB_TOKEN del proyecto fuente:
+# Proyecto B → Settings → CI/CD → Token Access → Allow project A
+```
+
+---
+
+## 🖼️ Diagrama: Multi-Project Pipeline
+
+> **Flujo completo:**
+>
+> ```
+> [Librería v2.1.0 push]
+>         ↓
+> Pipeline Librería
+>   test ✓ → publish ✓ → trigger-webapp ─────────────→ Pipeline Webapp
+>                       │                                  install ✓
+>                       └─ trigger-api-server ────────→ Pipeline API
+>                                                          install ✓
+>                                                          test ✓
+>
+> strategy: depend = el trigger job espera resultado
+> → Si Webapp falla: el job trigger-webapp se marca failed
+> → El pipeline de Librería refleja ese fallo
+> ```
+
+---
+
+## 🤔 Preguntas de reflexión
+
+1. Tienes un monorepo con 15 microservicios. Si usas parent-child pipelines sin ningún filtro de `changes`, cada push ejecuta 15 pipelines hijos. ¿Cómo optimizarías esto para solo ejecutar los pipelines de los servicios que cambiaron?
+
+2. `strategy: depend` hace que el upstream espere al downstream. ¿Qué pasa con el tiempo total del pipeline? ¿En qué escenarios usarías triggers sin `strategy: depend`?
+
+3. Un pipeline de QA tarda 45 minutos. Si lo disparas como downstream con `strategy: depend`, el job upstream bloquea por 45 minutos. ¿Cómo afecta esto al uso de runners del proyecto upstream?
+
+4. Los trigger tokens permiten que sistemas externos disparen pipelines. ¿Qué riesgos de seguridad existen? ¿Cómo los mitigarías? (Pista: considera dónde se almacena el token, quién tiene acceso, y si puede usarse para inyectar código malicioso via variables.)
+
+5. En un pipeline parent-child dinámico, el script `generate-ci.py` genera el YAML del child pipeline. ¿Qué pasa si el script tiene un bug y genera YAML inválido? ¿GitLab lo detecta antes de intentar ejecutar? ¿O el child pipeline simplemente falla?
+
+---
+
+## 📚 Recursos adicionales
+
+- [Multi-Project Pipelines](https://docs.gitlab.com/ee/ci/pipelines/multi_project_pipelines.html)
+- [Parent-Child Pipelines](https://docs.gitlab.com/ee/ci/pipelines/parent_child_pipelines.html)
+- [Downstream Pipelines](https://docs.gitlab.com/ee/ci/pipelines/downstream_pipelines.html)
+- [trigger Keyword Reference](https://docs.gitlab.com/ee/ci/yaml/#trigger)
+- [Pipeline Trigger API](https://docs.gitlab.com/ee/ci/triggers/)
+
+---
+
+⬅️ **Lección anterior:** [04 — Environments y Deployments](./04-environments-y-deployments.md)
+➡️ **Prácticas:** [01 — Variables y Secretos](../2-practicas/01-variables-y-secretos/README.md)
