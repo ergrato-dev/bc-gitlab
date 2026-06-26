@@ -1,4 +1,4 @@
-# Semana 03 — Proyectos, Grupos y Organizacion
+# Semana 03 — Proyectos, Grupos y Organización
 
 ## Objetivos
 
@@ -15,29 +15,29 @@
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Proyectos, grupos, visibilidad, branching |
-| Practicas | 3h | Crear grupos, proyectos, proteger ramas |
+| Teoría | 2h | Proyectos, grupos, visibilidad, branching |
+| Prácticas | 3h | Crear grupos, proyectos, proteger ramas |
 | Proyecto | 1h | Estructura organizacional completa |
 
 ## Contenidos
 
-### Teoria
-1. [01-proyectos.md](./1-teoria/01-proyectos.md) — Creacion y gestion
-2. [02-grupos-y-subgrupos.md](./1-teoria/02-grupos-y-subgrupos.md) — Organizacion jerarquica
+### Teoría
+1. [01-proyectos.md](./1-teoria/01-proyectos.md) — Creación y gestion
+2. [02-grupos-y-subgrupos.md](./1-teoria/02-grupos-y-subgrupos.md) — Organización jerárquica
 3. [03-visibilidad-y-permisos.md](./1-teoria/03-visibilidad-y-permisos.md) — Public/Internal/Private
 4. [04-proteccion-de-ramas.md](./1-teoria/04-proteccion-de-ramas.md) — Protected branches
 5. [05-estrategias-branching.md](./1-teoria/05-estrategias-branching.md) — Git Flow, GitHub Flow, Trunk-based
 
-### Practicas
+### Prácticas
 1. [01-crear-proyectos/](./2-practicas/01-crear-proyectos/) — Diferentes tipos de proyectos
 2. [02-grupos-y-subgrupos/](./2-practicas/02-grupos-y-subgrupos/) — Jerarquia organizacional
 3. [03-permisos-y-roles/](./2-practicas/03-permisos-y-roles/) — Configurar miembros y permisos
 4. [04-proteger-ramas/](./2-practicas/04-proteger-ramas/) — Protected branches y push rules
 
 ### Proyecto
-- [3-proyecto/](./3-proyecto/) — Disenar estructura para equipo ficticio
+- [3-proyecto/](./3-proyecto/) — Diseñado para|Diseñar estructura para equipo ficticio
 
 ## Entregables
 

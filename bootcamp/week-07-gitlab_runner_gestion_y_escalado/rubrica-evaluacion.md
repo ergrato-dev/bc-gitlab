@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 07
+# Rúbrica de Evaluación — Semana 07
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Sistema de tags y enrutamiento | 25% |
 | Concepto de autoscaling | 20% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

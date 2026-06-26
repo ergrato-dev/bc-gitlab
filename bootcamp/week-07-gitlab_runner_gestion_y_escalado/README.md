@@ -1,4 +1,4 @@
-# Semana 07 — GitLab Runner: Gestion y Escalado
+# Semana 07 — GitLab Runner: Gestión y Escalado
 
 ## Objetivos
 
@@ -15,15 +15,15 @@
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Tipos de Runner, ejecutores, autoscaling |
-| Practicas | 3h | Instalar, registrar, configurar runners |
+| Teoría | 2h | Tipos de Runner, ejecutores, autoscaling |
+| Prácticas | 3h | Instalar, registrar, configurar runners |
 | Proyecto | 1h | Infraestructura de Runners completa |
 
 ## Contenidos
 
-### Teoria
+### Teoría
 1. [01-tipos-de-runners.md](./1-teoria/01-tipos-de-runners.md) — Shared, group, specific, instance
 2. [02-ejecutores.md](./1-teoria/02-ejecutores.md) — Docker, Shell, Kubernetes, VirtualBox
 3. [03-registro-y-configuracion.md](./1-teoria/03-registro-y-configuracion.md) — register, config.toml
@@ -32,7 +32,7 @@
 
 > **Docker Machine fue deprecado en 2021 y eliminado en 2023.** El autoscaling moderno de GitLab Runner usa **Fleeting** (plugin-based autoscaling) disponible desde GitLab Runner 15.8+. Fleeting soporta AWS EC2, GCP, Azure y cualquier proveedor via plugin. Docker Machine NO debe usarse en instalaciones nuevas.
 
-### Practicas
+### Prácticas
 1. [01-instalar-runner/](./2-practicas/01-instalar-runner/) — Instalar y registrar Runner
 2. [02-configurar-ejecutores/](./2-practicas/02-configurar-ejecutores/) — Docker vs Shell executor
 3. [03-tags-y-routing/](./2-practicas/03-tags-y-routing/) — Tags para jobs especificos

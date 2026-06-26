@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 03
+# Rúbrica de Evaluación — Semana 03
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Niveles de visibilidad y roles | 30% |
 | Proteccion de ramas | 20% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

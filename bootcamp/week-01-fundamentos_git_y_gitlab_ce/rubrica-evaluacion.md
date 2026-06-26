@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 01
+# Rúbrica de Evaluación — Semana 01
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Arquitectura de GitLab CE | 25% |
 | Flujo de trabajo basico (clone -> edit -> commit -> push) | 25% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 06
+# Rúbrica de Evaluación — Semana 06
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Proposito de include | 25% |
 | Entornos, deployments y triggers | 20% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

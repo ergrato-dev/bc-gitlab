@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 08
+# Rúbrica de Evaluación — Semana 08
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Package Registry (formatos soportados) | 25% |
 | Container Scanning y tipos de escaneo | 30% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

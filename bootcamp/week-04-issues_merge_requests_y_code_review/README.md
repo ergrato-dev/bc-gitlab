@@ -15,22 +15,22 @@
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Issues, MRs, code review, GitLab Flow |
-| Practicas | 3h | Crear issues, MRs, revisiones |
+| Teoría | 2h | Issues, MRs, code review, GitLab Flow |
+| Prácticas | 3h | Crear issues, MRs, revisiones |
 | Proyecto | 1h | Ciclo completo issue → MR → review → merge |
 
 ## Contenidos
 
-### Teoria
+### Teoría
 1. [01-issues-y-trackers.md](./1-teoria/01-issues-y-trackers.md) — Labels, milestones, epics
-2. [02-merge-requests.md](./1-teoria/02-merge-requests.md) — Creacion y configuracion
+2. [02-merge-requests.md](./1-teoria/02-merge-requests.md) — Creación y configuracion
 3. [03-code-review.md](./1-teoria/03-code-review.md) — Mejores practicas
 4. [04-gitlab-flow.md](./1-teoria/04-gitlab-flow.md) — Flujo de trabajo GitLab
 5. [05-templates-y-automatizacion.md](./1-teoria/05-templates-y-automatizacion.md) — MR/Issue templates
 
-### Practicas
+### Prácticas
 1. [01-crear-issues/](./2-practicas/01-crear-issues/) — Issues con labels y milestones
 2. [02-crear-merge-requests/](./2-practicas/02-crear-merge-requests/) — MR con templates
 3. [03-code-review-practico/](./2-practicas/03-code-review-practico/) — Revision entre pares

@@ -29,22 +29,22 @@
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Git fundamentals, GitLab CE overview |
-| Practicas | 3h | Hands-on Git + primer proyecto GitLab |
+| Teoría | 2h | Git fundamentals, GitLab CE overview |
+| Prácticas | 3h | Hands-on Git + primer proyecto GitLab |
 | Proyecto | 1h | Configurar repo personal en GitLab CE |
 
 ## Contenidos
 
-### Teoria
+### Teoría
 1. [01-git-fundamentos.md](./1-teoria/01-git-fundamentos.md) — Comandos esenciales de Git
 2. [02-git-ramas-y-flujos.md](./1-teoria/02-git-ramas-y-flujos.md) — Ramas, merge, rebase
-3. [03-gitlab-ce-overview.md](./1-teoria/03-gitlab-ce-overview.md) — Que es GitLab CE
+3. [03-gitlab-ce-overview.md](./1-teoria/03-gitlab-ce-overview.md) — Qué es GitLab CE
 4. [04-arquitectura-gitlab.md](./1-teoria/04-arquitectura-gitlab.md) — Componentes internos
 5. [05-primeros-pasos-gitlab.md](./1-teoria/05-primeros-pasos-gitlab.md) — Interfaz web y SSH
 
-### Practicas
+### Prácticas
 1. [01-configuracion-git/](./2-practicas/01-configuracion-git/) — Configurar Git (user, email, SSH)
 2. [02-flujo-git-basico/](./2-practicas/02-flujo-git-basico/) — Clone, commit, push, pull
 3. [03-ramas-y-merges/](./2-practicas/03-ramas-y-merges/) — Crear ramas y fusionar

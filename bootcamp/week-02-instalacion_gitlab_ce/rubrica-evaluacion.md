@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 02
+# Rúbrica de Evaluación — Semana 02
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Variables de entorno y persistencia | 25% |
 | Resolucion de problemas comunes | 20% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|

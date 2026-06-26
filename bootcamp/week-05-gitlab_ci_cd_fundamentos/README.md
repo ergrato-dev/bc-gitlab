@@ -48,22 +48,22 @@ docker compose exec gitlab-runner gitlab-runner list
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Conceptos CI/CD, .gitlab-ci.yml, stages |
-| Practicas | 3h | Pipeline basico, imagenes, artifacts |
+| Teoría | 2h | Conceptos CI/CD, .gitlab-ci.yml, stages |
+| Prácticas | 3h | Pipeline básico, imágenes, artifacts |
 | Proyecto | 1h | Pipeline CI funcional para proyecto real |
 
 ## Contenidos
 
-### Teoria
+### Teoría
 1. [01-que-es-ci-cd.md](./1-teoria/01-que-es-ci-cd.md) — Continuous Integration / Delivery / Deployment
 2. [02-gitlab-ci-yml.md](./1-teoria/02-gitlab-ci-yml.md) — Estructura del archivo de pipeline
 3. [03-stages-y-jobs.md](./1-teoria/03-stages-y-jobs.md) — Stages, jobs, script
 4. [04-imagenes-docker.md](./1-teoria/04-imagenes-docker.md) — Usar Docker images en CI
 5. [05-artifacts-y-cache.md](./1-teoria/05-artifacts-y-cache.md) — Persistencia entre jobs
 
-### Practicas
+### Prácticas
 1. [01-primer-pipeline/](./2-practicas/01-primer-pipeline/) — Pipeline minimo funcional
 2. [02-stages-y-jobs/](./2-practicas/02-stages-y-jobs/) — Multiples stages
 3. [03-imagenes-personalizadas/](./2-practicas/03-imagenes-personalizadas/) — Docker images custom

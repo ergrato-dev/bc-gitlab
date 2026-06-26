@@ -4,7 +4,7 @@
 
 - Configurar y usar GitLab Container Registry
 - Construir y publicar imagenes Docker en el pipeline
-- Gestionar versiones y tags de imagenes
+- Gestionar versiones y tags de imágenes
 - Configurar GitLab Package Registry (npm, Maven, PyPI)
 - Implementar escaneo de seguridad de contenedores
 
@@ -15,22 +15,22 @@
 
 ## Estructura de la Semana
 
-| Componente | Tiempo | Descripcion |
+| Componente | Tiempo | Descripción |
 |-----------|--------|-------------|
-| Teoria | 2h | Container Registry, Package Registry, seguridad |
-| Practicas | 3h | Build y push de imagenes, publicar paquetes |
+| Teoría | 2h | Container Registry, Package Registry, seguridad |
+| Prácticas | 3h | Build y push de imágenes, publicar paquetes |
 | Proyecto | 1h | Pipeline que publica imagen y paquete |
 
 ## Contenidos
 
-### Teoria
-1. [01-container-registry.md](./1-teoria/01-container-registry.md) — Configuracion y uso
+### Teoría
+1. [01-container-registry.md](./1-teoria/01-container-registry.md) — Configuración y uso
 2. [02-docker-build-en-ci.md](./1-teoria/02-docker-build-en-ci.md) — Docker-in-Docker, Kaniko
 3. [03-package-registry.md](./1-teoria/03-package-registry.md) — npm, Maven, PyPI, NuGet
 4. [04-gestion-de-versiones.md](./1-teoria/04-gestion-de-versiones.md) — Tags semanticos, limpieza
 5. [05-container-scanning.md](./1-teoria/05-container-scanning.md) — SAST, Dependency Scanning
 
-### Practicas
+### Prácticas
 1. [01-container-registry-setup/](./2-practicas/01-container-registry-setup/) — Habilitar y autenticar
 2. [02-build-y-push-imagenes/](./2-practicas/02-build-y-push-imagenes/) — Pipeline de Docker build
 3. [03-package-registry/](./2-practicas/03-package-registry/) — Publicar paquete npm/PyPI

@@ -1,4 +1,4 @@
-# Rubrica de Evaluacion — Semana 05
+# Rúbrica de Evaluación — Semana 05
 
 ## Evidencia de Conocimiento (30%)
 
@@ -9,7 +9,7 @@
 | Relacion stages-jobs-scripts | 25% |
 | Proposito de artifacts y cache | 20% |
 
-## Evidencia de Desempeno (40%)
+## Evidencia de Desempeño (40%)
 
 | Habilidad | Peso |
 |----------|------|
