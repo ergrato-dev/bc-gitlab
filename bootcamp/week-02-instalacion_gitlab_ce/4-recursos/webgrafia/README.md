@@ -1,25 +1,59 @@
-# Webgrafia — Semana 02
+# 🌐 Webgrafía — Semana 02
 
-- [Docker Docs — Get Started](https://docs.docker.com/get-started/)
-  Tutorial oficial de Docker. Cubre conceptos basicos, Dockerfile, Compose.
+Referencias web curadas, organizadas por tema y nivel de uso durante la semana.
 
-- [Docker Compose File Reference](https://docs.docker.com/compose/compose-file/)
-  Documentacion completa de todas las keys soportadas en docker-compose.yml.
+---
 
-- [GitLab CE Docker Installation](https://docs.gitlab.com/ee/install/docker.html)
-  Documentacion oficial de instalacion de GitLab CE con Docker. Incluye troubleshooting y configuracion avanzada.
+## Referencias principales
 
-- [GitLab Environment Variables](https://docs.gitlab.com/ee/install/docker.html#pre-configure-docker-container)
-  Lista de todas las variables de entorno para configurar GitLab via `GITLAB_OMNIBUS_CONFIG`.
+| URL | Descripción | Cuándo usarla |
+|-----|-------------|---------------|
+| [hub.docker.com/r/gitlab/gitlab-ce](https://hub.docker.com/r/gitlab/gitlab-ce) | Imagen oficial de GitLab CE en Docker Hub. Tags, changelog, variables de entorno | Verificar qué versión usar |
+| [docs.gitlab.com/ee/install/docker/](https://docs.gitlab.com/ee/install/docker/) | Guía oficial de instalación de GitLab CE con Docker | Práctica 02 |
+| [docs.docker.com/compose/](https://docs.docker.com/compose/) | Referencia completa de Docker Compose (CLI y formato de archivo) | Durante todas las prácticas |
+| [docs.docker.com/storage/volumes/](https://docs.docker.com/storage/volumes/) | Documentación de volúmenes Docker: named, bind mounts, tmpfs | Práctica 04 y teoría |
+| [docs.gitlab.com/omnibus/settings/](https://docs.gitlab.com/omnibus/settings/) | Referencia de GITLAB_OMNIBUS_CONFIG — todas las opciones de gitlab.rb | Configuración de la instancia |
 
-- [Docker Hub — gitlab/gitlab-ce](https://hub.docker.com/r/gitlab/gitlab-ce)
-  Repositorio oficial de la imagen Docker de GitLab CE. Tags, versiones, changelog.
+---
 
-- [Configure GitLab Runner in Docker](https://docs.gitlab.com/runner/install/docker.html)
-  Instalacion y configuracion de GitLab Runner con Docker.
+## Referencias de administración
 
-- [gitlab-ctl Commands Reference](https://docs.gitlab.com/omnibus/maintenance/)
-  Comandos de administracion: status, restart, reconfigure, tail, backup, restore.
+| URL | Descripción | Nivel |
+|-----|-------------|-------|
+| [docs.gitlab.com/omnibus/maintenance/](https://docs.gitlab.com/omnibus/maintenance/) | Referencia de `gitlab-ctl`: status, restart, reconfigure, tail, backup | Básico |
+| [docs.gitlab.com/ee/administration/raketasks/](https://docs.gitlab.com/ee/administration/raketasks/) | Comandos `gitlab-rake`: check, backup, importaciones | Básico |
+| [docs.gitlab.com/ee/administration/backup_restore/](https://docs.gitlab.com/ee/administration/backup_restore/) | Guía completa de backup y restore (incluye S3, NFS) | Básico-Intermedio |
+| [docs.gitlab.com/omnibus/settings/smtp.html](https://docs.gitlab.com/omnibus/settings/smtp.html) | Configuración SMTP para Gmail, SendGrid, Office 365 y más | Intermedio |
 
-- [GitLab SMTP Configuration](https://docs.gitlab.com/omnibus/settings/smtp.html)
-  Guia de configuracion SMTP para todos los proveedores (Gmail, SendGrid, Office 365, etc.).
+---
+
+## Referencias de Docker
+
+| URL | Descripción | Nivel |
+|-----|-------------|-------|
+| [docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/) | Especificación completa de docker-compose.yml: todas las keys | Referencia |
+| [docs.docker.com/compose/profiles/](https://docs.docker.com/compose/profiles/) | Profiles de Docker Compose (--profile monitoring) | Básico |
+| [docs.docker.com/compose/environment-variables/](https://docs.docker.com/compose/environment-variables/) | Variables de entorno en Compose: .env, ${VAR}, set_vars | Básico |
+| [docs.docker.com/engine/reference/commandline/stats/](https://docs.docker.com/engine/reference/commandline/stats/) | Referencia de `docker stats` para monitoreo de recursos | Básico |
+
+---
+
+## Herramientas online
+
+| URL | Descripción | Uso |
+|-----|-------------|-----|
+| [play-with-docker.com](https://labs.play-with-docker.com/) | Entorno Docker en el navegador — sin instalación local | Practicar si no tienes Docker local |
+| [composerize.com](https://www.composerize.com/) | Convierte comandos `docker run` a formato docker-compose.yml | Utilidad |
+| [yaml.to](https://yaml.to/json) | Valida y formatea archivos YAML en línea | Depurar docker-compose.yml |
+| [crontab.guru](https://crontab.guru/) | Editor visual de expresiones cron | Configurar backups automáticos |
+
+---
+
+## Troubleshooting y comunidad
+
+| URL | Descripción |
+|-----|-------------|
+| [docs.gitlab.com/ee/install/docker/troubleshooting.html](https://docs.gitlab.com/ee/install/docker/troubleshooting.html) | Troubleshooting oficial de GitLab con Docker |
+| [forum.gitlab.com](https://forum.gitlab.com/) | Foro oficial de la comunidad GitLab |
+| [stackoverflow.com/questions/tagged/gitlab](https://stackoverflow.com/questions/tagged/gitlab) | Preguntas frecuentes sobre GitLab en Stack Overflow |
+| [gitlab.com/gitlab-org/gitlab/-/issues](https://gitlab.com/gitlab-org/gitlab/-/issues) | Reportar bugs o buscar problemas conocidos |
