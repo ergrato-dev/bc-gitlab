@@ -1,0 +1,11 @@
+# .gitlab/agents/minikube-bootcamp/config.yaml
+# ¿QUÉ HACE?: Configura qué proyectos puede sincronizar el agent y con qué permisos
+# ¿POR QUÉ?: Sin esta configuración explícita, el agent no sincroniza nada (seguro por defecto)
+# ¿PARA QUÉ?: Definir el alcance exacto de lo que el agent puede leer y aplicar en el clúster
+gitops:
+  manifest_projects:
+    - id: plataforma/gitops-manifiestos
+      default_namespace: produccion
+      paths:
+        - glob: '/manifests/**/*.yaml'
+      reconcile_timeout: 60s

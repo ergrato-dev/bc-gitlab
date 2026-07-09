@@ -5,15 +5,15 @@
 </div>
 
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](./LICENSE)
-[![12 Semanas](https://img.shields.io/badge/semanas-12-yellow.svg)](#)
-[![72 Horas](https://img.shields.io/badge/horas-72-orange.svg)](#)
+[![13 Semanas](https://img.shields.io/badge/semanas-13-yellow.svg)](#)
+[![78 Horas](https://img.shields.io/badge/horas-78-orange.svg)](#)
 [![GitLab CE](https://img.shields.io/badge/GitLab-CE-fc6d26?logo=gitlab&logoColor=white)](#)
 
 ---
 
 ## Descripcion
 
-Bootcamp intensivo de **12 semanas (~3 meses)** enfocado en el dominio de **GitLab Community Edition** como plataforma DevOps integral. Disenado para llevar a estudiantes de cero a **Administrador DevOps Junior**, con enfasis en CI/CD, administracion de infraestructura, automatizacion y mejores practicas.
+Bootcamp intensivo de **13 semanas (~3.5 meses)** enfocado en el dominio de **GitLab Community Edition** como plataforma DevOps integral. Disenado para llevar a estudiantes de cero a **Administrador DevOps Junior**, con enfasis en CI/CD, administracion de infraestructura, automatizacion, Infraestructura como Codigo (IaC) y mejores practicas.
 
 ### Objetivos
 
@@ -29,6 +29,7 @@ Al finalizar el bootcamp, los estudiantes seran capaces de:
 - Configurar monitoreo, backup y alta disponibilidad
 - Integrar GitLab con herramientas externas (Slack, Jira, Prometheus)
 - Desplegar una plataforma DevOps completa lista para produccion
+- Gestionar infraestructura GitLab como codigo con Terraform y practicar GitOps con GitLab Kubernetes Agent
 
 ### Por que GitLab CE?
 
@@ -45,9 +46,9 @@ GitLab CE es la version gratuita y open source de la plataforma DevOps mas compl
 | **Fundamentos** | 1-3 | 18h | Git, instalacion GitLab CE, proyectos y grupos |
 | **Intermedio** | 4-7 | 24h | Issues/MR, CI/CD basico y avanzado, GitLab Runner |
 | **Avanzado** | 8-11 | 24h | Registry, API, administracion, seguridad, monitoreo |
-| **Produccion** | 12 | 6h | Proyecto final — Plataforma DevOps completa |
+| **Produccion** | 12-13 | 12h | Proyecto final — Plataforma DevOps completa; IaC y GitOps con Terraform |
 
-**Total: 12 semanas** | **72 horas** de formacion intensiva
+**Total: 13 semanas** | **78 horas** de formacion intensiva
 
 ---
 
@@ -237,7 +238,7 @@ Ver el archivo [LICENSE](./LICENSE) para el texto completo.
 ---
 
 **Bootcamp GitLab CE — Zero to Hero**
-*De cero a administrador DevOps en 3 meses — Todo sobre Docker*
+*De cero a administrador DevOps en 3.5 meses — Todo sobre Docker*
 
 [Comenzar Semana 1](./bootcamp/week-01-fundamentos_git_y_gitlab_ce/README.md) • [Ver Documentacion](./docs) • [Reportar Issue](https://github.com/ergrato-dev/bc-gitlab/issues)
 

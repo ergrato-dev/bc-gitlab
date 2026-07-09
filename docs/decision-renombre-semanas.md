@@ -33,3 +33,4 @@ Usar el formato `week-XX-tema_principal` donde:
 | 10 | `week-10-administracion_y_seguridad` | Administracion y Seguridad |
 | 11 | `week-11-monitoreo_backup_y_alta_disponibilidad` | Monitoreo, Backup y Alta Disponibilidad |
 | 12 | `week-12-proyecto_final` | Proyecto Final — Plataforma DevOps Completa |
+| 13 | `week-13-infraestructura_como_codigo_gitops` | Infraestructura como Código y GitOps |

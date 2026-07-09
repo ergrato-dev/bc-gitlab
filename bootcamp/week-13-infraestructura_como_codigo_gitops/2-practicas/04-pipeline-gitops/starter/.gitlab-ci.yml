@@ -1,0 +1,17 @@
+# ¿QUÉ HACE?: Pipeline que actualiza el manifiesto GitOps en vez de desplegar directamente
+# ¿POR QUÉ?: El agent (no este pipeline) tiene las credenciales de escritura hacia el clúster
+# ¿PARA QUÉ?: Completar el job segun el Paso 3 del README de la práctica 04
+stages:
+  - deploy
+
+actualizar_manifiesto:
+  stage: deploy
+  image: alpine/git:latest
+  script:
+    # TODO: clonar el repo de manifiestos con CI_JOB_TOKEN
+    # - git clone "https://gitlab-ci-token:${CI_JOB_TOKEN}@localhost/plataforma/gitops-manifiestos.git" repo
+    # TODO: reemplazar el tag de imagen con sed
+    # TODO: commit + push
+    - echo "Completar este job segun el README"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

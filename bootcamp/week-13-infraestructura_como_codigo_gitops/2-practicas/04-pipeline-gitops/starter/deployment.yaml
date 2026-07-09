@@ -1,0 +1,24 @@
+# manifests/produccion/demo-app/deployment.yaml
+# ¿QUÉ HACE?: Declara el estado deseado del Deployment de la app demo
+# ¿POR QUÉ?: Este archivo es la fuente de verdad — el agent lo reconcilia continuamente
+# ¿PARA QUÉ?: El pipeline (paso 3 del README) actualiza solo la línea "image:" en cada deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  namespace: produccion
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+    spec:
+      containers:
+        - name: demo-app
+          image: registry.local/plataforma/demo-app:latest
+          ports:
+            - containerPort: 8080

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="260" viewBox="0 0 800 260">
+  <rect width="800" height="260" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">GitLab Kubernetes Agent — Minikube ↔ GitLab</text>
+
+  <!-- GitLab -->
+  <rect x="30" y="60" width="200" height="100" rx="8" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="130" y="83" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#e24329">GitLab CE</text>
+  <text x="130" y="103" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">kas (Kubernetes</text>
+  <text x="130" y="117" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Agent Server)</text>
+  <text x="130" y="137" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">.gitlab/agents/*/config.yaml</text>
+
+  <!-- Arrow: agentk initiates -->
+  <text x="400" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#fc6d26">gRPC/WebSocket</text>
+  <text x="400" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">conexión iniciada por agentk →</text>
+  <line x1="240" y1="130" x2="560" y2="130" stroke="#fc6d26" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="#fc6d26"/>
+    </marker>
+  </defs>
+
+  <!-- Minikube -->
+  <rect x="570" y="60" width="210" height="100" rx="8" fill="#16213e" stroke="#554488" stroke-width="2"/>
+  <text x="675" y="83" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#554488">Minikube</text>
+  <text x="675" y="103" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">agentk (Deployment)</text>
+  <text x="675" y="120" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">ns: gitlab-agent</text>
+  <text x="675" y="137" text-anchor="middle" font-family="monospace" font-size="8" fill="#7f8c8d">RBAC + Service Account</text>
+
+  <!-- Manifests -->
+  <rect x="60" y="185" width="680" height="55" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="205" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7f8c8d">manifests/produccion/*.yaml → reconciliado en el namespace produccion</text>
+  <text x="400" y="225" text-anchor="middle" font-family="monospace" font-size="9" fill="#a0a0a0">Sin puertos entrantes expuestos por el clúster — solo conexión saliente hacia kas</text>
+
+  <text x="400" y="255" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 13</text>
+</svg>

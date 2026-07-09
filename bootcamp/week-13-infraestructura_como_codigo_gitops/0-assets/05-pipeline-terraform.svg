@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240">
+  <rect width="800" height="240" fill="#1a1a2e"/>
+  <text x="400" y="28" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#e24329">Pipeline CI/CD para Terraform</text>
+
+  <rect x="15" y="55" width="150" height="50" rx="6" fill="#16213e" stroke="#7f8c8d" stroke-width="1.5"/>
+  <text x="90" y="78" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#7f8c8d">validate</text>
+  <text x="90" y="95" text-anchor="middle" font-family="monospace" font-size="8" fill="#a0a0a0">fmt + validate</text>
+
+  <text x="172" y="82" font-family="monospace" font-size="12" fill="#555">→</text>
+
+  <rect x="188" y="55" width="150" height="50" rx="6" fill="#16213e" stroke="#fc6d26" stroke-width="1.5"/>
+  <text x="263" y="78" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fc6d26">plan</text>
+  <text x="263" y="95" text-anchor="middle" font-family="monospace" font-size="8" fill="#a0a0a0">+ policy_check (OPA)</text>
+
+  <text x="345" y="82" font-family="monospace" font-size="12" fill="#555">→</text>
+
+  <rect x="361" y="55" width="150" height="50" rx="6" fill="#16213e" stroke="#e24329" stroke-width="2"/>
+  <text x="436" y="78" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#e24329">apply</text>
+  <text x="436" y="95" text-anchor="middle" font-family="monospace" font-size="8" fill="#a0a0a0">manual, solo main</text>
+
+  <text x="518" y="82" font-family="monospace" font-size="12" fill="#555">→</text>
+
+  <rect x="534" y="55" width="250" height="50" rx="6" fill="#16213e" stroke="#554488" stroke-width="1.5"/>
+  <text x="659" y="78" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#554488">drift-check</text>
+  <text x="659" y="95" text-anchor="middle" font-family="monospace" font-size="8" fill="#a0a0a0">schedule diario, plan sin apply</text>
+
+  <!-- state locking box -->
+  <rect x="60" y="130" width="680" height="80" rx="8" fill="#16213e" stroke="#555" stroke-width="1"/>
+  <text x="400" y="153" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#7f8c8d">GitLab Managed Terraform State (backend http)</text>
+  <text x="80" y="177" font-family="monospace" font-size="9" fill="#fc6d26">Lock automático por state — evita applies concurrentes corruptos</text>
+  <text x="80" y="195" font-family="monospace" font-size="9" fill="#a0a0a0">terraform plan -detailed-exitcode → 0=sin drift, 2=drift detectado</text>
+
+  <text x="400" y="230" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#555">Bootcamp GitLab CE — Semana 13</text>
+</svg>

@@ -105,4 +105,4 @@ Presentación de 15 minutos cubriendo:
 
 ---
 
-[← Semana 11](../week-11-monitoreo_backup_y_alta_disponibilidad/README.md) | [Bootcamp completado](../README.md)
+[← Semana 11](../week-11-monitoreo_backup_y_alta_disponibilidad/README.md) | [Semana 13 →](../week-13-infraestructura_como_codigo_gitops/README.md)
