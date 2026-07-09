@@ -7,6 +7,7 @@
 - ✅ Autenticarse al registry con los tres métodos: PAT, CI Job Token, Deploy Token
 - ✅ Construir, etiquetar y publicar imágenes manualmente y desde pipelines
 - ✅ Gestionar imágenes y tags desde la UI y via API
+- ✅ Configurar el Dependency Proxy de grupo para cachear imágenes de Docker Hub y evitar rate limits
 
 ---
 
@@ -243,6 +244,137 @@ for t in tags:
     print(f'  {t[\"name\"]:<30} creado: {t.get(\"created_at\",\"?\")[:10]}  ({size_mb:.1f} MB)')
 "
 ```
+
+---
+
+## 🌉 Dependency Proxy: Caché de Docker Hub a Nivel de Grupo
+
+### ¿Qué es?
+
+El **Dependency Proxy** es un caché *pull-through* a nivel de **grupo** para imágenes de Docker Hub (y otros registries compatibles con OCI). La primera vez que alguien pide una imagen a través del proxy, GitLab la descarga de Docker Hub y la guarda; las siguientes peticiones de esa misma imagen se sirven desde el caché local, sin volver a tocar Docker Hub.
+
+```
+Sin Dependency Proxy:
+  Runner 1 → docker pull node:20-alpine → Docker Hub
+  Runner 2 → docker pull node:20-alpine → Docker Hub   (mismo pull, mismo rate limit)
+  Runner 3 → docker pull node:20-alpine → Docker Hub
+  → 3 pulls consumidos del límite de Docker Hub por la MISMA imagen
+
+Con Dependency Proxy:
+  Runner 1 → docker pull gitlab.example.com/mi-grupo/dependency_proxy/.../node:20-alpine
+               → GitLab no tiene la imagen cacheada → 1 pull a Docker Hub → la guarda
+  Runner 2 → docker pull gitlab.example.com/.../node:20-alpine → sirve desde caché
+  Runner 3 → docker pull gitlab.example.com/.../node:20-alpine → sirve desde caché
+  → 1 solo pull consumido del límite de Docker Hub, sin importar cuántos runners la pidan
+```
+
+Es distinto del Container Registry: el Container Registry aloja **tus propias imágenes** (las que construyes); el Dependency Proxy cachea **imágenes de terceros** (las que usas como base o como servicio).
+
+### 🤔 ¿Por Qué Existe?
+
+Desde noviembre de 2020, Docker Hub impone límites de pull para reducir carga en su infraestructura:
+
+| Tipo de cuenta | Límite de pulls |
+|-----------------|------------------|
+| Anónimo (sin login) | 100 pulls / 6 horas por IP |
+| Autenticado, plan free | 200 pulls / 6 horas |
+| Plan Pro/Team | Sin límite (o mucho más alto) |
+
+En CI/CD esto es un problema serio: **cada job** que hace `docker pull node:20-alpine` o usa una imagen como `image:` o `services:` cuenta contra ese límite. Con varios runners compartiendo la misma IP saliente (típico en runners self-hosted o shared runners), es fácil golpear el límite de 100-200 pulls en pocas horas de actividad normal, y los pipelines empiezan a fallar con `429 Too Many Requests`.
+
+El Dependency Proxy resuelve esto **sin pagar por Docker Hub Pro**: todos los pulls de un mismo grupo pasan por GitLab, que solo va a Docker Hub cuando la imagen no está en caché o cuando expira el TTL local.
+
+**Analogía:** si el Container Registry es la bodega privada de la empresa, el Dependency Proxy es la compra al por mayor — en vez de que cada equipo vaya al supermercado (Docker Hub) por su cuenta y agote la cuota, un solo pedido abastece a todos desde una despensa compartida (el caché del grupo).
+
+---
+
+### ⚙️ Habilitarlo
+
+El Dependency Proxy es una función a **nivel de grupo** (no de proyecto). En GitLab CE puede venir deshabilitada a nivel de instancia — se activa así:
+
+```
+1. A nivel de instancia (Admin Area), si está deshabilitada:
+   Admin Area → Settings → General → Dependency Proxy → habilitar "Enable Dependency Proxy"
+
+2. A nivel de grupo:
+   Grupo → Settings → Packages and registries → Dependency Proxy → toggle "Enable Proxy"
+```
+
+Una vez habilitado, el grupo obtiene una URL propia del proxy, visible en la misma página:
+
+```
+gitlab.example.com/mi-grupo/dependency_proxy/containers
+```
+
+No requiere configuración adicional de infraestructura — GitLab expone el endpoint y gestiona el caché internamente (respaldado por el mismo object storage que usa el Container Registry).
+
+---
+
+### 🔐 Uso desde `.gitlab-ci.yml`
+
+GitLab inyecta variables predefinidas específicas del Dependency Proxy en cada job, similares a las del Container Registry:
+
+| Variable | Descripción |
+|----------|-------------|
+| `CI_DEPENDENCY_PROXY_SERVER` | Host del proxy (ej: `gitlab.example.com:443`) |
+| `CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX` | Prefijo completo para el grupo del proyecto actual (ej: `gitlab.example.com/mi-grupo/dependency_proxy/containers`) |
+| `CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX` | Igual, pero sin resolver subgrupos heredados — apunta al grupo directo del proyecto |
+| `CI_DEPENDENCY_PROXY_USER` | Usuario para autenticarse al proxy (`gitlab-ci-token` dentro de CI) |
+| `CI_DEPENDENCY_PROXY_PASSWORD` | Password/token para el login (equivalente a `CI_JOB_TOKEN`) |
+
+```yaml
+# ¿QUÉ HACE?: Hace login al Dependency Proxy del grupo y usa una imagen base a través de él
+# ¿POR QUÉ?: docker.io/node:20-alpine cuenta contra el rate limit de Docker Hub;
+#            $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/node:20-alpine no
+# ¿PARA QUÉ?: Evitar 429 Too Many Requests en pipelines con muchos jobs concurrentes
+
+build:
+  image: docker:24-cli
+  services:
+    - docker:24-dind
+  before_script:
+    # Login al proxy — mismo patrón que el login al Container Registry
+    - docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
+  script:
+    # En vez de: docker pull node:20-alpine
+    - docker pull $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/node:20-alpine
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+```
+
+También se puede usar directamente como imagen del job, sin `docker pull` explícito — así el runner nunca toca Docker Hub para bajar la imagen base del propio job:
+
+```yaml
+# ¿QUÉ HACE?: Usa la imagen node vía el Dependency Proxy como imagen del job
+# ¿POR QUÉ?: image: no soporta variables CI antes de que el runner las resuelva en
+#            algunos executors — funciona en Docker/Kubernetes Executor con GitLab 13.7+
+# ¿PARA QUÉ?: Que TODOS los jobs (no solo docker pull manuales) pasen por el caché
+test:
+  image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/node:20-alpine
+  script:
+    - npm ci
+    - npm test
+```
+
+Para imágenes usadas como `services:` (por ejemplo, `postgres:16` o `redis:7`), aplica el mismo prefijo:
+
+```yaml
+services:
+  - name: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/postgres:16
+    alias: postgres
+```
+
+---
+
+### 🆚 Dependency Proxy vs Container Registry
+
+| | Dependency Proxy | Container Registry |
+|---|---|---|
+| Qué almacena | Imágenes de **terceros** (Docker Hub, etc.) | Imágenes **propias** (las que construyes) |
+| Nivel | Grupo | Proyecto |
+| Quién publica | Nadie explícitamente — se llena solo con cada pull | El pipeline con `docker push` |
+| Propósito | Evitar rate limits, acelerar pulls repetidos | Distribuir tus artefactos versionados |
+| Autenticación CI | `CI_DEPENDENCY_PROXY_USER` / `CI_DEPENDENCY_PROXY_PASSWORD` | `CI_REGISTRY_USER` / `CI_JOB_TOKEN` |
 
 ---
 

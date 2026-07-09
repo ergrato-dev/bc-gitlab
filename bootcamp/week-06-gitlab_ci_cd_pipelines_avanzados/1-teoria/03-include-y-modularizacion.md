@@ -362,6 +362,134 @@ build-and-push:
 
 ---
 
+## 📦 CI/CD Components Catalog
+
+### ¿Qué es?
+
+```
+# ¿QUÉ HACE?: Repositorio de "componentes" CI/CD reutilizables, versionados con SemVer
+#             y publicados en el CI/CD Catalog de GitLab (Build → CI/CD Catalog)
+# ¿POR QUÉ?: include:project reutiliza archivos "planos" sin contrato de entradas ni
+#            garantía de versión estable — el componente añade inputs tipados y SemVer
+# ¿PARA QUÉ?: Reusar lógica CI/CD entre proyectos con la misma disciplina de un paquete
+#             de npm/PyPI: versión fijada, entradas documentadas, changelog
+```
+
+El **CI/CD Components Catalog** es el mecanismo que GitLab recomienda actualmente para reutilizar configuración CI/CD entre proyectos — es el sucesor natural de `include:project` visto arriba, no un reemplazo de `include` en general (`include:local` sigue siendo la forma correcta de modularizar dentro de un mismo repo).
+
+Un **componente** es un archivo `template.yml` dentro de un repositorio GitLab, con:
+- **Entradas tipadas** (`spec.inputs`) — como los parámetros de una función
+- **Versionado semántico obligatorio** — se referencia con `@1.0.0`, `@~latest` o `@<SHA>`, nunca "el último commit de la rama"
+- **Descubrible** en `Build → CI/CD Catalog`, con descripción, README y ejemplos de uso visibles en la UI
+
+---
+
+### Diferencia con `include:project` plano
+
+| Característica | `include:project` (archivo plano) | Component (Catalog) |
+|---|---|---|
+| Contrato de entradas | ✗ (variables sueltas, sin validar) | ✓ `spec.inputs` con tipo, default, `required` |
+| Versionado | Tag/rama/SHA cualquiera | SemVer obligatorio (`@1.2.0`, `@~1`, `@latest`) |
+| Descubribilidad | Hay que conocer la ruta del archivo | Listado y buscable en CI/CD Catalog |
+| Documentación | Manual (README aparte) | README.md del componente se renderiza en el Catalog |
+| Validación de estructura | Ninguna | GitLab valida `template.yml` al publicar |
+| Testing propio del componente | Manual | Se recomienda pipeline de test en el propio repo del componente |
+
+---
+
+### Cómo usar un componente existente
+
+```yaml
+include:
+  # Sintaxis: $CI_SERVER_FQDN/<namespace>/<proyecto>/<componente>@<versión>
+  - component: $CI_SERVER_FQDN/my-org/ci-components/sast@1.0.0
+
+  # También se puede usar el path completo sin la variable
+  - component: gitlab.com/my-org/ci-components/docker-build@2.3.1
+    inputs:
+      image_name: mi-app
+      dockerfile: Dockerfile.prod
+```
+
+**Componentes oficiales de GitLab** (mantenidos por GitLab, en `gitlab.com/components/`):
+
+```yaml
+include:
+  - component: $CI_SERVER_FQDN/components/sast/sast@1
+  - component: $CI_SERVER_FQDN/components/secret-detection/secret-detection@1
+  - component: $CI_SERVER_FQDN/components/dependency-scanning/main@1
+```
+
+**Estrategias de versionado al referenciar:**
+
+```yaml
+include:
+  - component: $CI_SERVER_FQDN/my-org/ci-components/deploy@1.4.2  # SHA exacto — máxima estabilidad
+  - component: $CI_SERVER_FQDN/my-org/ci-components/deploy@~1     # última 1.x.x — recibe patches
+  - component: $CI_SERVER_FQDN/my-org/ci-components/deploy@latest # último release — riesgo de breaking changes
+```
+
+---
+
+### Cómo publicar un componente propio
+
+Un repositorio de componentes sigue una estructura fija — cada componente vive en su propio directorio dentro de `templates/`:
+
+```
+mi-org/ci-components/          (repositorio del/los componente(s))
+├── templates/
+│   ├── docker-build/
+│   │   └── template.yml       ← definición del componente
+│   ├── helm-deploy/
+│   │   └── template.yml
+│   └── sast/
+│       └── template.yml
+├── README.md                  ← documentación general del catálogo (se muestra en la UI)
+└── .gitlab-ci.yml             ← pipeline que TESTEA los propios componentes
+```
+
+**`templates/docker-build/template.yml`:**
+
+```yaml
+spec:
+  inputs:
+    image_name:
+      description: "Nombre de la imagen a construir"
+      type: string
+    dockerfile:
+      description: "Ruta al Dockerfile"
+      type: string
+      default: "Dockerfile"
+    push:
+      description: "Si hace push de la imagen al registry"
+      type: boolean
+      default: true
+---
+
+build-image:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - docker build -f $[[ inputs.dockerfile ]] -t $CI_REGISTRY_IMAGE/$[[ inputs.image_name ]] .
+    - |
+      if [ "$[[ inputs.push ]]" = "true" ]; then
+        docker push $CI_REGISTRY_IMAGE/$[[ inputs.image_name ]]
+      fi
+```
+
+**Publicar el componente:**
+
+1. Etiquetar el repositorio con un tag SemVer: `git tag 1.0.0 && git push origin 1.0.0`
+2. En `Settings → General → Visibility`, marcar el proyecto como **"CI/CD Catalog project"**
+3. GitLab valida `template.yml` (sintaxis del `spec.inputs`) y lo publica en `Build → CI/CD Catalog`
+4. Otros proyectos ya pueden hacer `include: component: .../docker-build@1.0.0`
+
+**Regla práctica:** si el archivo compartido solo tiene jobs sin parámetros (ej. `stages.yml`), `include:local`/`include:project` sigue siendo suficiente. Se sube a componente cuando el archivo necesita **entradas configurables por quien lo consume** y se comparte entre **más de un proyecto**.
+
+---
+
 ## 📏 Límites de `include`
 
 | Límite | Valor |

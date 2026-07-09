@@ -24,7 +24,7 @@
 ## Contenidos
 
 ### Teoría
-1. [01-container-registry.md](./1-teoria/01-container-registry.md) — Configuración y uso
+1. [01-container-registry.md](./1-teoria/01-container-registry.md) — Configuración, uso y Dependency Proxy
 2. [02-docker-build-en-ci.md](./1-teoria/02-docker-build-en-ci.md) — Docker-in-Docker, Kaniko
 3. [03-package-registry.md](./1-teoria/03-package-registry.md) — npm, Maven, PyPI, NuGet
 4. [04-gestion-de-versiones.md](./1-teoria/04-gestion-de-versiones.md) — Tags semanticos, limpieza

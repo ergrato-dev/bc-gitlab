@@ -7,6 +7,7 @@
 - ✅ Distinguir el autoscaling de runners del autoscaling de Kubernetes
 - ✅ Identificar los parámetros clave: `max_instances`, `idle_time`, `capacity_per_instance`
 - ✅ Reconocer que Docker Machine está deprecado y no debe usarse en instalaciones nuevas
+- ✅ Comparar el Helm chart y el GitLab Runner Operator para instalar runners en Kubernetes
 
 ---
 
@@ -150,6 +151,102 @@ El **Kubernetes Executor** es otra forma de autoscaling, aprovechando el Cluster
 
 ---
 
+## ⚓ GitLab Runner Operator (Kubernetes)
+
+La práctica [04 — Runner en Kubernetes](../2-practicas/04-runner-kubernetes/README.md) instala el runner con el **Helm chart** oficial (`gitlab/gitlab-runner`). Existe una segunda forma de instalación en clusters Kubernetes: el **GitLab Runner Operator**, basado en el patrón [Kubernetes Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) y distribuido via [Operator Lifecycle Manager (OLM)](https://olm.operatorframework.io/).
+
+**Diferencia de fondo:** el Helm chart instala recursos K8s una vez y los actualiza cuando corres `helm upgrade` manualmente. El Operator añade un **controlador** que vigila un recurso personalizado (`Runner`) en el cluster y reconcilia continuamente el estado real contra el estado deseado — si alguien borra el Deployment del runner a mano, el Operator lo vuelve a crear.
+
+### Instalación con OLM
+
+```bash
+# ¿QUÉ HACE?: Instala Operator Lifecycle Manager y suscribe el GitLab Runner Operator
+# ¿POR QUÉ?: El Operator se distribuye via OperatorHub, que requiere OLM en el cluster
+# ¿PARA QUÉ?: Tener el controlador del Operator corriendo antes de crear runners como CRs
+
+# Instalar OLM (si el cluster no lo trae, como en OpenShift)
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/latest/download/install.sh | bash -s
+
+# Namespace dedicado para el runner
+kubectl create namespace gitlab-runner-system
+
+# Suscribirse al operator desde OperatorHub (canal "stable")
+kubectl apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: gitlab-runner-operator
+  namespace: gitlab-runner-system
+spec:
+  channel: stable
+  name: gitlab-runner-operator
+  source: operatorhubio-catalog
+  sourceNamespace: olm
+EOF
+
+# Verificar que el controlador quedó Running
+kubectl get pods -n gitlab-runner-system
+```
+
+> **OpenShift:** el Operator viene certificado y disponible desde el OperatorHub embebido en la consola — no requiere instalar OLM manualmente, ya está incluido en la plataforma.
+
+### El recurso personalizado `Runner`
+
+Con el Operator corriendo, un runner se declara como un manifiesto Kubernetes, no como un `helm install`:
+
+```yaml
+# ¿QUÉ HACE?: Declara un runner de GitLab como recurso nativo de Kubernetes
+# ¿POR QUÉ?: El Operator reconcilia este CR y crea/actualiza el Deployment, RBAC y ConfigMap asociados
+# ¿PARA QUÉ?: Gestionar runners con GitOps (kubectl apply / ArgoCD / Flux) en vez de comandos imperativos
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-runner-secret
+  namespace: gitlab-runner-system
+type: Opaque
+stringData:
+  runner-token: "glrt-XXXXXXXXXX"   # ← authentication token del runner (Paso 1 de la práctica 04)
+---
+apiVersion: apps.gitlab.com/v1beta2
+kind: Runner
+metadata:
+  name: bootcamp-operator-runner
+  namespace: gitlab-runner-system
+spec:
+  gitlabUrl: https://gitlab.example.com
+  buildImage: alpine:latest
+  token: gitlab-runner-secret       # ← referencia al Secret, no el token en texto plano
+  tags: kubernetes,operator,bootcamp
+  runUntagged: false
+  concurrent: 4
+```
+
+```bash
+kubectl apply -f runner.yaml
+
+# El Operator crea el Deployment, ServiceAccount y RBAC automáticamente
+kubectl get runner -n gitlab-runner-system
+kubectl get deployment -n gitlab-runner-system
+```
+
+### Helm chart vs Operator
+
+| Aspecto | Helm Chart | Runner Operator |
+|--------|-----------|-----------------|
+| **Instalación** | `helm install` / `helm upgrade` | `kubectl apply` de un CR `Runner` |
+| **Gestión del ciclo de vida** | Manual — vos ejecutás cada `upgrade` | Automática — el controlador reconcilia continuamente |
+| **Recuperación ante drift** | No — si alguien borra el Deployment, queda borrado | Sí — el Operator lo vuelve a crear |
+| **Múltiples runners** | Un `values.yaml` con lista `runners:`, o un release por runner | Un recurso `Runner` por runner, todos visibles con `kubectl get runner` |
+| **Plataforma objetivo** | Cualquier cluster con Helm v3 | Certificado para OpenShift; funciona en K8s vanilla con OLM instalado |
+| **Integración GitOps** | Posible (Helm + ArgoCD/Flux) pero indirecta | Nativa — el CR es el estado deseado |
+| **Curva de aprendizaje** | Baja si el equipo ya usa Helm | Media — requiere entender OLM y CRDs |
+| **Cuándo usarlo** | Equipos con Helm ya en su flujo, control fino de `values.yaml` | Clusters OpenShift, o equipos que ya gestionan todo su cluster con Operators y GitOps |
+
+> **Regla práctica:** si tu organización ya está en OpenShift o gestiona infraestructura con Operators/GitOps, usa el Runner Operator. Si venís de un flujo Helm estándar y no necesitás reconciliación continua, el Helm chart es más simple y suficiente — es lo que se usó en la [práctica 04](../2-practicas/04-runner-kubernetes/README.md).
+
+---
+
 ## ❌ Docker Machine — Deprecado (No usar)
 
 > **IMPORTANTE:** Docker Machine fue deprecado en **GitLab 14.0 (2021)** y eliminado del soporte oficial en **GitLab Runner 15.0 (2022)**. Si ves configuraciones con `executor = "docker+machine"` en documentación antigua, ignóralas.
@@ -211,6 +308,8 @@ curl --silent http://localhost:9252/metrics \
 
 5. El Cluster Autoscaler de Kubernetes escala nodos cuando los pods no caben. Si tienes `cpu_request = "500m"` por pod y los nodos tienen 4 CPUs, ¿cuántos jobs en paralelo puedes tener por nodo? ¿Cómo cambiaría esto con `cpu_request = "2"`?
 
+6. El Runner Operator reconcilia continuamente el CR `Runner` contra el estado real del cluster, mientras que el Helm chart solo actualiza cuando corrés `helm upgrade`. ¿Qué ventaja de confiabilidad da la reconciliación continua? ¿Qué riesgo introduce si alguien edita el Deployment generado directamente en vez de editar el CR?
+
 ---
 
 ## 📚 Recursos adicionales
@@ -221,8 +320,10 @@ curl --silent http://localhost:9252/metrics \
 - [Fleeting Plugin GCP](https://gitlab.com/gitlab-org/fleeting/plugins/googlecompute)
 - [Kubernetes Executor](https://docs.gitlab.com/runner/executors/kubernetes/)
 - [Migrar de Docker Machine a Fleeting](https://docs.gitlab.com/runner/runner_autoscale/migrate_from_docker_machine.html)
+- [GitLab Runner Operator](https://docs.gitlab.com/runner/install/operator.html)
+- [Operator Lifecycle Manager (OLM)](https://olm.operatorframework.io/)
 
 ---
 
 ⬅️ **Lección anterior:** [04 — Tags y Job Routing](./04-tags-y-job-routing.md)
-➡️ **Prácticas:** [01 — Instalar Runner](../2-practicas/01-instalar-runner/README.md)
+➡️ **Siguiente lección:** [06 — Monitoreo de Flota y Costos](./06-monitoreo-y-costos-de-flota.md)

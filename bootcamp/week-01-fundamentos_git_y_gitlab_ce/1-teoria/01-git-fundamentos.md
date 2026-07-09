@@ -161,6 +161,117 @@ git commit -a -m "fix: corregir typo en README"
 
 ---
 
+### Ignorar y Normalizar Archivos: `.gitignore` y `.gitattributes`
+
+#### 📖 ¿Qué es `.gitignore`?
+
+**Analogía**: `.gitignore` es la lista de "no pasar" en la puerta del taller. Le dice a Git de antemano qué carpetas y archivos ni siquiera debe considerar, para que nunca aparezcan en `git status` ni se cuelen con un `git add .` descuidado.
+
+Es un archivo de texto plano llamado `.gitignore`, ubicado normalmente en la raíz del repositorio, con un patrón por línea. Cada patrón le dice a Git qué working-directory files debe dejar como **untracked** para siempre (a menos que se fuerce con `git add -f`).
+
+- **¿Por qué?**: dependencias reinstalables (`node_modules/`), artefactos de compilación (`dist/`, `*.pyc`), archivos de configuración local del editor/SO (`.vscode/`, `.DS_Store`) y, sobre todo, **secretos** (`.env`) no deben ensuciar el historial ni exponerse en el repositorio.
+- **¿Para qué?**: `git status` limpio (solo se ven cambios relevantes), commits más pequeños, y evitar el incidente clásico de subir una contraseña o API key sin querer.
+
+#### Sintaxis de Patrones
+
+| Patrón | Significa |
+|--------|-----------|
+| `archivo.txt` | Ignora ese archivo en cualquier carpeta del repo |
+| `/archivo.txt` | Ignora solo el archivo en la raíz (la `/` inicial ancla la ruta) |
+| `carpeta/` | Ignora toda la carpeta y su contenido |
+| `*.log` | Ignora todos los archivos con esa extensión |
+| `**/temp` | Ignora `temp` en cualquier nivel de profundidad |
+| `!importante.log` | Excepción: NO ignores este archivo aunque coincida con una regla anterior |
+| `# comentario` | Línea de comentario, Git la ignora |
+
+#### Ejemplo Real: Proyecto Node + Python
+
+```gitignore
+# --- Node.js ---
+node_modules/
+npm-debug.log*
+dist/
+.env
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Editor / Sistema Operativo ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Excepción: sí versionar este archivo de ejemplo ---
+!.env.example
+```
+
+#### `.gitignore` Global vs Por-Proyecto
+
+| Tipo | Ubicación | Se versiona | Uso típico |
+|------|-----------|--------------|------------|
+| **Por-proyecto** | `.gitignore` en la raíz del repo | Sí, todo el equipo lo comparte | Reglas del stack del proyecto (`node_modules/`, `.env`) |
+| **Global** | `~/.gitignore_global` (o donde configures) | No, es personal de tu máquina | Preferencias de tu editor/SO que no le importan al equipo (`.DS_Store`, `*.swp`) |
+
+```bash
+# ¿QUÉ VAMOS A HACER?: Configurar un .gitignore global para toda tu máquina
+# ¿POR QUÉ LO HACEMOS?: Para no ensuciar el .gitignore de cada proyecto con reglas de tu editor/SO
+# ¿PARA QUÉ SIRVE?: Un solo archivo personal cubre TODOS tus repos, sin pedirle al equipo que lo acepte
+git config --global core.excludesfile ~/.gitignore_global
+echo ".DS_Store" >> ~/.gitignore_global
+echo "*.swp" >> ~/.gitignore_global
+```
+
+#### Archivos que Ya Estaban Rastreados: `git rm --cached`
+
+Agregar un patrón a `.gitignore` **no afecta** archivos que Git ya venía rastreando — solo aplica a archivos nuevos (untracked). Para dejar de rastrear algo que se agregó por error, hay que sacarlo del índice explícitamente:
+
+```bash
+# ¿QUÉ VAMOS A HACER?: Dejar de rastrear un archivo que ya estaba en el historial
+# ¿POR QUÉ LO HACEMOS?: Agregarlo a .gitignore no lo saca del índice si ya estaba trackeado
+# ¿PARA QUÉ SIRVE?: Corregir el error clásico de haber commiteado .env o node_modules/
+git rm --cached .env
+echo ".env" >> .gitignore
+git commit -m "chore: dejar de rastrear .env y agregarlo a .gitignore"
+
+# Para una carpeta completa, agrega -r
+git rm -r --cached node_modules/
+```
+
+> ⚠️ **Importante**: `git rm --cached` no borra el archivo del disco, solo lo saca del staging/índice. Si el secreto ya fue publicado en un push anterior, sigue existiendo en el historial — cambiar la credencial expuesta es obligatorio, no opcional.
+
+#### 📖 ¿Qué es `.gitattributes`?
+
+Mientras `.gitignore` decide **qué no rastrear**, `.gitattributes` decide **cómo tratar** los archivos que sí se rastrean. Es otro archivo de texto en la raíz del repo, con el mismo estilo de patrón + atributo por línea.
+
+**Usos más comunes**:
+
+```gitattributes
+# ¿QUÉ HACE?: Normaliza automáticamente los finales de línea (CRLF/LF) al hacer checkout/commit
+# ¿POR QUÉ?: En equipos con Windows/Mac/Linux mezclados, cada SO usa un final de línea distinto
+# ¿PARA QUÉ SIRVE?: Evita diffs gigantes que solo cambian saltos de línea, no contenido real
+* text=auto
+
+# ¿QUÉ HACE?: Marca extensiones como binarias explícitamente
+# ¿POR QUÉ?: Git a veces intenta diffear binarios como si fueran texto, generando basura ilegible
+# ¿PARA QUÉ SIRVE?: Git no intenta mostrar diff/merge línea a línea de estos archivos
+*.png binary
+*.jpg binary
+*.pdf binary
+
+# ¿QUÉ HACE?: Excluye una carpeta de las estadísticas de lenguaje de GitLab/GitHub (Linguist)
+# ¿POR QUÉ?: Código de terceros (librerías vendored) no debería contar como "tu" código
+# ¿PARA QUÉ SIRVE?: El gráfico de "Languages" del proyecto refleja tu código real, no dependencias
+vendor/* linguist-vendored
+```
+
+> 💡 **Tip**: `.gitignore` decide *si* un archivo entra al repo; `.gitattributes` decide *cómo* Git lo maneja una vez que ya está dentro. Son complementarios, no alternativos.
+
+---
+
 ### Configuración Inicial
 
 ```bash

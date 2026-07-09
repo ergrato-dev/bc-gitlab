@@ -206,7 +206,7 @@ En instancias internas corporativas, lo recomendado es deshabilitar la creación
 
 ---
 
-## LDAP/SAML — referencia (GitLab CE)
+## LDAP — Autenticación de directorio (GitLab CE)
 
 GitLab CE soporta autenticación LDAP con sincronización básica de grupos. La configuración se realiza en `/etc/gitlab/gitlab.rb`:
 
@@ -230,6 +230,92 @@ gitlab_rails['ldap_servers'] = {
 ```
 
 La sincronización de grupos LDAP a grupos GitLab (mapeo automático de roles) requiere GitLab EE. En CE, los usuarios se autentican vía LDAP pero los roles deben asignarse manualmente.
+
+---
+
+## SAML SSO — Autenticación federada (GitLab CE)
+
+SAML (Security Assertion Markup Language) es un protocolo de federación de identidad: en lugar de que GitLab valide la contraseña del usuario directamente, delega la autenticación a un Identity Provider (IdP) externo — Okta, Azure AD, Google Workspace, OneLogin — y confía en una aserción XML firmada digitalmente que el IdP le envía confirmando la identidad.
+
+### SAML vs LDAP: dos modelos distintos
+
+| | LDAP | SAML |
+|-|------|------|
+| Modelo | Directorio consultado directamente (bind + search) | Federación: el IdP emite una aserción firmada |
+| Dónde vive la contraseña | GitLab la valida contra el directorio en cada login | La contraseña nunca llega a GitLab — el IdP la valida |
+| Protocolo de transporte | LDAP/LDAPS (puerto 389/636), consulta directa | HTTP + redirects del navegador, XML firmado (SAML Response) |
+| Experiencia de usuario | Formulario de login propio de GitLab | Redirect al portal del IdP (SSO real, mismo login que otras apps corporativas) |
+| Sincronización de grupos → roles | Requiere GitLab EE para mapeo automático | Requiere GitLab EE (SAML Group Sync / SCIM) |
+| Caso de uso típico | Directorio corporativo interno ya existente (AD, OpenLDAP) | SSO corporativo centralizado con IdP cloud (Okta, Azure AD, Google) |
+
+En ambos casos GitLab CE soporta la autenticación (login); lo que requiere EE es la sincronización automática de roles a partir de grupos del directorio o del IdP.
+
+### Flujo SP-initiated (el más común)
+
+```
+1. Usuario visita https://gitlab.company.local/users/sign_in
+2. GitLab (Service Provider) redirige al IdP con un SAML AuthnRequest
+3. El usuario se autentica en el portal del IdP (Okta, Azure AD, etc.)
+4. El IdP redirige de vuelta a GitLab con una SAML Response firmada
+   (contiene el NameID y atributos del usuario: email, nombre, grupos)
+5. GitLab valida la firma con el certificado del IdP y crea la sesión
+```
+
+### Configuración básica en `/etc/gitlab/gitlab.rb`
+
+```ruby
+# ¿QUÉ HACE?: Configura GitLab como Service Provider SAML
+# ¿POR QUÉ?: Permite SSO delegando la autenticación a un IdP externo (Okta, Azure AD, Google Workspace)
+# ¿PARA QUÉ?: Login centralizado sin gestionar contraseñas propias en GitLab
+gitlab_rails['omniauth_allow_single_sign_on'] = ['saml']
+gitlab_rails['omniauth_auto_link_saml_user'] = true
+gitlab_rails['omniauth_providers'] = [
+  {
+    name: 'saml',
+    label: 'Company SSO',
+    args: {
+      assertion_consumer_service_url: 'https://gitlab.company.local/users/auth/saml/callback',
+      idp_cert_fingerprint: '43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8:83:10:1d:d6',
+      idp_sso_target_url: 'https://idp.company.local/app/gitlab/sso/saml',
+      issuer: 'https://gitlab.company.local',
+      name_identifier_format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'
+    }
+  }
+]
+```
+
+Tras aplicar el cambio (`gitlab-ctl reconfigure`), la pantalla de login muestra un botón adicional "Company SSO" que redirige al IdP.
+
+### Mapeo de atributos
+
+```ruby
+# ¿QUÉ HACE?: Mapea atributos SAML del IdP a campos de usuario GitLab
+# ¿POR QUÉ?: El nombre/email en el IdP puede venir en un claim con nombre distinto al esperado por GitLab
+# ¿PARA QUÉ?: Autocompletar el perfil GitLab en el primer login SSO sin intervención manual
+gitlab_rails['omniauth_providers'] = [
+  {
+    name: 'saml',
+    args: {
+      # ... configuración anterior
+      attribute_statements: {
+        email: ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+        name: ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
+      }
+    }
+  }
+]
+```
+
+### Qué es CE y qué requiere EE
+
+| Capacidad | CE | EE |
+|-----------|:--:|:--:|
+| Login SSO vía SAML (SP-initiated) | ✅ | ✅ |
+| `omniauth_auto_link_saml_user` (vincular cuenta local existente) | ✅ | ✅ |
+| SAML Group Sync (roles automáticos desde grupos del IdP) | ❌ | ✅ |
+| SCIM provisioning (alta/baja automática de usuarios) | ❌ | ✅ |
+
+Igual que con LDAP: en CE el usuario se autentica con SSO, pero el rol dentro de GitLab (Guest, Developer, Maintainer...) se asigna manualmente.
 
 ---
 

@@ -38,6 +38,9 @@ Identificador único y estandarizado para vulnerabilidades de seguridad conocida
 
 ## D
 
+**Dependency Proxy**
+Caché *pull-through* a nivel de grupo para imágenes de Docker Hub y otros registries OCI externos. La primera petición de una imagen la descarga de Docker Hub y la guarda; las siguientes se sirven desde el caché de GitLab. Existe para evitar los rate limits de Docker Hub (100 pulls/6h anónimo, 200 pulls/6h free) en pipelines con muchos jobs. Se habilita en `Grupo → Settings → Packages and registries → Dependency Proxy` y se usa con el prefijo `$CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX`. Diferente del ↗ Container Registry, que aloja imágenes propias en vez de cachear imágenes de terceros.
+
 **Dependency Scanning**
 Tipo de security scanning que analiza las dependencias del proyecto (package.json, requirements.txt, pom.xml, etc.) buscando versiones con CVEs conocidos. No escanea código fuente ni imágenes Docker — solo el grafo de dependencias. Soporta npm, pip, Maven, Gradle, Bundler, Go modules, Composer, NuGet y Conan.
 

@@ -326,4 +326,101 @@ print(f"Issue #{issue['iid']}: {issue['title']}")
 
 ---
 
+## glab — CLI oficial de GitLab
+
+`glab` es la CLI oficial de GitLab (equivalente a `gh` de GitHub). Complementa a `python-gitlab` y `requests`: en lugar de escribir un script, se usa de forma interactiva en la terminal o dentro de scripts de shell para operaciones rápidas — clonar, crear MRs, revisar pipelines — sin abrir el navegador.
+
+### Instalación
+
+```bash
+# Debian/Ubuntu — repositorio oficial
+curl -s https://gitlab.com/gitlab-org/cli/-/raw/main/scripts/install.sh | sudo bash
+sudo apt install glab
+
+# macOS
+brew install glab
+
+# Go (cualquier plataforma con Go instalado)
+go install gitlab.com/gitlab-org/cli/cmd/glab@latest
+
+# Verificar instalación
+glab version
+```
+
+### Autenticación
+
+```bash
+# ¿QUÉ HACE?: Autentica glab contra una instancia de GitLab (SaaS o self-managed)
+# ¿POR QUÉ?: glab necesita un token para llamar a la API en nombre del usuario
+# ¿PARA QUÉ?: Ejecutar comandos (mr, issue, ci, api) sin pasar el token manualmente
+
+glab auth login
+# Preguntas interactivas:
+#   ¿Qué instancia? → GitLab.com u otra (self-managed: http://localhost)
+#   ¿Protocolo? → HTTPS o SSH
+#   ¿Método? → Token de acceso (pega un PAT con scope `api`) o navegador (OAuth)
+
+# No interactivo — útil en scripts o CI
+glab auth login --hostname localhost --token "$GITLAB_TOKEN"
+
+# Verificar estado de autenticación
+glab auth status
+```
+
+El token queda guardado en `~/.config/glab-cli/config.yml`, no en variables de entorno — a diferencia de `python-gitlab`, que suele leerlas de `.env`.
+
+### Comandos esenciales
+
+```bash
+# Clonar un repositorio (resuelve el path completo, no requiere la URL git)
+glab repo clone grupo/proyecto
+
+# Merge Requests
+glab mr create --title "feat: nueva API de usuarios" --description "Closes #15" \
+  --source-branch feature/nueva-api --target-branch main
+glab mr list --state opened
+glab mr view 23                    # detalle del MR !23 (abre en terminal, no en browser)
+glab mr view 23 --web               # lo mismo, pero abre en el navegador
+glab mr merge 23 --squash --remove-source-branch
+
+# Issues
+glab issue create --title "Bug en autenticación" --label "bug,alta-prioridad"
+glab issue list --assignee @me --state opened
+glab issue close 42
+
+# CI/CD
+glab ci status                      # estado del pipeline del branch actual
+glab ci view                        # detalle interactivo del pipeline
+glab ci trace                       # sigue el log de un job en vivo (como `tail -f`)
+glab ci run                         # dispara un pipeline manualmente
+
+# Llamadas raw a la API — para lo que no tiene subcomando dedicado
+glab api projects/:id/issues --method POST -f title="Issue vía glab api" -f labels="automatización"
+glab api "projects/:id/pipelines?status=failed&per_page=5"
+```
+
+`glab api` acepta el mismo path relativo que la API REST (`/api/v4/` es implícito) y resuelve `:id` al proyecto del directorio actual — no hace falta exportar `GITLAB_PROJECT_ID`.
+
+---
+
+## Comparación: glab vs curl vs python-gitlab
+
+| Criterio | `glab` | `curl` + REST | `python-gitlab` |
+|----------|--------|----------------|------------------|
+| Autenticación | `glab auth login` (persistente) | Manual, `$GITLAB_TOKEN` en cada llamada | Cliente reusable (`gl = gitlab.Gitlab(...)`) |
+| Uso interactivo en terminal | Excelente (subcomandos + `--web`) | Incómodo (JSON crudo) | No aplica (es una librería) |
+| Scripts de shell rápidos | Ideal | Requiere `jq` para parsear JSON | No aplica (requiere Python) |
+| Automatización compleja (lógica, loops, reintentos) | Limitado (solo shell) | Posible pero verboso | Ideal (tipado, excepciones, paginación automática) |
+| Resolución de proyecto/branch actual | Automática (lee `.git`) | Manual | Manual |
+| Dependencias | 1 binario | Ninguna (curl suele venir preinstalado) | `pip install python-gitlab` |
+| Curva de aprendizaje | Baja | Baja (pero verboso) | Media |
+
+### Cuándo usar cada uno
+
+- **`glab`** — trabajo diario en terminal: revisar el estado de un MR o pipeline sin abrir el navegador, crear un MR al terminar una rama, o como building block en scripts de shell (`glab mr list --state opened | wc -l` en un hook de CI, por ejemplo).
+- **`curl` + REST directo** — scripts puntuales de una sola llamada, depuración rápida de un endpoint, o entornos donde no se puede instalar nada más que lo que ya trae el sistema.
+- **`python-gitlab`** — automatización con lógica no trivial: bots, dashboards, reportes que combinan datos de varios endpoints, manejo de errores granular y reintentos — todo lo que se vuelve difícil de mantener en bash.
+
+---
+
 ➡️ **Siguiente:** [Prácticas →](../2-practicas/README.md)

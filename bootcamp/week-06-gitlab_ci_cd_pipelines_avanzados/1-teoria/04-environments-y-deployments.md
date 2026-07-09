@@ -198,6 +198,26 @@ deploy-production:
 
 ---
 
+## 🚂 Nota: Merge Trains *(solo GitLab EE — Premium/Ultimate)*
+
+Un **merge train** es una cola de merge requests que se mergean uno tras otro a la rama protegida, donde **cada MR se testea con los cambios de todos los MRs que van delante en la cola** — no solo contra el estado actual de `main`.
+
+```
+Sin merge train:
+  MR !10 pasa pipeline sobre main actual → mergea
+  MR !11 pasa pipeline sobre main actual (sin !10) → mergea
+  → resultado en main: !10 + !11 combinados nunca se probaron juntos ⚠️
+
+Con merge train:
+  MR !10 entra al train → pipeline sobre "main + !10"
+  MR !11 entra al train → pipeline sobre "main + !10 + !11"  ← ya incluye !10
+  !10 termina y mergea → !11 sigue en cola, ya validado con !10 incluido
+```
+
+Se activa marcando **"Merge Trains"** en `Settings → Merge requests` (requiere también "Pipelines must succeed"). Un equipo con alta frecuencia de merges a una rama protegida es el caso de uso típico — evita el problema de "el MR pasó pipeline pero rompió `main` al combinarse con otro MR mergeado en paralelo".
+
+---
+
 ## ❄️ Deployment Freeze
 
 Un **deployment freeze** bloquea deployments a ciertos environments durante períodos específicos (vacaciones, black friday, post-release freeze):

@@ -296,6 +296,17 @@ curl --request PUT \
 | Repositorio geo-replicado (Geo) | ❌ | ✅ |
 | Métricas avanzadas de replicación | Básico | ✅ |
 
+### ¿Qué es GitLab Geo?
+
+Geo mantiene **réplicas de solo lectura de la instancia completa de GitLab** (no solo los repositorios Git) en ubicaciones geográficas distintas — por ejemplo, un site primario en Bogotá y un site secundario Geo en Frankfurt. Sirve para dos casos que Gitaly Cluster/Praefect no cubren:
+
+- **Disaster Recovery entre datacenters/regiones**: si el datacenter primario completo queda inaccesible (no solo un nodo), el site Geo secundario puede promoverse a primario y seguir sirviendo el equipo.
+- **Latencia de lectura para equipos distribuidos geográficamente**: un equipo en otro continente puede leer (clone, pull, navegar el proyecto) contra el site Geo más cercano en vez de cruzar el océano en cada petición.
+
+La diferencia clave con la replicación ya vista en esta semana (Praefect/Gitaly Cluster para repos, Patroni/Repmgr para PostgreSQL en `04-postgresql-ha.md`) es el **alcance**: esas soluciones replican *dentro* de un mismo cluster/datacenter para tolerar la caída de un nodo. Geo replica la *instancia entera* — base de datos, repositorios, uploads, CI artifacts — entre sites separados geográficamente, pensado para que sobreviva la caída de un datacenter completo, no de un nodo individual.
+
+Como muestra la tabla, **Geo es una feature EE-only** — no está disponible en GitLab CE. Se documenta aquí solo para que el concepto quede claro; su implementación queda fuera del alcance de este bootcamp (basado en CE self-managed).
+
 ---
 
 ## Mejores prácticas

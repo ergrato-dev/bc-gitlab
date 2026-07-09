@@ -28,7 +28,8 @@
 2. [02-ejecutores.md](./1-teoria/02-ejecutores.md) — Docker, Shell, Kubernetes, VirtualBox
 3. [03-registro-y-configuracion.md](./1-teoria/03-registro-y-configuracion.md) — register, config.toml
 4. [04-tags-y-job-routing.md](./1-teoria/04-tags-y-job-routing.md) — Tags para enrutar jobs
-5. [05-autoscaling.md](./1-teoria/05-autoscaling.md) — Fleeting (reemplazo de Docker Machine), Kubernetes executor
+5. [05-autoscaling.md](./1-teoria/05-autoscaling.md) — Fleeting (reemplazo de Docker Machine), Kubernetes executor, Runner Operator
+6. [06-monitoreo-y-costos-de-flota.md](./1-teoria/06-monitoreo-y-costos-de-flota.md) — Métricas Prometheus de la flota, PromQL, costos de autoscaling
 
 > **Docker Machine fue deprecado en 2021 y eliminado en 2023.** El autoscaling moderno de GitLab Runner usa **Fleeting** (plugin-based autoscaling) disponible desde GitLab Runner 15.8+. Fleeting soporta AWS EC2, GCP, Azure y cualquier proveedor via plugin. Docker Machine NO debe usarse en instalaciones nuevas.
 

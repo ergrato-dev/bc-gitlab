@@ -210,6 +210,27 @@ git push origin main
 
 ## G
 
+### .gitattributes
+
+**Definición**: Archivo de texto en la raíz del repositorio que define atributos por patrón de archivo — no decide qué se ignora (eso es trabajo de `.gitignore`), sino **cómo** Git trata los archivos que sí rastrea: normalización de finales de línea, si un archivo es binario, o si debe excluirse de las estadísticas de lenguaje del proyecto (`linguist-vendored`).
+
+**Ejemplo de código**:
+```gitattributes
+# Normalizar finales de línea automáticamente (CRLF/LF)
+* text=auto
+
+# Marcar archivos como binarios (Git no intenta diffearlos como texto)
+*.png binary
+*.pdf binary
+
+# Excluir carpeta de las estadísticas de lenguaje (GitLab/GitHub Linguist)
+vendor/* linguist-vendored
+```
+
+**Relacionados**: [.gitignore](#gitignore), [Repository](#repository), [Diff](#diff)
+
+---
+
 ### .gitignore
 
 **Definición**: Archivo de texto en la raíz del repositorio que lista los patrones de archivos y directorios que Git debe ignorar (no rastrear). Los patrones usan globbing: `*` para cualquier carácter, `**` para cualquier directorio, `!` para excepciones. Los archivos ya rastreados por Git NO son ignorados aunque estén en `.gitignore`.
@@ -239,7 +260,7 @@ logs/
 temp/
 ```
 
-**Relacionados**: [Repository](#repository), [Staging Area](#staging-area)
+**Relacionados**: [.gitattributes](#gitattributes), [Repository](#repository), [Staging Area](#staging-area)
 
 ---
 

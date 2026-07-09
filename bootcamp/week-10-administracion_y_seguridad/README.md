@@ -23,6 +23,10 @@
 >
 > Los escaneos disponibles en CE se activan incluyendo los templates oficiales en `.gitlab-ci.yml`. No hay dashboard centralizado de seguridad en CE.
 
+> **Nota — GitLab Duo (IA) fuera de alcance:**
+>
+> GitLab Duo (Code Suggestions, Duo Chat, Vulnerability Explanation y otras features asistidas por IA) existe y es relevante en el ecosistema GitLab, pero la mayoría de sus capacidades requieren licencia EE/Ultimate y, para varias de ellas, GitLab.com SaaS o GitLab Duo Self-Hosted — no están disponibles en una instancia CE self-managed sin licencia adicional. Por eso Duo no se cubre en esta semana ni en el resto del bootcamp, enfocado en administración y seguridad sobre GitLab CE self-managed.
+
 ## Requisitos Previos
 
 - GitLab CE administración básica

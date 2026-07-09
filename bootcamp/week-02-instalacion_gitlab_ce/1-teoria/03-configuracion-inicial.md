@@ -252,6 +252,40 @@ postgresql['shared_buffers'] = '128MB'  # default: 256MB
 
 ---
 
+## 🏭 Consideraciones para producción (fuera del alcance de este bootcamp)
+
+Esta semana instalamos GitLab con `http://localhost` y sin autenticación externa, algo razonable para aprender en local. Pero si algún día despliegas GitLab CE para un equipo real, hay tres piezas que **sí existen en Community Edition** (no son exclusivas de EE) y que deberías conocer, aunque no las cubramos a fondo aquí.
+
+### HTTPS/TLS
+
+Nunca expongas GitLab en producción por HTTP plano: las credenciales y tokens viajarían en texto plano. Hay dos caminos:
+
+```yaml
+# En GITLAB_OMNIBUS_CONFIG:
+external_url 'https://gitlab.tuempresa.com'
+letsencrypt['enable'] = true
+letsencrypt['contact_emails'] = ['admin@tuempresa.com']
+
+# ¿QUÉ HACE?: Le pide a Omnibus que emita y renueve automáticamente un certificado
+#             de Let's Encrypt para el dominio de external_url
+# ¿POR QUÉ?: Es la opción más simple cuando GitLab recibe tráfico directo de internet
+# ¿PARA QUÉ?: Servir la instancia por HTTPS sin gestionar certificados a mano
+```
+
+La alternativa habitual en infraestructuras más grandes es no dejar que GitLab termine el TLS: poner un proxy reverso (Nginx, Traefik, Caddy) delante que maneje los certificados y reenvíe a GitLab por HTTP interno.
+
+### LDAP
+
+GitLab CE **sí soporta autenticación contra un servidor LDAP** (Active Directory, OpenLDAP, etc.) — no es una función exclusiva de EE. Se configura con un bloque `gitlab_rails['ldap_servers']` en `gitlab.rb` indicando host, `base` DN y credenciales de bind. Lo que **sí requiere licencia EE** es la sincronización automática de grupos LDAP a grupos de GitLab (`LDAP group sync`); en CE, la membresía a grupos se sigue gestionando manualmente dentro de GitLab aunque el login venga de LDAP.
+
+### SAML / OAuth externo
+
+GitLab CE también soporta iniciar sesión contra proveedores externos vía SAML 2.0 o OAuth (Google, GitHub, Azure AD, Okta, etc.), configurando el bloque `gitlab_rails['omniauth_providers']`. Al igual que con LDAP, la parte de autenticación (SSO) está disponible en CE; son las integraciones más avanzadas de gestión de identidad a nivel empresarial las que suelen quedar en EE.
+
+> Estos tres puntos son solo para que sepas que existen y dónde buscar (`gitlab.rb` + documentación oficial de GitLab). Implementarlos correctamente implica decisiones de seguridad (rotación de certificados, hardening del proxy, mapeo de atributos LDAP/SAML) que están fuera del alcance de este bootcamp.
+
+---
+
 ## 🤔 Preguntas de reflexión
 
 1. ¿Por qué el archivo `initial_root_password` tiene fecha de expiración de 24 horas? ¿Qué riesgo de seguridad mitigaría si alguien lo eliminara inmediatamente después del primer login?

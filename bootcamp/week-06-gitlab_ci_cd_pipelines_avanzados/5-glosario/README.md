@@ -41,6 +41,9 @@ Token temporal generado por GitLab para cada job. Permite autenticarse al Contai
 ### **`CI_PIPELINE_SOURCE`**
 Variable predefinida que indica qué disparó el pipeline. Valores comunes: `push` (git push), `merge_request_event` (MR abierto/actualizado), `schedule` (pipeline programado), `trigger` (disparado via API o trigger job), `api`, `web` (manual desde UI).
 
+### **CI/CD Components Catalog**
+Repositorio de componentes CI/CD reutilizables, versionados con SemVer y publicados en `Build → CI/CD Catalog`. Cada componente define entradas tipadas (`spec.inputs`) en su `template.yml`. Sucesor moderno de `include:project` para compartir lógica CI/CD entre proyectos con contrato de versión estable. Se referencia con `include: component: <ruta>@<versión>`. Ver también: [[include:project]].
+
 ---
 
 ## D
@@ -80,12 +83,18 @@ Subtipo de `include` que importa un archivo de otro proyecto en la misma instanc
 ### **`include:template`**
 Subtipo de `include` que usa plantillas oficiales de GitLab (SAST, Dependency Scanning, Auto DevOps, etc.). Las plantillas se actualizan con cada versión de GitLab. Ver el catálogo en: Project → CI/CD → Editor → Browse templates.
 
+### **`interruptible`**
+Keyword de job que lo marca como cancelable cuando llega un pipeline más nuevo de la misma rama, siempre que "Auto-cancel redundant pipelines" esté activo en `Settings → CI/CD`. Útil en jobs de build/test; se evita en jobs de deploy (`interruptible: false`, el default) para no cortar un despliegue a mitad de camino.
+
 ---
 
 ## M
 
 ### **Masked variable**
 Variable cuyo valor se reemplaza por `****` en los logs del pipeline. Requisito: mínimo 8 caracteres, sin espacios, sin `"'` `` ` `` `\`. GitLab realiza la sustitución en el output del runner antes de enviarlo a los logs. **No garantiza privacidad absoluta** si el script guarda el valor en un archivo o artifact.
+
+### **Merge train**
+Cola de merge requests que se mergean secuencialmente a una rama protegida, donde cada MR se testea con los cambios de todos los MRs que van delante en la cola (no solo contra el estado actual de la rama). Evita que dos MRs combinados rompan la rama aunque cada uno haya pasado su pipeline por separado. **Solo disponible en GitLab EE (Premium/Ultimate)**. Se activa en `Settings → Merge requests → Merge Trains`.
 
 ### **Multi-project pipeline**
 Pipeline de un proyecto que dispara el pipeline de otro proyecto diferente. El job que hace el disparo se llama "bridge job". El proyecto upstream puede esperar el resultado con `strategy: depend`. Ver también: [[parent-child pipeline]], [[trigger]].
@@ -119,6 +128,9 @@ Variable CI/CD marcada como "Protected" en Settings. Solo está disponible en ra
 
 ### **`!reference`**
 Tag YAML especial de GitLab que permite reutilizar secciones específicas de otros jobs, incluso entre archivos incluidos. Más flexible que las anclas YAML (que solo funcionan en el mismo archivo). Sintaxis: `!reference [.job-name, section-name]`.
+
+### **`resource_group`**
+Keyword de job que actúa como mutex: solo una ejecución del mismo `resource_group` corre a la vez, sin importar de qué pipeline provenga. Las ejecuciones adicionales quedan en `pending` hasta que la anterior termine. Se usa para serializar deploys al mismo environment y evitar condiciones de carrera. Puede ser dinámico (`resource_group: $CI_ENVIRONMENT_NAME`) para tener un mutex por environment.
 
 ### **Review app**
 Environment efímero creado automáticamente para cada Merge Request. Permite que reviewers vean los cambios funcionando en un entorno real antes del merge. Se destruye al cerrar o mergear el MR (via `on_stop`) o tras `auto_stop_in`. El nombre suele ser `review/$CI_MERGE_REQUEST_IID`.

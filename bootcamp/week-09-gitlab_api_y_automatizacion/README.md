@@ -29,7 +29,7 @@
 2. [02-graphql-api.md](./1-teoria/02-graphql-api.md) — GraphQL queries y mutations
 3. [03-personal-access-tokens.md](./1-teoria/03-personal-access-tokens.md) — PAT, project tokens, group tokens
 4. [04-webhooks.md](./1-teoria/04-webhooks.md) — Configurar y probar webhooks
-5. [05-automatizacion-python.md](./1-teoria/05-automatizacion-python.md) — python-gitlab library
+5. [05-automatizacion-python.md](./1-teoria/05-automatizacion-python.md) — python-gitlab library y CLI `glab`
 
 ### Prácticas
 1. [01-rest-api-basico/](./2-practicas/01-rest-api-basico/) — CRUD vía REST API

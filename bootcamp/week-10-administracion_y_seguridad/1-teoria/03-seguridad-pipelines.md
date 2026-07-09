@@ -230,6 +230,133 @@ variables:
   CS_SEVERITY_THRESHOLD: "HIGH"  # Solo reportar HIGH y CRITICAL
 ```
 
+### Trivy vs Grype: los dos scanners más usados
+
+El template oficial `Security/Container-Scanning.gitlab-ci.yml` usa **Trivy** por defecto desde GitLab 15.0 (reemplazó a Clair). Ambos scanners son open source y también se pueden invocar de forma independiente en un job custom.
+
+| | Trivy | Grype |
+|-|-------|-------|
+| Mantenedor | Aqua Security | Anchore |
+| Usado por el template oficial de GitLab | ✅ (desde GitLab 15.0) | ❌ (requiere job custom) |
+| Escanea | Paquetes de SO + dependencias de aplicación (npm, pip, gems, go.sum...) | Paquetes de SO + dependencias de aplicación |
+| Formatos de salida | JSON, SARIF, CycloneDX, SPDX | JSON, SARIF, CycloneDX |
+| También escanea filesystems y repos Git (no solo imágenes) | ✅ | ❌ (solo imágenes/SBOMs) |
+
+Para un proyecto GitLab CE, la ruta de menor esfuerzo es el template oficial (Trivy). Grype es útil como segunda opinión — distintos scanners usan distintas bases de CVEs, así que correr ambos reduce falsos negativos.
+
+```yaml
+# ¿QUÉ HACE?: Configura el template oficial con el Dockerfile para habilitar remediación sugerida
+# ¿POR QUÉ?: CS_DOCKERFILE_PATH permite a Trivy indicar en qué capa se introdujo cada CVE
+# ¿PARA QUÉ?: Bloquear el pipeline si la imagen tiene CVEs críticos antes de subirla al registry
+container_scanning:
+  variables:
+    CS_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    CS_SEVERITY_THRESHOLD: "HIGH"
+    CS_DOCKERFILE_PATH: "Dockerfile"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+```
+
+```yaml
+# ¿QUÉ HACE?: Ejecuta Trivy directamente, sin el wrapper del template GitLab
+# ¿POR QUÉ?: Permite fijar la versión exacta del scanner y usar flags no expuestos por el template
+# ¿PARA QUÉ?: Escaneo reproducible en pipelines con requisitos de auditoría estrictos
+trivy-scan:
+  stage: security
+  image: aquasec/trivy:latest
+  script:
+    - trivy image --exit-code 1 --severity CRITICAL,HIGH
+        --format json --output trivy-report.json
+        $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  artifacts:
+    paths:
+      - trivy-report.json
+    expire_in: 30 days
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+```yaml
+# ¿QUÉ HACE?: Escanea la misma imagen con Grype como segunda fuente de verdad
+# ¿POR QUÉ?: Distintas bases de datos de CVEs entre scanners reducen falsos negativos
+# ¿PARA QUÉ?: Comparar resultados de Trivy y Grype antes de aprobar una imagen para producción
+grype-scan:
+  stage: security
+  image: anchore/grype:latest
+  script:
+    - grype $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -o json --file grype-report.json --fail-on high
+  artifacts:
+    paths:
+      - grype-report.json
+    expire_in: 30 days
+  allow_failure: true   # Complementario — no bloquea si Trivy ya bloqueó el pipeline
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+---
+
+## Image Signing con Cosign (supply chain security)
+
+Escanear una imagen responde "¿tiene CVEs?", pero no responde una pregunta distinta: **¿esta imagen es exactamente la que construyó mi pipeline, o alguien la reemplazó en el registry?** Sin firma, cualquiera con acceso de push al registry puede sobrescribir una tag y nadie lo detecta hasta producción — la superficie de ataque que explotó el incidente SolarWinds, y la razón por la que marcos como NIST SSDF y SLSA exigen firma de artefactos.
+
+**Cosign** (proyecto Sigstore, CNCF) firma y verifica imágenes de contenedor y otros artefactos OCI usando criptografía de clave pública.
+
+### ¿Por qué firmar imágenes?
+
+- **Integridad**: garantiza que la imagen desplegada es bit-a-bit la que construyó el pipeline, no una modificada en tránsito o en el registry
+- **Procedencia (provenance)**: la firma puede incluir metadata de qué pipeline, commit y runner produjo la imagen
+- **Enforcement en el clúster**: con admission controllers (Kyverno, Sigstore Policy Controller), Kubernetes puede **rechazar** el despliegue de imágenes sin firma válida
+- **Cadena de suministro (supply chain security)**: cierra el gap entre "escaneada sin CVEs" y "es realmente la imagen que se escaneó"
+
+### Firma y verificación con clave estática
+
+```bash
+# ¿QUÉ HACE?: Genera un par de claves y firma la imagen recién construida
+# ¿POR QUÉ?: La firma con clave privada es el modelo más simple antes de pasar a keyless
+# ¿PARA QUÉ?: Garantizar que solo el pipeline con acceso a la clave privada puede firmar releases
+cosign generate-key-pair
+# Genera cosign.key (privada) y cosign.pub (pública) — la privada NUNCA se commitea
+
+cosign sign --key cosign.key $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+```
+
+```bash
+# ¿QUÉ HACE?: Verifica que la imagen tiene una firma válida de la clave pública esperada
+# ¿POR QUÉ?: Antes de desplegar, confirmar que la imagen no fue alterada ni reemplazada
+# ¿PARA QUÉ?: Gate de seguridad en el pipeline de deploy — falla si la firma no es válida
+cosign verify --key cosign.pub $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+```
+
+```yaml
+# ¿QUÉ HACE?: Firma la imagen después de construirla y antes de que otro stage la despliegue
+# ¿POR QUÉ?: La clave privada se guarda como variable CI/CD protegida — nunca en el repo
+# ¿PARA QUÉ?: Solo imágenes firmadas por el pipeline oficial pueden llegar a producción
+sign-image:
+  stage: build
+  image: gcr.io/projectsigstore/cosign:latest
+  variables:
+    COSIGN_KEY: $COSIGN_PRIVATE_KEY   # Variable CI/CD: tipo File, Protected + Masked
+  script:
+    - cosign sign --key $COSIGN_KEY --yes $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  needs:
+    - build-image
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+### Keyless signing (recomendado, sin gestionar claves)
+
+```bash
+# ¿QUÉ HACE?: Firma usando la identidad OIDC del propio job de CI, sin clave privada gestionada
+# ¿POR QUÉ?: Elimina el riesgo de fuga de clave privada — Sigstore Fulcio emite un certificado efímero
+# ¿PARA QUÉ?: Firma auditable ligada a "qué pipeline, en qué proyecto, en qué momento" via Rekor (transparency log)
+COSIGN_EXPERIMENTAL=1 cosign sign --yes $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+```
+
+Keyless signing requiere que el runner tenga un token OIDC (GitLab CI lo provee vía `ID_TOKEN` con `aud` configurado) y conectividad saliente a Fulcio/Rekor (servicios públicos de Sigstore). En instancias air-gapped, la firma con clave estática sigue siendo la opción viable.
+
 ---
 
 ## Seguridad de variables CI/CD

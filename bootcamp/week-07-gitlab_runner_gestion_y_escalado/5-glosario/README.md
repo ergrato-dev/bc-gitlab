@@ -58,12 +58,18 @@ Algoritmo de distribución de jobs que usa GitLab con ↗ Shared Runners. Detect
 **Fleeting**
 Plugin system que abstrae la interacción entre el ↗ Autoscaler y los proveedores cloud. Cada cloud tiene su plugin: `fleeting-plugin-aws`, `fleeting-plugin-googlecompute`, `fleeting-plugin-azure`. El autoscaler llama al plugin para crear/destruir instancias; el plugin habla con la API del cloud.
 
+**Flota de Runners (Fleet)**
+Conjunto de instancias o pods gestionados por el ↗ Autoscaler o el Kubernetes Executor que ejecutan jobs de CI/CD. Monitorear una flota requiere métricas agregadas (Prometheus) en vez de revisar runners uno por uno — ver `job_queue_duration_seconds`.
+
 ---
 
 ## G
 
 **GitLab Runner**
 Agente open-source escrito en Go que ejecuta los jobs de CI/CD de GitLab. Se instala independientemente de GitLab (en el mismo host o en servidores dedicados) y se comunica con GitLab via polling HTTPS. Un solo proceso puede gestionar múltiples runners (con diferentes tokens y configuraciones) definidos en el mismo ↗ config.toml.
+
+**GitLab Runner Operator**
+Alternativa al Helm chart para instalar runners en Kubernetes, basada en el patrón Kubernetes Operator. Declara cada runner como un recurso personalizado `Runner` que un controlador reconcilia continuamente contra el estado real del cluster — a diferencia del Helm chart, que solo actualiza recursos cuando se ejecuta `helm upgrade` manualmente. Se distribuye via ↗ Operator Lifecycle Manager (OLM); certificado para OpenShift, también usable en Kubernetes vanilla.
 
 **Group Runner**
 Runner disponible para todos los proyectos dentro de un grupo GitLab y sus subgrupos. Los owners del grupo pueden administrarlo. Nivel de aislamiento intermedio: más control que un ↗ Shared Runner, menos aislamiento que un ↗ Specific Runner. Se configura en `Group → Settings → CI/CD → Runners`.
@@ -84,6 +90,9 @@ Denominación moderna (GitLab 14+) para runners administrados a nivel de instanc
 ---
 
 ## J
+
+**job_queue_duration_seconds**
+Métrica Prometheus (histogram) expuesta por `gitlab-runner` que mide cuánto tiempo espera un job **en cola** antes de que un worker lo tome. Es la señal principal de falta de capacidad en una ↗ Flota de Runners — si crece sostenidamente, hacen falta más workers, sin importar qué tan ocupados estén los existentes.
 
 **Job Routing**
 Mecanismo por el cual GitLab asigna jobs a runners basado en ↗ Tags y disponibilidad. Regla fundamental: el runner debe tener **todos** los tags declarados en el job. Si ningún runner disponible tiene los tags requeridos, el job queda en estado `pending` indefinidamente.
@@ -110,6 +119,13 @@ Parámetro del ↗ Autoscaler que define cuántos jobs puede ejecutar una instan
 
 ---
 
+## O
+
+**Operator Lifecycle Manager (OLM)**
+Framework de Kubernetes para instalar, actualizar y gestionar Operators via catálogos (OperatorHub). Requerido para instalar el ↗ GitLab Runner Operator en un cluster Kubernetes vanilla; en OpenShift viene incluido por defecto.
+
+---
+
 ## P
 
 **Paused (estado del runner)**
@@ -127,6 +143,9 @@ Parámetro del ↗ Docker Executor que controla cuándo hacer pull de la imagen 
 
 **Registration Token**
 Token del proyecto, grupo o instancia usado para registrar un runner. **Deprecado desde GitLab 15.6** — el método moderno es crear un runner authentication token via API antes del registro. Diferente del ↗ Authentication Token (Runner) que se obtiene tras el registro.
+
+**Right-sizing**
+Práctica de ajustar el tipo y tamaño de instancia de autoscaling al perfil real de recursos de los jobs, en vez de usar una única instancia grande para toda la ↗ Flota de Runners. Reduce costo dividiendo el pool en tipos de instancia distintos (liviano/pesado) enrutados por ↗ Tags.
 
 **run_untagged**
 Parámetro del runner (en ↗ config.toml y via API) que controla si el runner acepta jobs sin tags. `run_untagged = true`: acepta jobs con o sin tags. `run_untagged = false`: solo acepta jobs que tienen tags que coincidan con los del runner. Recomendado `false` para runners especializados de producción.
@@ -149,6 +168,9 @@ Executor que ejecuta los comandos del job directamente en la shell del host dond
 
 **Specific Runner**
 Runner asignado exclusivamente a un proyecto. Los maintainers del proyecto pueden registrar y administrar sus propios runners. Nivel de aislamiento máximo: el runner solo acepta jobs de ese proyecto. Recomendado para proyectos con requisitos especiales de hardware o acceso a secretos sensibles.
+
+**Spot Instance / Preemptible VM**
+Instancia cloud de bajo costo (60-90% más barata que on-demand) que el proveedor puede interrumpir con poco aviso (2 minutos en AWS). Recomendada para pools de autoscaling con jobs cortos y reintentables (tests, lint); evitarla para jobs largos y no idempotentes como deploys o migraciones de base de datos.
 
 ---
 

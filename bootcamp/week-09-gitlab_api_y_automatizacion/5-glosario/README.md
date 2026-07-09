@@ -47,6 +47,9 @@ Conjunto reutilizable de campos que puede incluirse en múltiples queries. Se de
 
 ## G
 
+**glab**
+CLI oficial de GitLab (equivalente a `gh` de GitHub). Permite operar la API desde la terminal con subcomandos de alto nivel (`glab mr create`, `glab issue list`, `glab ci trace`) o con llamadas raw (`glab api`). Se autentica una vez con `glab auth login` y resuelve automáticamente el proyecto y branch actuales leyendo el repositorio git local. Complementa a ↗ python-gitlab: ideal para uso interactivo y scripts de shell, mientras que python-gitlab es preferible para automatización compleja en Python.
+
 **GraphQL**
 Lenguaje de query y runtime para APIs, desarrollado por Facebook (Meta) en 2012. A diferencia de REST (un endpoint por recurso), GraphQL usa un único endpoint y el cliente especifica exactamente qué campos quiere en la respuesta. Elimina el over-fetching (recibir campos innecesarios) y el under-fetching (necesitar múltiples peticiones). Ver también: ↗ REST, ↗ Query, ↗ Mutation.
 

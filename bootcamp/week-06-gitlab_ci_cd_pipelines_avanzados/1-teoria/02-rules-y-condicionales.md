@@ -341,6 +341,97 @@ deploy:
 
 ---
 
+## 🔒 Control de Concurrencia: `resource_group` e `interruptible`
+
+`rules` decide **si** un job se ejecuta. `resource_group` e `interruptible` deciden **cuántas instancias** de un job pueden correr al mismo tiempo — importante cuando varios pipelines corren en paralelo (varios pushes seguidos, varios MRs apuntando al mismo entorno).
+
+### `resource_group` — evitar deploys concurrentes
+
+```
+# ¿QUÉ HACE?: Convierte el job en un mutex — solo UNA ejecución del resource_group
+#             corre a la vez, sin importar de qué pipeline venga
+# ¿POR QUÉ?: Dos deploys simultáneos al mismo servidor pueden pisarse (race condition,
+#            estado inconsistente, mitad de un release viejo + mitad de uno nuevo)
+# ¿PARA QUÉ?: Serializar deploys al mismo environment, manteniendo el pipeline paralelo
+#             en todo lo demás (build/test sí corren en paralelo sin problema)
+```
+
+```yaml
+deploy-production:
+  stage: deploy
+  script: ./deploy.sh production
+  environment:
+    name: production
+  resource_group: production   # ← solo un deploy a "production" a la vez
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+```
+
+Si un segundo pipeline llega mientras `deploy-production` del primero sigue corriendo, el segundo job queda en estado `pending` (esperando el `resource_group`) en lugar de ejecutarse en paralelo:
+
+```
+Pipeline #101 (commit A) → deploy-production ejecutando...
+Pipeline #102 (commit B) → deploy-production ⏸ pending (esperando a #101)
+Pipeline #101 termina    → deploy-production ✅
+Pipeline #102             → deploy-production ▶ arranca ahora
+```
+
+**Múltiples environments con el mismo nombre de grupo dinámico:**
+
+```yaml
+deploy:
+  stage: deploy
+  script: ./deploy.sh ${CI_ENVIRONMENT_NAME}
+  environment:
+    name: $CI_ENVIRONMENT_NAME
+  resource_group: $CI_ENVIRONMENT_NAME   # ← un mutex POR environment, no global
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      variables:
+        CI_ENVIRONMENT_NAME: production
+    - if: $CI_COMMIT_BRANCH == "develop"
+      variables:
+        CI_ENVIRONMENT_NAME: staging
+```
+
+Así, `production` y `staging` se serializan cada uno por su lado — un deploy a `staging` no bloquea uno a `production`.
+
+---
+
+### `interruptible` — cancelar pipelines obsoletos
+
+```
+# ¿QUÉ HACE?: Marca un job como "cancelable" cuando llega un pipeline más nuevo
+#             de la misma rama y el ajuste "Auto-cancel redundant pipelines" está activo
+# ¿POR QUÉ?: Si alguien hace 3 pushes seguidos a la misma rama en 2 minutos, no tiene
+#            sentido terminar de correr los tests del push #1 y #2
+# ¿PARA QUÉ?: Ahorrar minutos de runner — feedback más rápido del último commit
+```
+
+```yaml
+build:
+  stage: build
+  script: npm run build
+  interruptible: true          # ← cancelable si llega un pipeline más nuevo
+
+unit-tests:
+  stage: test
+  script: npm test
+  interruptible: true
+
+deploy-production:
+  stage: deploy
+  script: ./deploy.sh production
+  resource_group: production
+  interruptible: false         # ← NUNCA cancelar un deploy a mitad de camino
+```
+
+**Requisito:** en `Settings → CI/CD → General pipelines`, la opción **"Auto-cancel redundant pipelines"** debe estar habilitada — `interruptible` no tiene efecto si esa opción global está desactivada.
+
+**Regla práctica:** `interruptible: true` en jobs de build/test (rápidos de repetir, seguros de cortar a mitad); `interruptible: false` (o simplemente omitir, es el default) en jobs de deploy — cortar un deploy a mitad puede dejar el environment en un estado peor que antes.
+
+---
+
 ## 🖼️ Diagrama: Flujo de Evaluación de Rules
 
 ![Diagrama de flujo de rules](../0-assets/02-rules-flow.svg)

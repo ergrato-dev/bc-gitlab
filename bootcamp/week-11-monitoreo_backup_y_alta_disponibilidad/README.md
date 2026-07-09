@@ -31,6 +31,7 @@
 3. [03-alta-disponibilidad.md](./1-teoria/03-alta-disponibilidad.md) — HA overview, componentes críticos
 4. [04-postgresql-ha.md](./1-teoria/04-postgresql-ha.md) — Repmgr, Patroni, failover (arquitectura y conceptos)
 5. [05-gitaly-cluster.md](./1-teoria/05-gitaly-cluster.md) — Gitaly Cluster y Praefect (diseño; requiere entorno multi-nodo)
+6. [06-logging-centralizado.md](./1-teoria/06-logging-centralizado.md) — ELK vs Loki+Promtail+Grafana, logs de GitLab, LogQL
 
 ### Prácticas
 1. [01-prometheus-grafana/](./2-practicas/01-prometheus-grafana/) — Configurar monitoreo
@@ -47,6 +48,7 @@
 - [ ] Backup automático configurado
 - [ ] Restore probado exitosamente
 - [ ] Diagrama de arquitectura HA
+- [ ] Logs centralizados (stack Loki+Promtail o ELK diseñado y documentado)
 
 ---
 

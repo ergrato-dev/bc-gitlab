@@ -41,6 +41,9 @@ Análisis de imágenes Docker en busca de CVEs en los paquetes del sistema opera
 **Copyleft**
 Licencia de software que exige que las obras derivadas se distribuyan bajo la misma licencia. Existe en dos variantes: **fuerte** (GPL, AGPL — todo el software que incorpore la librería debe ser GPL) y **débil** (LGPL, MPL — solo los cambios a la librería deben publicarse, el software que la usa puede ser propietario). Ver también: ↗ GPL, ↗ AGPL, ↗ LGPL, ↗ License Compliance.
 
+**Cosign**
+Herramienta del proyecto Sigstore (CNCF) para firmar y verificar imágenes de contenedor y otros artefactos OCI. Soporta firma con clave estática (`cosign sign --key`) o keyless (identidad OIDC del pipeline CI, certificado efímero emitido por Fulcio, registrado en el transparency log Rekor). Cierra el gap entre "imagen escaneada sin CVEs" e "imagen no alterada en el registry". Ver también: ↗ Image Signing, ↗ Container Scanning.
+
 **CVE (Common Vulnerabilities and Exposures)**
 Identificador único y estándar para vulnerabilidades de seguridad conocidas. Formato: `CVE-YYYY-NNNNN`. Ejemplos famosos: CVE-2021-44228 (Log4Shell), CVE-2022-22965 (Spring4Shell). Las bases de datos NVD (NIST) y OSV (Google) indexan CVEs con severidad CVSS y versiones afectadas/corregidas. Ver también: ↗ Dependency Scanning, ↗ CVSS.
 
@@ -73,11 +76,17 @@ Análisis de las dependencias declaradas en archivos de lock (`package-lock.json
 **Gemnasium**
 Base de datos de vulnerabilidades de GitLab usada por Dependency Scanning. Agrega datos de múltiples fuentes (NVD, GitHub Advisory Database, OSV) y los correlaciona con versiones específicas de paquetes en múltiples ecosistemas (npm, pip, Maven, Bundler, etc.). Se actualiza continuamente.
 
+**GitLab Duo**
+Conjunto de features de inteligencia artificial de GitLab: Code Suggestions (autocompletado de código), Duo Chat (asistente conversacional), Vulnerability Explanation, entre otros. La mayoría requiere licencia GitLab EE/Ultimate y, para varias capacidades, GitLab.com SaaS o GitLab Duo Self-Hosted — no está disponible en una instancia CE self-managed sin licencia adicional. Fuera del alcance de este bootcamp, centrado en GitLab CE self-managed.
+
 **GPL (General Public License)**
 Licencia copyleft fuerte. La versión 2 (GPL-2.0) y versión 3 (GPL-3.0) exigen que cualquier software que incorpore o enlace con código GPL sea también GPL. Populares en Linux, MySQL, WordPress. Incompatibles con software propietario sin excepciones explícitas. Ver también: ↗ AGPL, ↗ Copyleft, ↗ License Compliance.
 
 **Grace Period (MFA)**
 Período de tiempo (en horas) que GitLab permite a los usuarios para configurar MFA después de que el administrador activa la obligatoriedad. Durante el grace period, el usuario puede hacer login con contraseña, pero ve un banner de advertencia. Al expirar el grace period, el sistema redirige obligatoriamente a la pantalla de configuración de MFA. Típicamente 24-72 horas. Ver también: ↗ MFA.
+
+**Grype**
+Escáner de vulnerabilidades de imágenes de contenedor open source mantenido por Anchore. Alternativa a ↗ Trivy: analiza paquetes de sistema operativo y dependencias de aplicación dentro de una imagen, genera reportes en JSON/SARIF/CycloneDX. No es el scanner por defecto del template oficial de GitLab Container Scanning (ese usa Trivy), pero se puede integrar en un job custom como segunda fuente de verdad. Ver también: ↗ Container Scanning, ↗ Trivy.
 
 **Guest**
 Rol mínimo en GitLab (valor numérico: 10). Puede: ver y descargar el código fuente si el proyecto es público/internal, ver y comentar en issues, descargar releases. No puede: clonar repositorios privados, ver pipelines, hacer push. Útil para clientes externos que necesitan seguimiento de issues sin acceso al código. Ver también: ↗ RBAC.
@@ -85,6 +94,9 @@ Rol mínimo en GitLab (valor numérico: 10). Puede: ver y descargar el código f
 ---
 
 ## I
+
+**Image Signing**
+Práctica de firmar criptográficamente una imagen de contenedor para garantizar su integridad y procedencia: la imagen desplegada es exactamente la que construyó el pipeline, no una alterada o reemplazada en el registry. Herramienta de referencia: ↗ Cosign (Sigstore). Habilita enforcement en el clúster (rechazar imágenes sin firma válida) y es requisito creciente de marcos de cadena de suministro (SLSA, NIST SSDF). Ver también: ↗ SBOM.
 
 **IP Restriction**
 Configuración de GitLab que limita el acceso a la instancia (UI y API) a rangos de IP específicos en notación CIDR. Los accesos desde IPs no autorizadas reciben HTTP 404 (no 403), para no revelar la existencia del recurso. Configurable desde Admin Area → Settings → Network. Debe usarse con VPN para no bloquear trabajo remoto.
@@ -172,6 +184,9 @@ Estándar ISO/IEC 5962:2021 para describir licencias de software de forma consis
 
 **TOTP (Time-based One-Time Password)**
 Algoritmo estándar (RFC 6238) que genera contraseñas temporales de 6 dígitos basadas en un secreto compartido y el tiempo actual (renovadas cada 30 segundos). Base de todas las apps de autenticación compatibles: Google Authenticator, Authy, Bitwarden, 1Password, Microsoft Authenticator. GitLab usa TOTP como implementación de ↗ MFA. Ver también: ↗ Backup Code.
+
+**Trivy**
+Escáner de vulnerabilidades open source de Aqua Security, usado por defecto en el template oficial `Security/Container-Scanning.gitlab-ci.yml` de GitLab (desde GitLab 15.0, en reemplazo de Clair). Analiza imágenes de contenedor, sistemas de archivos y repositorios Git en busca de CVEs en paquetes de SO y dependencias de aplicación. Ver también: ↗ Grype, ↗ Container Scanning.
 
 ---
 

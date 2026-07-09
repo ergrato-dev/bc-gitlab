@@ -344,6 +344,14 @@ Es importante saber qué está disponible en CE (gratuito self-hosted) y qué re
 
 **En CE puedes simular Epics con:** labels tipo `~epic::nombre-del-epic` y filtrar issues por ese label.
 
+**¿Qué es un Epic?** Es un agrupador de issues relacionados que pertenecen a una iniciativa
+grande — por ejemplo "Rediseño del checkout" o "Migración a v2 de la API". A diferencia de un
+milestone (que agrupa issues por fecha de entrega dentro de un proyecto), un Epic agrupa issues
+**a través de múltiples proyectos y múltiples milestones**, dándote una vista de progreso de
+toda la iniciativa sin importar en qué repo o sprint viva cada issue individual. Recuerda:
+esta funcionalidad es **EE-only** (tabla arriba), por eso en CE la simulación con scoped labels
+es la alternativa práctica.
+
 ---
 
 ## 🤔 Preguntas de reflexión

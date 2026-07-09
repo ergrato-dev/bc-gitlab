@@ -19,15 +19,19 @@ Términos técnicos clave de la semana, con definiciones, ejemplos y referencias
 | [gitlab-rake](#gitlab-rake) | G |
 | [Healthcheck](#healthcheck) | H |
 | [Image (imagen Docker)](#image) | I |
+| [LDAP](#ldap) | L |
+| [Let's Encrypt](#lets-encrypt) | L |
 | [Named Volume](#named-volume) | N |
 | [Omnibus](#omnibus) | O |
 | [Profile (Docker Compose)](#profile) | P |
 | [Restore](#restore) | R |
+| [SAML](#saml) | S |
 | [Secrets (gitlab-secrets.json)](#secrets) | S |
 | [Service (Docker Compose)](#service) | S |
 | [shm_size](#shm_size) | S |
 | [Sidekiq](#sidekiq) | S |
 | [STRATEGY=copy](#strategycopy) | S |
+| [TLS/HTTPS](#tlshttps) | T |
 | [Volume (volumen)](#volume) | V |
 
 ---
@@ -263,6 +267,26 @@ image: prom/prometheus:latest              # Prometheus
 
 ---
 
+## LDAP
+
+**Definición:** Lightweight Directory Access Protocol — protocolo estándar para consultar y autenticar contra un directorio centralizado de usuarios (Active Directory, OpenLDAP, etc.).
+
+**En GitLab:** GitLab CE soporta login vía LDAP de forma nativa, configurando `gitlab_rails['ldap_servers']` en `gitlab.rb`. La sincronización automática de grupos LDAP a grupos de GitLab (`LDAP group sync`) requiere licencia EE — en CE la membresía a grupos se gestiona manualmente.
+
+**Relacionados:** [SAML](#saml), [GITLAB_OMNIBUS_CONFIG](#gitlab_omnibus_config)
+
+---
+
+## Let's Encrypt
+
+**Definición:** Autoridad certificadora gratuita que emite certificados TLS/HTTPS válidos por 90 días, con renovación automatizable.
+
+**En GitLab:** Omnibus puede gestionar la emisión y renovación del certificado directamente con `letsencrypt['enable'] = true` en `gitlab.rb`, sin necesidad de un proxy externo.
+
+**Relacionados:** [TLS/HTTPS](#tlshttps)
+
+---
+
 ## Named Volume
 
 **Definición:** Volumen Docker con un nombre explícito, gestionado completamente por Docker. Los datos persisten en `/var/lib/docker/volumes/NOMBRE/` del host. Son la forma recomendada de manejar persistencia en producción.
@@ -349,6 +373,16 @@ docker compose exec gitlab gitlab-ctl restart
 **Regla de oro:** El `gitlab-secrets.json` del momento del backup debe coincidir con el que tiene la instancia donde restauras. Sin esto, el restore falla o los datos cifrados son ilegibles.
 
 **Relacionados:** [Backup](#backup), [Secrets](#secrets)
+
+---
+
+## SAML
+
+**Definición:** Security Assertion Markup Language — estándar XML para single sign-on (SSO) entre un proveedor de identidad externo (Okta, Azure AD, Google, etc.) y una aplicación como GitLab.
+
+**En GitLab:** GitLab CE soporta login vía SAML configurando el bloque `gitlab_rails['omniauth_providers']` en `gitlab.rb`. La autenticación SSO está disponible en CE; las integraciones más avanzadas de gestión de identidad empresarial suelen quedar reservadas a EE.
+
+**Relacionados:** [LDAP](#ldap), [GITLAB_OMNIBUS_CONFIG](#gitlab_omnibus_config)
 
 ---
 
@@ -449,6 +483,16 @@ docker compose exec gitlab gitlab-backup create STRATEGY=copy
 ```
 
 **Relacionados:** [Backup](#backup)
+
+---
+
+## TLS/HTTPS
+
+**Definición:** Transport Layer Security — protocolo que cifra el tráfico entre el navegador y el servidor. HTTPS es HTTP servido sobre TLS.
+
+**En GitLab:** En producción, GitLab debe servirse siempre por HTTPS (nunca HTTP plano) para proteger credenciales y tokens en tránsito. Se configura con `letsencrypt['enable'] = true` en `gitlab.rb`, o terminando TLS en un proxy reverso externo (Nginx, Traefik, Caddy) delante de GitLab.
+
+**Relacionados:** [Let's Encrypt](#lets-encrypt)
 
 ---
 
