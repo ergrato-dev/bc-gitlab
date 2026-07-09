@@ -8,6 +8,7 @@
 | [docker-setup.md](./docker-setup.md) | Configuración de Docker para el bootcamp |
 | [setup/](./setup/) | Guías de instalación y configuración inicial |
 | [decision-renombre-semanas.md](./decision-renombre-semanas.md) | ADR: Decisión de estructura de semanas |
+| [propuesta-bootcamp-gitlab-senior.md](./propuesta-bootcamp-gitlab-senior.md) | Propuesta: alcance temático para track senior/Platform Engineering (no implementado) |
 
 ## Entornos disponibles
 
