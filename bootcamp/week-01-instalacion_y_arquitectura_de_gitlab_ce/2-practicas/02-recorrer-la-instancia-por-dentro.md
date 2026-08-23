@@ -224,7 +224,7 @@ docker compose exec gitlab du -sh /var/opt/gitlab 2>/dev/null
 Lo que llegó a `gitlab.rb`:
 
 ```bash
-docker compose exec gitlab grep -E "worker_processes|max_concurrency|listen_port" /etc/gitlab/gitlab.rb
+docker compose exec gitlab grep -E "worker_processes|concurrency|listen_port" /etc/gitlab/gitlab.rb
 ```
 
 Lo que Nginx está aplicando de verdad:

@@ -41,18 +41,17 @@ services:
         # ── Container Registry integrado (S13) ──
         registry_external_url 'http://${GITLAB_HOST:-gitlab}:${REGISTRY_PORT:-5050}'
         registry['enable'] = true
-        registry_nginx['listen_port'] = ${REGISTRY_PORT:-5050}
-        registry_nginx['listen_https'] = false
+        registry['nginx']['listen_port'] = ${REGISTRY_PORT:-5050}
+        registry['nginx']['listen_https'] = false
 
         # ── GitLab Pages (S14) ──
         pages_external_url 'http://${PAGES_HOST:-pages.localhost}:${PAGES_PORT:-8090}'
         gitlab_pages['enable'] = true
         gitlab_pages['listen_proxy'] = "0.0.0.0:8090"
-        pages_nginx['enable'] = false
+        gitlab_pages['nginx']['enable'] = false
 
         # ── Funcionalidad usada por el bootcamp ──
         gitlab_rails['lfs_enabled'] = true
-        gitlab_rails['gitlab_default_can_create_group'] = true
         gitlab_rails['dependency_proxy_enabled'] = true
 
         # ── Correo desactivado: el laboratorio no envía nada ──
@@ -60,27 +59,29 @@ services:
         gitlab_rails['gitlab_email_enabled'] = false
 
         # ── PRIVACIDAD: telemetría deshabilitada ──
+        # Solo estas dos existen en Omnibus. El resto de la telemetría
+        # (Snowplow, ofertas de terceros) se apaga desde Admin > Settings >
+        # Metrics and profiling, no desde gitlab.rb.
         gitlab_rails['usage_ping_enabled'] = false
         gitlab_rails['sentry_enabled'] = false
-        gitlab_rails['snowplow_enabled'] = false
-        gitlab_rails['google_analytics_id'] = nil
-        gitlab_rails['third_party_offers_enabled'] = false
-        gitlab_rails['gitlab_environment'] = 'development'
 
         # ── Respaldo (S22) ──
         gitlab_rails['backup_keep_time'] = 604800
 
         # ── Web server ──
-        nginx['listen_port'] = 8888
-        nginx['listen_https'] = false
-        nginx['client_max_body_size'] = '256m'
+        # En GitLab 19.2 estas claves se movieron de nginx[...] a
+        # gitlab_rails['nginx'][...]. Las antiguas siguen aplicandose, pero
+        # estan deprecadas: el material usa la forma actual.
+        gitlab_rails['nginx']['listen_port'] = 8888
+        gitlab_rails['nginx']['listen_https'] = false
+        gitlab_rails['nginx']['client_max_body_size'] = '256m'
 
         # ── Tuning de laboratorio (S21 lo explica y lo ajusta) ──
         postgresql['shared_buffers'] = '256MB'
         puma['worker_processes'] = 2
         puma['min_threads'] = 1
         puma['max_threads'] = 4
-        sidekiq['max_concurrency'] = 10
+        sidekiq['concurrency'] = 10
         redis['maxmemory'] = '256mb'
         redis['maxmemory_policy'] = 'allkeys-lru'
 

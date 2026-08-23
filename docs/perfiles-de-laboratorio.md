@@ -46,7 +46,7 @@ Antes de empezar, baja el consumo de GitLab en `.env` y reconfigura:
 
 ```ruby
 puma['worker_processes'] = 2
-sidekiq['max_concurrency'] = 8
+sidekiq['concurrency'] = 8
 prometheus_monitoring['enable'] = false
 ```
 

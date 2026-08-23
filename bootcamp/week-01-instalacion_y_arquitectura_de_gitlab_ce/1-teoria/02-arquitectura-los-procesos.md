@@ -84,7 +84,7 @@ Todo lo que no tiene que ocurrir **mientras el usuario espera** se encola en Red
 Sidekiq procesa varios trabajos a la vez; en el laboratorio, diez:
 
 ```ruby
-sidekiq['max_concurrency'] = 10
+sidekiq['concurrency'] = 10
 ```
 
 **Síntoma típico, y el más engañoso de todos**: "hice push y no aparece el pipeline". El push funcionó, Gitaly guardó el commit, pero el trabajo que crea el pipeline está esperando en la cola. Si las colas de Sidekiq crecen, GitLab parece funcionar y en realidad no está haciendo nada.

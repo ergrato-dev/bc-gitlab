@@ -32,11 +32,11 @@ Es un archivo Ruby, aunque en la práctica se escribe como una lista de asignaci
 ```ruby
 external_url 'http://localhost:8888'
 
-nginx['listen_port'] = 8888
+gitlab_rails['nginx']['listen_port'] = 8888
 postgresql['shared_buffers'] = '256MB'
 redis['maxmemory'] = '256mb'
 puma['worker_processes'] = 2
-sidekiq['max_concurrency'] = 10
+sidekiq['concurrency'] = 10
 gitaly['configuration'] = { ... }
 gitlab_rails['lfs_enabled'] = true
 ```
@@ -46,15 +46,28 @@ gitlab_rails['lfs_enabled'] = true
 | Prefijo | Configura | Ejemplo |
 |---|---|---|
 | `gitlab_rails[...]` | La aplicación: features, correo, backup, integraciones | `gitlab_rails['lfs_enabled'] = true` |
-| `nginx[...]` | El servidor web | `nginx['listen_port'] = 8888` |
+| `gitlab_rails['nginx'][...]` | El servidor web de la aplicación | `gitlab_rails['nginx']['listen_port'] = 8888` |
 | `postgresql[...]` | La base de datos | `postgresql['shared_buffers'] = '256MB'` |
 | `redis[...]` | Caché y colas | `redis['maxmemory'] = '256mb'` |
 | `puma[...]` | El servidor de aplicación | `puma['worker_processes'] = 2` |
-| `sidekiq[...]` | Los trabajos en segundo plano | `sidekiq['max_concurrency'] = 10` |
+| `sidekiq[...]` | Los trabajos en segundo plano | `sidekiq['concurrency'] = 10` |
 | `gitaly[...]` | El servicio de Git | `gitaly['configuration']` |
 | `registry[...]` | El Container Registry | `registry['enable'] = true` |
 | `gitlab_pages[...]` | Pages | `gitlab_pages['enable'] = true` |
 | `prometheus_monitoring[...]` | Los exportadores de métricas | `prometheus_monitoring['enable'] = false` |
+
+> [!IMPORTANT]
+> **En GitLab 19.2 las opciones de Nginx cambiaron de sitio.** Antes eran
+> `nginx['listen_port']`; ahora son `gitlab_rails['nginx']['listen_port']`.
+>
+> Las claves antiguas siguen aplicándose —están deprecadas, no rotas—, así que
+> vas a encontrar montones de ejemplos por internet con la forma vieja y
+> funcionarán. Este material usa la actual.
+>
+> Ojo con una consecuencia que no es obvia: el Registry y Pages tienen **su
+> propio** Nginx, con las claves `registry['nginx'][...]` y
+> `gitlab_pages['nginx'][...]`. Lo que pongas en `gitlab_rails['nginx']` **no**
+> se replica a ellos: hay que configurarlos por separado.
 
 **Equivocarse de prefijo es el error más común y el más silencioso**: `gitlab_rails['listen_port']` no da error, simplemente no hace nada, y te pasas media hora buscando por qué el puerto no cambia.
 
@@ -140,7 +153,7 @@ Aquí hay un giro importante para el laboratorio. En una instalación normal edi
 environment:
   GITLAB_OMNIBUS_CONFIG: |
     external_url 'http://localhost:8888'
-    nginx['listen_port'] = 8888
+    gitlab_rails['nginx']['listen_port'] = 8888
     puma['worker_processes'] = 2
 ```
 
