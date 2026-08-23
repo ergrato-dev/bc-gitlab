@@ -20,7 +20,7 @@
 | 2 | `/-/health` devuelve `GitLab OK` y la instancia no funciona. ¿Cómo es posible y qué endpoint deberías haber usado? |
 | 3 | Haces `git push`, el commit aparece en la interfaz, pero el pipeline no se crea. ¿En qué punto exacto del recorrido se quedó, y qué proceso investigarías? |
 | 4 | ¿Por qué un `git clone` por HTTP no ocupa un hilo de Puma durante toda la transferencia, y qué pasaría si lo ocupara? |
-| 5 | Editas `/var/opt/gitlab/nginx/conf/gitlab-http.conf`, reinicias, y tu cambio desaparece. ¿Por qué, y dónde había que hacerlo? |
+| 5 | Editas `/var/opt/gitlab/nginx/conf/service_conf/gitlab-rails.conf`, reinicias, y tu cambio desaparece. ¿Por qué, y dónde había que hacerlo? |
 | 6 | ¿Por qué los repositorios se guardan en `@hashed/93/50/9350c2...` y no en una carpeta con el nombre del proyecto? Da dos razones. |
 | 7 | Restauras un backup de GitLab en una máquina nueva. La instancia arranca, pero todas las variables de CI enmascaradas son ilegibles. ¿Qué te faltó copiar y por qué el backup no lo incluye? |
 | 8 | `gitlab-ctl status` muestra todos los procesos con `run:`. ¿Qué otro dato de esa misma salida puede indicar que algo va mal, y qué significa? |

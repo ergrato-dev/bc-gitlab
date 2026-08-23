@@ -3,7 +3,7 @@
 Bootcamp GitLab CE Zero to Platform Engineer (26 semanas, 208 h, ergrato-dev).
 Trata **GitLab como plataforma de ingeniería que el alumno opera**, no como el
 sitio donde sube el código. Edición **CE pura**, autohospedada en Docker, versión
-fijada `19.1.1-ce.0`, instancia en `http://localhost:8888`. Modalidad:
+fijada `19.2.4-ce.0`, instancia en `http://localhost:8888`. Modalidad:
 **autoestudio asincrónico**, 8 h/semana, máquina de 16 GB.
 
 Las convenciones de contenido pedagógico (estructura de semana, tono, malla,
@@ -68,6 +68,12 @@ week-XX-tema/
   una semana en `verificar-semana.sh`; declara la comprobación en `checks.json`.
 - **La tabla de tiempos del README de cada semana suma 8 h exactas.** Si suma
   más, la semana está sobrecargada: se recorta el alcance, no se maquilla la tabla.
+- **Nunca `:latest`.** Ni en el compose, ni en un `Dockerfile`, ni en un ejemplo
+  de `.gitlab-ci.yml`, ni en un `docker run` de un solo uso. Siempre la versión
+  completa (`19.2.4-ce.0`, `v19.2.2`), aunque apunte a la misma imagen que
+  `latest` hoy. `latest` convierte cada `pull` en un cambio de versión que nadie
+  decidió y hace imposible auditar CVEs por adelantado. Antes de fijar una
+  versión: comprueba que el tag existe y audita sus vulnerabilidades.
 - **Diagramas en SVG, nunca arte ASCII.** Paleta y reglas en la guía de autoría.
 - Antes de cerrar cualquier cambio: `bash scripts/verificar-enlaces.sh` sin
   errores. Los enlaces desde `bootcamp/week-NN/README.md` a la raíz son

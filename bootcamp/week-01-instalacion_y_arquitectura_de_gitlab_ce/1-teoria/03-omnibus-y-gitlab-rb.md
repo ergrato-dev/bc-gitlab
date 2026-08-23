@@ -100,7 +100,7 @@ Tarda entre 1 y 3 minutos. Es idempotente: ejecutarlo dos veces no rompe nada.
 | Archivo generado | De dónde sale |
 |---|---|
 | `/var/opt/gitlab/gitlab-rails/etc/gitlab.yml` | De las opciones `gitlab_rails[...]` |
-| `/var/opt/gitlab/nginx/conf/gitlab-http.conf` | De `nginx[...]` y `external_url` |
+| `/var/opt/gitlab/nginx/conf/service_conf/gitlab-rails.conf` | De `nginx[...]` y `external_url` |
 | `/var/opt/gitlab/postgresql/data/postgresql.conf` | De `postgresql[...]` |
 | `/var/opt/gitlab/gitaly/config.toml` | De `gitaly[...]` |
 
@@ -112,7 +112,7 @@ Tarda entre 1 y 3 minutos. Es idempotente: ejecutarlo dos veces no rompe nada.
 Sí es muy útil **leerlos** para comprobar qué configuración quedó efectivamente aplicada:
 
 ```bash
-docker compose exec gitlab grep -A3 'listen' /var/opt/gitlab/nginx/conf/gitlab-http.conf
+docker compose exec gitlab grep -A3 'listen' /var/opt/gitlab/nginx/conf/service_conf/gitlab-rails.conf
 ```
 
 ---

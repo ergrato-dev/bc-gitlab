@@ -27,7 +27,7 @@ services:
   # GitLab CE — la plataforma
   # ============================================
   gitlab:
-    image: gitlab/gitlab-ce:${GITLAB_VERSION:-19.1.1-ce.0}
+    image: gitlab/gitlab-ce:${GITLAB_VERSION:-19.2.4-ce.0}
     container_name: gitlab
     hostname: ${GITLAB_HOST:-gitlab}
     restart: unless-stopped
@@ -84,6 +84,15 @@ services:
         redis['maxmemory'] = '256mb'
         redis['maxmemory_policy'] = 'allkeys-lru'
 
+        # ── Endpoints de salud accesibles desde el host ──
+        # GitLab restringe /-/health, /-/readiness y /-/liveness a
+        # monitoring_whitelist, que por defecto es solo 127.0.0.1. Desde el host
+        # las peticiones llegan con la IP del gateway de Docker, asi que GitLab
+        # responde 404 (no 403: los oculta a proposito). Abrimos los rangos
+        # privados para que el laboratorio funcione desde tu terminal.
+        # En produccion se lista solo la IP del servidor de monitoreo. Ver S18.
+        gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '::1/128', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16']
+
         # ── Monitoreo LOCAL, sin envío externo (S21) ──
         prometheus_monitoring['enable'] = true
         node_exporter['enable'] = true
@@ -123,7 +132,7 @@ services:
   # GitLab Runner — ejecuta los pipelines (S09)
   # ============================================
   gitlab-runner:
-    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-v19.1.1}
+    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-v19.2.2}
     container_name: gitlab-runner
     restart: unless-stopped
     depends_on:

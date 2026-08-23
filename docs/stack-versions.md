@@ -10,8 +10,8 @@ _Última revisión: agosto de 2026._
 
 | Componente | Versión | Dónde se fija | Nota |
 |---|---|---|---|
-| **GitLab CE** | `19.1.1-ce.0` | `.env` → `GITLAB_VERSION` | Pinneada. No uses `latest` |
-| **GitLab Runner** | `alpine-v19.1.1` | `.env` → `RUNNER_VERSION` | Misma serie que el servidor |
+| **GitLab CE** | `19.2.4-ce.0` | `.env` → `GITLAB_VERSION` | Pinneada. No uses `latest` |
+| **GitLab Runner** | `alpine-v19.2.2` | `.env` → `RUNNER_VERSION` | Misma serie que el servidor |
 | Docker | 27.5+ | Tu máquina | |
 | Docker Compose | 2.32+ | Tu máquina | El plugin `docker compose`, no `docker-compose` |
 | Git | 2.46+ | Tu máquina | 2.34+ para firma SSH; 2.46 por comodidad |
@@ -22,7 +22,7 @@ _Última revisión: agosto de 2026._
 
 No los instalas tú: vienen con Omnibus. Se listan porque el material los menciona.
 
-| Componente | Versión en 19.1.1 |
+| Componente | Versión en 19.2.4 |
 |---|---|
 | PostgreSQL | 16.x |
 | Redis | 7.x |

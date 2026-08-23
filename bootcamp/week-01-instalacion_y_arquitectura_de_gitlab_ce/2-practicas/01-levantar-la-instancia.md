@@ -43,7 +43,7 @@ grep -E '^(GITLAB_VERSION|GITLAB_HTTP_PORT|REGISTRY_PORT|PAGES_PORT|GITLAB_SSH_P
 ```
 
 ```
-GITLAB_VERSION=19.1.1-ce.0
+GITLAB_VERSION=19.2.4-ce.0
 GITLAB_HTTP_PORT=8888
 REGISTRY_PORT=5050
 PAGES_PORT=8090
@@ -254,7 +254,7 @@ curl -s -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_URL/api/v4/version" | jq
 
 ```json
 {
-  "version": "19.1.1",
+  "version": "19.2.4",
   "revision": "...",
   "enterprise": false
 }

@@ -32,6 +32,24 @@ curl -s http://localhost:8888/-/health
 
 Devuelve texto plano y responde **sin arrancar la lógica de la aplicación**. Es barato y rápido.
 
+> [!IMPORTANT]
+> **Si esto te devuelve `Not Found`, no está roto: está protegido.** GitLab
+> restringe los tres endpoints de salud a `monitoring_whitelist`, cuyo valor por
+> defecto es solo `127.0.0.1`. Desde tu host las peticiones llegan con la IP del
+> gateway de Docker, así que GitLab responde **404** — no 403: los oculta a
+> propósito para no revelar que existen.
+>
+> El `docker-compose.yml` del laboratorio abre los rangos privados para que
+> funcionen desde tu terminal. Si trabajas contra otra instancia, ejecútalos
+> desde dentro del contenedor:
+>
+> ```bash
+> docker compose exec gitlab curl -s http://localhost:8888/-/health
+> ```
+>
+> En producción se lista solo la IP del servidor de monitoreo, nunca un rango
+> ancho. La Semana 18 vuelve sobre esto.
+
 > [!WARNING]
 > **`/-/health` puede decir OK con la base de datos caída.** Solo confirma que el servidor web contesta. Es útil como healthcheck de Docker —queremos algo barato cada 60 segundos— y es engañoso como comprobación de que GitLab funciona.
 
@@ -56,7 +74,7 @@ Con `?all=1` da el detalle completo, componente por componente:
 curl -s "http://localhost:8888/-/readiness?all=1" | jq
 ```
 
-Ahí verás entradas separadas para `db_check`, `redis_check`, `gitaly_check` y alguna más. **Cuando algo falla, esta salida te dice directamente cuál.**
+Ahí verás quince entradas: `db_check`, `gitaly_check`, `workhorse_check`, `master_check` y varias de Redis, que no aparece con un solo nombre sino repartido por función — `cache_check`, `queues_check`, `shared_state_check`, `sessions_check`, `trace_chunks_check`, `rate_limiting_check`. **Cuando algo falla, esta salida te dice directamente cuál.**
 
 ### `/-/liveness` — ¿está vivo el proceso?
 

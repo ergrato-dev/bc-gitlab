@@ -172,7 +172,7 @@ La Semana 22 trata precisamente de la última fila.
 ```bash
 curl -s "$GITLAB_URL/api/v4/version" -H "PRIVATE-TOKEN: $GITLAB_TOKEN" | jq
 # {
-#   "version": "19.1.1",
+#   "version": "19.2.4",
 #   "revision": "abc123",
 #   "enterprise": false
 # }

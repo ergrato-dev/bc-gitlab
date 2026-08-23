@@ -132,7 +132,7 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 
 | Herramienta | Versión | Uso |
 |---|---|---|
-| GitLab CE | **19.1.1-ce.0** | La plataforma. Pinneada por reproducibilidad |
+| GitLab CE | **19.2.4-ce.0** | La plataforma. Pinneada por reproducibilidad |
 | Docker | **27+** | Todo el laboratorio |
 | Docker Compose | **2.32+** | Orquestación por perfiles |
 | GitLab Runner | **19.x** | Ejecución de pipelines. Misma serie que GitLab |

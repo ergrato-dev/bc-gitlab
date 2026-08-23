@@ -230,7 +230,7 @@ docker compose exec gitlab grep -E "worker_processes|max_concurrency|listen_port
 Lo que Nginx está aplicando de verdad:
 
 ```bash
-docker compose exec gitlab grep -m2 'listen' /var/opt/gitlab/nginx/conf/gitlab-http.conf
+docker compose exec gitlab grep -m2 'listen' /var/opt/gitlab/nginx/conf/service_conf/gitlab-rails.conf
 ```
 
 **Verifica** que el puerto coincide con el de tu `.env`:

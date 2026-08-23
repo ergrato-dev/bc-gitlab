@@ -279,7 +279,7 @@ Salida esperada:
 ✅ jq-1.7.1
 ✅ Docker version 27.3.1
 ✅ glab version 1.50.0
-✅ instancia viva en http://localhost:8888 (GitLab 19.1.1)
+✅ instancia viva en http://localhost:8888 (GitLab 19.2.4)
 ✅ token válido, autenticado como root
 ✅ commit.gpgsign activo (formato: ssh)
 ⚠️  sin proyecto guardado — añade PROYECTO=<grupo>/<proyecto> a /home/tu/.bc-gitlab

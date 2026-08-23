@@ -19,7 +19,7 @@ Bootcamp de **GitLab CE autohospedado**. Trata GitLab como plataforma de ingenie
 | Nivel de entrada | `clone`, `commit`, `push` y qué es una rama |
 | Nivel de salida | Platform Engineer |
 | Edición | **GitLab CE puro**, autohospedado en Docker. Sin gitlab.com, sin EE, sin trials |
-| Versión fijada | `19.1.1-ce.0` |
+| Versión fijada | `19.2.4-ce.0` |
 | Máquina asumida | 16 GB de RAM |
 | Instancia | `http://localhost:8888` |
 
@@ -479,7 +479,7 @@ Una buena pregunta de conocimiento contrasta dos cosas y pide el porqué: *"¿Qu
 
 ### Estado de la plataforma
 
-GitLab publica una versión menor al mes. Antes de escribir sobre una feature reciente, confirma que existe en la versión fijada (`19.1.1-ce.0`) y no solo en la documentación de `latest`. El selector de versión de `docs.gitlab.com` está arriba a la derecha.
+GitLab publica una versión menor al mes. Antes de escribir sobre una feature reciente, confirma que existe en la versión fijada (`19.2.4-ce.0`) y no solo en la documentación de `latest`. El selector de versión de `docs.gitlab.com` está arriba a la derecha.
 
 ---
 
