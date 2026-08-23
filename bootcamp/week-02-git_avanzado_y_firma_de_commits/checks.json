@@ -1,0 +1,104 @@
+{
+  "semana": "02",
+  "titulo": "Git quirurgico y commits firmados",
+  "checks": [
+    {
+      "id": "clave-de-firma-dedicada",
+      "descripcion": "Tienes una clave SSH registrada solo para firmar (usage_type signing)",
+      "api": "user/keys",
+      "jq": "map(select(.usage_type == \"signing\")) | length > 0",
+      "pista": "2-practicas/01-firmar-tus-commits.md, paso 4"
+    },
+    {
+      "id": "head-firmado",
+      "descripcion": "El ultimo commit de main tiene una firma que GitLab da por verificada",
+      "api": "projects/{proyecto}/repository/commits/main/signature",
+      "jq": ".verification_status == \"verified\"",
+      "pista": "2-practicas/01-firmar-tus-commits.md, paso 6"
+    },
+    {
+      "id": "firma-de-tipo-ssh",
+      "descripcion": "La firma del ultimo commit de main es SSH, no GPG ni X.509",
+      "api": "projects/{proyecto}/repository/commits/main/signature",
+      "jq": ".signature_type == \"SSH\"",
+      "pista": "2-practicas/01-firmar-tus-commits.md, paso 2"
+    },
+    {
+      "id": "historia-lineal",
+      "descripcion": "La historia de main es lineal: ningun commit tiene dos padres",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&per_page=100",
+      "jq": "map(select(.parent_ids | length > 1)) | length == 0",
+      "pista": "2-practicas/03-cirugia-sobre-la-historia.md, paso 7"
+    },
+    {
+      "id": "commits-convencionales",
+      "descripcion": "Todos los commits de main siguen Conventional Commits en el titulo",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&per_page=100",
+      "jq": "all(.[]; .title | test(\"^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\\\(.+\\\\))?!?: .+\"))",
+      "pista": "2-practicas/03-cirugia-sobre-la-historia.md, paso 4"
+    },
+    {
+      "id": "historia-suficiente",
+      "descripcion": "main tiene al menos 8 commits",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&per_page=100",
+      "jq": "length >= 8",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 3"
+    },
+    {
+      "id": "commit-con-cuerpo",
+      "descripcion": "Al menos un commit explica el porque en el cuerpo del mensaje",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&per_page=100",
+      "jq": "map(select((.message | split(\"\\n\") | length) > 2)) | length > 0",
+      "pista": "1-teoria/05-conventional-commits-y-trailers.md, seccion 3"
+    },
+    {
+      "id": "trailer-signed-off-by",
+      "descripcion": "Al menos un commit lleva el trailer Signed-off-by",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&per_page=100",
+      "jq": "map(select((.trailers // {}) | has(\"Signed-off-by\"))) | length > 0",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 6"
+    },
+    {
+      "id": "package-json-en-raiz",
+      "descripcion": "Existe un package.json en la raiz del repositorio",
+      "api": "projects/{proyecto}/repository/files/package.json?ref=main",
+      "jq": ".file_name == \"package.json\"",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 2"
+    },
+    {
+      "id": "codigo-en-src",
+      "descripcion": "Hay al menos un modulo TypeScript de tu dominio en src/",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=src&per_page=100",
+      "jq": "map(select((.name | endswith(\".ts\")) and ((.name | endswith(\".test.ts\")) | not))) | length >= 1",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 3"
+    },
+    {
+      "id": "tests-versionados",
+      "descripcion": "Hay al menos un archivo de tests junto al codigo en src/",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=src&per_page=100",
+      "jq": "map(select(.name | endswith(\".test.ts\"))) | length > 0",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 4"
+    },
+    {
+      "id": "gitignore-en-raiz",
+      "descripcion": "Hay un .gitignore en la raiz del repositorio",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(select(.name == \".gitignore\")) | length > 0",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 2"
+    },
+    {
+      "id": "sin-dependencias-versionadas",
+      "descripcion": "node_modules no esta versionado en el repositorio",
+      "api": "projects/{proyecto}/repository/tree?ref=main&recursive=true&per_page=100",
+      "jq": "map(select(.path | startswith(\"node_modules\"))) | length == 0",
+      "pista": "2-practicas/02-el-producto-minimo.md, paso 2"
+    },
+    {
+      "id": "una-sola-rama",
+      "descripcion": "Solo queda la rama main: las ramas de trabajo se borraron al integrarlas",
+      "api": "projects/{proyecto}/repository/branches",
+      "jq": "length == 1",
+      "pista": "2-practicas/03-cirugia-sobre-la-historia.md, paso 8"
+    }
+  ]
+}

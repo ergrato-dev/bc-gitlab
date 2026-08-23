@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Las cuatro comprobaciones que GitLab hace sobre una firma SSH</title>
+  <desc id="desc">GitLab evalua la firma en cascada. Primero comprueba que la firma sea criptograficamente valida; si falla, unverified. Despues busca la huella de la clave entre las registradas con uso signing; si no aparece, unknown_key. Despues comprueba que el correo del committer pertenezca al dueno de la clave; si no, other_user. Por ultimo comprueba que ese correo este confirmado; si no, same_user_different_email. Si pasa las cuatro, verified.</desc>
+
+  <rect width="900" height="470" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="v1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#108548"/>
+    </marker>
+    <marker id="v2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E24329"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Un commit firmado llega a la instancia</text>
+    <text x="30" y="60" fill="#999999" font-size="13">GitLab evalua en cascada. La primera comprobacion que falla decide el estado.</text>
+
+    <!-- Comprobacion 1 -->
+    <rect x="30" y="82" width="480" height="62" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="52" y="107" fill="#FAFAFA" font-size="14" font-weight="600">1. La firma valida contra el contenido del commit</text>
+    <text x="52" y="128" fill="#999999" font-size="12">espacio de nombres git, criptografia correcta</text>
+    <rect x="600" y="86" width="270" height="54" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="735" y="110" fill="#E24329" font-size="14" text-anchor="middle" font-family="monospace">unverified</text>
+    <text x="735" y="130" fill="#999999" font-size="12" text-anchor="middle">el commit se altero tras firmarlo</text>
+    <line x1="510" y1="113" x2="592" y2="113" stroke="#E24329" stroke-width="2" marker-end="url(#v2)"/>
+
+    <!-- Comprobacion 2 -->
+    <rect x="30" y="164" width="480" height="62" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="52" y="189" fill="#FAFAFA" font-size="14" font-weight="600">2. La clave esta registrada con uso de firma</text>
+    <text x="52" y="210" fill="#999999" font-size="12">busqueda por huella entre usage_type signing o auth_and_signing</text>
+    <rect x="600" y="168" width="270" height="54" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="735" y="192" fill="#E24329" font-size="14" text-anchor="middle" font-family="monospace">unknown_key</text>
+    <text x="735" y="212" fill="#999999" font-size="12" text-anchor="middle">el fallo mas comun: uso auth</text>
+    <line x1="510" y1="195" x2="592" y2="195" stroke="#E24329" stroke-width="2" marker-end="url(#v2)"/>
+
+    <!-- Comprobacion 3 -->
+    <rect x="30" y="246" width="480" height="62" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="52" y="271" fill="#FAFAFA" font-size="14" font-weight="600">3. El correo del committer es del dueno de la clave</text>
+    <text x="52" y="292" fill="#999999" font-size="12">principal, privado de commits, o cualquier correo secundario</text>
+    <rect x="600" y="250" width="270" height="54" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="735" y="274" fill="#E24329" font-size="14" text-anchor="middle" font-family="monospace">other_user</text>
+    <text x="735" y="294" fill="#999999" font-size="12" text-anchor="middle">revisa git config user.email</text>
+    <line x1="510" y1="277" x2="592" y2="277" stroke="#E24329" stroke-width="2" marker-end="url(#v2)"/>
+
+    <!-- Comprobacion 4 -->
+    <rect x="30" y="328" width="480" height="62" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="52" y="353" fill="#FAFAFA" font-size="14" font-weight="600">4. Ese correo esta confirmado en la cuenta</text>
+    <text x="52" y="374" fill="#999999" font-size="12">Preferences, Emails</text>
+    <rect x="600" y="332" width="270" height="54" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="735" y="356" fill="#E24329" font-size="13" text-anchor="middle" font-family="monospace">same_user_different_email</text>
+    <text x="735" y="376" fill="#999999" font-size="12" text-anchor="middle">es tuyo, pero sin confirmar</text>
+    <line x1="510" y1="359" x2="592" y2="359" stroke="#E24329" stroke-width="2" marker-end="url(#v2)"/>
+
+    <!-- Cascada -->
+    <line x1="270" y1="144" x2="270" y2="156" stroke="#108548" stroke-width="2.5" marker-end="url(#v1)"/>
+    <line x1="270" y1="226" x2="270" y2="238" stroke="#108548" stroke-width="2.5" marker-end="url(#v1)"/>
+    <line x1="270" y1="308" x2="270" y2="320" stroke="#108548" stroke-width="2.5" marker-end="url(#v1)"/>
+    <line x1="270" y1="390" x2="270" y2="404" stroke="#108548" stroke-width="2.5" marker-end="url(#v1)"/>
+
+    <!-- Resultado -->
+    <rect x="30" y="412" width="480" height="44" rx="8" fill="#2B2B2B" stroke="#108548" stroke-width="2"/>
+    <text x="270" y="440" fill="#108548" font-size="15" text-anchor="middle" font-weight="600" font-family="monospace">verified — distintivo Verified</text>
+
+    <text x="600" y="428" fill="#999999" font-size="12">La interfaz agrupa los tres ultimos</text>
+    <text x="600" y="446" fill="#999999" font-size="12">bajo "Unverified". La API los distingue.</text>
+
+  </g>
+</svg>

@@ -105,6 +105,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| — | **Proyecto Semana 01** | Proyecto Semana 02 |
+| — | **Proyecto Semana 01** | [Proyecto Semana 02](../../week-02-git_avanzado_y_firma_de_commits/3-proyecto/README.md) |
 
 [← Volver a la Semana 01](../README.md)

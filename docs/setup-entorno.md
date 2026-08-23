@@ -191,9 +191,17 @@ Firmar con SSH es mucho más simple que con GPG y GitLab lo verifica igual. Es l
 git config --global gpg.format ssh
 git config --global user.signingkey ~/.ssh/id_ed25519_gitlab.pub
 git config --global commit.gpgsign true
+git config --global rebase.gpgSign true
 ```
 
-Y registra la misma clave **otra vez** en GitLab, ahora en `Preferences → SSH Keys` con el uso **Signing** (o `Authentication & Signing`). Una clave registrada solo para autenticación no verifica firmas: es el fallo más común de este paso.
+`rebase.gpgSign` no es opcional: sin él, la primera reescritura de historia deja los commits sin firmar y Git no avisa.
+
+Del lado de GitLab, lo que decide si una firma se verifica es el **uso** con el que está registrada la clave: `signing` o `auth_and_signing`. La clave del paso 6 se registró sin especificar uso, así que tiene el de por defecto, `auth_and_signing`, y ya sirve para las dos cosas. Compruébalo en `Preferences → SSH Keys`.
+
+> [!IMPORTANT]
+> Una clave registrada **solo** con uso `Authentication` no verifica firmas, y el uso **no se puede cambiar** después: hay que borrar la clave y volver a registrarla. Tampoco se puede registrar la misma clave pública dos veces con usos distintos: su huella es única en toda la instancia.
+>
+> La Semana 02 separa las dos funciones en dos claves distintas, que es la práctica recomendada.
 
 ---
 

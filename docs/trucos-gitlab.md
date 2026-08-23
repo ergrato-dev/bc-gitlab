@@ -76,4 +76,31 @@ _Se añaden a medida que se publica cada semana._
 
 ---
 
+## Semana 02 — Git quirúrgico y commits firmados
+
+| Truco | Cómo |
+|---|---|
+| Auditar de un vistazo qué está firmado | `git log --pretty='%h %G? %s' -20` — `N` es sin firma, `G` es correcto |
+| Encontrar lo no firmado antes de empujar | `git log --pretty='%h %G? %s' origin/main..HEAD \| grep -v '^\S* G '` |
+| Colocar los arreglos solos, sin tocar el editor | `git commit --fixup <sha>` y luego `git rebase -i --autosquash <base>` |
+| Que `--autosquash` sea el comportamiento normal | `git config --global rebase.autosquash true` |
+| Comprobar que **cada** commit pasa los tests | `git rebase --exec "npm test" main` |
+| Revisar tu propia reescritura antes de forzar | `git range-diff respaldo...HEAD` |
+| Deshacer el último `reset`, `rebase` o `merge` | `git reset --hard ORIG_HEAD` |
+| Recuperar una rama borrada sin saber su SHA | `git reflog \| grep <nombre-de-la-rama>` |
+| Volver a la rama anterior, como `cd -` | `git switch -` |
+| Ver la historia de una función concreta | `git log -L :nombreDeLaFuncion:archivo.ts` |
+| Encontrar quién tocó una línea sin cambiar el recuento | `git log -G "patron"` — `-S` no lo ve |
+| `blame` que no señale a quien reindentó | `git blame -w -C -C archivo.ts` |
+| Bisecar sin responder a nada | `git bisect start HEAD <bueno>` y `git bisect run npm test` |
+| Saltar un commit que no se puede probar en un bisect | Que el script salga con **código 125** |
+| Los diez blobs más grandes de la historia | `git rev-list --objects --all \| git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \| awk '$1=="blob"{print $3,$4}' \| sort -rn \| head` |
+| Buscar un token en **toda** la historia, no solo en HEAD | `git grep "glpat-" $(git rev-list --all) --` |
+| Por qué exactamente sale "Unverified" | `curl -s -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_URL/api/v4/projects/$P/repository/commits/main/signature" \| jq -r .verification_status` |
+| Ver el uso de todas tus claves de golpe | `curl -s -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_URL/api/v4/user/keys" \| jq -r '.[] \| "\(.usage_type)\t\(.title)"'` |
+| Dos ramas a la vez sin clonar dos veces | `git worktree add ../app-hotfix main` |
+| Que Git recuerde cómo resolviste un conflicto | `git config --global rerere.enabled true` |
+
+---
+
 [← Volver a docs](README.md)

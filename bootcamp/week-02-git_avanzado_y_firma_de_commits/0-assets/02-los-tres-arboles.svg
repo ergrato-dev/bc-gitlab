@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Los tres arboles de Git y los comandos que mueven cada uno</title>
+  <desc id="desc">El directorio de trabajo, el indice y el repositorio. git add escribe el blob y actualiza el indice; git commit crea el commit desde el indice. Para volver atras, git restore descarta cambios del trabajo, git restore --staged saca del indice, y las tres variantes de git reset mueven HEAD, el indice y el trabajo segun el modificador.</desc>
+
+  <rect width="900" height="400" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#888888"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="42" fill="#FC6D26" font-size="16" font-weight="600">Los tres sitios donde vive tu codigo</text>
+
+    <!-- Trabajo -->
+    <rect x="30" y="70" width="230" height="90" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="145" y="98" fill="#FAFAFA" font-size="15" font-weight="600" text-anchor="middle">Directorio de trabajo</text>
+    <text x="145" y="120" fill="#999999" font-size="12" text-anchor="middle">los archivos del disco</text>
+    <text x="145" y="142" fill="#999999" font-size="12" text-anchor="middle" font-family="monospace">git status</text>
+
+    <!-- Indice -->
+    <rect x="335" y="70" width="230" height="90" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="450" y="98" fill="#FAFAFA" font-size="15" font-weight="600" text-anchor="middle">Indice</text>
+    <text x="450" y="120" fill="#999999" font-size="12" text-anchor="middle">.git/index — que entra en la foto</text>
+    <text x="450" y="142" fill="#999999" font-size="12" text-anchor="middle" font-family="monospace">git ls-files -s</text>
+
+    <!-- Repositorio -->
+    <rect x="640" y="70" width="230" height="90" rx="8" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="755" y="98" fill="#FAFAFA" font-size="15" font-weight="600" text-anchor="middle">Repositorio</text>
+    <text x="755" y="120" fill="#999999" font-size="12" text-anchor="middle">.git/objects — inmutable</text>
+    <text x="755" y="142" fill="#999999" font-size="12" text-anchor="middle" font-family="monospace">git cat-file -p</text>
+
+    <!-- Flechas hacia adelante -->
+    <line x1="260" y1="100" x2="327" y2="100" stroke="#FC6D26" stroke-width="2.5" marker-end="url(#a1)"/>
+    <text x="293" y="92" fill="#FC6D26" font-size="12" text-anchor="middle" font-family="monospace">git add</text>
+
+    <line x1="565" y1="100" x2="632" y2="100" stroke="#FC6D26" stroke-width="2.5" marker-end="url(#a1)"/>
+    <text x="598" y="92" fill="#FC6D26" font-size="12" text-anchor="middle" font-family="monospace">git commit</text>
+
+    <!-- Flechas hacia atras -->
+    <line x1="327" y1="135" x2="260" y2="135" stroke="#888888" stroke-width="2" marker-end="url(#a2)"/>
+    <text x="293" y="155" fill="#888888" font-size="11" text-anchor="middle" font-family="monospace">restore --staged</text>
+
+    <line x1="632" y1="135" x2="565" y2="135" stroke="#888888" stroke-width="2" marker-end="url(#a2)"/>
+    <text x="598" y="155" fill="#888888" font-size="11" text-anchor="middle" font-family="monospace">reset [--mixed]</text>
+
+    <!-- Nota del add -->
+    <text x="30" y="192" fill="#999999" font-size="12">git add ya escribe el blob en .git/objects: el objeto existe antes del commit.</text>
+
+    <!-- Tabla de reset -->
+    <rect x="30" y="215" width="840" height="150" rx="8" fill="#252525" stroke="#666666" stroke-width="1.5"/>
+    <text x="52" y="243" fill="#FC6D26" font-size="14" font-weight="600">Que toca cada variante de reset</text>
+
+    <text x="52"  y="272" fill="#999999" font-size="12">comando</text>
+    <text x="330" y="272" fill="#999999" font-size="12">HEAD</text>
+    <text x="440" y="272" fill="#999999" font-size="12">indice</text>
+    <text x="560" y="272" fill="#999999" font-size="12">trabajo</text>
+    <text x="680" y="272" fill="#999999" font-size="12">cuando</text>
+
+    <text x="52"  y="298" fill="#FAFAFA" font-size="13" font-family="monospace">git reset --soft</text>
+    <text x="330" y="298" fill="#108548" font-size="13">si</text>
+    <text x="440" y="298" fill="#666666" font-size="13">no</text>
+    <text x="560" y="298" fill="#666666" font-size="13">no</text>
+    <text x="680" y="298" fill="#999999" font-size="12">rehacer el commit</text>
+
+    <text x="52"  y="322" fill="#FAFAFA" font-size="13" font-family="monospace">git reset</text>
+    <text x="330" y="322" fill="#108548" font-size="13">si</text>
+    <text x="440" y="322" fill="#108548" font-size="13">si</text>
+    <text x="560" y="322" fill="#666666" font-size="13">no</text>
+    <text x="680" y="322" fill="#999999" font-size="12">rehacer commit e indice</text>
+
+    <text x="52"  y="346" fill="#FAFAFA" font-size="13" font-family="monospace">git reset --hard</text>
+    <text x="330" y="346" fill="#108548" font-size="13">si</text>
+    <text x="440" y="346" fill="#108548" font-size="13">si</text>
+    <text x="560" y="346" fill="#E24329" font-size="13">si — destruye</text>
+    <text x="680" y="346" fill="#E24329" font-size="12">el reflog no lo salva</text>
+
+  </g>
+</svg>

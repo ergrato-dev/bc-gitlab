@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El grafo de objetos de Git: referencias, commits, trees y blobs</title>
+  <desc id="desc">Una rama es un puntero de 41 bytes a un commit. Cada commit apunta a su padre y a un tree raiz. El tree lista nombres que apuntan a blobs y a otros trees. Como el SHA de un commit incluye el SHA de su padre, cambiar cualquier cosa cambia el SHA de ese commit y el de todos sus descendientes.</desc>
+
+  <rect width="900" height="460" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#888888"/>
+    </marker>
+    <marker id="fl-naranja" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <!-- Referencias -->
+    <text x="30" y="40" fill="#FC6D26" font-size="15" font-weight="600">Referencias — 41 bytes, se mueven</text>
+
+    <rect x="30" y="56" width="120" height="44" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="90" y="76" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">main</text>
+    <text x="90" y="92" fill="#999999" font-size="11" text-anchor="middle">refs/heads/main</text>
+
+    <rect x="30" y="112" width="120" height="44" rx="6" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="90" y="132" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">HEAD</text>
+    <text x="90" y="148" fill="#999999" font-size="11" text-anchor="middle">ref: refs/heads/main</text>
+
+    <line x1="90" y1="112" x2="90" y2="102" stroke="#888888" stroke-width="2" marker-end="url(#fl)"/>
+
+    <!-- Objetos: commits -->
+    <text x="200" y="40" fill="#FC6D26" font-size="15" font-weight="600">Objetos — inmutables, nombrados por su contenido</text>
+
+    <rect x="380" y="56" width="150" height="60" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="455" y="79" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">commit 8f0b6c1</text>
+    <text x="455" y="98" fill="#999999" font-size="11" text-anchor="middle">tree + parent + autor</text>
+
+    <rect x="200" y="56" width="150" height="60" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="275" y="79" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">commit 5d7e9f1</text>
+    <text x="275" y="98" fill="#999999" font-size="11" text-anchor="middle">el padre</text>
+
+    <line x1="150" y1="78" x2="372" y2="78" stroke="#FC6D26" stroke-width="2" marker-end="url(#fl-naranja)"/>
+    <line x1="380" y1="100" x2="358" y2="100" stroke="#888888" stroke-width="2" marker-end="url(#fl)"/>
+    <text x="369" y="132" fill="#999999" font-size="11" text-anchor="middle">parent</text>
+
+    <!-- Tree raiz -->
+    <rect x="380" y="170" width="150" height="52" rx="6" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="455" y="192" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">tree 2b1c9a</text>
+    <text x="455" y="210" fill="#999999" font-size="11" text-anchor="middle">el directorio raiz</text>
+    <line x1="455" y1="116" x2="455" y2="162" stroke="#888888" stroke-width="2" marker-end="url(#fl)"/>
+    <text x="500" y="145" fill="#999999" font-size="11" text-anchor="middle">tree</text>
+
+    <!-- Entradas del tree -->
+    <rect x="600" y="152" width="270" height="130" rx="6" fill="#252525" stroke="#666666" stroke-width="1.5"/>
+    <text x="620" y="176" fill="#999999" font-size="12" font-family="monospace">100644 blob a3f1c9  README.md</text>
+    <text x="620" y="200" fill="#999999" font-size="12" font-family="monospace">100644 blob 7e2d41  package.json</text>
+    <text x="620" y="224" fill="#999999" font-size="12" font-family="monospace">040000 tree 9c2e77  src</text>
+    <text x="620" y="258" fill="#FC6D26" font-size="12">El nombre del archivo vive aqui,</text>
+    <text x="620" y="274" fill="#FC6D26" font-size="12">no dentro del blob.</text>
+    <line x1="530" y1="196" x2="592" y2="196" stroke="#888888" stroke-width="2" marker-end="url(#fl)"/>
+
+    <!-- Blobs -->
+    <rect x="380" y="252" width="150" height="46" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="455" y="280" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">blob a3f1c9</text>
+    <line x1="455" y1="222" x2="455" y2="244" stroke="#888888" stroke-width="2" marker-end="url(#fl)"/>
+
+    <!-- Consecuencia -->
+    <rect x="30" y="330" width="840" height="100" rx="8" fill="#2B2B2B" stroke="#E24329" stroke-width="2"/>
+    <text x="52" y="358" fill="#E24329" font-size="15" font-weight="600">La consecuencia que explica toda la semana</text>
+    <text x="52" y="382" fill="#FAFAFA" font-size="13">El SHA de un commit se calcula sobre su texto, y ese texto incluye el SHA de su padre.</text>
+    <text x="52" y="404" fill="#FAFAFA" font-size="13">Cambia una letra del mensaje y cambia ese commit, su hijo, su nieto y la punta de la rama.</text>
+    <text x="52" y="424" fill="#999999" font-size="13">Por eso amend, rebase y cherry-pick crean commits nuevos, y por eso la firma no se traslada.</text>
+
+  </g>
+</svg>

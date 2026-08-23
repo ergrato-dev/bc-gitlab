@@ -22,9 +22,15 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Catálogo CI/CD** (*CI/CD Catalog*) — Free. Índice de componentes publicados que otros proyectos pueden buscar y consumir por versión.
 
+**Clave de firma** (*signing key*) — Free. Clave SSH registrada con `usage_type` `signing` o `auth_and_signing`. Una clave registrada solo con uso `auth` **no verifica firmas**, y el uso no se puede cambiar después: hay que borrarla y registrarla otra vez.
+
+**Commit verificado** (*verified commit*) — Free. Commit cuya firma GitLab ha validado y atado a una cuenta de la instancia. Exige cuatro cosas: firma criptográficamente válida, clave registrada **con uso de firma**, correo del committer perteneciente al dueño de la clave, y ese correo confirmado. Se consulta en `GET /projects/:id/repository/commits/:sha/signature`.
+
 **Componente CI/CD** (*CI/CD component*) — Free. Unidad reutilizable de configuración de pipeline, versionada y publicada en el catálogo. Es la respuesta de GitLab al copiar y pegar YAML entre proyectos.
 
 **CODEOWNERS** — Free para el archivo y la asignación automática de revisores; **Premium** para que la aprobación del propietario sea obligatoria. Aquí se usa la parte libre y la obligatoriedad se aproxima con un job y un server hook.
+
+**Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. No es de GitLab, pero es lo que permite generar el CHANGELOG y decidir la versión sin escribirlos a mano.
 
 ## D
 
@@ -73,6 +79,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Omnibus** — Free. El empaquetado que mete GitLab y todas sus dependencias en un solo paquete. Su configuración vive en `/etc/gitlab/gitlab.rb` y se aplica con `gitlab-ctl reconfigure`.
 
 ## P
+
+**Push rule** — **Premium**. Regla de servidor que rechaza los pushes que incumplen una política: commits sin firmar, mensajes que no encajan con una expresión regular, archivos demasiado grandes, secretos. En CE se sustituye con un server hook `pre-receive`, que actúa en el mismo punto del recorrido.
 
 **Pages** (*GitLab Pages*) — Free. Alojamiento de sitios estáticos publicados desde un job de pipeline. Gratis también en instancias autohospedadas.
 
