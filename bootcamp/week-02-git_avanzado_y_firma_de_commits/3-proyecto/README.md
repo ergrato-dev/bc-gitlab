@@ -112,6 +112,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 01](../../week-01-instalacion_y_arquitectura_de_gitlab_ce/3-proyecto/README.md) | **Proyecto Semana 02** | Proyecto Semana 03 |
+| [Proyecto Semana 01](../../week-01-instalacion_y_arquitectura_de_gitlab_ce/3-proyecto/README.md) | **Proyecto Semana 02** | [Proyecto Semana 03](../../week-03-grupos_proyectos_y_permisos/3-proyecto/README.md) |
 
 [← Volver a la Semana 02](../README.md)

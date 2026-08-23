@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Los roles de GitLab y la frontera que abre cada uno</title>
+  <desc id="desc">Escala de roles con su valor numerico y el primer permiso que desbloquea cada uno. Guest, valor 10, abre issues y comentarios pero no ve el codigo de un proyecto privado. Planner, valor 15, gestiona issues, hitos y wiki y ademas lee codigo. Reporter, valor 20, lee y clona el codigo y administra issues. Developer, valor 30, empuja codigo, crea ramas y publica imagenes. Maintainer, valor 40, administra el proyecto, sus variables, sus protecciones y sus miembros. Owner, valor 50, administra el grupo, reparte roles y lo borra. Minimal Access, valor 5, es Premium y no esta disponible en Community Edition.</desc>
+
+  <rect width="900" height="500" fill="#1F1F1F"/>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Cada rol incluye el anterior y abre una frontera nueva</text>
+    <text x="30" y="60" fill="#999999" font-size="13">Los numeros son lo que viaja por la API. Los nombres solo se ven en la interfaz.</text>
+
+    <!-- Guest -->
+    <rect x="30" y="88" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="50" y="112" fill="#FAFAFA" font-size="14" font-weight="600">Guest</text>
+    <text x="50" y="132" fill="#FC6D26" font-size="14" font-family="monospace">10</text>
+    <rect x="166" y="88" width="704" height="54" rx="8" fill="#252525" stroke="#666666" stroke-width="1"/>
+    <text x="188" y="112" fill="#FAFAFA" font-size="13">Abre issues, comenta, ve hitos y wiki</text>
+    <text x="188" y="132" fill="#E24329" font-size="12">no ve el codigo de un proyecto privado — read_code empieza en Reporter</text>
+
+    <!-- Planner -->
+    <rect x="30" y="152" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="50" y="176" fill="#FAFAFA" font-size="14" font-weight="600">Planner</text>
+    <text x="50" y="196" fill="#FC6D26" font-size="14" font-family="monospace">15</text>
+    <rect x="166" y="152" width="704" height="54" rx="8" fill="#252525" stroke="#666666" stroke-width="1"/>
+    <text x="188" y="176" fill="#FAFAFA" font-size="13">Gestiona issues, hitos y wiki, y lee el codigo</text>
+    <text x="188" y="196" fill="#999999" font-size="12">disponible desde la 17.7 — planifica sin escribir codigo</text>
+
+    <!-- Reporter -->
+    <rect x="30" y="216" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="240" fill="#FAFAFA" font-size="14" font-weight="600">Reporter</text>
+    <text x="50" y="260" fill="#FC6D26" font-size="14" font-family="monospace">20</text>
+    <rect x="166" y="216" width="704" height="54" rx="8" fill="#252525" stroke="#FC6D26" stroke-width="1"/>
+    <text x="188" y="240" fill="#FAFAFA" font-size="13">Lee y clona el codigo, ve pipelines y registry, administra issues</text>
+    <text x="188" y="260" fill="#108548" font-size="12">read_code, download_code, create_merge_request_in — el rol de la lectura real</text>
+
+    <!-- Developer -->
+    <rect x="30" y="280" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="304" fill="#FAFAFA" font-size="14" font-weight="600">Developer</text>
+    <text x="50" y="324" fill="#FC6D26" font-size="14" font-family="monospace">30</text>
+    <rect x="166" y="280" width="704" height="54" rx="8" fill="#252525" stroke="#FC6D26" stroke-width="1"/>
+    <text x="188" y="304" fill="#FAFAFA" font-size="13">Empuja a ramas no protegidas, crea ramas y tags, publica imagenes</text>
+    <text x="188" y="324" fill="#108548" font-size="12">push_code, create_merge_request_from, create_container_image, update_build</text>
+
+    <!-- Maintainer -->
+    <rect x="30" y="344" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="50" y="368" fill="#FAFAFA" font-size="14" font-weight="600">Maintainer</text>
+    <text x="50" y="388" fill="#8C7BC7" font-size="14" font-family="monospace">40</text>
+    <rect x="166" y="344" width="704" height="54" rx="8" fill="#252525" stroke="#554488" stroke-width="1"/>
+    <text x="188" y="368" fill="#FAFAFA" font-size="13">Administra el proyecto: ajustes, variables, protecciones, miembros del proyecto</text>
+    <text x="188" y="388" fill="#8C7BC7" font-size="12">admin_project, admin_cicd_variables, admin_protected_branch, admin_project_member</text>
+
+    <!-- Owner -->
+    <rect x="30" y="408" width="120" height="54" rx="8" fill="#2B2B2B" stroke="#E24329" stroke-width="2"/>
+    <text x="50" y="432" fill="#FAFAFA" font-size="14" font-weight="600">Owner</text>
+    <text x="50" y="452" fill="#E24329" font-size="14" font-family="monospace">50</text>
+    <rect x="166" y="408" width="704" height="54" rx="8" fill="#252525" stroke="#E24329" stroke-width="1"/>
+    <text x="188" y="432" fill="#FAFAFA" font-size="13">Administra el grupo: reparte roles, lo transfiere y lo borra</text>
+    <text x="188" y="452" fill="#E24329" font-size="12">admin_group_member, remove_group — uno por arbol, no varios por comodidad</text>
+
+    <text x="30" y="486" fill="#666666" font-size="12">Minimal Access (5) es Premium. Los roles a medida son Ultimate: en CE se sustituyen repartiendo bien estos cinco.</text>
+  </g>
+</svg>

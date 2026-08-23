@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Namespaces, rutas y lo que decide cada nivel</title>
+  <desc id="desc">El grupo raiz plataforma-biblioteca es un namespace. Dentro cuelgan el proyecto app y los subgrupos infra y ci, que son namespaces a su vez. La ruta de cada nodo se forma bajando por el arbol y separando con barras. Cada namespace decide la unicidad de nombres dentro de el, la herencia de permisos hacia abajo y la visibilidad maxima de lo que contiene. Un proyecto es siempre una hoja: no puede contener nada.</desc>
+
+  <rect width="900" height="460" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="n1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Un namespace contiene nombres, permisos y visibilidad</text>
+    <text x="30" y="60" fill="#999999" font-size="13">La ruta de cualquier nodo se lee bajando por el arbol.</text>
+
+    <!-- Raiz -->
+    <rect x="30" y="86" width="330" height="66" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="52" y="112" fill="#FAFAFA" font-size="14" font-weight="600">Grupo raiz</text>
+    <text x="52" y="134" fill="#FC6D26" font-size="13" font-family="monospace">plataforma-biblioteca</text>
+
+    <!-- Lineas -->
+    <path d="M 60 152 L 60 200" stroke="#666666" stroke-width="2" fill="none"/>
+    <path d="M 60 200 L 120 200" stroke="#666666" stroke-width="2" fill="none" marker-end="url(#n1)"/>
+    <path d="M 60 200 L 60 276" stroke="#666666" stroke-width="2" fill="none"/>
+    <path d="M 60 276 L 120 276" stroke="#666666" stroke-width="2" fill="none" marker-end="url(#n1)"/>
+    <path d="M 60 276 L 60 352" stroke="#666666" stroke-width="2" fill="none"/>
+    <path d="M 60 352 L 120 352" stroke="#666666" stroke-width="2" fill="none" marker-end="url(#n1)"/>
+
+    <!-- Proyecto app -->
+    <rect x="126" y="174" width="330" height="60" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="148" y="198" fill="#FAFAFA" font-size="13" font-weight="600">Proyecto  ·  hoja del arbol</text>
+    <text x="148" y="220" fill="#108548" font-size="13" font-family="monospace">plataforma-biblioteca/app</text>
+
+    <!-- Subgrupo infra -->
+    <rect x="126" y="250" width="330" height="60" rx="8" fill="#252525" stroke="#554488" stroke-width="2"/>
+    <text x="148" y="274" fill="#FAFAFA" font-size="13" font-weight="600">Subgrupo  ·  namespace vacio hasta la S11</text>
+    <text x="148" y="296" fill="#8C7BC7" font-size="13" font-family="monospace">plataforma-biblioteca/infra</text>
+
+    <!-- Subgrupo ci -->
+    <rect x="126" y="326" width="330" height="60" rx="8" fill="#252525" stroke="#554488" stroke-width="2"/>
+    <text x="148" y="350" fill="#FAFAFA" font-size="13" font-weight="600">Subgrupo  ·  sus proyectos nacen en S12 y S17</text>
+    <text x="148" y="372" fill="#8C7BC7" font-size="13" font-family="monospace">plataforma-biblioteca/ci</text>
+
+    <!-- Panel derecho -->
+    <rect x="500" y="86" width="370" height="300" rx="8" fill="#252525" stroke="#666666" stroke-width="2"/>
+    <text x="524" y="114" fill="#FC6D26" font-size="14" font-weight="600">Cada namespace decide tres cosas</text>
+
+    <text x="524" y="152" fill="#FAFAFA" font-size="13" font-weight="600">1. Unicidad de nombres</text>
+    <text x="524" y="172" fill="#999999" font-size="12">solo un "app" dentro del mismo padre;</text>
+    <text x="524" y="190" fill="#999999" font-size="12">grupos y proyectos comparten ese espacio</text>
+
+    <text x="524" y="224" fill="#FAFAFA" font-size="13" font-weight="600">2. Herencia de permisos</text>
+    <text x="524" y="244" fill="#999999" font-size="12">quien es miembro aqui lo es de todo</text>
+    <text x="524" y="262" fill="#999999" font-size="12">lo que cuelga. Baja, nunca sube</text>
+
+    <text x="524" y="296" fill="#FAFAFA" font-size="13" font-weight="600">3. Visibilidad maxima</text>
+    <text x="524" y="316" fill="#999999" font-size="12">un hijo no puede ser mas visible</text>
+    <text x="524" y="334" fill="#999999" font-size="12">que su padre</text>
+
+    <text x="524" y="366" fill="#E24329" font-size="12" font-family="monospace">API: /projects/plataforma-biblioteca%2Fapp</text>
+
+    <text x="30" y="424" fill="#999999" font-size="12">La barra de la ruta se codifica como %2F cuando la ruta viaja dentro de un segmento de URL.</text>
+    <text x="30" y="444" fill="#666666" font-size="12">Un 404 de la API suele ser una ruta sin codificar, no un permiso.</text>
+  </g>
+</svg>

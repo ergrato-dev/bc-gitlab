@@ -14,7 +14,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 |:--:|---|:--:|
 | [01](week-01-instalacion_y_arquitectura_de_gitlab_ce/README.md) | Instalación de GitLab CE en Docker y arquitectura interna | ✅ |
 | [02](week-02-git_avanzado_y_firma_de_commits/README.md) | Git quirúrgico y commits firmados | ✅ |
-| 03 | Grupos, subgrupos, roles y namespaces | ⬜ |
+| [03](week-03-grupos_proyectos_y_permisos/README.md) | Grupos, subgrupos, roles y namespaces | ✅ |
 | 04 | El repositorio como producto: docs, wiki, snippets, LFS | ⬜ |
 
 ### Fase 2 — Colaboración (S05-08, 32 h)

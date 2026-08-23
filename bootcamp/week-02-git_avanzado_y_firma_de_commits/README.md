@@ -163,6 +163,6 @@ Las 14 comprobaciones tienen que pasar. Si alguna falla, la pista te dice en qu�
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 01 — Instalación y arquitectura](../week-01-instalacion_y_arquitectura_de_gitlab_ce/README.md) | **Semana 02** | Semana 03 — Grupos, subgrupos, roles y namespaces |
+| [Semana 01 — Instalación y arquitectura](../week-01-instalacion_y_arquitectura_de_gitlab_ce/README.md) | **Semana 02** | [Semana 03 — Grupos, subgrupos, roles y namespaces](../week-03-grupos_proyectos_y_permisos/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

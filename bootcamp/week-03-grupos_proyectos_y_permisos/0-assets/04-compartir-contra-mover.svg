@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Compartir con un grupo invitado frente a transferir el proyecto</title>
+  <desc id="desc">Dos operaciones que se confunden. Compartir invita a un grupo externo a un proyecto con un techo de acceso y una fecha de caducidad: el proyecto no se mueve, su ruta no cambia y el acceso termina solo. Transferir cambia el proyecto de namespace: conserva issues, merge requests y pipelines, pero cambia la ruta, pierde los miembros heredados del grupo antiguo y deja de aplicar sus variables de CI y sus runners. La pregunta que decide es si el acceso tiene fecha de fin: si la tiene se comparte, y si ha cambiado la propiedad se mueve.</desc>
+
+  <rect width="900" height="440" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#108548"/>
+    </marker>
+    <marker id="c2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E24329"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">La pregunta que decide: ¿esto tiene fecha de fin?</text>
+    <text x="30" y="60" fill="#999999" font-size="13">Si la tiene, se comparte. Si ha cambiado la propiedad, se mueve.</text>
+
+    <!-- Compartir -->
+    <rect x="30" y="88" width="400" height="300" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="52" y="116" fill="#108548" font-size="14" font-weight="600">Compartir — el proyecto no se mueve</text>
+
+    <rect x="52" y="134" width="160" height="56" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="1"/>
+    <text x="70" y="156" fill="#FAFAFA" font-size="12">grupo invitado</text>
+    <text x="70" y="176" fill="#999999" font-size="11" font-family="monospace">contratistas-biblioteca</text>
+
+    <line x1="212" y1="162" x2="266" y2="162" stroke="#108548" stroke-width="2" marker-end="url(#c1)"/>
+    <text x="222" y="152" fill="#108548" font-size="11" font-family="monospace">techo 20</text>
+
+    <rect x="274" y="134" width="134" height="56" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="1"/>
+    <text x="292" y="156" fill="#FAFAFA" font-size="12">proyecto</text>
+    <text x="292" y="176" fill="#FC6D26" font-size="11" font-family="monospace">app</text>
+
+    <text x="52" y="222" fill="#FAFAFA" font-size="12">La ruta no cambia</text>
+    <text x="52" y="244" fill="#FAFAFA" font-size="12">El acceso llega con techo: min(rol, techo)</text>
+    <text x="52" y="266" fill="#FAFAFA" font-size="12">Caduca solo, con expires_at</text>
+    <text x="52" y="288" fill="#FAFAFA" font-size="12">La lista de personas la mantiene el otro grupo</text>
+    <text x="52" y="310" fill="#FAFAFA" font-size="12">Se retira con un DELETE y no deja rastro</text>
+    <text x="52" y="344" fill="#108548" font-size="12" font-family="monospace">POST /projects/:id/share</text>
+    <text x="52" y="366" fill="#666666" font-size="11">group_id · group_access · expires_at</text>
+
+    <!-- Mover -->
+    <rect x="470" y="88" width="400" height="300" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="492" y="116" fill="#E24329" font-size="14" font-weight="600">Transferir — el proyecto cambia de padre</text>
+
+    <rect x="492" y="134" width="150" height="56" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="1"/>
+    <text x="510" y="156" fill="#FAFAFA" font-size="12">namespace origen</text>
+    <text x="510" y="176" fill="#999999" font-size="11" font-family="monospace">plataforma-biblioteca</text>
+
+    <line x1="642" y1="162" x2="696" y2="162" stroke="#E24329" stroke-width="2" marker-end="url(#c2)"/>
+
+    <rect x="704" y="134" width="144" height="56" rx="6" fill="#2B2B2B" stroke="#666666" stroke-width="1"/>
+    <text x="722" y="156" fill="#FAFAFA" font-size="12">namespace destino</text>
+    <text x="722" y="176" fill="#999999" font-size="11" font-family="monospace">otro-grupo</text>
+
+    <text x="492" y="222" fill="#FAFAFA" font-size="12">La ruta cambia: remotos, imagenes, paquetes</text>
+    <text x="492" y="244" fill="#FAFAFA" font-size="12">Issues, MRs, pipelines y releases viajan</text>
+    <text x="492" y="266" fill="#FAFAFA" font-size="12">Los miembros heredados del padre viejo se pierden</text>
+    <text x="492" y="288" fill="#FAFAFA" font-size="12">Sus variables de CI y sus runners dejan de aplicar</text>
+    <text x="492" y="310" fill="#E24329" font-size="12">El pipeline falla al dia siguiente, no hoy</text>
+    <text x="492" y="344" fill="#E24329" font-size="12" font-family="monospace">PUT /projects/:id/transfer</text>
+    <text x="492" y="366" fill="#666666" font-size="11">namespace — consulta antes transfer_locations</text>
+
+    <text x="30" y="418" fill="#666666" font-size="12">Compartir para siempre es un parche que oculta de quien es el proyecto. Mover por estetica rompe todo lo que apunta desde fuera.</text>
+  </g>
+</svg>

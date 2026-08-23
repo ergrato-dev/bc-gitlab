@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">De donde sale el acceso a un proyecto, y cual gana</title>
+  <desc id="desc">Cuatro fuentes de acceso alcanzan a un proyecto: la membresia directa en el proyecto, la heredada de cualquier grupo antepasado, la que llega por un grupo invitado al proyecto y la que llega por un grupo invitado a un grupo antepasado. El rol efectivo es el maximo de todas ellas, salvo el que llega por grupo invitado, que ademas queda limitado por el techo fijado al compartir. En el ejemplo, revisor es Guest en el grupo y Maintainer directo en el proyecto, y su rol efectivo es Maintainer; auditor es Guest en el grupo y Owner del grupo invitado con techo Reporter, y su rol efectivo es Reporter.</desc>
+
+  <rect width="900" height="470" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="h1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="h2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#554488"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">El rol efectivo es el maximo de todas las fuentes</text>
+    <text x="30" y="60" fill="#999999" font-size="13">Bajar el rol en el proyecto no baja nada: solo el techo de un grupo invitado limita.</text>
+
+    <!-- Fuente 1: grupo raiz -->
+    <rect x="30" y="90" width="300" height="76" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="116" fill="#FAFAFA" font-size="13" font-weight="600">Grupo raiz — membresia heredada</text>
+    <text x="50" y="138" fill="#999999" font-size="12" font-family="monospace">revisor: 10 Guest</text>
+    <text x="50" y="156" fill="#999999" font-size="12" font-family="monospace">auditor: 10 Guest</text>
+
+    <!-- Fuente 2: directa -->
+    <rect x="30" y="182" width="300" height="60" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="208" fill="#FAFAFA" font-size="13" font-weight="600">Proyecto — membresia directa</text>
+    <text x="50" y="230" fill="#999999" font-size="12" font-family="monospace">revisor: 40 Maintainer</text>
+
+    <!-- Fuente 3: grupo invitado -->
+    <rect x="30" y="258" width="300" height="84" rx="8" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="50" y="284" fill="#FAFAFA" font-size="13" font-weight="600">Grupo invitado — con techo</text>
+    <text x="50" y="306" fill="#999999" font-size="12" font-family="monospace">auditor: 50 Owner alli</text>
+    <text x="50" y="326" fill="#8C7BC7" font-size="12" font-family="monospace">techo al compartir: 20 Reporter</text>
+
+    <!-- Flechas al calculo -->
+    <line x1="330" y1="128" x2="418" y2="180" stroke="#FC6D26" stroke-width="2" marker-end="url(#h1)"/>
+    <line x1="330" y1="212" x2="418" y2="212" stroke="#FC6D26" stroke-width="2" marker-end="url(#h1)"/>
+    <line x1="330" y1="300" x2="418" y2="246" stroke="#554488" stroke-width="2" marker-end="url(#h2)"/>
+
+    <!-- Caja calculo -->
+    <rect x="426" y="160" width="180" height="104" rx="8" fill="#252525" stroke="#666666" stroke-width="2"/>
+    <text x="516" y="190" fill="#FAFAFA" font-size="13" text-anchor="middle" font-weight="600">Rol efectivo</text>
+    <text x="516" y="216" fill="#FC6D26" font-size="13" text-anchor="middle" font-family="monospace">max(fuentes)</text>
+    <text x="516" y="240" fill="#8C7BC7" font-size="12" text-anchor="middle" font-family="monospace">min(rol, techo)</text>
+    <text x="516" y="256" fill="#666666" font-size="11" text-anchor="middle">solo para el invitado</text>
+
+    <line x1="606" y1="196" x2="676" y2="196" stroke="#108548" stroke-width="2" marker-end="url(#h1)"/>
+    <line x1="606" y1="230" x2="676" y2="272" stroke="#108548" stroke-width="2" marker-end="url(#h1)"/>
+
+    <!-- Resultados -->
+    <rect x="684" y="166" width="186" height="60" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="704" y="190" fill="#FAFAFA" font-size="13" font-weight="600">revisor en app</text>
+    <text x="704" y="212" fill="#108548" font-size="13" font-family="monospace">40 Maintainer</text>
+
+    <rect x="684" y="246" width="186" height="60" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="704" y="270" fill="#FAFAFA" font-size="13" font-weight="600">auditor en app</text>
+    <text x="704" y="292" fill="#108548" font-size="13" font-family="monospace">20 Reporter</text>
+
+    <!-- Nota endpoints -->
+    <rect x="30" y="368" width="840" height="72" rx="8" fill="#252525" stroke="#666666" stroke-width="2"/>
+    <text x="52" y="394" fill="#FC6D26" font-size="13" font-weight="600">Como se lee cada cosa</text>
+    <text x="52" y="416" fill="#999999" font-size="12" font-family="monospace">GET /projects/:id/members        solo los directos — util para ver las excepciones</text>
+    <text x="52" y="434" fill="#999999" font-size="12" font-family="monospace">GET /projects/:id/members/all    todos, con el rol efectivo ya resuelto — util para auditar</text>
+  </g>
+</svg>

@@ -1,0 +1,111 @@
+{
+  "semana": "03",
+  "titulo": "Grupos, subgrupos, roles y namespaces",
+  "checks": [
+    {
+      "id": "subgrupo-infra",
+      "descripcion": "Existe el subgrupo infra dentro de tu grupo raiz",
+      "api": "groups/{grupo}%2Finfra",
+      "jq": ".path == \"infra\"",
+      "pista": "2-practicas/01-el-arbol-de-la-organizacion.md, paso 3"
+    },
+    {
+      "id": "subgrupo-ci",
+      "descripcion": "Existe el subgrupo ci dentro de tu grupo raiz",
+      "api": "groups/{grupo}%2Fci",
+      "jq": ".path == \"ci\"",
+      "pista": "2-practicas/01-el-arbol-de-la-organizacion.md, paso 3"
+    },
+    {
+      "id": "subgrupos-privados",
+      "descripcion": "El subgrupo infra es privado, como su grupo padre",
+      "api": "groups/{grupo}%2Finfra",
+      "jq": ".visibility == \"private\"",
+      "pista": "1-teoria/06-visibilidad-quien-ve-que.md, seccion 3"
+    },
+    {
+      "id": "app-sigue-en-la-raiz",
+      "descripcion": "El proyecto app sigue colgando del grupo raiz, no de un subgrupo",
+      "api": "projects/{proyecto}",
+      "jq": ".namespace.parent_id == null",
+      "pista": "2-practicas/01-el-arbol-de-la-organizacion.md, paso 4"
+    },
+    {
+      "id": "creacion-de-proyectos-restringida",
+      "descripcion": "Solo los Maintainers pueden crear proyectos en el grupo raiz",
+      "api": "groups/{grupo}",
+      "jq": ".project_creation_level == \"maintainer\"",
+      "pista": "2-practicas/01-el-arbol-de-la-organizacion.md, paso 5"
+    },
+    {
+      "id": "creacion-de-subgrupos-restringida",
+      "descripcion": "Solo los Owners pueden crear subgrupos en el grupo raiz",
+      "api": "groups/{grupo}",
+      "jq": ".subgroup_creation_level == \"owner\"",
+      "pista": "2-practicas/01-el-arbol-de-la-organizacion.md, paso 5"
+    },
+    {
+      "id": "tres-usuarios-de-laboratorio",
+      "descripcion": "El grupo raiz tiene al menos cuatro miembros directos: tu y los tres usuarios de laboratorio",
+      "api": "groups/{grupo}/members",
+      "jq": "length >= 4",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 4"
+    },
+    {
+      "id": "rol-developer-en-el-grupo",
+      "descripcion": "Al menos un miembro del grupo raiz tiene el rol Developer",
+      "api": "groups/{grupo}/members",
+      "jq": "map(select(.access_level == 30)) | length > 0",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 4"
+    },
+    {
+      "id": "rol-guest-en-el-grupo",
+      "descripcion": "Al menos un miembro del grupo raiz tiene el rol Guest",
+      "api": "groups/{grupo}/members",
+      "jq": "map(select(.access_level == 10)) | length > 0",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 4"
+    },
+    {
+      "id": "membresia-con-caducidad",
+      "descripcion": "Al menos una membresia del grupo raiz tiene fecha de caducidad",
+      "api": "groups/{grupo}/members",
+      "jq": "map(select(.expires_at != null)) | length > 0",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 5"
+    },
+    {
+      "id": "un-solo-owner",
+      "descripcion": "Solo una persona es Owner del grupo raiz",
+      "api": "groups/{grupo}/members/all",
+      "jq": "map(select(.access_level == 50)) | length == 1",
+      "pista": "2-practicas/04-compartir-auditar-y-recortar.md, paso 6"
+    },
+    {
+      "id": "elevacion-directa-en-app",
+      "descripcion": "Alguien tiene rol Maintainer directo en el proyecto app sin serlo del grupo",
+      "api": "projects/{proyecto}/members",
+      "jq": "map(select(.access_level == 40)) | length > 0",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 6"
+    },
+    {
+      "id": "herencia-visible-en-el-subgrupo",
+      "descripcion": "Los miembros del grupo raiz se ven heredados en el subgrupo ci",
+      "api": "groups/{grupo}%2Fci/members/all",
+      "jq": "length >= 4",
+      "pista": "2-practicas/02-tres-usuarios-y-sus-roles.md, paso 7"
+    },
+    {
+      "id": "app-compartido-con-un-grupo",
+      "descripcion": "El proyecto app esta compartido con un grupo invitado",
+      "api": "projects/{proyecto}",
+      "jq": ".shared_with_groups | length > 0",
+      "pista": "2-practicas/04-compartir-auditar-y-recortar.md, paso 3"
+    },
+    {
+      "id": "comparticion-de-solo-lectura",
+      "descripcion": "Ningun grupo invitado en app tiene mas que Reporter",
+      "api": "projects/{proyecto}",
+      "jq": "all(.shared_with_groups[]; .group_access_level <= 20)",
+      "pista": "2-practicas/04-compartir-auditar-y-recortar.md, paso 3"
+    }
+  ]
+}

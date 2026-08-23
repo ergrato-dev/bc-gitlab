@@ -101,6 +101,30 @@ _Se añaden a medida que se publica cada semana._
 | Dos ramas a la vez sin clonar dos veces | `git worktree add ../app-hotfix main` |
 | Que Git recuerde cómo resolviste un conflicto | `git config --global rerere.enabled true` |
 
+## Semana 03 — Grupos, subgrupos, roles y namespaces
+
+| Truco | Cómo |
+|---|---|
+| Ver el árbol entero de un grupo de una vez | `curl -s -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_URL/api/v4/groups/$G/descendant_groups" \| jq -r '.[].full_path'` |
+| Saber si una ruta está libre antes de crear | `curl -s -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$GITLAB_URL/api/v4/namespaces/infra/exists?parent_id=<id>" \| jq` |
+| El rol **efectivo** de alguien aquí, herencia incluida | `.../projects/$P/members/all/<user_id>` — `members/<user_id>` a secas solo ve los directos |
+| Qué toca una persona en toda la instancia | `.../users/<id>/memberships` — solo administradores |
+| Dónde soy al menos Developer | `.../groups?min_access_level=30` — también vale para `/projects` |
+| Ver qué añade **exactamente** cada rol en tu versión | `docker compose exec gitlab cat /opt/gitlab/embedded/service/gitlab-rails/config/authz/roles/developer.yml` |
+| Comparar dos roles sin leerlos enteros | `docker compose exec gitlab bash -c 'cd /opt/gitlab/embedded/service/gitlab-rails/config/authz/roles && comm -13 reporter.yml developer.yml'` |
+| Buscar un namespace por ruta completa, no por nombre | `.../namespaces?search=plataforma/app&full_path_search=true` |
+| Listar solo los grupos raíz | `.../groups?top_level_only=true` |
+| Los proyectos del grupo **sin** los que solo están compartidos | `.../groups/$G/projects?with_shared=false&include_subgroups=true` |
+| Quién invitó a quién a este proyecto | `.../projects/$P \| jq '.shared_with_groups'` |
+| Los grupos invitados de un grupo, directos y heredados | `.../groups/$G/invited_groups?relation=direct,inherited` |
+| A dónde puedo mover este grupo | `.../groups/$G/transfer_locations` — la lista real, no la que te imaginas |
+| Recuperar un grupo borrado por error | `curl --request POST .../groups/$G/restore` — el `DELETE` solo lo **programa** para borrado |
+| Filtrar la lista de miembros por herencia, en la interfaz | `Group → Manage → Members`, filtro *Membership: Inherited* |
+| Ver un miembro sin conocer su ID | `.../groups/$G/members?query=revisor` |
+| Contar de golpe cuántos Owners tiene el árbol | `.../groups/$G/members/all \| jq '[.[] \| select(.access_level==50)] \| length'` |
+
+---
+
 ---
 
 [← Volver a docs](README.md)
