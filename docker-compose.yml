@@ -1,38 +1,65 @@
 # ============================================
-# Bootcamp GitLab CE — Zero to Hero
-# Entorno DevOps completo con Docker Compose
+# Bootcamp GitLab CE — Zero to Platform Engineer
+# Laboratorio por perfiles
 # ============================================
 #
 # Uso:
 #   cp .env.example .env
-#   docker compose up -d
-#   docker compose logs -f gitlab   # esperar ~5min primer inicio
+#   docker compose --profile base up -d
+#   docker compose logs -f gitlab      # el primer arranque tarda ~5 min
 #
-# Acceso: http://localhost
-# Usuario: root
-# Contrasena: docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
+# Acceso:  http://localhost:8888   ·  usuario: root
+#   docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
+#
+# PERFILES — ver docs/perfiles-de-laboratorio.md
+#   base            GitLab + runner + cache de registry.        Todas las semanas
+#   observabilidad  Prometheus + Grafana + Loki + Promtail.     S21
+#   ha              Praefect + Gitaly + PostgreSQL replicado.   S23 (se añade en esa semana)
+#
+# base y observabilidad conviven en 16 GB. base y ha, justo.
+# NUNCA levantes observabilidad y ha a la vez.
+#
+# Kubernetes (S16, S25) no es un perfil: k3d crea su propio clúster fuera de
+# Compose. Apaga observabilidad antes de levantarlo.
 
 services:
   # ============================================
-  # GitLab CE — Plataforma DevOps principal
+  # GitLab CE — la plataforma
   # ============================================
   gitlab:
-    image: gitlab/gitlab-ce:${GITLAB_VERSION:-17-latest}
+    image: gitlab/gitlab-ce:${GITLAB_VERSION:-19.1.1-ce.0}
     container_name: gitlab
-    hostname: ${GITLAB_HOST:-gitlab.local}
+    hostname: ${GITLAB_HOST:-gitlab}
     restart: unless-stopped
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         # ── Acceso ──
-        external_url '${GITLAB_EXTERNAL_URL:-http://localhost}'
+        external_url '${GITLAB_EXTERNAL_URL:-http://localhost:8888}'
         gitlab_rails['gitlab_shell_ssh_port'] = ${GITLAB_SSH_PORT:-2224}
         gitlab_rails['initial_root_password'] = '${GITLAB_ROOT_PASSWORD:-ChangeMe123!}'
 
-        # ── Funcionalidad ──
+        # ── Container Registry integrado (S13) ──
+        registry_external_url 'http://${GITLAB_HOST:-gitlab}:${REGISTRY_PORT:-5050}'
+        registry['enable'] = true
+        registry_nginx['listen_port'] = ${REGISTRY_PORT:-5050}
+        registry_nginx['listen_https'] = false
+
+        # ── GitLab Pages (S14) ──
+        pages_external_url 'http://${PAGES_HOST:-pages.localhost}:${PAGES_PORT:-8090}'
+        gitlab_pages['enable'] = true
+        gitlab_pages['listen_proxy'] = "0.0.0.0:8090"
+        pages_nginx['enable'] = false
+
+        # ── Funcionalidad usada por el bootcamp ──
         gitlab_rails['lfs_enabled'] = true
         gitlab_rails['gitlab_default_can_create_group'] = true
+        gitlab_rails['dependency_proxy_enabled'] = true
 
-        # ── PRIVACIDAD: Telemetria DESHABILITADA ──
+        # ── Correo desactivado: el laboratorio no envía nada ──
+        gitlab_rails['smtp_enable'] = false
+        gitlab_rails['gitlab_email_enabled'] = false
+
+        # ── PRIVACIDAD: telemetría deshabilitada ──
         gitlab_rails['usage_ping_enabled'] = false
         gitlab_rails['sentry_enabled'] = false
         gitlab_rails['snowplow_enabled'] = false
@@ -40,33 +67,44 @@ services:
         gitlab_rails['third_party_offers_enabled'] = false
         gitlab_rails['gitlab_environment'] = 'development'
 
-        # ── Datos y respaldo ──
+        # ── Respaldo (S22) ──
         gitlab_rails['backup_keep_time'] = 604800
 
         # ── Web server ──
-        nginx['listen_port'] = 80
+        nginx['listen_port'] = 8888
         nginx['listen_https'] = false
+        nginx['client_max_body_size'] = '256m'
 
-        # ── Base de datos ──
+        # ── Tuning de laboratorio (S21 lo explica y lo ajusta) ──
         postgresql['shared_buffers'] = '256MB'
+        puma['worker_processes'] = 2
+        puma['min_threads'] = 1
+        puma['max_threads'] = 4
+        sidekiq['max_concurrency'] = 10
+        redis['maxmemory'] = '256mb'
+        redis['maxmemory_policy'] = 'allkeys-lru'
 
-        # ── Monitoreo LOCAL (Prometheus local, sin envio externo) ──
+        # ── Monitoreo LOCAL, sin envío externo (S21) ──
         prometheus_monitoring['enable'] = true
         node_exporter['enable'] = true
         gitlab_exporter['enable'] = true
         redis_exporter['enable'] = true
         postgres_exporter['enable'] = true
     ports:
-      - "${GITLAB_HTTP_PORT:-80}:80"
-      - "${GITLAB_HTTPS_PORT:-443}:443"
+      - "${GITLAB_HTTP_PORT:-8888}:8888"
+      - "${REGISTRY_PORT:-5050}:5050"
+      - "${PAGES_PORT:-8090}:8090"
       - "${GITLAB_SSH_PORT:-2224}:22"
     volumes:
       - gitlab-config:/etc/gitlab
       - gitlab-logs:/var/log/gitlab
       - gitlab-data:/var/opt/gitlab
+      # Utilidades del laboratorio: lab-health, lab-backup, lab-audit.
+      #   docker compose exec gitlab /opt/lab/lab-health
+      - ./scripts/lab:/opt/lab:ro
     shm_size: '256m'
     healthcheck:
-      test: curl -f http://localhost/-/health || exit 1
+      test: curl -f http://localhost:8888/-/health || exit 1
       interval: 60s
       timeout: 30s
       retries: 10
@@ -78,12 +116,14 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles:
+      - base
 
   # ============================================
-  # GitLab Runner — Ejecutor de pipelines CI/CD
+  # GitLab Runner — ejecuta los pipelines (S09)
   # ============================================
   gitlab-runner:
-    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-latest}
+    image: gitlab/gitlab-runner:${RUNNER_VERSION:-alpine-v19.1.1}
     container_name: gitlab-runner
     restart: unless-stopped
     depends_on:
@@ -99,9 +139,11 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    profiles:
+      - base
 
   # ============================================
-  # Registry cache — Acelera pulls de Docker Hub
+  # Cache de registry — evita el rate limit de Docker Hub
   # ============================================
   registry-cache:
     image: registry:2
@@ -117,12 +159,14 @@ services:
       - registry-cache-data:/var/lib/registry
     networks:
       - gitlab-network
+    profiles:
+      - base
 
   # ============================================
-  # Prometheus — Recoleccion de metricas
+  # Prometheus — métricas (S21)
   # ============================================
   prometheus:
-    image: prom/prometheus:${PROMETHEUS_VERSION:-latest}
+    image: prom/prometheus:v${PROMETHEUS_VERSION:-2.54.1}
     container_name: prometheus
     restart: unless-stopped
     volumes:
@@ -131,27 +175,27 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=7d'
       - '--web.enable-lifecycle'
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     networks:
       - gitlab-network
     profiles:
-      - monitoring
+      - observabilidad
 
   # ============================================
-  # Grafana — Dashboards de monitoreo
+  # Grafana — paneles (S21)
   # ============================================
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-latest}
+    image: grafana/grafana:${GRAFANA_VERSION:-11.2.0}
     container_name: grafana
     restart: unless-stopped
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
-      GF_INSTALL_PLUGINS: grafana-piechart-panel
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
     volumes:
       - grafana-data:/var/lib/grafana
       - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
@@ -161,10 +205,46 @@ services:
     networks:
       - gitlab-network
     profiles:
-      - monitoring
+      - observabilidad
+
+  # ============================================
+  # Loki — logs centralizados (S21)
+  # ============================================
+  loki:
+    image: grafana/loki:${LOKI_VERSION:-3.2.0}
+    container_name: loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/loki-config.yml
+    volumes:
+      - ./monitoring/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    ports:
+      - "${LOKI_PORT:-3100}:3100"
+    networks:
+      - gitlab-network
+    profiles:
+      - observabilidad
+
+  # ============================================
+  # Promtail — envía los logs de GitLab a Loki (S21)
+  # ============================================
+  promtail:
+    image: grafana/promtail:${LOKI_VERSION:-3.2.0}
+    container_name: promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/promtail-config.yml
+    volumes:
+      - ./monitoring/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - gitlab-logs:/var/log/gitlab:ro
+    depends_on:
+      - loki
+    networks:
+      - gitlab-network
+    profiles:
+      - observabilidad
 
 # ============================================
-# Volumenes persistentes
+# Volúmenes persistentes
 # ============================================
 volumes:
   gitlab-config:
@@ -181,6 +261,8 @@ volumes:
     name: bc-gitlab-prometheus
   grafana-data:
     name: bc-gitlab-grafana
+  loki-data:
+    name: bc-gitlab-loki
 
 # ============================================
 # Red interna

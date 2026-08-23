@@ -1,14 +1,13 @@
 #!/bin/bash
-# stop.sh — Detiene el entorno gl-epti
+# stop.sh — Detiene el laboratorio conservando los datos.
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-COMPOSE_FILE="$SCRIPT_DIR/docker-compose.gl-epti.yml"
+cd "$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== gl-epti: Deteniendo entorno ==="
-
-docker compose -f "$COMPOSE_FILE" down
+echo "=== Deteniendo el laboratorio ==="
+docker compose --profile base --profile observabilidad down
 
 echo ""
-echo "[OK] Entorno gl-epti detenido. Datos preservados."
-echo "Para destruir todo: docker compose -f $COMPOSE_FILE down -v"
+echo "[OK] Detenido. Los datos se conservan en los volumenes."
+echo "Para destruirlo todo, volumenes incluidos:"
+echo "  docker compose --profile base --profile observabilidad down -v"

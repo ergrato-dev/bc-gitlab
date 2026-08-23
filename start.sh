@@ -1,18 +1,20 @@
 #!/bin/bash
-# start.sh — Levanta el entorno gl-epti completo
+# start.sh — Levanta el laboratorio (perfil base).
+#
+# Perfiles adicionales (docs/perfiles-de-laboratorio.md):
+#   docker compose --profile observabilidad up -d    # Semana 21
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-COMPOSE_FILE="$SCRIPT_DIR/docker-compose.gl-epti.yml"
+cd "$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== gl-epti: Levantando entorno ==="
-echo ""
-
-docker compose -f "$COMPOSE_FILE" up -d
+echo "=== Levantando el laboratorio (perfil base) ==="
+docker compose --profile base up -d
 
 echo ""
-echo "[OK] Entorno gl-epti iniciado."
-echo "Espera ~5 min en el primer inicio. Monitorea con:"
-echo "  docker compose -f $COMPOSE_FILE logs -f gl-epti"
+echo "[OK] Laboratorio iniciado."
+echo "El primer arranque tarda ~5 min. Sigue el progreso con:"
+echo "  docker compose logs -f gitlab"
 echo ""
-echo "Acceso: http://localhost:8888  (usuario: root / ChangeMe123!)"
+echo "Acceso: http://localhost:8888 (usuario: root)"
+echo "Contrasena inicial:"
+echo "  docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password"

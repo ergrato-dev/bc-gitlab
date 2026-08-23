@@ -51,7 +51,7 @@ sudo swapon /swapfile
 
 ```bash
 # Construir y levantar GitLab (primer inicio ~5 min)
-docker compose up -d
+docker compose --profile base up -d
 
 # Ver logs de GitLab en tiempo real
 docker compose logs -f gitlab
@@ -72,23 +72,23 @@ docker compose exec gitlab bash
 docker compose down
 
 # Destruir todo (volumenes incluidos — borra TODOS los datos)
-docker compose down -v
+docker compose --profile base --profile observabilidad down -v
 
 # Levantar con monitoreo (Prometheus + Grafana)
-docker compose --profile monitoring up -d
+docker compose --profile observabilidad up -d
 
 # Ver solo los servicios de monitoreo
-docker compose --profile monitoring ps
+docker compose --profile observabilidad ps
 ```
 
 ## Verificacion
 
 ```bash
-# GitLab debe responder en http://localhost
-curl -I http://localhost
+# GitLab debe responder en http://localhost:8888
+curl -I http://localhost:8888
 
 # Acceder a la UI
-# Abrir http://localhost en navegador
+# Abrir http://localhost:8888 en navegador
 # Usuario: root
 # Contrasena: (del comando grep anterior)
 ```
@@ -97,8 +97,11 @@ curl -I http://localhost
 
 | Servicio | URL | Puerto |
 |----------|-----|--------|
-| GitLab CE | `http://localhost` | 80 |
+| GitLab CE | `http://localhost:8888` | 8888 |
 | GitLab SSH | `ssh://git@localhost` | 2224 |
+| Container Registry | `localhost:5050` | 5050 |
+| GitLab Pages | `http://pages.localhost:8090` | 8090 |
 | Registry Cache | `localhost:5000` | 5000 |
-| Prometheus | `http://localhost:9090` | 9090 (profile: monitoring) |
-| Grafana | `http://localhost:3000` | 3000 (profile: monitoring) |
+| Prometheus | `http://localhost:9090` | 9090 (perfil: observabilidad) |
+| Grafana | `http://localhost:3000` | 3000 (perfil: observabilidad) |
+| Loki | `http://localhost:3100` | 3100 (perfil: observabilidad) |

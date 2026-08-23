@@ -1,0 +1,26 @@
+# Promtail — Semana 21.
+# Lee los logs de GitLab del volumen compartido y los envia a Loki.
+server:
+  http_listen_port: 9080
+  log_level: warn
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Un job por subsistema para poder filtrar por {componente="..."} en Grafana.
+  - job_name: gitlab
+    static_configs:
+      - targets: [localhost]
+        labels:
+          job: gitlab
+          __path__: /var/log/gitlab/*/*.log
+    pipeline_stages:
+      - regex:
+          source: filename
+          expression: '/var/log/gitlab/(?P<componente>[^/]+)/'
+      - labels:
+          componente:

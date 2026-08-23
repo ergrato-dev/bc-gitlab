@@ -1,0 +1,17 @@
+# Fuentes de datos aprovisionadas para Grafana — Semana 21.
+# Grafana las carga al arrancar; no hay que añadirlas a mano por la UI.
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    editable: true

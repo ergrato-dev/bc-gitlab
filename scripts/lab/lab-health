@@ -1,0 +1,48 @@
+#!/bin/bash
+# lab-health — Estado de la instancia GitLab CE del laboratorio.
+#
+# Se ejecuta DENTRO del contenedor:
+#   docker compose exec gitlab /opt/lab/lab-health
+set -euo pipefail
+
+PORT="${GITLAB_HTTP_PORT_INTERNAL:-8888}"
+
+echo "=== Estado del laboratorio ==="
+echo ""
+
+# Servicios de Omnibus
+if gitlab-ctl status &>/dev/null; then
+    echo "[OK] Servicios de GitLab en marcha"
+    gitlab-ctl status 2>/dev/null | while read -r line; do
+        printf "     %s\n" "$line"
+    done
+else
+    echo "[FAIL] Servicios de GitLab caidos"
+fi
+
+echo ""
+
+# /-/health responde sin arrancar Rails: es el chequeo barato.
+if curl -fs "http://localhost:${PORT}/-/health" &>/dev/null; then
+    echo "[OK] API viva (/-/health)"
+else
+    echo "[WARN] La API no responde en el puerto ${PORT}"
+fi
+
+# /-/readiness sí toca base de datos, cache y colas.
+if curl -fs "http://localhost:${PORT}/-/readiness" &>/dev/null; then
+    echo "[OK] Readiness correcto (/-/readiness)"
+else
+    echo "[WARN] Readiness falla: revisa base de datos, Redis o Sidekiq"
+fi
+
+echo ""
+echo "--- Disco ---"
+df -h /var/opt/gitlab /etc/gitlab /var/log/gitlab 2>/dev/null | tail -n +2
+
+echo ""
+echo "--- Memoria ---"
+free -h | grep 'Mem:'
+
+echo ""
+echo "Auditoria de seguridad: /opt/lab/lab-audit"

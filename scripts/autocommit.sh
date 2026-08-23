@@ -43,15 +43,15 @@ detect_change_type() {
     local files="$1"
     local type="chore"
     
-    if echo "$files" | grep -qE "^bootcamp/week-[0-9]+/1-teoria/"; then
+    if echo "$files" | grep -qE "^bootcamp/week-[0-9]{2}-[a-z0-9_]+/1-teoria/"; then
         type="docs"
-    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]+/2-practicas/"; then
+    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]{2}-[a-z0-9_]+/2-practicas/"; then
         type="feat"
-    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]+/3-proyecto/"; then
+    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]{2}-[a-z0-9_]+/3-proyecto/"; then
         type="feat"
-    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]+/4-recursos/"; then
+    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]{2}-[a-z0-9_]+/4-recursos/"; then
         type="docs"
-    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]+/5-glosario/"; then
+    elif echo "$files" | grep -qE "^bootcamp/week-[0-9]{2}-[a-z0-9_]+/5-glosario/"; then
         type="docs"
     elif echo "$files" | grep -qE "^docs/"; then
         type="docs"

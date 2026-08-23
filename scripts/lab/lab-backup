@@ -1,0 +1,29 @@
+#!/bin/bash
+# lab-backup — Backup de la instancia del laboratorio.
+#
+# Se ejecuta DENTRO del contenedor:
+#   docker compose exec gitlab /opt/lab/lab-backup
+#
+# El destino lo controla gitlab_rails['backup_path'] (por defecto
+# /var/opt/gitlab/backups). La Semana 22 explica que incluye y que NO
+# incluye este backup: los secretos de /etc/gitlab van aparte.
+set -euo pipefail
+
+BACKUP_DIR="/var/opt/gitlab/backups"
+
+echo "=== Backup del laboratorio ==="
+echo "Fecha:   $(date +%Y-%m-%d_%H:%M:%S)"
+echo "Destino: ${BACKUP_DIR}"
+echo ""
+
+# STRATEGY=copy evita bloquear los repositorios durante el volcado.
+gitlab-backup create STRATEGY=copy
+
+echo ""
+echo "[HECHO] Backup creado."
+ls -lh "${BACKUP_DIR}"/*gitlab_backup* 2>/dev/null | tail -1
+
+echo ""
+echo "AVISO: esto NO respalda /etc/gitlab/gitlab-secrets.json."
+echo "Sin ese archivo el backup no se puede restaurar. Copialo aparte:"
+echo "  docker compose cp gitlab:/etc/gitlab/gitlab-secrets.json ./gitlab-secrets.json"

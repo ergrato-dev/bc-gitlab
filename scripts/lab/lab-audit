@@ -1,0 +1,74 @@
+#!/bin/bash
+# lab-audit — Auditoria de configuracion de la instancia del laboratorio.
+#
+# Se ejecuta DENTRO del contenedor:
+#   docker compose exec gitlab /opt/lab/lab-audit
+#
+# Cubre lo que se audita desde dentro: permisos, secretos expuestos, puertos
+# y version. El escaneo de CVEs de la imagen se hace desde FUERA, con Trivy
+# en su propio contenedor (Semana 19):
+#   docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+#     aquasec/trivy image --severity HIGH,CRITICAL gitlab/gitlab-ce:19.1.1-ce.0
+set -euo pipefail
+
+echo "=== Auditoria del laboratorio ==="
+echo "$(date)"
+echo ""
+
+echo "--- Actualizaciones de seguridad pendientes ---"
+apt-get update -qq 2>/dev/null || true
+PENDING=$(apt-get -s upgrade 2>/dev/null | grep -i "^Inst" | grep -i "security" || true)
+if [ -n "$PENDING" ]; then
+    echo "[WARN] Hay actualizaciones disponibles:"
+    echo "$PENDING" | sed 's/^/  /'
+else
+    echo "[OK] Sin actualizaciones de seguridad pendientes"
+fi
+
+echo ""
+echo "--- Permisos de archivos sensibles ---"
+check_perm() {
+    local path="$1" expected="$2"
+    if [ -e "$path" ]; then
+        local actual
+        actual=$(stat -c '%a' "$path")
+        if [ "$actual" = "$expected" ]; then
+            printf "  [OK]   %-55s %s\n" "$path" "$actual"
+        else
+            printf "  [WARN] %-55s esperado=%s actual=%s\n" "$path" "$expected" "$actual"
+        fi
+    else
+        printf "  [SKIP] %s (no existe)\n" "$path"
+    fi
+}
+
+check_perm /etc/gitlab/gitlab.rb                                 600
+check_perm /etc/gitlab/gitlab-secrets.json                       600
+check_perm /var/opt/gitlab/gitlab-rails/etc/secret_key_base      600
+check_perm /var/opt/gitlab/.ssh/authorized_keys                  600
+check_perm /var/opt/gitlab/gitlab-shell/config.yml               640
+
+echo ""
+echo "--- Variables de entorno sensibles ---"
+SENSITIVE=$(printenv | grep -iE '(password|secret|token|private_key)=' \
+    | grep -vE '^(LAB_|GITLAB_OMNIBUS_CONFIG=)' || true)
+if [ -n "$SENSITIVE" ]; then
+    echo "[WARN] Variables sensibles en el entorno del proceso:"
+    echo "$SENSITIVE" | sed 's/=.*/=***REDACTADO***/' | sed 's/^/  /'
+else
+    echo "[OK] Sin variables sensibles expuestas"
+fi
+
+echo ""
+echo "--- Puertos en escucha ---"
+ss -tlnp 2>/dev/null | tail -n +2 | awk '{print "  " $4 " (" $1 ")"}' \
+    || echo "  [SKIP] ss no disponible en la imagen"
+
+echo ""
+echo "--- Version ---"
+if [ -f /opt/gitlab/version-manifest.txt ]; then
+    head -1 /opt/gitlab/version-manifest.txt | sed 's/^/  /'
+fi
+
+echo ""
+echo "=== Auditoria completada ==="
