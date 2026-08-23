@@ -57,6 +57,23 @@ _Se añaden a medida que se publica cada semana._
      "🎩 Trucos y atajos" de su README. El skill `sincronizar-trucos` mantiene
      los dos lados de acuerdo; si difieren, gana el README de la semana. -->
 
+## Semana 01 — Instalación y arquitectura de GitLab CE
+
+| Truco | Cómo |
+|---|---|
+| Ver el arranque sin adivinar | `docker compose logs -f gitlab` y espera a la línea `gitlab Reconfigured!` |
+| Saber si está listo de verdad | `curl -s localhost:8888/-/readiness \| jq` — `/-/health` miente, solo dice que Nginx contesta |
+| Estado de todos los procesos de golpe | `docker compose exec gitlab gitlab-ctl status` |
+| Seguir un solo componente | `docker compose exec gitlab gitlab-ctl tail sidekiq` |
+| Ver la configuración **efectiva**, no la que escribiste | `docker compose exec gitlab cat /var/opt/gitlab/gitlab-rails/etc/gitlab.yml` |
+| Comprobar la versión sin abrir el navegador | `curl -s localhost:8888/api/v4/version -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \| jq` |
+| Contraseña inicial de `root` | `docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password` — el archivo se autodestruye a las 24 h |
+| Explorar la API sin leer la documentación | `http://localhost:8888/-/graphql-explorer`, autocompleta con `Ctrl+Espacio` |
+| Ver todas las tareas de mantenimiento disponibles | `docker compose exec gitlab gitlab-rake -T \| less` |
+| Ver cuánta memoria come cada cosa | `docker stats --no-stream` |
+| Reiniciar un solo proceso, no todo | `docker compose exec gitlab gitlab-ctl restart sidekiq` |
+| Encontrar un repositorio en disco | Saca el ID por API y calcula la ruta: `H=$(echo -n "<id>" \| sha256sum \| cut -c1-64); echo @hashed/${H:0:2}/${H:2:2}/$H.git` |
+
 ---
 
 [← Volver a docs](README.md)

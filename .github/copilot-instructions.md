@@ -173,7 +173,9 @@ Nomenclatura: `NN-tema-en-kebab-case.md`, numerados desde `01`.
 
 ### 2-practicas/
 
-Cuatro archivos, 200-310 líneas cada uno. **Las prácticas son operaciones sobre GitLab, no código en `starter/`.** El entregable es el estado real de la instancia y se verifica con la API v4.
+Cuatro archivos, **200-380 líneas** cada uno. **Las prácticas son operaciones sobre GitLab, no código en `starter/`.** El entregable es el estado real de la instancia y se verifica con la API v4.
+
+> El rango es más ancho que el de la teoría a propósito: aquí cada paso lleva cuatro bloques (Por qué, UI, `glab`, Verifica) y ocho o nueve pasos suman rápido. Si una práctica se pasa de 380, no la recortes: mira si son dos prácticas.
 
 Formato canónico de un paso:
 
@@ -504,7 +506,7 @@ GitLab publica una versión menor al mes. Antes de escribir sobre una feature re
 - [ ] `README.md` con las 10 secciones en orden
 - [ ] La tabla de tiempos suma **8 h exactas**
 - [ ] 7-8 archivos de teoría, 200-300 líneas cada uno, un concepto por archivo
-- [ ] 4 prácticas, cada paso con Por qué / Comando / Verifica
+- [ ] 4 prácticas (200-380 líneas), cada paso con Por qué / Comando / Verifica
 - [ ] Cada práctica cierra con `## ✅ Resultado` y `## 🧯 Si algo sale mal`
 - [ ] `3-proyecto/README.md` con los requisitos copiados literalmente del `checks.json`
 - [ ] `rubrica-evaluacion.md` con 10 preguntas, respuestas argumentadas y penalizaciones

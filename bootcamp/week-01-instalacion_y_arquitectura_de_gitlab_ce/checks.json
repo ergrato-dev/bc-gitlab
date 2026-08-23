@@ -1,0 +1,91 @@
+{
+  "semana": "01",
+  "titulo": "Instalación de GitLab CE en Docker y arquitectura interna",
+  "checks": [
+    {
+      "id": "instancia-viva",
+      "descripcion": "Tu instancia responde y corre la version fijada del bootcamp",
+      "api": "version",
+      "jq": ".version | startswith(\"19.\")",
+      "pista": "2-practicas/01-levantar-la-instancia.md, paso 3"
+    },
+    {
+      "id": "registro-cerrado",
+      "descripcion": "El registro publico de usuarios esta desactivado en la instancia",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".signup_enabled == false",
+      "pista": "2-practicas/01-levantar-la-instancia.md, paso 7"
+    },
+    {
+      "id": "clave-ssh-registrada",
+      "descripcion": "Tu usuario tiene al menos una clave SSH registrada",
+      "api": "user/keys",
+      "jq": "length > 0",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 2"
+    },
+    {
+      "id": "grupo-existe",
+      "descripcion": "Existe el grupo raiz de tu plataforma",
+      "api": "groups/{grupo}",
+      "jq": ".id > 0",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 3"
+    },
+    {
+      "id": "grupo-con-descripcion",
+      "descripcion": "El grupo tiene una descripcion que dice de que va tu plataforma",
+      "api": "groups/{grupo}",
+      "jq": "(.description // \"\") | length >= 20",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 3"
+    },
+    {
+      "id": "proyecto-existe",
+      "descripcion": "Existe el proyecto app dentro de ese grupo",
+      "api": "projects/{proyecto}",
+      "jq": ".id > 0",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 4"
+    },
+    {
+      "id": "proyecto-en-grupo",
+      "descripcion": "El proyecto cuelga del grupo, no de tu espacio personal",
+      "api": "projects/{proyecto}",
+      "jq": ".namespace.kind == \"group\"",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 4"
+    },
+    {
+      "id": "proyecto-privado",
+      "descripcion": "El proyecto es privado",
+      "api": "projects/{proyecto}",
+      "jq": ".visibility == \"private\"",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 4"
+    },
+    {
+      "id": "proyecto-declara-dominio",
+      "descripcion": "La descripcion del proyecto declara el dominio que elegiste",
+      "api": "projects/{proyecto}",
+      "jq": "(.description // \"\") | length >= 20",
+      "pista": "3-proyecto/README.md"
+    },
+    {
+      "id": "rama-por-defecto-main",
+      "descripcion": "La rama por defecto del proyecto se llama main",
+      "api": "projects/{proyecto}",
+      "jq": ".default_branch == \"main\"",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 5"
+    },
+    {
+      "id": "hay-commits",
+      "descripcion": "El repositorio tiene al menos un commit tuyo",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main",
+      "jq": "length > 0",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 6"
+    },
+    {
+      "id": "readme-en-raiz",
+      "descripcion": "Hay un README.md en la raiz del repositorio",
+      "api": "projects/{proyecto}/repository/tree?ref=main",
+      "jq": "map(select(.name == \"README.md\")) | length > 0",
+      "pista": "2-practicas/03-crear-tu-plataforma.md, paso 6"
+    }
+  ]
+}
