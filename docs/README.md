@@ -8,7 +8,7 @@
 | [perfiles-de-laboratorio.md](perfiles-de-laboratorio.md) | Qué levantar en cada semana y cuánta memoria come |
 | [trucos-gitlab.md](trucos-gitlab.md) | Cheatsheet acumulativo. Crece con cada semana |
 | [glosario-global.md](glosario-global.md) | Términos de toda la plataforma, con su tier |
-| [stack-versions.md](stack-versions.md) | Versiones fijadas y política para subirlas |
+| [stack-versions.md](stack-versions.md) | Versiones fijadas, y qué comprobar **antes** de cambiar ninguna |
 | [docker-setup.md](docker-setup.md) | Instalar Docker según tu sistema operativo |
 | [decision-renombre-semanas.md](decision-renombre-semanas.md) | ADR-001: por qué 26 semanas y cómo se nombran |
 

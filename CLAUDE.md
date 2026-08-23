@@ -73,7 +73,12 @@ week-XX-tema/
   completa (`19.2.4-ce.0`, `v19.2.2`), aunque apunte a la misma imagen que
   `latest` hoy. `latest` convierte cada `pull` en un cambio de versión que nadie
   decidió y hace imposible auditar CVEs por adelantado. Antes de fijar una
-  versión: comprueba que el tag existe y audita sus vulnerabilidades.
+  versión, las cuatro comprobaciones de
+  [`docs/stack-versions.md`](docs/stack-versions.md): que el tag existe, sus
+  CVEs, que sea parada de actualización, y que exista el tag del runner.
+- **La versión es la misma en tres repos.** `ergrato-dev/gitlab` (producción),
+  `ergrato-dev/gitlab-epti` (laboratorio) y este. Cambiarla aquí obliga a
+  cambiarla en los tres, y producción va la última.
 - **Diagramas en SVG, nunca arte ASCII.** Paleta y reglas en la guía de autoría.
 - Antes de cerrar cualquier cambio: `bash scripts/verificar-enlaces.sh` sin
   errores. Los enlaces desde `bootcamp/week-NN/README.md` a la raíz son

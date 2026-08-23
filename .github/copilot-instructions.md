@@ -19,7 +19,7 @@ Bootcamp de **GitLab CE autohospedado**. Trata GitLab como plataforma de ingenie
 | Nivel de entrada | `clone`, `commit`, `push` y qué es una rama |
 | Nivel de salida | Platform Engineer |
 | Edición | **GitLab CE puro**, autohospedado en Docker. Sin gitlab.com, sin EE, sin trials |
-| Versión fijada | `19.2.4-ce.0` |
+| Versión fijada | `19.2.4-ce.0` — ver [stack-versions](../docs/stack-versions.md) antes de cambiarla |
 | Máquina asumida | 16 GB de RAM |
 | Instancia | `http://localhost:8888` |
 
