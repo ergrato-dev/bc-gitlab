@@ -121,9 +121,9 @@ bc-gitlab/
 ├── CONTRIBUTING.md              # Cómo contribuir
 ├── docker-compose.yml           # Laboratorio por perfiles: base, observabilidad, ha
 ├── .env.example                 # Versiones y puertos
-├── start.sh / stop.sh           # Atajos del perfil base
 ├── monitoring/                  # Configuración de Prometheus, Grafana, Loki, Promtail
 ├── scripts/
+│   ├── start.sh / stop.sh       # Arranque y parada del laboratorio
 │   ├── verificar-enlaces.sh     # Contrato estructural
 │   ├── verificar-semana.sh      # Autograding (motor genérico, cero lógica por semana)
 │   └── lab/                     # Utilidades dentro del contenedor: lab-health, lab-backup, lab-audit

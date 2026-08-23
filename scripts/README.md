@@ -2,6 +2,8 @@
 
 | Script | Para quién | Qué hace |
 |---|---|---|
+| `start.sh` | Estudiante | Levanta el laboratorio y espera a que GitLab responda de verdad |
+| `stop.sh` | Estudiante | Lo para conservando los datos. Nunca borra volúmenes |
 | `verificar-semana.sh` | Estudiante | Autograding: ejecuta el `checks.json` de una semana contra tu instancia |
 | `verificar-enlaces.sh` | Autor | Contrato estructural del repositorio: nombres, enlaces, navegación, SVG, JSON |
 | `lab/lab-health` | Estudiante | Estado de la instancia, desde dentro del contenedor |
@@ -13,6 +15,20 @@
 ---
 
 ## Para el estudiante
+
+### Arrancar y parar
+
+```bash
+./scripts/start.sh                  # perfil base
+./scripts/start.sh observabilidad   # base + Prometheus/Grafana/Loki (Semana 21)
+./scripts/stop.sh                   # para, conservando los datos
+```
+
+`start.sh` espera a que `/-/readiness` responda antes de darte por listo, que no
+es lo mismo que "el contenedor está arriba".
+
+`stop.sh` **nunca borra volúmenes**. Si de verdad quieres destruir la instancia,
+escribe el comando a mano: esa fricción es deliberada.
 
 ### Autograding
 
