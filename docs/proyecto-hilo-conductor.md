@@ -82,7 +82,7 @@ Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libr
 | 12 | `ci/componentes` con 2 componentes publicados en el catálogo | El YAML deja de duplicarse entre proyectos |
 | 13 | Imagen en el registry + política de limpieza + paquete genérico + dependency proxy | Los binarios viven versionados dentro de tu instancia |
 | 14 | `staging` y `production`, review app por MR, docs en Pages, 1 feature flag | Cada MR tiene entorno vivo y el despliegue es reversible |
-| 15 | Flota de 3 runners etiquetados (`docker`, `dind`, protegido) + caché en MinIO | La ejecución está enrutada y la caché es compartida |
+| 15 | Flota de 3 runners etiquetados (`docker`, `dind`, protegido) + caché en SeaweedFS | La ejecución está enrutada y la caché es compartida |
 | 16 | Runner con ejecutor Kubernetes en k3d + `docs/finops.md` | La ejecución autoescala y sabes lo que cuesta cada pipeline |
 | 17 | `ci/automatizacion`: auditor por API, receptor de webhooks, job por ChatOps | La plataforma se opera por API, no a clics |
 | 18 | Instancia endurecida + login OIDC con Keycloak + informe de actualización | La instancia está administrada como producción |

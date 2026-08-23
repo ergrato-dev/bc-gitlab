@@ -8,17 +8,23 @@ Por eso el laboratorio está partido en **perfiles de Docker Compose**. Cada sem
 
 ## Los perfiles
 
-| Perfil | Qué levanta | Semanas | RAM aprox. |
-|---|---|---|:--:|
-| `base` | GitLab CE, GitLab Runner, cache de registry | Todas | ~5 GB |
-| `observabilidad` | Prometheus, Grafana, Loki, Promtail | 21 | +4 GB |
-| `ha` | Praefect, 3 Gitaly, PostgreSQL primario y réplica, PgBouncer | 23 | +8 GB |
+| Perfil | Qué levanta | Semanas | RAM aprox. | Estado |
+|---|---|---|:--:|---|
+| `base` | GitLab CE, GitLab Runner, cache de registry | Todas | ~5 GB | ✅ en `docker-compose.yml` |
+| `observabilidad` | Prometheus, Grafana, Loki, Promtail | 21 | +4 GB | ✅ en `docker-compose.yml` |
+| `ha` | Praefect, 3 Gitaly, PostgreSQL primario y réplica, PgBouncer | 23 | +8 GB | ⬜ se añade al escribir la Semana 23 |
 
 ```bash
 docker compose --profile base up -d
 docker compose --profile observabilidad up -d     # se suma a base
 docker compose --profile observabilidad down      # apaga solo ese perfil
 ```
+
+> [!NOTE]
+> El perfil `ha` está declarado aquí porque el presupuesto de memoria de todo el
+> bootcamp depende de él, pero **todavía no existe en `docker-compose.yml`**: sus
+> seis servicios se añaden en la tanda de la Semana 23, junto con el material que
+> los explica. Hasta entonces, `docker compose --profile ha up -d` no levanta nada.
 
 > [!IMPORTANT]
 > **`observabilidad` y `ha` nunca se levantan a la vez.** Juntos superan los 16 GB y GitLab empieza a devolver 502 sin decirte por qué.

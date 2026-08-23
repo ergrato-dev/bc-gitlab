@@ -144,17 +144,17 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 | Helm | **3.16+** | GitLab Runner y agente en el clúster |
 | Terraform | **1.9+** | La plataforma como código (S24) |
 | PostgreSQL | **16+** | Backend de GitLab; replicado en S23 |
-| Prometheus / Grafana / Loki | **2.54+ / 11+ / 3+** | Observabilidad (S21) |
+| Prometheus · Grafana · Loki | **3.14.0 · 13.1.4 · 3.6.11** | Observabilidad (S21) |
 | Keycloak | **26+** | OIDC para la instancia (S18) |
-| Semgrep · Gitleaks · OSV-Scanner · Trivy | **latest** | Seguridad del pipeline (S19) |
-| Syft · Cosign · Conftest | **latest** | SBOM, firma y política como código (S20) |
-| MinIO | **latest** | Caché distribuida de runners (S15) |
+| Semgrep · Gitleaks · OSV-Scanner · Trivy | **1.173.0 · 8.30.1 · 2.5.1 · 0.74.0** | Seguridad del pipeline (S19) |
+| Syft · Cosign · Conftest | **1.51.0 · 3.1.3 · 0.69.0** | SBOM, firma y política como código (S20) |
+| SeaweedFS | **4.40** | Caché distribuida de runners (S15). Sustituye a MinIO — ver [stack-versions](./docs/stack-versions.md) |
 
 ### Requisitos de máquina
 
 **16 GB de RAM.** No es una recomendación: las semanas 16, 21, 23 y 25 levantan Kubernetes, un stack de observabilidad o seis contenedores de alta disponibilidad. Con 8 GB se puede llegar hasta la Semana 15.
 
-Los perfiles de Docker Compose son **mutuamente excluyentes**: `base`, `observabilidad`, `k8s` y `ha` no caben todos a la vez. Cada semana declara cuál necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
+Los perfiles de Docker Compose son **mutuamente excluyentes en memoria**: `base`, `observabilidad` y `ha` no caben a la vez. Kubernetes **no es un perfil**: las semanas 16 y 25 levantan un clúster de k3d aparte, y antes hay que apagar observabilidad. Cada semana declara qué necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
 
 ### Lo que GitLab CE no incluye
 
