@@ -1,0 +1,118 @@
+{
+  "semana": "04",
+  "titulo": "El repositorio como producto: docs, wiki, snippets, insignias y LFS",
+  "checks": [
+    {
+      "id": "readme-en-la-raiz",
+      "descripcion": "GitLab reconoce un README en la raiz del repositorio",
+      "api": "projects/{proyecto}",
+      "jq": ".readme_url != null",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 2"
+    },
+    {
+      "id": "licencia-detectada",
+      "descripcion": "GitLab detecta la licencia del repositorio",
+      "api": "projects/{proyecto}?license=true",
+      "jq": ".license.key != null",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 4"
+    },
+    {
+      "id": "contributing-en-la-raiz",
+      "descripcion": "Existe CONTRIBUTING.md en la raiz del repositorio",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(select(.name == \"CONTRIBUTING.md\")) | length > 0",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 5"
+    },
+    {
+      "id": "descripcion-del-proyecto",
+      "descripcion": "El proyecto tiene una descripcion de al menos 30 caracteres",
+      "api": "projects/{proyecto}",
+      "jq": ".description != null and (.description | length) >= 30",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 6"
+    },
+    {
+      "id": "temas-del-proyecto",
+      "descripcion": "El proyecto tiene al menos tres temas asignados",
+      "api": "projects/{proyecto}",
+      "jq": ".topics | length >= 3",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 6"
+    },
+    {
+      "id": "avatar-del-proyecto",
+      "descripcion": "El proyecto tiene avatar",
+      "api": "projects/{proyecto}",
+      "jq": ".avatar_url != null",
+      "pista": "2-practicas/01-la-portada-del-proyecto.md, paso 7"
+    },
+    {
+      "id": "wiki-con-portada",
+      "descripcion": "La wiki del proyecto tiene pagina de portada (home)",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(select(.slug | ascii_downcase == \"home\")) | length > 0",
+      "pista": "2-practicas/02-la-wiki-y-el-primer-adr.md, paso 3"
+    },
+    {
+      "id": "wiki-con-adr-001",
+      "descripcion": "La wiki tiene una pagina cuyo slug empieza por adr-001",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(select(.slug | ascii_downcase | startswith(\"adr-001\"))) | length > 0",
+      "pista": "2-practicas/02-la-wiki-y-el-primer-adr.md, paso 5"
+    },
+    {
+      "id": "wiki-con-cuatro-paginas",
+      "descripcion": "La wiki tiene al menos cuatro paginas",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "length >= 4",
+      "pista": "2-practicas/02-la-wiki-y-el-primer-adr.md, pasos 3 a 7"
+    },
+    {
+      "id": "snippet-en-el-proyecto",
+      "descripcion": "El proyecto tiene al menos un snippet",
+      "api": "projects/{proyecto}/snippets",
+      "jq": "length > 0",
+      "pista": "2-practicas/03-snippets-e-insignias.md, paso 3"
+    },
+    {
+      "id": "ningun-snippet-publico",
+      "descripcion": "Ningun snippet del proyecto es publico",
+      "api": "projects/{proyecto}/snippets",
+      "jq": "all(.[]; .visibility != \"public\")",
+      "pista": "2-practicas/03-snippets-e-insignias.md, paso 4"
+    },
+    {
+      "id": "dos-insignias-de-proyecto",
+      "descripcion": "El proyecto tiene al menos dos insignias propias",
+      "api": "projects/{proyecto}/badges",
+      "jq": "map(select(.kind == \"project\")) | length >= 2",
+      "pista": "2-practicas/03-snippets-e-insignias.md, paso 6"
+    },
+    {
+      "id": "insignia-con-marcador",
+      "descripcion": "Al menos una insignia usa un marcador en vez de una ruta escrita a mano",
+      "api": "projects/{proyecto}/badges",
+      "jq": "map(select((.link_url + .image_url) | contains(\"%{\"))) | length > 0",
+      "pista": "2-practicas/03-snippets-e-insignias.md, paso 6"
+    },
+    {
+      "id": "lfs-activado-en-el-proyecto",
+      "descripcion": "Git LFS esta activado en el proyecto",
+      "api": "projects/{proyecto}",
+      "jq": ".lfs_enabled == true",
+      "pista": "2-practicas/04-binarios-con-git-lfs.md, paso 2"
+    },
+    {
+      "id": "gitattributes-en-la-raiz",
+      "descripcion": "Existe .gitattributes en la raiz del repositorio",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(select(.name == \".gitattributes\")) | length > 0",
+      "pista": "2-practicas/04-binarios-con-git-lfs.md, paso 4"
+    },
+    {
+      "id": "binario-guardado-en-lfs",
+      "descripcion": "assets/logo-grande.png esta guardado en LFS, no en la historia de Git",
+      "api": "projects/{proyecto}/repository/files/assets%2Flogo-grande%2Epng?ref=main",
+      "jq": "(.content | @base64d) | startswith(\"version https://git-lfs.github.com/spec/v1\")",
+      "pista": "2-practicas/04-binarios-con-git-lfs.md, paso 6"
+    }
+  ]
+}

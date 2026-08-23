@@ -125,6 +125,28 @@ _Se añaden a medida que se publica cada semana._
 
 ---
 
+## Semana 04 — El repositorio como producto
+
+| Truco | Cómo |
+|---|---|
+| Un `logo.png` en la raíz **es** el avatar del proyecto | GitLab lo detecta solo: nada que subir, y viaja con el repositorio (`Gitlab::FileDetector`) |
+| Índice automático en cualquier archivo Markdown | `[[_TOC_]]` en una línea suya. También funciona en las páginas de la wiki |
+| Alertas de colores sin HTML | `> [!NOTE]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!WARNING]`, `> [!CAUTION]` |
+| Diagramas que se renderizan sin subir imágenes | Bloque ```` ```mermaid ```` — Mermaid es nativo; PlantUML y Kroki necesitan servidor configurado en la instancia |
+| Clonar la wiki como lo que es | `git clone <url-del-proyecto>.wiki.git` — es un repositorio Git normal |
+| Ver el árbol de la wiki sin navegar | `.../projects/$P/wikis?with_content=true \| jq -r '.[].slug'` |
+| Cuánto ocupan wiki, LFS y artefactos | `.../projects/$P?statistics=true \| jq '.statistics'` |
+| Comprobar que un archivo está en LFS y no en Git | `.../projects/$P/repository/files/<ruta>?ref=main \| jq -r '.content \| @base64d' \| head -1` |
+| Descargar el contenido **real** de un archivo en LFS | `.../projects/$P/repository/files/<ruta>/raw?ref=main&lfs=true` |
+| Los puntos de la ruta de un archivo se codifican | `assets%2Flogo%2Epng` — sin `%2E`, Rails se come `.png` como formato de respuesta |
+| Plantillas de licencia servidas por tu propia instancia | `.../templates/licenses/mit?project=app&fullname=Tu%20Nombre` |
+| Ver qué licencia ha detectado GitLab, y con qué confianza | `.../projects/$P?license=true \| jq '.license'` |
+| Insignias que sobreviven a un cambio de ruta | `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, `%{gitlab_server}` |
+| Ver la URL final de una insignia, ya sustituida | `.../projects/$P/badges \| jq -r '.[].rendered_image_url'` |
+| Probar una insignia antes de crearla | `.../projects/$P/badges/render?link_url=...&image_url=...` |
+| Qué archivos ocupan LFS en tu clon | `git lfs ls-files --size` |
+| Traer un clon sin descargar los binarios | `GIT_LFS_SKIP_SMUDGE=1 git clone <url>` — luego `git lfs pull` cuando los necesites |
+
 ---
 
 [← Volver a docs](README.md)

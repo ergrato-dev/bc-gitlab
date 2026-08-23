@@ -173,6 +173,7 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 | Compliance frameworks | Ultimate | S20 | OPA / Conftest como gate de pipeline |
 | Audit events de instancia y grupo | Premium | S18 | Volcado de `/events` (menos campos, menos retención) |
 | Geo, DR multi-región, maintenance mode | Premium | S22 | Backup frío de una región, con el RPO real medido |
+| Wiki de grupo | Premium | S04 | La wiki de `app` hace de wiki de la plataforma; los demás proyectos enlazan a ella |
 | Pull mirroring | Premium | S23 | Push mirroring |
 | DORA API, Insights, Value Stream Analytics de grupo | Premium | S08 | Métricas calculadas por API, con su definición documentada |
 

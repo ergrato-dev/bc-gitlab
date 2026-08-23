@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Cómo funciona Git LFS: el filtro clean, el puntero y el filtro smudge</title>
+  <desc id="desc">Al hacer git add, el filtro clean sube el binario al almacén de LFS de la instancia y guarda en la historia de Git un puntero de texto de unos 130 bytes con tres líneas: la versión del formato, el hash SHA-256 del contenido y su tamaño. Al hacer checkout, el filtro smudge lee el puntero, descarga el binario del almacén y lo deja en el disco. Quien clone sin git-lfs instalado obtiene el puntero, no la imagen, y ese es el fallo clásico en un pipeline. El archivo .gitattributes decide qué se rastrea, y el orden importa: tiene que entrar en un commit anterior al del binario, porque el filtro clean solo actúa sobre patrones que ya existen en ese momento.</desc>
+
+  <rect width="900" height="470" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="l1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="l2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#554488"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Git guarda el puntero. El binario vive aparte.</text>
+
+    <!-- Disco -->
+    <rect x="30" y="70" width="220" height="120" rx="8" fill="#252525" stroke="#666666" stroke-width="1"/>
+    <text x="52" y="96" fill="#FAFAFA" font-size="13" font-weight="600">Tu disco</text>
+    <text x="52" y="122" fill="#FAFAFA" font-size="11" font-family="monospace">assets/logo-grande.png</text>
+    <text x="52" y="142" fill="#999999" font-size="11">1 048 576 bytes</text>
+    <text x="52" y="166" fill="#666666" font-size="11">La imagen de verdad</text>
+
+    <!-- Historia de Git -->
+    <rect x="340" y="70" width="240" height="120" rx="8" fill="#252525" stroke="#FC6D26" stroke-width="2"/>
+    <text x="362" y="96" fill="#FC6D26" font-size="13" font-weight="600">Historia de Git — el puntero</text>
+    <text x="362" y="120" fill="#FAFAFA" font-size="10" font-family="monospace">version https://git-lfs...</text>
+    <text x="362" y="138" fill="#FAFAFA" font-size="10" font-family="monospace">oid sha256:4d7a2146...</text>
+    <text x="362" y="156" fill="#FAFAFA" font-size="10" font-family="monospace">size 1048576</text>
+    <text x="362" y="178" fill="#108548" font-size="11">133 bytes. Esto es lo que se clona.</text>
+
+    <!-- Almacen LFS -->
+    <rect x="660" y="70" width="210" height="120" rx="8" fill="#252525" stroke="#554488" stroke-width="2"/>
+    <text x="682" y="96" fill="#554488" font-size="13" font-weight="600">Almacen LFS</text>
+    <text x="682" y="120" fill="#999999" font-size="11">de tu instancia GitLab</text>
+    <text x="682" y="144" fill="#FAFAFA" font-size="11" font-family="monospace">4d7a2146... → 1 MB</text>
+    <text x="682" y="168" fill="#666666" font-size="11">Indexado por el oid</text>
+
+    <line x1="252" y1="112" x2="336" y2="112" stroke="#FC6D26" stroke-width="2" marker-end="url(#l1)"/>
+    <text x="256" y="104" fill="#FC6D26" font-size="11" font-family="monospace">clean</text>
+    <text x="256" y="132" fill="#666666" font-size="10">git add</text>
+
+    <line x1="582" y1="112" x2="656" y2="112" stroke="#FC6D26" stroke-width="2" marker-end="url(#l1)"/>
+    <text x="586" y="104" fill="#FC6D26" font-size="10">sube el binario</text>
+
+    <line x1="656" y1="164" x2="254" y2="164" stroke="#554488" stroke-width="2" marker-end="url(#l2)"/>
+    <text x="430" y="158" fill="#554488" font-size="11" font-family="monospace">smudge — git checkout</text>
+
+    <!-- .gitattributes -->
+    <rect x="30" y="216" width="400" height="150" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="52" y="242" fill="#108548" font-size="13" font-weight="600">.gitattributes decide que se rastrea</text>
+    <text x="52" y="270" fill="#FAFAFA" font-size="11" font-family="monospace">assets/*.png filter=lfs diff=lfs merge=lfs -text</text>
+    <text x="52" y="298" fill="#108548" font-size="11">assets/*.png — preciso, deja fuera logo.png</text>
+    <text x="52" y="318" fill="#E24329" font-size="11">*.png — se lleva logo.png y rompe el avatar</text>
+    <text x="52" y="344" fill="#666666" font-size="11">El commit del .gitattributes va ANTES que el del binario.</text>
+
+    <!-- Sin git-lfs -->
+    <rect x="470" y="216" width="400" height="150" rx="8" fill="#252525" stroke="#E24329" stroke-width="2"/>
+    <text x="492" y="242" fill="#E24329" font-size="13" font-weight="600">Quien clona sin git-lfs</text>
+    <text x="492" y="270" fill="#FAFAFA" font-size="11" font-family="monospace">-rw-r--r-- 133 assets/logo-grande.png</text>
+    <text x="492" y="292" fill="#FAFAFA" font-size="11" font-family="monospace">ASCII text</text>
+    <text x="492" y="318" fill="#999999" font-size="11">El filtro smudge no existe: se queda el puntero.</text>
+    <text x="492" y="340" fill="#666666" font-size="11">Es el fallo clasico del runner sin git-lfs en su imagen.</text>
+
+    <text x="30" y="404" fill="#999999" font-size="12">Borrar el binario no libera nada: la historia lo conserva y cada clon lo sigue bajando.</text>
+    <text x="30" y="426" fill="#E24329" font-size="12">Sacarlo exige git lfs migrate import, que reescribe la historia entera. Por eso se decide antes del primer push.</text>
+  </g>
+</svg>

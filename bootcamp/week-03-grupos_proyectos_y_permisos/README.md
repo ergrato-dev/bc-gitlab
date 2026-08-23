@@ -165,6 +165,6 @@ Las 15 comprobaciones tienen que pasar. Si alguna falla, la pista te dice en qu�
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 02 — Git quirúrgico y commits firmados](../week-02-git_avanzado_y_firma_de_commits/README.md) | **Semana 03** | Semana 04 — El repositorio como producto |
+| [Semana 02 — Git quirúrgico y commits firmados](../week-02-git_avanzado_y_firma_de_commits/README.md) | **Semana 03** | [Semana 04 — El repositorio como producto](../week-04-repositorio_como_producto/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

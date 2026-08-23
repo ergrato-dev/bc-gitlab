@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Documentación en el repositorio frente a documentación en la wiki</title>
+  <desc id="desc">Dos repositorios Git distintos con dos ciclos de vida distintos. El repositorio del proyecto guarda README y la carpeta docs: describe esta versión del código, cambia con cada commit y se revisa en un merge request. La wiki es un repositorio aparte, en app punto wiki punto git: guarda decisiones, runbooks y contexto, cambia cuando cambia el criterio, no se revisa y no dispara pipelines. La regla que decide es una sola: si el texto tiene que quedar obsoleto cuando cambia el código, va en el repositorio; si no, va en la wiki.</desc>
+
+  <rect width="900" height="440" fill="#1F1F1F"/>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">La regla que decide: ¿tiene que quedar obsoleto cuando cambia el codigo?</text>
+    <text x="30" y="60" fill="#999999" font-size="13">Si la respuesta es si, va en el repositorio. Si es no, va en la wiki.</text>
+
+    <!-- Repositorio -->
+    <rect x="30" y="88" width="400" height="292" rx="8" fill="#252525" stroke="#FC6D26" stroke-width="2"/>
+    <text x="52" y="116" fill="#FC6D26" font-size="14" font-weight="600">Repositorio del proyecto</text>
+    <text x="52" y="136" fill="#666666" font-size="11" font-family="monospace">plataforma-biblioteca/app.git</text>
+
+    <rect x="52" y="152" width="356" height="76" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <text x="70" y="176" fill="#FAFAFA" font-size="12" font-family="monospace">README.md</text>
+    <text x="70" y="196" fill="#FAFAFA" font-size="12" font-family="monospace">CONTRIBUTING.md</text>
+    <text x="70" y="216" fill="#FAFAFA" font-size="12" font-family="monospace">docs/organizacion.md</text>
+
+    <text x="52" y="256" fill="#FAFAFA" font-size="12">Describe ESTA version del codigo</text>
+    <text x="52" y="278" fill="#FAFAFA" font-size="12">Cambia con cada commit</text>
+    <text x="52" y="300" fill="#FAFAFA" font-size="12">Se revisa en un merge request</text>
+    <text x="52" y="322" fill="#FAFAFA" font-size="12">Dispara pipelines</text>
+    <text x="52" y="344" fill="#FAFAFA" font-size="12">Viaja con git clone</text>
+    <text x="52" y="368" fill="#666666" font-size="11">Envejece a proposito: por eso se revisa junto al cambio.</text>
+
+    <!-- Wiki -->
+    <rect x="470" y="88" width="400" height="292" rx="8" fill="#252525" stroke="#554488" stroke-width="2"/>
+    <text x="492" y="116" fill="#554488" font-size="14" font-weight="600">Wiki: OTRO repositorio Git</text>
+    <text x="492" y="136" fill="#666666" font-size="11" font-family="monospace">plataforma-biblioteca/app.wiki.git</text>
+
+    <rect x="492" y="152" width="356" height="76" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <text x="510" y="176" fill="#FAFAFA" font-size="12" font-family="monospace">home.md · _sidebar.md</text>
+    <text x="510" y="196" fill="#FAFAFA" font-size="12" font-family="monospace">ADR-001-dominio-y-stack.md</text>
+    <text x="510" y="216" fill="#FAFAFA" font-size="12" font-family="monospace">Runbook-recuperar-acceso.md</text>
+
+    <text x="492" y="256" fill="#FAFAFA" font-size="12">Guarda lo que NO depende de la version</text>
+    <text x="492" y="278" fill="#FAFAFA" font-size="12">Cambia cuando cambia el criterio</text>
+    <text x="492" y="300" fill="#FAFAFA" font-size="12">No se revisa: quien escribe, publica</text>
+    <text x="492" y="322" fill="#FAFAFA" font-size="12">No dispara pipelines</text>
+    <text x="492" y="344" fill="#E24329" font-size="12">git clone del proyecto NO la trae</text>
+    <text x="492" y="368" fill="#666666" font-size="11">Barata de actualizar: por eso el runbook sigue vivo.</text>
+
+    <text x="30" y="410" fill="#666666" font-size="12">Un contenido, un sitio. Si los dos dicen lo mismo, en tres meses dicen dos cosas distintas y ya no sirve ninguno.</text>
+  </g>
+</svg>

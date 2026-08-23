@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Los archivos que GitLab reconoce por su nombre y qué activan</title>
+  <desc id="desc">GitLab inspecciona los nombres de los archivos de la raíz del repositorio y cambia su comportamiento según lo que encuentra. README activa el renderizado en la portada y el campo readme_url de la API. LICENSE, LICENCE, COPYING o UNLICENSE activan la detección de licencia y los campos license y license_url, que solo se exponen si se pide license igual a true. CONTRIBUTING se enlaza como guía de contribución. logo.png en minúsculas se convierte en el avatar del proyecto. Al lado, tres datos que no viven en el repositorio sino en la base de datos: la descripción, los temas y las insignias, que no viajan al clonar y no se revisan en un merge request.</desc>
+
+  <rect width="900" height="480" fill="#1F1F1F"/>
+
+  <defs>
+    <marker id="p1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">La portada de un proyecto: qué la alimenta</text>
+    <text x="30" y="60" fill="#999999" font-size="13">GitLab mira los nombres de los archivos de la raiz. No es convencion social: es codigo.</text>
+
+    <!-- Repositorio -->
+    <rect x="30" y="88" width="360" height="332" rx="8" fill="#252525" stroke="#108548" stroke-width="2"/>
+    <text x="52" y="116" fill="#108548" font-size="14" font-weight="600">En el repositorio</text>
+    <text x="52" y="136" fill="#666666" font-size="11">Viaja al clonar · se revisa · se recupera con git</text>
+
+    <rect x="52" y="152" width="150" height="34" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="66" y="174" fill="#FAFAFA" font-size="12" font-family="monospace">README.md</text>
+    <text x="220" y="168" fill="#999999" font-size="11">Portada renderizada</text>
+    <text x="220" y="183" fill="#FC6D26" font-size="11" font-family="monospace">readme_url</text>
+
+    <rect x="52" y="200" width="150" height="34" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="66" y="222" fill="#FAFAFA" font-size="12" font-family="monospace">LICENSE</text>
+    <text x="220" y="216" fill="#999999" font-size="11">Deteccion con Licensee</text>
+    <text x="220" y="231" fill="#FC6D26" font-size="11" font-family="monospace">license · license_url</text>
+
+    <rect x="52" y="248" width="150" height="34" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="66" y="270" fill="#FAFAFA" font-size="12" font-family="monospace">CONTRIBUTING.md</text>
+    <text x="220" y="264" fill="#999999" font-size="11">Guia de contribucion</text>
+    <text x="220" y="279" fill="#666666" font-size="11">enlazada por GitLab</text>
+
+    <rect x="52" y="296" width="150" height="34" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="66" y="318" fill="#FAFAFA" font-size="12" font-family="monospace">logo.png</text>
+    <text x="220" y="312" fill="#999999" font-size="11">Avatar del proyecto</text>
+    <text x="220" y="327" fill="#FC6D26" font-size="11" font-family="monospace">avatar_url</text>
+
+    <rect x="52" y="344" width="150" height="34" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="66" y="366" fill="#FAFAFA" font-size="12" font-family="monospace">.gitattributes</text>
+    <text x="220" y="360" fill="#999999" font-size="11">Que va a Git LFS</text>
+    <text x="220" y="375" fill="#666666" font-size="11">y que no</text>
+
+    <text x="52" y="404" fill="#E24329" font-size="11">logo.png distingue mayusculas: Logo.png no cuenta</text>
+
+    <!-- Base de datos -->
+    <rect x="420" y="88" width="450" height="200" rx="8" fill="#252525" stroke="#554488" stroke-width="2"/>
+    <text x="442" y="116" fill="#554488" font-size="14" font-weight="600">En la base de datos del proyecto</text>
+    <text x="442" y="136" fill="#666666" font-size="11">No viaja al clonar · no se revisa · hay que reponerlo si se pierde</text>
+
+    <rect x="442" y="152" width="130" height="30" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="456" y="172" fill="#FAFAFA" font-size="12" font-family="monospace">description</text>
+    <text x="590" y="172" fill="#999999" font-size="11">Lista y busqueda de proyectos</text>
+
+    <rect x="442" y="192" width="130" height="30" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="456" y="212" fill="#FAFAFA" font-size="12" font-family="monospace">topics</text>
+    <text x="590" y="212" fill="#999999" font-size="11">Filtro por tecnologia y dominio</text>
+
+    <rect x="442" y="232" width="130" height="30" rx="5" fill="#2B2B2B" stroke="#666666"/>
+    <text x="456" y="252" fill="#FAFAFA" font-size="12" font-family="monospace">badges</text>
+    <text x="590" y="252" fill="#999999" font-size="11">Estado, encima del arbol de archivos</text>
+
+    <!-- Lectura por API -->
+    <rect x="420" y="308" width="450" height="112" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="1"/>
+    <text x="442" y="334" fill="#FC6D26" font-size="13" font-weight="600">Leer la portada entera de una vez</text>
+    <text x="442" y="358" fill="#FAFAFA" font-size="11" font-family="monospace">GET /projects/:id?license=true</text>
+    <text x="442" y="380" fill="#999999" font-size="11">Cada campo que sale null es una pregunta</text>
+    <text x="442" y="396" fill="#999999" font-size="11">que alguien va a tener que hacerte.</text>
+    <text x="442" y="414" fill="#E24329" font-size="11">Sin license=true, los campos de licencia no aparecen.</text>
+
+    <line x1="390" y1="254" x2="416" y2="254" stroke="#FC6D26" stroke-width="2" marker-end="url(#p1)"/>
+
+    <text x="30" y="456" fill="#666666" font-size="12">Entre dos formas de conseguir lo mismo, gana la que vive en el repositorio: se revisa, viaja y vuelve sola.</text>
+  </g>
+</svg>
