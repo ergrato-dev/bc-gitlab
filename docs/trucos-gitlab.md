@@ -184,6 +184,23 @@ _Se añaden a medida que se publica cada semana._
 | Atajos de teclado en el diff | `]` y `[` siguiente y anterior archivo, `n` y `p` siguiente y anterior hilo sin resolver |
 | Dar crédito a quien revisó en la historia | `%{reviewed_by}` en la plantilla del commit de squash |
 
+## Semana 07 — Gobernanza de ramas y aprobaciones
+
+| Truco | Cómo |
+|---|---|
+| Ver qué te deja hacer una rama, con todas las reglas combinadas | `.../repository/branches/main \| jq '{protected, can_push}'` |
+| Cambiar los roles de una rama protegida en CE | `DELETE` y `POST` seguidos: no hay `PATCH` para los niveles |
+| Proteger todas las versiones, también las futuras | Tag protegido con comodín `v*` |
+| Borrar un tag protegido cuando de verdad hace falta | `DELETE .../repository/tags/<tag>`: por `git push` no se puede |
+| Los dueños de un archivo según `CODEOWNERS` | La función `duenos` de una línea de `awk`: gana la última regla que coincide |
+| La ruta en disco de un proyecto | `printf '%s' <id> \| sha256sum`: `@hashed/<2>/<2>/<hash>.git` |
+| Instalar un server hook en un repositorio | `gitaly hooks set --storage default --repository <ruta> --config /var/opt/gitlab/gitaly/config.toml < hooks.tar` |
+| Que el mensaje del hook se vea en la UI | Cada línea con el prefijo `GL-HOOK-ERR:` |
+| Probar un hook sin GitLab | `git init --bare` en `/tmp` y el hook en `hooks/pre-receive` |
+| Saber por qué falló una fusión | `.../merge_requests/<iid> \| jq -r .merge_error` |
+| Ir de un commit de `main` a su merge request | `.../repository/commits/<sha>/merge_requests \| jq -r '.[].iid'` |
+| Detectar que cambió una protección | Una foto con `jq -S` y `diff <(foto) foto-guardada.json` |
+
 ---
 
 [← Volver a docs](README.md)

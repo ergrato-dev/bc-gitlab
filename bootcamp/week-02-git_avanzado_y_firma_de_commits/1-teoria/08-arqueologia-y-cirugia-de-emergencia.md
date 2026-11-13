@@ -184,7 +184,7 @@ Y ahora la parte que nadie cuenta: **las consecuencias**.
 Por eso el orden es el que es. La limpieza de la historia es higiene; la revocación es la que para la sangre.
 
 > [!NOTE]
-> Lo que de verdad resuelve esto es que el secreto **no llegue a entrar**. La Semana 19 monta Gitleaks en el pipeline, y la Semana 07 un server hook que rechaza el push. Las dos son Free. La detección de secretos nativa de GitLab (*Secret Detection*) es **Ultimate**, y Gitleaks hace el mismo trabajo.
+> Lo que de verdad resuelve esto es que el secreto **no llegue a entrar**. La Semana 19 monta Gitleaks en el pipeline, que es Free. La detección de secretos nativa de GitLab (*Secret Detection*) es **Ultimate**, y Gitleaks hace el mismo trabajo.
 
 ---
 

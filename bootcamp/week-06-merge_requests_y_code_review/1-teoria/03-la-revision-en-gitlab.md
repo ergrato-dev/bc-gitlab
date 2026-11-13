@@ -119,7 +119,7 @@ Pero hay que saber exactamente lo que es en CE, verificado en `MergeRequestPolic
 - **Es opcional.** No hay número mínimo de aprobaciones: una merge request sin aprobar se fusiona igual. Las reglas de aprobación obligatoria son **Premium** (Semana 07).
 - **Puede aprobar cualquier miembro del proyecto que pueda editar la merge request**, incluido su autor. Impedir que el autor apruebe lo suyo es un ajuste **Premium**.
 
-Entonces, ¿para qué sirve? Para que la decisión quede **registrada y firmada por quien la toma**: quién dio el visto bueno, cuándo y sobre qué versión. Y para `%{approved_by}` en el commit. Lo que en CE garantiza que se ha revisado no es la aprobación, es el hilo obligatorio. En la Semana 07 un job convertirá "hay una aprobación de alguien que no es el autor" en un requisito que se comprueba.
+Entonces, ¿para qué sirve? Para que la decisión quede **registrada y firmada por quien la toma**: quién dio el visto bueno, cuándo y sobre qué versión. Y para `%{approved_by}` en el commit. Lo que en CE garantiza que se ha revisado no es la aprobación, es el hilo obligatorio. En la Semana 07 un server hook exige `Approved-by:` en lo que entra a `main` y un script audita que la aprobación sea de alguien que no es el autor; en la Semana 09 ese script pasa a ser un job.
 
 ---
 

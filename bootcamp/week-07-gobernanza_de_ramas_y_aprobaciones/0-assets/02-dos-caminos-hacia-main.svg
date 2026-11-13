@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Dos caminos hacia main y dónde se comprueba cada uno</title>
+  <desc id="desc">Un git push directo a main pasa primero por la rama protegida, que lo rechaza porque nadie puede empujar. Una merge request fusionada por GitLab pasa por la rama protegida como fusión, que un Maintainer puede hacer, y después por el server hook, que llega con GL_PROTOCOL web y exige Approved-by. Los dos caminos terminan en Gitaly, que ejecuta el hook antes de actualizar main.</desc>
+  <rect width="900" height="360" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Las dos puertas de main: la rama protegida mira quién, el hook mira qué</text>
+
+    <rect x="30" y="80" width="190" height="56" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="104" fill="#FAFAFA" font-size="13" font-weight="600">git push origin main</text>
+    <text x="45" y="124" fill="#999999" font-size="12">GL_PROTOCOL=ssh o http</text>
+
+    <rect x="30" y="220" width="190" height="56" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="244" fill="#FAFAFA" font-size="13" font-weight="600">Merge de una MR</text>
+    <text x="45" y="264" fill="#999999" font-size="12">GL_PROTOCOL=web</text>
+
+    <rect x="300" y="80" width="230" height="196" rx="8" fill="none" stroke="#666666"/>
+    <text x="315" y="104" fill="#FAFAFA" font-size="13" font-weight="600">Rama protegida</text>
+    <text x="315" y="128" fill="#999999" font-size="12">push = No one</text>
+    <text x="315" y="148" fill="#999999" font-size="12">merge = Maintainers</text>
+    <text x="315" y="236" fill="#999999" font-size="12">¿Tu rol puede fusionar?</text>
+    <text x="315" y="256" fill="#52B87A" font-size="12">Owner, Maintainer: sí</text>
+
+    <line x1="220" y1="108" x2="300" y2="108" stroke="#666666" marker-end="url(#f)"/>
+    <line x1="220" y1="248" x2="300" y2="248" stroke="#666666" marker-end="url(#f)"/>
+
+    <text x="315" y="186" fill="#FC6D26" font-size="12" font-weight="600">✗ You are not allowed to push</text>
+
+    <rect x="610" y="190" width="260" height="120" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="625" y="214" fill="#FAFAFA" font-size="13" font-weight="600">Gitaly: pre-receive</text>
+    <text x="625" y="238" fill="#999999" font-size="12">Asunto convencional</text>
+    <text x="625" y="258" fill="#999999" font-size="12">Approved-by en lo que gana main</text>
+    <text x="625" y="290" fill="#52B87A" font-size="12">✓ main avanza</text>
+
+    <line x1="530" y1="248" x2="610" y2="248" stroke="#666666" marker-end="url(#f)"/>
+    <text x="30" y="335" fill="#999999" font-size="12">Si un Maintainer quita la protección, el push directo llega hasta Gitaly, y el hook sigue pidiendo Approved-by.</text>
+  </g>
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

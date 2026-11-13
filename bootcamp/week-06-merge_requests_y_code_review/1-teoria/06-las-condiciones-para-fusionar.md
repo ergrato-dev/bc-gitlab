@@ -135,8 +135,8 @@ Si la merge request no se puede fusionar, o el `sha` no coincide, la respuesta e
 |---|---|---|
 | Hilos resueltos | Free | ✅ |
 | Pipeline en verde | Free | ✅ (Semana 09) |
-| Aprobaciones obligatorias, reglas de aprobación | Premium | Aprobación opcional; comprobación por API en la Semana 07 |
-| Aprobación de *code owners* | Premium | CODEOWNERS informativo y un job (Semana 07) |
+| Aprobaciones obligatorias, reglas de aprobación | Premium | Aprobación opcional; en la Semana 07, un server hook que exige `Approved-by:` y una auditoría por API |
+| Aprobación de *code owners* | Premium | CODEOWNERS informativo y el script de auditoría `gobernanza` (Semana 07) |
 | *Request changes* que bloquea | Premium | Un hilo abierto bloquea igual |
 | Dependencias entre merge requests | Premium | "Depende de !12" en la descripción |
 | Trenes de fusión | Premium | Rebase y fusión de una en una |

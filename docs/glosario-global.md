@@ -12,7 +12,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Alta disponibilidad** (*high availability*) — Arquitectura en la que la caída de un componente no tira el servicio. En GitLab implica al menos Gitaly replicado, PostgreSQL con réplica y un pooler de conexiones.
 
-**Aprobación** (*approval*) — Free como botón y API, pero opcional: en CE no bloquea la fusión y el autor puede aprobar lo suyo. Las aprobaciones obligatorias son **Premium**; en CE lo que bloquea es un hilo sin resolver (S06), y la aprobación se comprueba por API (S07).
+**Aprobación** (*approval*) — Free como botón y API, pero opcional: en CE no bloquea la fusión y el autor puede aprobar lo suyo. Las aprobaciones obligatorias son **Premium**; en CE lo que bloquea es un hilo sin resolver (S06), y desde la S07 un server hook exige `Approved-by:` y la auditoría por API comprueba quién aprobó.
 
 **Artefacto** (*artifact*) — Free. Archivo o directorio que un job produce y GitLab guarda. Se pasa a jobs posteriores y se puede descargar. No confundir con la caché: el artefacto es un **resultado**, la caché es una **optimización**.
 
@@ -30,7 +30,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Componente CI/CD** (*CI/CD component*) — Free. Unidad reutilizable de configuración de pipeline, versionada y publicada en el catálogo. Es la respuesta de GitLab al copiar y pegar YAML entre proyectos.
 
-**CODEOWNERS** — Free para el archivo y la asignación automática de revisores; **Premium** para que la aprobación del propietario sea obligatoria. Aquí se usa la parte libre y la obligatoriedad se aproxima con un job y un server hook.
+**CODEOWNERS** — Archivo que asigna dueños a rutas del repositorio; gana la última regla que coincide. En **Premium** GitLab lo muestra y puede exigir la aprobación del dueño; en CE no lo lee en absoluto. Aquí lo lee el script de auditoría `gobernanza` (S07), que en la S09 pasa a ser un job.
 
 **Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. No es de GitLab, pero es lo que permite generar el CHANGELOG y decidir la versión sin escribirlos a mano.
 
@@ -94,7 +94,9 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Praefect** — Free. Coordinador de Gitaly Cluster. Enruta las escrituras, replica a los demás nodos y decide qué nodo es válido cuando uno se queda atrás.
 
-**Protected branch** (*rama protegida*) — Free. Regla que restringe quién puede empujar, fusionar o forzar sobre una rama. Es el mecanismo de gobernanza de CE.
+**Protected branch** (*rama protegida*) — Free. Regla que restringe quién puede empujar, fusionar o forzar sobre una rama. Es el mecanismo de gobernanza de CE, con un límite: cualquier Maintainer puede quitarla, porque *Allowed to unprotect* es **Premium** (S07).
+
+**Protected tag** (*tag protegido*) — Free. Regla que decide quién puede crear tags que coinciden con un patrón, como `v*`. Un tag protegido no se puede mover y solo se borra desde la UI o la API (S07).
 
 ## R
 
@@ -116,7 +118,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Scoped label** (*etiqueta con ámbito*) — **Premium**. Etiquetas mutuamente excluyentes con la sintaxis `clave::valor`. En CE el `::` se acepta en el nombre pero no impone nada; este bootcamp usa igualmente `clave::valor` (para que Premium la active sin renombrar) y vigila la exclusividad con el tablero y una comprobación por API (S05).
 
-**Server hook** — Free. Script que se ejecuta en el servidor antes o después de recibir un push. Es lo único en CE que **bloquea de verdad** un push que no cumple una regla.
+**Server hook** — Free. Script que Gitaly ejecuta antes o después de cada cambio en un repositorio, venga de un `push`, de una fusión en la UI o de la API. Es lo único en CE que **bloquea de verdad** un cambio que no cumple una regla, y lo único que un Maintainer no puede quitar: se instala con `gitaly hooks set` desde el servidor (S07).
 
 **Sidekiq** — Free. El procesador de trabajos en segundo plano de GitLab. Cuando las colas crecen, es el primer sitio donde mirar.
 

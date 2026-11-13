@@ -98,9 +98,9 @@ Esta semana montas el **proceso**: plantillas, revisor, hilos que hay que resolv
 | Lo que quieres | Semana 06 | Semana 07 |
 |---|---|---|
 | Que nadie empuje a `main` | Convención en `CONTRIBUTING.md` | Rama protegida sin push para nadie |
-| Que alguien revise | Revisor asignado y aprobación opcional | CODEOWNERS y un job que lo comprueba |
+| Que alguien revise | Revisor asignado y aprobación opcional | Un server hook que exige `Approved-by:`, CODEOWNERS y un script que lo audita |
 | Que los hilos se cierren | Ajuste del proyecto: bloquea la fusión | El mismo ajuste |
-| Que el cambio esté trazado | Plantilla `Default` con `Closes #` | Un job que rechaza MRs sin issue |
+| Que el cambio esté trazado | Plantilla `Default` con `Closes #` | Un script que detecta MRs sin issue (job desde la S09) |
 
 Esa es la secuencia deliberada: primero se decide cómo se trabaja, y después se hace cumplir. Proteger una rama sin haber decidido el flujo solo produce bloqueos que nadie entiende.
 
@@ -153,6 +153,6 @@ Las 16 comprobaciones tienen que pasar. Si alguna falla, la pista te dice en qu�
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 05 — Issues, etiquetas y tableros](../week-05-issues_etiquetas_y_tableros/README.md) | **Semana 06** | Semana 07 — Gobernanza de ramas y aprobaciones |
+| [Semana 05 — Issues, etiquetas y tableros](../week-05-issues_etiquetas_y_tableros/README.md) | **Semana 06** | [Semana 07 — Gobernanza de ramas y aprobaciones](../week-07-gobernanza_de_ramas_y_aprobaciones/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

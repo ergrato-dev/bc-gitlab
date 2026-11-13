@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El hook de gobernanza por dentro</title>
+  <desc id="desc">Para cada referencia del push: si es un borrado o no es una rama, se ignora. Para cada commit nuevo, los que empuja una persona tienen que ser lineales y estar firmados, y todos los que no son de fusión tienen que tener asunto convencional. Si la rama es main, lo que main gana tiene que contener un trailer Approved-by. Cualquier fallo escribe GL-HOOK-ERR y rechaza el push entero.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Cuatro reglas, dos rangos de commits, un solo mensaje de salida</text>
+
+    <rect x="30" y="66" width="200" height="50" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="88" fill="#FAFAFA" font-size="13" font-weight="600">viejo nuevo ref</text>
+    <text x="45" y="106" fill="#999999" font-size="12">una línea por referencia</text>
+
+    <rect x="30" y="140" width="200" height="50" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="162" fill="#FAFAFA" font-size="13">¿Borrado o no es rama?</text>
+    <text x="45" y="180" fill="#999999" font-size="12">sí: se ignora</text>
+    <line x1="130" y1="116" x2="130" y2="140" stroke="#666666"/>
+
+    <rect x="290" y="66" width="270" height="200" rx="8" fill="none" stroke="#666666"/>
+    <text x="305" y="88" fill="#FAFAFA" font-size="13" font-weight="600">Commits nuevos</text>
+    <text x="305" y="106" fill="#999999" font-size="12">git rev-list nuevo --not --all</text>
+    <text x="305" y="140" fill="#FAFAFA" font-size="12">Si GL_PROTOCOL no es web:</text>
+    <text x="320" y="160" fill="#999999" font-size="12">1. sin merge commits</text>
+    <text x="320" y="180" fill="#999999" font-size="12">2. firmado (cabecera gpgsig)</text>
+    <text x="305" y="212" fill="#FAFAFA" font-size="12">Si no es merge commit:</text>
+    <text x="320" y="232" fill="#999999" font-size="12">3. asunto convencional</text>
+    <line x1="230" y1="165" x2="290" y2="165" stroke="#666666" marker-end="url(#f)"/>
+
+    <rect x="290" y="290" width="270" height="80" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="305" y="312" fill="#FAFAFA" font-size="13" font-weight="600">Si ref es main</text>
+    <text x="305" y="330" fill="#999999" font-size="12">git log viejo..nuevo</text>
+    <text x="320" y="352" fill="#999999" font-size="12">4. contiene Approved-by:</text>
+    <line x1="425" y1="266" x2="425" y2="290" stroke="#666666" marker-end="url(#f)"/>
+
+    <rect x="630" y="150" width="240" height="80" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="645" y="176" fill="#FC6D26" font-size="13" font-weight="600">Falla una regla</text>
+    <text x="645" y="198" fill="#FAFAFA" font-size="12">GL-HOOK-ERR: motivo</text>
+    <text x="645" y="216" fill="#999999" font-size="12">exit 1: no entra nada</text>
+    <line x1="560" y1="190" x2="630" y2="190" stroke="#666666" marker-end="url(#f)"/>
+
+    <rect x="630" y="290" width="240" height="80" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="645" y="316" fill="#52B87A" font-size="13" font-weight="600">Todo pasa</text>
+    <text x="645" y="338" fill="#999999" font-size="12">exit 0: Gitaly actualiza</text>
+    <text x="645" y="356" fill="#999999" font-size="12">las referencias</text>
+    <line x1="560" y1="330" x2="630" y2="330" stroke="#666666" marker-end="url(#f)"/>
+  </g>
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666666"/>
+    </marker>
+  </defs>
+</svg>

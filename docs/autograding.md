@@ -53,11 +53,11 @@ Salida:
    instancia: http://localhost:8888
    proyecto:  plataforma-biblioteca/app
 
-✅ La rama main está protegida
+✅ La rama main esta protegida
 ✅ Nadie puede hacer push directo a main
-❌ Los tags v* están protegidos
-   → 2-practicas/02-proteger-tags.md, paso 3
-✅ Existe un archivo CODEOWNERS en la raíz
+❌ Los tags v* estan protegidos
+   → 2-practicas/01-main-y-tags-protegidos.md, paso 5
+✅ Existe un archivo CODEOWNERS en la raiz de main
 
 3 de 4 verificaciones superadas.
 ```

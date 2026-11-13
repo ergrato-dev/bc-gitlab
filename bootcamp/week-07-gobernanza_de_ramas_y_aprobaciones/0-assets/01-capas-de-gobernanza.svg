@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Las capas de gobernanza en GitLab CE</title>
+  <desc id="desc">Cinco capas, de la más blanda a la más dura, con quién puede quitar cada una. Ajustes de merge request, rama protegida y tag protegido los quita un Maintainer. CODEOWNERS lo cambia quien pueda fusionar en main. El server hook solo lo quita un administrador con acceso al servidor. Debajo, la auditoría por API no bloquea nada pero detecta lo que las demás no frenan.</desc>
+  <rect width="900" height="430" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Cada capa bloquea algo distinto, y cada una la puede quitar alguien distinto</text>
+    <text x="40" y="72" fill="#999999" font-size="12">Capa</text>
+    <text x="330" y="72" fill="#999999" font-size="12">Qué frena</text>
+    <text x="640" y="72" fill="#999999" font-size="12">Quién la quita</text>
+
+    <rect x="30" y="84" width="840" height="44" rx="6" fill="none" stroke="#666666"/>
+    <text x="45" y="111" fill="#FAFAFA" font-size="13" font-weight="600">Ajustes de merge request (S06)</text>
+    <text x="330" y="111" fill="#FAFAFA" font-size="12">Hilos abiertos, rama desfasada</text>
+    <text x="640" y="111" fill="#999999" font-size="12">Maintainer</text>
+
+    <rect x="30" y="136" width="840" height="44" rx="6" fill="none" stroke="#666666"/>
+    <text x="45" y="163" fill="#FAFAFA" font-size="13" font-weight="600">Rama protegida</text>
+    <text x="330" y="163" fill="#FAFAFA" font-size="12">Push directo, force push, borrado</text>
+    <text x="640" y="163" fill="#999999" font-size="12">Maintainer</text>
+
+    <rect x="30" y="188" width="840" height="44" rx="6" fill="none" stroke="#666666"/>
+    <text x="45" y="215" fill="#FAFAFA" font-size="13" font-weight="600">Tag protegido v*</text>
+    <text x="330" y="215" fill="#FAFAFA" font-size="12">Crear versiones sin rol, mover tags</text>
+    <text x="640" y="215" fill="#999999" font-size="12">Maintainer</text>
+
+    <rect x="30" y="240" width="840" height="44" rx="6" fill="none" stroke="#666666"/>
+    <text x="45" y="267" fill="#FAFAFA" font-size="13" font-weight="600">CODEOWNERS</text>
+    <text x="330" y="267" fill="#999999" font-size="12">Nada en CE: dice de quién es cada ruta</text>
+    <text x="640" y="267" fill="#999999" font-size="12">Quien fusiona en main</text>
+
+    <rect x="30" y="292" width="840" height="44" rx="6" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="45" y="319" fill="#FAFAFA" font-size="13" font-weight="600">Server hook pre-receive</text>
+    <text x="330" y="319" fill="#FAFAFA" font-size="12">Sin firma, sin formato, sin aprobación</text>
+    <text x="640" y="319" fill="#FC6D26" font-size="12" font-weight="600">Solo admin con shell</text>
+
+    <line x1="30" y1="352" x2="870" y2="352" stroke="#666666" stroke-dasharray="4 4"/>
+
+    <rect x="30" y="364" width="840" height="44" rx="6" fill="none" stroke="#52B87A"/>
+    <text x="45" y="391" fill="#FAFAFA" font-size="13" font-weight="600">Auditoría por API</text>
+    <text x="330" y="391" fill="#52B87A" font-size="12">No frena: detecta lo que las otras dejan pasar</text>
+    <text x="640" y="391" fill="#999999" font-size="12">Nadie; solo puede no ejecutarse</text>
+  </g>
+</svg>

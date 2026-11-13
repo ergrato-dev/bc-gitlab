@@ -101,11 +101,11 @@ Aquí está la honestidad que este bootcamp se toma en serio. Estas features exi
 
 | Feature | Tier | Qué resuelve | Qué hacemos aquí |
 |---|:--:|---|---|
-| Approval rules | Premium | Exigir N aprobaciones antes de fusionar | CODEOWNERS + un job que detecta, y un server hook que bloquea (S07) |
+| Approval rules | Premium | Exigir N aprobaciones antes de fusionar | CODEOWNERS + un server hook que bloquea y un script que detecta (S07); el script pasa a job en la S09 |
 | Push rules | Premium | Rechazar pushes que no cumplen un patrón | Server hook `pre-receive` (S07) |
 | Scoped labels | Premium | Etiquetas mutuamente excluyentes `tipo::bug` | Convención `tipo/bug` + job que valida (S05) |
 | Epics, iteraciones, roadmaps | Premium | Planificación por encima del hito | Hitos y etiquetas (S05, S08) |
-| Merge trains | Premium | Probar cada MR contra el resultado de fusionar los anteriores | Rebase obligatorio antes de fusionar (S07) |
+| Merge trains | Premium | Probar cada MR contra el resultado de fusionar los anteriores | Rebase obligatorio antes de fusionar: método `rebase_merge` o `ff` (S06) |
 | Entornos protegidos | Premium | Restringir quién despliega a producción | Job manual sobre rama protegida (S14) |
 | SAST, DAST, Dependency Scanning | Ultimate | Escaneo de seguridad integrado en el MR | Semgrep, Gitleaks, OSV-Scanner, Trivy (S19) |
 | Security Dashboard | Ultimate | Panel agregado de vulnerabilidades | Artefactos SARIF e informes de pipeline (S19) |

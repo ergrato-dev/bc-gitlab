@@ -1,0 +1,111 @@
+{
+  "semana": "07",
+  "titulo": "Gobernanza de ramas y aprobaciones",
+  "checks": [
+    {
+      "id": "rama-main-protegida",
+      "descripcion": "La rama main esta protegida",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(.name) | index(\"main\") != null",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 2"
+    },
+    {
+      "id": "nadie-empuja-a-main",
+      "descripcion": "Nadie puede hacer push directo a main",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(select(.name == \"main\"))[0].push_access_levels | map(.access_level) == [0]",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 2"
+    },
+    {
+      "id": "solo-maintainers-fusionan",
+      "descripcion": "Solo los Maintainers pueden fusionar en main",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(select(.name == \"main\"))[0].merge_access_levels | map(.access_level) == [40]",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 2"
+    },
+    {
+      "id": "main-sin-force-push",
+      "descripcion": "Nadie puede forzar el push sobre main",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(select(.name == \"main\"))[0].allow_force_push == false",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 2"
+    },
+    {
+      "id": "tags-v-protegidos",
+      "descripcion": "Los tags v* estan protegidos",
+      "api": "projects/{proyecto}/protected_tags",
+      "jq": "map(.name) | index(\"v*\") != null",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 5"
+    },
+    {
+      "id": "tags-v-solo-maintainers",
+      "descripcion": "Solo los Maintainers pueden crear tags v*",
+      "api": "projects/{proyecto}/protected_tags",
+      "jq": "map(select(.name == \"v*\"))[0].create_access_levels | map(.access_level) == [40]",
+      "pista": "2-practicas/01-main-y-tags-protegidos.md, paso 5"
+    },
+    {
+      "id": "codeowners-en-la-raiz",
+      "descripcion": "Existe un archivo CODEOWNERS en la raiz de main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(.name) | index(\"CODEOWNERS\") != null",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, paso 2"
+    },
+    {
+      "id": "codeowners-dueno-por-defecto",
+      "descripcion": "CODEOWNERS tiene una regla por defecto para todo el repositorio",
+      "api": "projects/{proyecto}/repository/files/CODEOWNERS?ref=main",
+      "jq": ".content | @base64d | test(\"(?m)^\\\\*\\\\s+@\")",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, paso 2"
+    },
+    {
+      "id": "codeowners-protege-las-reglas",
+      "descripcion": "CODEOWNERS nombra un dueno para el propio CODEOWNERS",
+      "api": "projects/{proyecto}/repository/files/CODEOWNERS?ref=main",
+      "jq": ".content | @base64d | test(\"(?m)^/CODEOWNERS\\\\s+@\")",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, paso 2"
+    },
+    {
+      "id": "script-de-gobernanza",
+      "descripcion": "El script scripts/gobernanza.sh esta en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=scripts&per_page=100",
+      "jq": "map(.name) | index(\"gobernanza.sh\") != null",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, paso 3"
+    },
+    {
+      "id": "hook-versionado",
+      "descripcion": "El server hook esta versionado en scripts/hooks/pre-receive",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=scripts/hooks&per_page=100",
+      "jq": "map(.name) | index(\"pre-receive\") != null",
+      "pista": "2-practicas/03-el-server-hook.md, pasos 1 y 4"
+    },
+    {
+      "id": "plantilla-de-fusion-con-aprobaciones",
+      "descripcion": "La plantilla del commit de fusion incluye quien aprobo, o el metodo es fast-forward con squash obligatorio",
+      "api": "projects/{proyecto}",
+      "jq": "(.merge_method == \"ff\" and .squash_option == \"always\") or ((.merge_commit_template // \"\") | contains(\"%{approved_by}\"))",
+      "pista": "2-practicas/03-el-server-hook.md, paso 3"
+    },
+    {
+      "id": "aprobacion-en-la-historia",
+      "descripcion": "El commit que trajo CODEOWNERS a main lleva un trailer Approved-by",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&path=CODEOWNERS&per_page=20",
+      "jq": "map(select(.message | test(\"(?m)^Approved-by: \"))) | length >= 1",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, pasos 6 y 7"
+    },
+    {
+      "id": "cinco-mr-aprobadas-por-otro",
+      "descripcion": "Al menos cinco merge requests fusionadas fueron aprobadas por alguien distinto de su autor",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ mergeRequests(state: merged, first: 50){ nodes { author { username } approvedBy { nodes { username } } } } } }",
+      "jq": "[.data.project.mergeRequests.nodes[] | .author.username as $a | select(.approvedBy.nodes | map(.username) | any(. != $a))] | length >= 5",
+      "pista": "2-practicas/02-codeowners-y-la-auditoria.md, paso 6, y 03-el-server-hook.md, pasos 4 y 7"
+    },
+    {
+      "id": "adr-005-en-la-wiki",
+      "descripcion": "La wiki tiene una pagina cuyo slug empieza por adr-005",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(select(.slug | ascii_downcase | startswith(\"adr-005\"))) | length > 0",
+      "pista": "2-practicas/04-quien-se-salta-las-reglas.md, paso 7"
+    }
+  ]
+}

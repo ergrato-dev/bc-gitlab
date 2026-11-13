@@ -162,7 +162,7 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 
 | Feature de pago | Tier | Dónde se estudia | Con qué se sustituye aquí |
 |---|---|:--:|---|
-| Approval rules, Code Owners approvals | Premium | S07 | CODEOWNERS + job `gobernanza` (detecta, no bloquea) + server hook |
+| Approval rules, Code Owners approvals | Premium | S07 | CODEOWNERS + server hook (bloquea) + script `gobernanza` (detecta; job desde S09) |
 | Push rules | Premium | S07 | Server hook `pre-receive` |
 | Scoped labels | Premium | S05 | Convención `tipo::` (en CE no impone nada) + tablero para `estado::` + comprobación de exclusividad por API |
 | Epics, iteraciones, roadmaps, weights | Premium | S05, S08 | Hitos + etiquetas + tablero único |
@@ -249,11 +249,11 @@ En autoestudio nadie revisa tus entregables. Los revisa la API de tu instancia.
    instancia: http://localhost:8888
    proyecto:  plataforma-biblioteca/app
 
-✅ La rama main está protegida
+✅ La rama main esta protegida
 ✅ Nadie puede hacer push directo a main
-❌ Los tags v* están protegidos
-   → 2-practicas/02-proteger-tags.md, paso 3
-✅ Existe un archivo CODEOWNERS en la raíz
+❌ Los tags v* estan protegidos
+   → 2-practicas/01-main-y-tags-protegidos.md, paso 5
+✅ Existe un archivo CODEOWNERS en la raiz de main
 
 3 de 4 verificaciones superadas.
 ```

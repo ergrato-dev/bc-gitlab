@@ -74,9 +74,9 @@ Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libr
 | 04 | README, LICENSE, CONTRIBUTING, wiki con ADR-001, snippet, insignias | Un tercero lo entiende y lo arranca sin preguntarte |
 | 05 | Backlog de 12-15 issues, taxonomía de etiquetas, hito, tablero, plantillas | El trabajo está modelado, no improvisado |
 | 06 | 3 merge requests fusionadas desde issues, plantilla de MR, estrategia de fusión | Nada entra a `main` sin revisión |
-| 07 | `main` y tags `v*` protegidos, CODEOWNERS, job `gobernanza`, server hook | Las reglas se cumplen aunque nadie mire |
+| 07 | `main` y tags `v*` protegidos, CODEOWNERS, server hook, script de auditoría `gobernanza` | Las reglas se cumplen aunque nadie mire |
 | 08 | `v0.1.0`, CHANGELOG generado, `docs/metricas.md` con DORA-lite | Hay versiones y el flujo se mide con números propios |
-| 09 | Pipeline `build → test → package` en verde + runner Docker propio | Cada commit se construye y se prueba solo |
+| 09 | Pipeline `build → test → package` en verde + runner Docker propio + job `gobernanza` | Cada commit se construye y se prueba solo |
 | 10 | `rules`, variables por `environment_scope`, secure files | Cero secretos en el YAML, cero pipelines duplicados en MR |
 | 11 | DAG con `needs`, pipelines hijos, disparo a `infra`, pipeline programado | El pipeline escala y deja de ser un tren en serie |
 | 12 | `ci/componentes` con 2 componentes publicados en el catálogo | El YAML deja de duplicarse entre proyectos |
