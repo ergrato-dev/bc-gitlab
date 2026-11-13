@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Mover una tarjeta es cambiar una etiqueta</title>
+  <desc id="desc">Un tablero con cinco columnas: Open, estado::preparado, estado::en-curso, estado::en-revision y Closed. Las tres centrales son listas de etiqueta. Arrastrar una tarjeta de preparado a en-curso quita estado::preparado y pone estado::en-curso; las demás etiquetas, como tipo::bug, no se tocan. Arrastrar a Closed quita la etiqueta y cierra el issue; arrastrar desde Closed lo reabre. Si un issue lleva dos etiquetas estado, porque alguien usó /label en vez de mover, aparece en dos columnas a la vez. /board_move lo arregla, y solo funciona si el proyecto tiene un único tablero.</desc>
+  <rect width="900" height="440" fill="#1F1F1F"/>
+  <defs>
+    <marker id="v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#52B87A"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">El tablero no guarda nada: sus columnas son etiquetas</text>
+
+    <rect x="30" y="60" width="155" height="250" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="84" fill="#FAFAFA" font-size="13" font-weight="600">Open</text>
+    <rect x="200" y="60" width="155" height="250" rx="8" fill="none" stroke="#9DD4AE"/>
+    <text x="215" y="84" fill="#9DD4AE" font-size="12" font-weight="600">estado::preparado</text>
+    <rect x="370" y="60" width="155" height="250" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="385" y="84" fill="#52B87A" font-size="12" font-weight="600">estado::en-curso</text>
+    <rect x="540" y="60" width="155" height="250" rx="8" fill="none" stroke="#108548"/>
+    <text x="555" y="84" fill="#108548" font-size="12" font-weight="600">estado::en-revision</text>
+    <rect x="710" y="60" width="160" height="250" rx="8" fill="none" stroke="#666666"/>
+    <text x="725" y="84" fill="#FAFAFA" font-size="13" font-weight="600">Closed</text>
+
+    <rect x="210" y="104" width="135" height="54" rx="6" fill="#2A2A2A" stroke="#666666" stroke-dasharray="4 3"/>
+    <text x="220" y="124" fill="#999999" font-size="12">#7 antes</text>
+    <text x="220" y="144" fill="#999999" font-size="11">tipo::bug</text>
+    <line x1="345" y1="131" x2="378" y2="131" stroke="#52B87A" stroke-width="2" marker-end="url(#v)"/>
+    <rect x="380" y="104" width="135" height="54" rx="6" fill="#2A2A2A" stroke="#52B87A"/>
+    <text x="390" y="124" fill="#FAFAFA" font-size="12">#7 después</text>
+    <text x="390" y="144" fill="#FAFAFA" font-size="11">tipo::bug (intacta)</text>
+
+    <text x="215" y="190" fill="#E24329" font-size="11">− estado::preparado</text>
+    <text x="385" y="190" fill="#52B87A" font-size="11">+ estado::en-curso</text>
+
+    <rect x="550" y="214" width="135" height="40" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="560" y="238" fill="#FAFAFA" font-size="12">#9</text>
+    <line x1="685" y1="234" x2="718" y2="234" stroke="#52B87A" stroke-width="2" marker-end="url(#v)"/>
+    <text x="722" y="226" fill="#52B87A" font-size="11">cierra el issue</text>
+    <text x="722" y="244" fill="#999999" font-size="11">y al revés, lo reabre</text>
+
+    <rect x="30" y="330" width="840" height="80" rx="8" fill="none" stroke="#E24329"/>
+    <text x="50" y="356" fill="#E24329" font-size="13" font-weight="600">/label ~"estado::en-curso" sobre un issue en preparado</text>
+    <text x="50" y="378" fill="#FAFAFA" font-size="12">Añade sin quitar: el issue lleva dos estado:: y aparece en dos columnas. CE no lo impide.</text>
+    <text x="50" y="398" fill="#FAFAFA" font-size="12">Arreglo: /board_move ~"estado::en-curso" — quita todas las etiquetas de columna y pone una. Solo con un tablero.</text>
+  </g>
+</svg>

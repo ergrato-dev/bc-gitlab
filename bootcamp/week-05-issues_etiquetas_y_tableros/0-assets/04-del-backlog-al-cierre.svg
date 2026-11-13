@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Del issue nuevo al cierre desde un commit</title>
+  <desc id="desc">El ciclo de un issue esta semana. Nace con una plantilla, que le pone tipo y estado::preparado con acciones rápidas. En el triaje recibe prioridad y, si cabe, el hito v0.1.0. En el tablero avanza a en-curso y a en-revision, con arrastre o /board_move. Se cierra cuando un commit con Closes #N llega a la rama por defecto, y la nota de sistema enlaza el commit. Cierra #N, en español, no cierra: solo deja una referencia cruzada.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Cada paso cambia el issue desde donde ya estás escribiendo</text>
+
+    <rect x="30" y="70" width="190" height="130" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="45" y="96" fill="#FAFAFA" font-size="13" font-weight="600">1 · Nace</text>
+    <text x="45" y="120" fill="#999999" font-size="12">Plantilla Bug</text>
+    <text x="45" y="142" fill="#FAFAFA" font-size="11">/label ~"tipo::bug"</text>
+    <text x="45" y="160" fill="#FAFAFA" font-size="11">~"estado::preparado"</text>
+    <text x="45" y="184" fill="#999999" font-size="11">sin prioridad todavía</text>
+
+    <line x1="220" y1="135" x2="248" y2="135" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="250" y="70" width="190" height="130" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="265" y="96" fill="#FAFAFA" font-size="13" font-weight="600">2 · Triaje</text>
+    <text x="265" y="120" fill="#999999" font-size="12">Un comentario</text>
+    <text x="265" y="142" fill="#FAFAFA" font-size="11">/label ~"prioridad::alta"</text>
+    <text x="265" y="160" fill="#FAFAFA" font-size="11">/milestone %"v0.1.0"</text>
+    <text x="265" y="178" fill="#FAFAFA" font-size="11">/estimate 3h</text>
+
+    <line x1="440" y1="135" x2="468" y2="135" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="470" y="70" width="190" height="130" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="485" y="96" fill="#FAFAFA" font-size="13" font-weight="600">3 · Avanza</text>
+    <text x="485" y="120" fill="#999999" font-size="12">Tablero</text>
+    <text x="485" y="142" fill="#FAFAFA" font-size="11">/assign me</text>
+    <text x="485" y="160" fill="#FAFAFA" font-size="11">/board_move</text>
+    <text x="485" y="178" fill="#FAFAFA" font-size="11">~"estado::en-curso"</text>
+
+    <line x1="660" y1="135" x2="688" y2="135" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="690" y="70" width="180" height="130" rx="8" fill="none" stroke="#108548"/>
+    <text x="705" y="96" fill="#FAFAFA" font-size="13" font-weight="600">4 · Se cierra</text>
+    <text x="705" y="120" fill="#999999" font-size="12">Commit en main</text>
+    <text x="705" y="142" fill="#52B87A" font-size="11">fix: count business days</text>
+    <text x="705" y="166" fill="#52B87A" font-size="11">Closes #7</text>
+    <text x="705" y="188" fill="#999999" font-size="11">closed via commit abc123</text>
+
+    <rect x="30" y="230" width="840" height="140" rx="8" fill="none" stroke="#E24329"/>
+    <text x="50" y="258" fill="#E24329" font-size="13" font-weight="600">Lo que no cierra</text>
+    <text x="50" y="284" fill="#FAFAFA" font-size="12">Cierra #7 · Arregla #7 · Resuelve #7 — el patrón por defecto solo reconoce Close, Fix, Resolve e Implement, en inglés.</text>
+    <text x="50" y="306" fill="#FAFAFA" font-size="12">Closes #7 en una rama que no es la por defecto — se cerrará cuando esa rama se fusione, no antes.</text>
+    <text x="50" y="328" fill="#FAFAFA" font-size="12">autoclose_referenced_issues = false en el proyecto — el commit solo deja la referencia cruzada.</text>
+    <text x="50" y="350" fill="#999999" font-size="12">En los tres casos el issue queda abierto y el tablero miente, sin ningún aviso.</text>
+  </g>
+</svg>

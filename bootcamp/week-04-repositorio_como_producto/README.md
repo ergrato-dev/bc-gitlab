@@ -166,6 +166,6 @@ Las 16 comprobaciones tienen que pasar. Si alguna falla, la pista te dice en qu�
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 03 — Grupos, subgrupos, roles y namespaces](../week-03-grupos_proyectos_y_permisos/README.md) | **Semana 04** | Semana 05 — Issues, etiquetas y tableros |
+| [Semana 03 — Grupos, subgrupos, roles y namespaces](../week-03-grupos_proyectos_y_permisos/README.md) | **Semana 04** | [Semana 05 — Issues, etiquetas y tableros](../week-05-issues_etiquetas_y_tableros/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

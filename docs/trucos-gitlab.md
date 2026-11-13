@@ -147,6 +147,25 @@ _Se añaden a medida que se publica cada semana._
 | Qué archivos ocupan LFS en tu clon | `git lfs ls-files --size` |
 | Traer un clon sin descargar los binarios | `GIT_LFS_SKIP_SMUDGE=1 git clone <url>` — luego `git lfs pull` cuando los necesites |
 
+
+## Semana 05 — Issues, etiquetas y tableros
+
+| Truco | Cómo |
+|---|---|
+| Los patrones de cierre solo están en inglés | `Closes #12`, `Fixes #12`, `Resolves #12`, `Implements #12`. `Cierra #12` no hace nada |
+| Mover una tarjeta desde el comentario, sin abrir el tablero | `/board_move ~"estado::en-curso"` — solo si el proyecto tiene **un** tablero |
+| Reemplazar todas las etiquetas de golpe | `/relabel ~"tipo::bug" ~"prioridad::alta"` |
+| Copiar etiquetas e hito de otro issue | `/copy_metadata #12` |
+| Atajos de teclado en la página de un issue | `l` etiquetas, `m` hito, `a` asignado, `e` editar descripción, `r` citar la selección |
+| Issues sin ninguna etiqueta: el backlog sin triar | `.../projects/$P/issues?labels=None&state=opened \| jq length` |
+| Issues **sin** una familia concreta | `.../projects/$P/issues?not[labels]=tipo::bug&state=opened` |
+| Cuántos issues abiertos tiene cada etiqueta | `.../projects/$P/labels?with_counts=true \| jq -r '.[] \| "\(.open_issues_count)\t\(.name)"'` |
+| Recuento del backlog en una sola llamada | `.../projects/$P/issues_statistics \| jq '.statistics.counts'` |
+| Subir una etiqueta de proyecto al grupo | `PUT .../projects/$P/labels/<id>/promote` — los issues que la usan la conservan |
+| Un enlace que abre un issue ya rellenado | `.../-/issues/new?issuable_template=Bug&issue[title]=...` |
+| Referenciar etiquetas e hitos en Markdown | `~"tipo::bug"` y `%"v0.1.0"` se convierten en enlaces filtrados |
+| Ver qué plantillas detecta GitLab | `.../projects/$P/templates/issues \| jq -r '.[].key'` |
+
 ---
 
 [← Volver a docs](README.md)

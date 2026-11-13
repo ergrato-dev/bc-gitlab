@@ -1,0 +1,125 @@
+{
+  "semana": "05",
+  "titulo": "Issues, taxonomia de etiquetas, tableros e hitos",
+  "checks": [
+    {
+      "id": "etiquetas-tipo-en-el-grupo",
+      "descripcion": "El grupo raiz tiene al menos tres etiquetas tipo::",
+      "api": "groups/{grupo}/labels?per_page=100",
+      "jq": "map(select(.name | startswith(\"tipo::\"))) | length >= 3",
+      "pista": "2-practicas/01-la-taxonomia-de-etiquetas.md, paso 4"
+    },
+    {
+      "id": "etiquetas-prioridad-en-el-grupo",
+      "descripcion": "El grupo raiz tiene al menos tres etiquetas prioridad::",
+      "api": "groups/{grupo}/labels?per_page=100",
+      "jq": "map(select(.name | startswith(\"prioridad::\"))) | length >= 3",
+      "pista": "2-practicas/01-la-taxonomia-de-etiquetas.md, paso 4"
+    },
+    {
+      "id": "etiquetas-estado-en-el-grupo",
+      "descripcion": "El grupo raiz tiene al menos tres etiquetas estado::",
+      "api": "groups/{grupo}/labels?per_page=100",
+      "jq": "map(select(.name | startswith(\"estado::\"))) | length >= 3",
+      "pista": "2-practicas/01-la-taxonomia-de-etiquetas.md, paso 4"
+    },
+    {
+      "id": "etiquetas-con-descripcion",
+      "descripcion": "Todas las etiquetas del grupo raiz tienen descripcion",
+      "api": "groups/{grupo}/labels?per_page=100",
+      "jq": "length > 0 and all(.[]; (.description // \"\") | length > 0)",
+      "pista": "2-practicas/01-la-taxonomia-de-etiquetas.md, paso 4"
+    },
+    {
+      "id": "etiquetas-priorizadas",
+      "descripcion": "El proyecto tiene al menos tres etiquetas priorizadas",
+      "api": "projects/{proyecto}/labels?per_page=100",
+      "jq": "map(select(.priority != null)) | length >= 3",
+      "pista": "2-practicas/01-la-taxonomia-de-etiquetas.md, paso 6"
+    },
+    {
+      "id": "hito-v010",
+      "descripcion": "Existe el hito v0.1.0 en el proyecto",
+      "api": "projects/{proyecto}/milestones?title=v0.1.0",
+      "jq": "length > 0",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 2"
+    },
+    {
+      "id": "hito-con-fecha",
+      "descripcion": "El hito v0.1.0 tiene fecha de vencimiento",
+      "api": "projects/{proyecto}/milestones?title=v0.1.0",
+      "jq": "map(select(.due_date != null)) | length > 0",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 2"
+    },
+    {
+      "id": "backlog-doce-issues",
+      "descripcion": "El proyecto tiene al menos doce issues",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=all&per_page=100",
+      "jq": "length >= 12",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 5"
+    },
+    {
+      "id": "issues-en-el-hito",
+      "descripcion": "Al menos cinco issues estan asignados al hito v0.1.0",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=all&milestone=v0.1.0&per_page=100",
+      "jq": "length >= 5",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 6"
+    },
+    {
+      "id": "cada-issue-abierto-un-tipo",
+      "descripcion": "Cada issue abierto lleva exactamente una etiqueta tipo::",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=opened&per_page=100",
+      "jq": "length > 0 and all(.[]; ([.labels[] | select(startswith(\"tipo::\"))] | length) == 1)",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 7"
+    },
+    {
+      "id": "ninguna-prioridad-doble",
+      "descripcion": "Ningun issue abierto lleva dos etiquetas prioridad::",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=opened&per_page=100",
+      "jq": "all(.[]; ([.labels[] | select(startswith(\"prioridad::\"))] | length) <= 1)",
+      "pista": "2-practicas/02-el-backlog-y-el-hito.md, paso 7"
+    },
+    {
+      "id": "ningun-estado-doble",
+      "descripcion": "Ningun issue abierto lleva dos etiquetas estado::",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=opened&per_page=100",
+      "jq": "all(.[]; ([.labels[] | select(startswith(\"estado::\"))] | length) <= 1)",
+      "pista": "2-practicas/04-el-tablero-del-flujo.md, paso 6"
+    },
+    {
+      "id": "issue-con-lista-de-tareas",
+      "descripcion": "Al menos un issue tiene una lista de tareas en la descripcion",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=all&per_page=100",
+      "jq": "map(select(.task_completion_status.count > 0)) | length > 0",
+      "pista": "2-practicas/03-plantillas-y-acciones-rapidas.md, paso 5"
+    },
+    {
+      "id": "issue-con-estimacion",
+      "descripcion": "Al menos un issue tiene una estimacion de tiempo",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=all&per_page=100",
+      "jq": "map(select(.time_stats.time_estimate > 0)) | length > 0",
+      "pista": "2-practicas/03-plantillas-y-acciones-rapidas.md, paso 6"
+    },
+    {
+      "id": "plantillas-de-issue",
+      "descripcion": "El proyecto tiene al menos dos plantillas de issue",
+      "api": "projects/{proyecto}/templates/issues",
+      "jq": "length >= 2",
+      "pista": "2-practicas/03-plantillas-y-acciones-rapidas.md, paso 3"
+    },
+    {
+      "id": "issue-cerrado",
+      "descripcion": "Al menos un issue del proyecto esta cerrado",
+      "api": "projects/{proyecto}/issues?issue_type=issue&state=closed&per_page=100",
+      "jq": "length > 0",
+      "pista": "2-practicas/03-plantillas-y-acciones-rapidas.md, paso 8"
+    },
+    {
+      "id": "tablero-de-estados",
+      "descripcion": "Un tablero del proyecto tiene al menos tres listas de etiquetas estado::",
+      "api": "projects/{proyecto}/boards",
+      "jq": "map(select([.lists[] | select(.label.name | startswith(\"estado::\"))] | length >= 3)) | length > 0",
+      "pista": "2-practicas/04-el-tablero-del-flujo.md, paso 3"
+    }
+  ]
+}

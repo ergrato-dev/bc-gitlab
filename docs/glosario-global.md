@@ -110,7 +110,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **SBOM** (*software bill of materials*) — Inventario de todo lo que compone un artefacto. Se genera con Syft y se firma junto a la imagen.
 
-**Scoped label** (*etiqueta con ámbito*) — **Premium**. Etiquetas mutuamente excluyentes con la sintaxis `clave::valor`. En CE se aproxima con la convención `clave/valor` y un job que valida que no haya dos.
+**Scoped label** (*etiqueta con ámbito*) — **Premium**. Etiquetas mutuamente excluyentes con la sintaxis `clave::valor`. En CE el `::` se acepta en el nombre pero no impone nada; este bootcamp usa igualmente `clave::valor` (para que Premium la active sin renombrar) y vigila la exclusividad con el tablero y una comprobación por API (S05).
 
 **Server hook** — Free. Script que se ejecuta en el servidor antes o después de recibir un push. Es lo único en CE que **bloquea de verdad** un push que no cumple una regla.
 

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Anatomía de un issue en GitLab CE</title>
+  <desc id="desc">Un issue tiene a la izquierda el contenido: título que describe el comportamiento observable, descripción con contexto, criterios de aceptación y lista de tareas. A la derecha, los metadatos: un asignado, etiquetas de las familias tipo, prioridad, estado y area, un hito, fecha de vencimiento y estimación de tiempo, todos Free. Varios asignados, peso, epic, iteración y vínculos blocks son Premium y se sustituyen por un asignado, la estimación, un hito o una etiqueta area, y el vínculo relates_to.</desc>
+  <rect width="900" height="470" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Un issue: contenido a la izquierda, metadatos a la derecha</text>
+
+    <rect x="30" y="60" width="500" height="380" rx="8" fill="none" stroke="#666666"/>
+    <text x="50" y="92" fill="#FAFAFA" font-size="15" font-weight="600">#7  Un socio con un préstamo vencido puede pedir otro</text>
+    <text x="50" y="112" fill="#999999" font-size="12">Título: el comportamiento observable, no la solución</text>
+
+    <text x="50" y="150" fill="#FC6D26" font-size="13" font-weight="600">## Contexto</text>
+    <text x="50" y="170" fill="#FAFAFA" font-size="12">puedePrestar() solo mira cuántos préstamos hay activos.</text>
+
+    <text x="50" y="208" fill="#FC6D26" font-size="13" font-weight="600">## Criterios de aceptación</text>
+    <text x="50" y="228" fill="#FAFAFA" font-size="12">- puedePrestar() devuelve false con un préstamo vencido</text>
+    <text x="50" y="246" fill="#FAFAFA" font-size="12">- Hay un test que falla sin el arreglo</text>
+    <text x="50" y="266" fill="#999999" font-size="12">Frases de sí o no</text>
+
+    <text x="50" y="304" fill="#FC6D26" font-size="13" font-weight="600">## Tareas</text>
+    <text x="50" y="324" fill="#FAFAFA" font-size="12">[x] Reproducir el caso</text>
+    <text x="50" y="342" fill="#FAFAFA" font-size="12">[ ] Cambiar la regla</text>
+    <text x="50" y="360" fill="#FAFAFA" font-size="12">[ ] Añadir el test</text>
+    <text x="50" y="380" fill="#999999" font-size="12">task_completion_status: { count: 3, completed_count: 1 }</text>
+    <text x="50" y="420" fill="#999999" font-size="12">Se cierra con  Closes #7  en un commit de main</text>
+
+    <rect x="560" y="60" width="310" height="230" rx="8" fill="none" stroke="#108548"/>
+    <text x="580" y="86" fill="#52B87A" font-size="13" font-weight="600">Free en CE</text>
+    <text x="580" y="112" fill="#FAFAFA" font-size="12">Asignado (uno solo)</text>
+    <rect x="580" y="124" width="72" height="20" rx="10" fill="#1F75CB"/><text x="590" y="138" fill="#FAFAFA" font-size="11">tipo::bug</text>
+    <rect x="658" y="124" width="104" height="20" rx="10" fill="#DD2B0E"/><text x="668" y="138" fill="#FAFAFA" font-size="11">prioridad::alta</text>
+    <rect x="580" y="150" width="120" height="20" rx="10" fill="#9DD4AE"/><text x="590" y="164" fill="#1F1F1F" font-size="11">estado::preparado</text>
+    <rect x="706" y="150" width="114" height="20" rx="10" fill="#666666"/><text x="716" y="164" fill="#FAFAFA" font-size="11">area::prestamos</text>
+    <text x="580" y="196" fill="#FAFAFA" font-size="12">Hito  v0.1.0</text>
+    <text x="580" y="218" fill="#FAFAFA" font-size="12">Fecha de vencimiento</text>
+    <text x="580" y="240" fill="#FAFAFA" font-size="12">Estimación  /estimate 3h</text>
+    <text x="580" y="262" fill="#FAFAFA" font-size="12">Vínculo relates_to · Confidencial</text>
+
+    <rect x="560" y="310" width="310" height="130" rx="8" fill="none" stroke="#554488"/>
+    <text x="580" y="336" fill="#9F8FD0" font-size="13" font-weight="600">Premium, y su sustituto</text>
+    <text x="580" y="360" fill="#FAFAFA" font-size="12">Varios asignados  →  uno, o dos issues</text>
+    <text x="580" y="380" fill="#FAFAFA" font-size="12">Peso  →  estimación de tiempo</text>
+    <text x="580" y="400" fill="#FAFAFA" font-size="12">Epic, iteración  →  hito o area::</text>
+    <text x="580" y="420" fill="#FAFAFA" font-size="12">blocks  →  relates_to + estado::bloqueado</text>
+  </g>
+</svg>

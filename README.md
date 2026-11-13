@@ -164,7 +164,7 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 |---|---|:--:|---|
 | Approval rules, Code Owners approvals | Premium | S07 | CODEOWNERS + job `gobernanza` (detecta, no bloquea) + server hook |
 | Push rules | Premium | S07 | Server hook `pre-receive` |
-| Scoped labels | Premium | S05 | Convención `tipo/` + job que valida exclusividad |
+| Scoped labels | Premium | S05 | Convención `tipo::` (en CE no impone nada) + tablero para `estado::` + comprobación de exclusividad por API |
 | Epics, iteraciones, roadmaps, weights | Premium | S05, S08 | Hitos + etiquetas + tablero único |
 | Merge trains, merged results pipelines | Premium | S07 | Rebase obligatorio antes de fusionar |
 | Protected environments, deployment approvals | Premium | S14, S25 | Jobs manuales sobre rama protegida |

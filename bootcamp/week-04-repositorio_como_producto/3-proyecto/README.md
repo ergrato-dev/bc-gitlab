@@ -128,6 +128,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 03](../../week-03-grupos_proyectos_y_permisos/3-proyecto/README.md) | **Proyecto Semana 04** | Proyecto Semana 05 |
+| [Proyecto Semana 03](../../week-03-grupos_proyectos_y_permisos/3-proyecto/README.md) | **Proyecto Semana 04** | [Proyecto Semana 05](../../week-05-issues_etiquetas_y_tableros/3-proyecto/README.md) |
 
 [← Volver a la Semana 04](../README.md)
