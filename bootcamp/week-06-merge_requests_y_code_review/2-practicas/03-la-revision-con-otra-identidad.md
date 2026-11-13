@@ -39,6 +39,7 @@ T_REV=$(curl -s --request POST "$API/users/$UID_REV/personal_access_tokens" -H "
   --data-urlencode "scopes[]=api" \
   --data-urlencode "expires_at=$(date -d '+7 days' +%F)" \
   | jq -r '.token')
+[ "$T_REV" != null ] || echo "No se creó el token: revisa permisos de administrador"
 export HR="PRIVATE-TOKEN: $T_REV"
 ```
 

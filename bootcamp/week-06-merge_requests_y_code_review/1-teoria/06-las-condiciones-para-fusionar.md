@@ -87,7 +87,7 @@ curl -s -H "$H" "$API/projects/$P/merge_requests/$MR?include_rebase_in_progress=
   | jq '{rebase_in_progress, merge_error, detailed_merge_status}'
 ```
 
-GitLab reescribe la rama de origen sobre la punta de `main`. Si falla, `merge_error` dice por qué, casi siempre porque había conflicto. Y como reescribe la rama, tu clon local queda divergente: `git pull --rebase` o `git reset --hard origin/<rama>` antes de seguir.
+GitLab reescribe la rama de origen sobre la punta de `main`. Si falla, `merge_error` dice por qué, casi siempre porque había conflicto. Y como reescribe la rama, tu clon local queda divergente: `git pull --rebase` antes de seguir.
 
 > [!IMPORTANT]
 > Igual que el squash, **los commits rebasados en el servidor no llevan tu firma**: GitLab los reescribe sin tu clave. Si quieres conservar la firma en los commits de la rama, haz el rebase en local.

@@ -285,16 +285,29 @@ Compara con lo que habría salido con `merge`: B y C habrían salido del mismo c
 
 **Por qué**: era para estas dos prácticas y ya terminaron. Un token que sobra es un acceso que sobra.
 
+Usa la misma cabecera con la que creaste el token: si en la práctica 03 tiraste de `GITLAB_ADMIN_TOKEN`, aquí también. Sin permisos de administrador, el listado sale vacío y el bucle no revoca nada sin avisar.
+
 ```bash
-for id in $(curl -s -H "$H" "$API/personal_access_tokens?user_id=$UID_REV" \
+HA="PRIVATE-TOKEN: ${GITLAB_ADMIN_TOKEN:-$GITLAB_TOKEN}"
+
+for id in $(curl -s -H "$HA" "$API/personal_access_tokens?user_id=$UID_REV" \
               | jq -r '.[] | select(.name == "revision-s06" and .active) | .id'); do
-  curl -s --request DELETE "$API/personal_access_tokens/$id" -H "$H" -o /dev/null -w "revocado $id: %{http_code}\n"
+  curl -s --request DELETE "$API/personal_access_tokens/$id" -H "$HA" -o /dev/null -w "revocado $id: %{http_code}\n"
 done
-unset T_REV HR
+```
+
+**Verifica**, antes de borrar la variable, que el token ya no vale y que no queda ninguno activo:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' -H "$HR" "$API/user"     # 401
+curl -s -H "$HA" "$API/personal_access_tokens?user_id=$UID_REV" \
+  | jq '[.[] | select(.name == "revision-s06" and .active)] | length'   # 0
+
+unset T_REV HR HA
 rm -f ~/.bc-gitlab-s06
 ```
 
-**Verifica**: cada revocación responde `204`.
+Si el primero no da `401` o el segundo no da `0`, el token sigue vivo: repite el bucle con la cabecera de administrador.
 
 ---
 
