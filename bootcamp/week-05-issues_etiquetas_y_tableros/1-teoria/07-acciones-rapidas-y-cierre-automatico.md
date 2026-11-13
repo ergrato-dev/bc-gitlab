@@ -127,7 +127,7 @@ El patrón es configurable para toda la instancia en `gitlab.rb` con `gitlab_rai
 
 ### 3.3 Referencias cruzadas
 
-Cualquier mención `#7` en un commit, una merge request o un comentario de otro issue deja una **nota de sistema** en el issue 7: "mentioned in commit abc123". No cierra nada, pero enlaza. Así un issue acumula solo el rastro de todo lo que se hizo por él, y en la Semana 08 ese rastro es lo que permite medir el tiempo de ciclo.
+Cualquier mención `#7` en un commit, una merge request o un comentario de otro issue deja una **nota de sistema** en el issue 7: "mentioned in commit abc123". No cierra nada, pero enlaza. Así un issue acumula solo el rastro de todo lo que se hizo por él, y en la Semana 08 ese rastro es lo que permite medir cuánto tarda un cambio en entrar.
 
 ---
 
@@ -191,7 +191,7 @@ curl -s -H "$H" "$API/projects/$P/issues?milestone=v0.1.0&state=all&per_page=100
 - **Previsualizar una acción rápida**: la pestaña *Preview* del editor muestra lo que va a hacer ("Adds ~prioridad::alta label") antes de guardar.
 - **Acciones rápidas en el `POST` de la API**: una `description` con `/label ~"tipo::bug"` al crear un issue por API también se ejecuta.
 - **Ver quién cerró y cuándo**: `GET /projects/:id/issues/:iid | jq '{closed_at, closed_by: .closed_by.username}'`.
-- **Notas de sistema por API**: `GET /projects/:id/issues/:iid/resource_label_events` devuelve cada alta y baja de etiqueta con fecha. Es el historial del tablero, y en la Semana 08 lo usarás para medir cuánto pasa un issue en cada columna.
+- **Notas de sistema por API**: `GET /projects/:id/issues/:iid/resource_label_events` devuelve cada alta y baja de etiqueta con fecha. Es el historial del tablero: con él se puede medir cuánto pasa un issue en cada columna.
 
 ---
 

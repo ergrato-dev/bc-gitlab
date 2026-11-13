@@ -201,6 +201,23 @@ _Se añaden a medida que se publica cada semana._
 | Ir de un commit de `main` a su merge request | `.../repository/commits/<sha>/merge_requests \| jq -r '.[].iid'` |
 | Detectar que cambió una protección | Una foto con `jq -S` y `diff <(foto) foto-guardada.json` |
 
+## Semana 08 — GitLab Flow, releases y métricas de flujo
+
+| Truco | Cómo |
+|---|---|
+| Ver el CHANGELOG de la próxima versión sin escribir nada | `GET .../repository/changelog?version=0.2.0` devuelve `notes` y no hace commits |
+| Generar el CHANGELOG cuando no hay tag anterior | Pasa `from=<sha del primer commit>`: sin tag ni `from`, la API responde `422` |
+| Conservar el trailer `Changelog:` con squash | `%{first_multiline_commit_description}` en la última línea de la plantilla de squash |
+| Commits que entrarán en el CHANGELOG | `git log --format='%h %(trailers:key=Changelog,valueonly,separator=) %s' v0.1.0..main` |
+| La siguiente versión según los tipos | `git log --format=%s v0.1.0..main \| grep -Eq '^feat(\(.+\))?!?:'` y sube `MENOR` |
+| Crear un tag anotado y firmado | `git tag -s v0.1.0 -m "v0.1.0"` y `git tag -v v0.1.0` |
+| Distinguir un tag anotado de uno ligero por API | Anotado si `.target != .commit.id` en `.../repository/tags/<tag>` |
+| Llevar un arreglo de `main` a una rama de release | `git cherry-pick -x <sha>`: deja `(cherry picked from commit …)` en el mensaje |
+| Saber qué lleva una versión que no está en `main` | `GET .../repository/compare?from=main&to=v0.1.1` |
+| Crear una rama protegida desde un tag | Solo por API o web, y desde un commit que ya esté en una rama protegida |
+| La última release, sin saber su tag | `GET .../releases/permalink/latest` |
+| Mediana de duraciones con `jq` | `sort \| .[length/2 \| floor]` sobre los segundos de cada intervalo |
+
 ---
 
 [← Volver a docs](README.md)

@@ -20,7 +20,7 @@ La Semana 01 dejó una instancia y un repositorio vacío. Esta lo llena, y fija 
 | `src/*.test.ts` | S09 (el job `test`), S16 (la duración del pipeline se mide sobre ellos) |
 | `package.json` | S09 (`npm ci`), S13 (paquete en el registry), S20 (SBOM) |
 | Clave SSH de firma registrada | Todas: cada commit del bootcamp va firmado |
-| Historia lineal y convencional | S07 (server hook que la exige), S08 (CHANGELOG generado desde los tipos) |
+| Historia lineal y convencional | S07 (server hook que la exige), S08 (el tipo decide la versión; el trailer `Changelog:`, el CHANGELOG) |
 | `.gitignore` | Todas: es lo que impide que un `.env` acabe en la historia |
 | `.git-blame-ignore-revs` | S06 y S26, cuando el `blame` tenga que señalar a la lógica y no al formateo |
 

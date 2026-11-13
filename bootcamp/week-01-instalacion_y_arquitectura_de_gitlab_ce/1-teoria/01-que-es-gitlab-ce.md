@@ -104,7 +104,7 @@ Aquí está la honestidad que este bootcamp se toma en serio. Estas features exi
 | Approval rules | Premium | Exigir N aprobaciones antes de fusionar | CODEOWNERS + un server hook que bloquea y un script que detecta (S07); el script pasa a job en la S09 |
 | Push rules | Premium | Rechazar pushes que no cumplen un patrón | Server hook `pre-receive` (S07) |
 | Scoped labels | Premium | Etiquetas mutuamente excluyentes `tipo::bug` | Convención `tipo/bug` + job que valida (S05) |
-| Epics, iteraciones, roadmaps | Premium | Planificación por encima del hito | Hitos y etiquetas (S05, S08) |
+| Epics, iteraciones, roadmaps | Premium | Planificación por encima del hito | Hitos y etiquetas (S05) |
 | Merge trains | Premium | Probar cada MR contra el resultado de fusionar los anteriores | Rebase obligatorio antes de fusionar: método `rebase_merge` o `ff` (S06) |
 | Entornos protegidos | Premium | Restringir quién despliega a producción | Job manual sobre rama protegida (S14) |
 | SAST, DAST, Dependency Scanning | Ultimate | Escaneo de seguridad integrado en el MR | Semgrep, Gitleaks, OSV-Scanner, Trivy (S19) |
@@ -112,7 +112,7 @@ Aquí está la honestidad que este bootcamp se toma en serio. Estas features exi
 | Compliance frameworks | Ultimate | Políticas obligatorias por grupo | OPA / Conftest como gate (S20) |
 | Audit events de instancia | Premium | Registro de auditoría completo | Volcado de `/events`, con menos campos (S18) |
 | Geo, DR multi-región | Premium | Réplica geográfica y recuperación | Backup frío de una región, con el RPO medido (S22) |
-| DORA API, VSA de grupo | Premium | Métricas de flujo oficiales | Métricas calculadas por API, con su definición documentada (S08) |
+| DORA API (Ultimate), VSA de grupo (Premium) | Ultimate / Premium | Métricas de flujo oficiales | Métricas calculadas por API, con su definición documentada (S08) |
 
 > [!IMPORTANT]
 > **Sustituir no es igualar.** Un job que detecta que falta la aprobación de un propietario no es lo mismo que una plataforma que impide fusionar sin ella: lo primero avisa, lo segundo bloquea. Cada vez que sustituyamos algo, el material dirá exactamente qué se pierde. Saber dónde está el límite de tu montaje es parte del trabajo.

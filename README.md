@@ -165,7 +165,7 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 | Approval rules, Code Owners approvals | Premium | S07 | CODEOWNERS + server hook (bloquea) + script `gobernanza` (detecta; job desde S09) |
 | Push rules | Premium | S07 | Server hook `pre-receive` |
 | Scoped labels | Premium | S05 | Convención `tipo::` (en CE no impone nada) + tablero para `estado::` + comprobación de exclusividad por API |
-| Epics, iteraciones, roadmaps, weights | Premium | S05, S08 | Hitos + etiquetas + tablero único |
+| Epics, iteraciones, roadmaps, weights | Premium | S05 | Hitos + etiquetas + tablero único |
 | Merge trains, merged results pipelines | Premium | S07 | Rebase obligatorio antes de fusionar |
 | Protected environments, deployment approvals | Premium | S14, S25 | Jobs manuales sobre rama protegida |
 | SAST, DAST, Dependency y Container Scanning nativos | Ultimate | S19 | Semgrep, Gitleaks, OSV-Scanner, Trivy |
@@ -175,7 +175,7 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 | Geo, DR multi-región, maintenance mode | Premium | S22 | Backup frío de una región, con el RPO real medido |
 | Wiki de grupo | Premium | S04 | La wiki de `app` hace de wiki de la plataforma; los demás proyectos enlazan a ella |
 | Pull mirroring | Premium | S23 | Push mirroring |
-| DORA API, Insights, Value Stream Analytics de grupo | Premium | S08 | Métricas calculadas por API, con su definición documentada |
+| DORA API e Insights · Value Stream Analytics de grupo | Ultimate · Premium | S08 | Métricas calculadas por API, con su definición documentada |
 
 > [!TIP]
 > **El error contrario también existe.** Praefect y Gitaly Cluster, los componentes CI/CD y su catálogo, los feature flags, el dependency proxy, el estado de Terraform y su registro de módulos, Auto DevOps, los server hooks y el Service Desk **son gratis en CE** y casi nadie los usa porque los da por premium. Este bootcamp los usa todos.

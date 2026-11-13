@@ -30,7 +30,7 @@ El glosario acumulado de toda la plataforma está en [glosario-global](../../../
 
 **Committer** — Quien crea el commit, frente al **autor**, que escribió el cambio. Se separan al hacer `cherry-pick` o `rebase`. **GitLab verifica la firma contra el correo del committer**, no el del autor.
 
-**Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. Free, y en la Semana 08 es lo que genera el CHANGELOG y decide la versión.
+**Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. Free, y en la Semana 08 es lo que decide la versión. El CHANGELOG lo genera otro trailer, `Changelog:`.
 
 ## D
 

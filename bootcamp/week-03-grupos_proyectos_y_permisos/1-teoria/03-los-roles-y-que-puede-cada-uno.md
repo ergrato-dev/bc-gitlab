@@ -57,7 +57,7 @@ La tabla siguiente no es una lista de todo lo que puede cada rol —son cientos 
 | `create_merge_request_from` | **Developer** | Crear la rama y abrir la merge request desde ella |
 | `create_container_image` | **Developer** | Publicar imágenes en el registry (S13) |
 | `update_build`, `cancel_build` | **Developer** | Reintentar y cancelar jobs (S09) |
-| `admin_tag` | **Developer** | Crear y borrar tags no protegidos (S08) |
+| `admin_tag` | **Developer** | Crear y borrar tags no protegidos (los `v*` están protegidos desde la S07 y los crea un Maintainer) |
 | `create_projects` | **Developer** | Crear proyectos en el grupo, **si el grupo lo permite** (teoría 02) |
 | `admin_project` | **Maintainer** | Cambiar los ajustes del proyecto |
 | `admin_protected_branch` | **Maintainer** | Proteger ramas y decidir quién empuja (S07) |

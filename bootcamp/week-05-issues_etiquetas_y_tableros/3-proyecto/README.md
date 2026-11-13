@@ -20,10 +20,10 @@ La Semana 04 convirtió `app` en algo que un tercero entiende y arranca. Esta de
 | Áreas `area::` en `app` | S07 (CODEOWNERS por área), S17 (enrutado de webhooks) |
 | ADR-003 de la taxonomía | S26 (auditoría) |
 | Backlog de 12-15 issues | S06 (cada merge request nace de uno), S07, S08 |
-| Hito `v0.1.0` con fecha | S08 (la release se asocia al hito y el changelog sale de sus issues) |
+| Hito `v0.1.0` con fecha | S08 (la release se asocia al hito y enlaza a sus issues) |
 | Plantillas `Bug`, `Feature`, `Default` | S06 (plantilla de merge request con la misma lógica) |
 | Estimaciones de tiempo | S08 (estimado frente a invertido, en `docs/metricas.md`) |
-| Tablero `Flujo` | S06 (la columna `estado::en-revision` se llena de MRs), S08 (tiempo por columna) |
+| Tablero `Flujo` | S06 (la columna `estado::en-revision` se llena de MRs) |
 | Comprobación de exclusividad | S11 (pipeline programado), S17 (auditor por API) |
 
 La decisión con más recorrido de esta semana es **la taxonomía**. Las etiquetas se renombran sin coste, pero las familias no: cambiar `prioridad::` de tres valores a cinco dentro de dos meses obliga a reetiquetar cada issue abierto y deja los cerrados con un vocabulario que ya no existe. Piénsala una vez, escríbela en el ADR-003, y no la toques salvo con otro ADR.

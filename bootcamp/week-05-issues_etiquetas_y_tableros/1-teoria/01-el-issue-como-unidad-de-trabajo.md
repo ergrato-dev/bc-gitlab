@@ -21,7 +21,7 @@ Sin issues, el trabajo de un equipo vive en tres sitios: el chat, la memoria de 
 - ¿Por qué se decidió hacerlo así, y quién lo decidió?
 - ¿Qué cambio de código lo resolvió?
 
-Un issue contesta las cuatro **en el mismo sitio donde vive el código**. Esa es la ventaja de GitLab frente a un gestor de tareas aparte: el issue enlaza con el commit, el commit con la merge request, la merge request con el pipeline, y el pipeline con el despliegue. En la Semana 08 vas a medir el tiempo de ciclo de tu equipo, y solo se puede porque cada cambio empezó en un issue.
+Un issue contesta las cuatro **en el mismo sitio donde vive el código**. Esa es la ventaja de GitLab frente a un gestor de tareas aparte: el issue enlaza con el commit, el commit con la merge request, la merge request con el pipeline, y el pipeline con el despliegue. En la Semana 08 vas a medir cuánto tarda un cambio en entrar y en publicarse, y solo se puede porque cada cambio empezó en un issue.
 
 > [!NOTE]
 > Esta semana los issues los creas tú y los cierras tú. A partir de la Semana 06 cada issue se cerrará desde una merge request, y a partir de la Semana 07 no habrá otra forma de que el código entre en `main`. El backlog que escribes ahora es el que vas a consumir durante el resto de la fase.

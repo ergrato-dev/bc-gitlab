@@ -19,7 +19,7 @@ La Semana 06 dejó el flujo por merge request como convención. Esta lo conviert
 | `main` y `v*` protegidos | S08 (la release `v0.1.0` nace protegida), S10 (las variables protegidas solo llegan a refs protegidas) |
 | `CODEOWNERS` | S09 (el job de auditoría lo lee), S12 (los componentes de `ci/` tienen sus propios dueños) |
 | `scripts/gobernanza.sh` | S09 (pasa a ser un job sin cambiar una línea), S11 (auditoría programada) |
-| Server hook `pre-receive` | S08 (el CHANGELOG se genera desde asuntos que el hook garantiza convencionales), S18 (revisión de la instancia) |
+| Server hook `pre-receive` | S08 (la versión se deduce de los tipos que el hook garantiza convencionales), S18 (revisión de la instancia) |
 | Protección por defecto del grupo | S11 y S12 (los proyectos nuevos nacen protegidos) |
 | ADR-005 | S18 (endurecimiento), S26 (auditoría final) |
 | La foto de las protecciones | Cada semana, hasta que la S11 la automatice |
@@ -158,6 +158,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 06](../../week-06-merge_requests_y_code_review/3-proyecto/README.md) | **Proyecto Semana 07** | Proyecto Semana 08 |
+| [Proyecto Semana 06](../../week-06-merge_requests_y_code_review/3-proyecto/README.md) | **Proyecto Semana 07** | [Proyecto Semana 08](../../week-08-gitlab_flow_releases_y_metricas/3-proyecto/README.md) |
 
 [← Volver a la Semana 07](../README.md)

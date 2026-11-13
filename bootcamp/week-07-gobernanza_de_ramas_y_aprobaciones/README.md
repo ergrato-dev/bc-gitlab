@@ -154,6 +154,6 @@ Lo que el script **no** puede comprobar es que el hook esté instalado: vive en 
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 06 — Merge requests y code review](../week-06-merge_requests_y_code_review/README.md) | **Semana 07** | Semana 08 — GitLab Flow, releases y métricas de flujo |
+| [Semana 06 — Merge requests y code review](../week-06-merge_requests_y_code_review/README.md) | **Semana 07** | [Semana 08 — GitLab Flow, releases y métricas de flujo](../week-08-gitlab_flow_releases_y_metricas/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

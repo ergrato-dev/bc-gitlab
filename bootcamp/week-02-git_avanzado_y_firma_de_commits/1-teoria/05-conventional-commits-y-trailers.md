@@ -35,7 +35,7 @@ refactor(prestamos): extraer la tarifa a una constante
 test(socios): cubrir el limite de tres prestamos
 ```
 
-Se lee de arriba abajo y se entiende. Y además **una máquina puede clasificarlo**: eso es lo que en la Semana 08 genera el CHANGELOG y calcula la versión sin que nadie escriba nada a mano.
+Se lee de arriba abajo y se entiende. Y además **una máquina puede clasificarlo**: eso es lo que en la Semana 08 calcula la versión sin discusiones, y con un trailer `Changelog:` en los commits que importan, genera el CHANGELOG.
 
 ---
 

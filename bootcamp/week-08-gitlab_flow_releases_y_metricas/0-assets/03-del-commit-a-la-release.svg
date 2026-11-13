@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Del trailer Changelog de un commit a las notas de la release</title>
+  <desc id="desc">El commit de la rama lleva en su cuerpo el trailer Changelog added. Al fusionar con squash, la plantilla copia ese cuerpo con first_multiline_commit_description y el trailer llega a main. La API repository/changelog recorre el rango desde el tag anterior, o desde from, hasta to, y se queda con los commits que tienen el trailer. Con GET devuelve las notas, que van a la release; con POST las escribe en CHANGELOG.md de una rama, que entra en main por merge request. Después se empuja el tag firmado y se crea la release sobre él.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">El trailer viaja del commit a la release sin que nadie lo copie a mano</text>
+
+    <!-- 1 commit -->
+    <rect x="30" y="70" width="240" height="110" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="45" y="94" fill="#999999" font-size="13">Commit en la rama</text>
+    <text x="45" y="120" fill="#FAFAFA" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace">feat(multas): recargo</text>
+    <text x="45" y="160" fill="#FC6D26" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace">Changelog: added</text>
+
+    <line x1="270" y1="125" x2="318" y2="125" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- 2 squash -->
+    <rect x="320" y="70" width="276" height="110" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="335" y="94" fill="#999999" font-size="13">Squash con la plantilla</text>
+    <text x="335" y="120" fill="#FAFAFA" font-size="13">%{approved_by}</text>
+    <text x="335" y="140" fill="#FAFAFA" font-size="13">…</text>
+    <text x="331" y="164" fill="#FC6D26" font-size="13">%{first_multiline_commit_description}</text>
+
+    <line x1="596" y1="125" x2="618" y2="125" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- 3 main -->
+    <rect x="620" y="70" width="250" height="110" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="635" y="94" fill="#999999" font-size="13">Commit en main</text>
+    <text x="635" y="120" fill="#FAFAFA" font-size="13">… (!12)</text>
+    <text x="635" y="140" fill="#FAFAFA" font-size="13">Approved-by: revisor</text>
+    <text x="635" y="164" fill="#FC6D26" font-size="13">Changelog: added</text>
+
+    <line x1="745" y1="180" x2="745" y2="218" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- 4 API -->
+    <rect x="320" y="220" width="550" height="72" rx="8" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="335" y="246" fill="#FAFAFA" font-size="15" font-weight="600">.../repository/changelog?version=0.1.0</text>
+    <text x="335" y="272" fill="#999999" font-size="13">from (tag anterior o el primer commit) .. to · solo los commits con el trailer</text>
+
+    <line x1="470" y1="292" x2="470" y2="328" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="720" y1="292" x2="720" y2="328" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- 5a POST -->
+    <rect x="320" y="330" width="290" height="72" rx="8" fill="#2B2B2B" stroke="#666666" stroke-width="2"/>
+    <text x="335" y="356" fill="#FAFAFA" font-size="14" font-weight="600">POST → CHANGELOG.md</text>
+    <text x="335" y="380" fill="#999999" font-size="13">en una rama, y a main por MR</text>
+
+    <!-- 5b GET -->
+    <rect x="630" y="330" width="240" height="72" rx="8" fill="#2B2B2B" stroke="#108548" stroke-width="2"/>
+    <text x="645" y="356" fill="#FAFAFA" font-size="14" font-weight="600">GET → notas</text>
+    <text x="645" y="380" fill="#999999" font-size="13">descripción de la release</text>
+
+    <!-- nota izquierda -->
+    <text x="30" y="246" fill="#FAFAFA" font-size="13" font-weight="600">Sin el marcador</text>
+    <text x="30" y="266" fill="#999999" font-size="13">el trailer se queda en la</text>
+    <text x="30" y="284" fill="#999999" font-size="13">rama borrada y la API</text>
+    <text x="30" y="302" fill="#999999" font-size="13">no lo verá nunca.</text>
+    <text x="30" y="356" fill="#FAFAFA" font-size="13" font-weight="600">Orden en app</text>
+    <text x="30" y="376" fill="#999999" font-size="13">CHANGELOG en main, tag</text>
+    <text x="30" y="394" fill="#999999" font-size="13">firmado, release sobre el tag</text>
+  </g>
+</svg>

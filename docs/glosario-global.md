@@ -24,6 +24,10 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Catálogo CI/CD** (*CI/CD Catalog*) — Free. Índice de componentes publicados que otros proyectos pueden buscar y consumir por versión.
 
+**CHANGELOG generado** (*changelog*) — Free. Notas de una versión que GitLab construye con los commits que llevan el trailer `Changelog:`, configurables con `.gitlab/changelog_config.yml`. `GET .../repository/changelog` las devuelve; `POST` las escribe en un archivo.
+
+**Cherry-pick** — Free en la UI y la API, y comando de Git. Aplica los cambios de un commit sobre otra rama en un commit nuevo; con `git cherry-pick -x` el mensaje dice de qué commit viene.
+
 **Clave de firma** (*signing key*) — Free. Clave SSH registrada con `usage_type` `signing` o `auth_and_signing`. Una clave registrada solo con uso `auth` **no verifica firmas**, y el uso no se puede cambiar después: hay que borrarla y registrarla otra vez.
 
 **Commit verificado** (*verified commit*) — Free. Commit cuya firma GitLab ha validado y atado a una cuenta de la instancia. Exige cuatro cosas: firma criptográficamente válida, clave registrada **con uso de firma**, correo del committer perteneciente al dueño de la clave, y ese correo confirmado. Se consulta en `GET /projects/:id/repository/commits/:sha/signature`.
@@ -32,7 +36,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **CODEOWNERS** — Archivo que asigna dueños a rutas del repositorio; gana la última regla que coincide. En **Premium** GitLab lo muestra y puede exigir la aprobación del dueño; en CE no lo lee en absoluto. Aquí lo lee el script de auditoría `gobernanza` (S07), que en la S09 pasa a ser un job.
 
-**Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. No es de GitLab, pero es lo que permite generar el CHANGELOG y decidir la versión sin escribirlos a mano.
+**Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. No es de GitLab, pero es lo que permite decidir la versión sin discutirla. El CHANGELOG lo genera GitLab a partir de otro trailer, `Changelog:` (S08).
 
 ## D
 
@@ -40,7 +44,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Dependency Proxy** — Free. Cache de imágenes de Docker Hub servida por tu propia instancia. Evita el rate limit de los pulls anónimos.
 
-**DORA** (*DevOps Research and Assessment*) — Las cuatro métricas de referencia: frecuencia de despliegue, tiempo de entrega, tasa de fallo del cambio y tiempo de restauración. La **API de DORA es Premium**; en CE se calculan a mano desde la API y se documenta la definición usada.
+**DORA** (*DevOps Research and Assessment*) — Las cuatro métricas de referencia: frecuencia de despliegue, tiempo de entrega, tasa de fallo del cambio y tiempo de restauración. Los gráficos y la API de DORA son **Ultimate**; en CE se calculan desde la API de merge requests, releases e issues y se documenta la definición usada (S08).
 
 ## E
 
@@ -60,7 +64,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Gitaly Cluster** — Free. Varios nodos Gitaly replicados y coordinados por Praefect. Es alta disponibilidad de repositorios sin licencia de pago, y casi nadie lo sabe.
 
-**GitLab Flow** — Modelo de ramas de GitLab: `main` siempre desplegable, ramas de funcionalidad cortas y ramas de entorno o etiquetas para promocionar. Más simple que Git Flow, más disciplinado que trunk-based puro.
+**GitLab Flow** — Modelo de ramas de GitLab: `main` como integración, ramas de funcionalidad cortas, y ramas de larga vida solo cuando hacen falta, de entorno o de release (`release/X.Y`). Su regla es *upstream first*: todo entra primero en `main`. Más simple que Git Flow, más disciplinado que trunk-based puro.
 
 ## H
 
@@ -102,7 +106,11 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Rails console** — Free. Consola interactiva de la aplicación (`gitlab-rails console`). El último recurso del administrador y la forma más rápida de romper la instancia. Solo lectura salvo que sepas exactamente qué haces.
 
+**Rama de release** (*release branch*) — Rama de larga vida `release/X.Y` que contiene una versión menor y sus parches. Se protege como `main` y solo recibe arreglos llevados desde `main` con *cherry-pick*.
+
 **Registry** (*Container Registry*) — Free. Registro de imágenes Docker integrado en cada proyecto, con políticas de limpieza por etiqueta y antigüedad.
+
+**Release** — Free. Página de GitLab asociada a un tag, con notas, hitos, enlaces a assets y evidencia. Borrarla no borra el tag; publicarla exige poder crear el tag.
 
 **Review app** — Free. Entorno efímero que se despliega por cada merge request y se destruye al cerrarlo.
 
@@ -118,6 +126,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Scoped label** (*etiqueta con ámbito*) — **Premium**. Etiquetas mutuamente excluyentes con la sintaxis `clave::valor`. En CE el `::` se acepta en el nombre pero no impone nada; este bootcamp usa igualmente `clave::valor` (para que Premium la active sin renombrar) y vigila la exclusividad con el tablero y una comprobación por API (S05).
 
+**SemVer** (*Semantic Versioning*) — Convención `MAYOR.MENOR.PARCHE`: rompe, añade, arregla. Con `MAYOR = 0` no hay contrato, y cada proyecto fija su regla por escrito.
+
 **Server hook** — Free. Script que Gitaly ejecuta antes o después de cada cambio en un repositorio, venga de un `push`, de una fusión en la UI o de la API. Es lo único en CE que **bloquea de verdad** un cambio que no cumple una regla, y lo único que un Maintainer no puede quitar: se instala con `gitaly hooks set` desde el servidor (S07).
 
 **Sidekiq** — Free. El procesador de trabajos en segundo plano de GitLab. Cuando las colas crecen, es el primer sitio donde mirar.
@@ -127,6 +137,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Squash** — Free. Aplastar los commits de una rama en uno al fusionar. Lo crea el servidor, sin la firma del autor; su mensaje sale de `squash_commit_template` (S06).
 
 ## T
+
+**Tag anotado y firmado** (*annotated / signed tag*) — Tag que es un objeto propio con autor, fecha y mensaje; firmado con `git tag -s`. Las versiones de `app` lo son desde la S08. Por API, es anotado si `target` y `commit.id` difieren.
 
 **Terraform state backend** — Free. GitLab puede almacenar el estado de Terraform, con bloqueo incluido, sin necesidad de S3 ni Terraform Cloud.
 

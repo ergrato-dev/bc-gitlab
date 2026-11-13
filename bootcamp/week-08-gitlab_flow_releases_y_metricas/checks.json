@@ -1,0 +1,132 @@
+{
+  "semana": "08",
+  "titulo": "GitLab Flow, releases y métricas de flujo",
+  "checks": [
+    {
+      "id": "ramas-release-protegidas",
+      "descripcion": "Las ramas release/* estan protegidas",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(.name) | index(\"release/*\") != null",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 2"
+    },
+    {
+      "id": "release-solo-por-merge-request",
+      "descripcion": "En release/* nadie empuja y solo los Maintainers fusionan",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(select(.name == \"release/*\"))[0] | (.push_access_levels | map(.access_level)) == [0] and (.merge_access_levels | map(.access_level)) == [40]",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 2"
+    },
+    {
+      "id": "release-sin-force-push",
+      "descripcion": "Nadie puede forzar el push sobre release/*",
+      "api": "projects/{proyecto}/protected_branches",
+      "jq": "map(select(.name == \"release/*\"))[0].allow_force_push == false",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 2"
+    },
+    {
+      "id": "configuracion-del-changelog",
+      "descripcion": "El archivo .gitlab/changelog_config.yml esta en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=.gitlab&per_page=100",
+      "jq": "map(.name) | index(\"changelog_config.yml\") != null",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 4"
+    },
+    {
+      "id": "plantilla-de-squash-con-trailers",
+      "descripcion": "La plantilla de squash conserva los trailers del commit con %{first_multiline_commit_description}",
+      "api": "projects/{proyecto}",
+      "jq": "(.squash_commit_template // \"\") | contains(\"%{first_multiline_commit_description}\")",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 3"
+    },
+    {
+      "id": "tres-cambios-con-changelog",
+      "descripcion": "Al menos tres commits de main llevan el trailer Changelog",
+      "api": "projects/{proyecto}/repository/commits?ref_name=main&trailers=true&per_page=100",
+      "jq": "map(select(.trailers.Changelog != null)) | length >= 3",
+      "pista": "2-practicas/02-cambios-que-cuentan.md, paso 3, y 2-practicas/04-el-primer-parche.md, paso 2"
+    },
+    {
+      "id": "changelog-0-1-0-en-main",
+      "descripcion": "CHANGELOG.md en main tiene la seccion de la 0.1.0",
+      "api": "projects/{proyecto}/repository/files/CHANGELOG.md?ref=main",
+      "jq": ".content | @base64d | test(\"(?m)^## 0\\\\.1\\\\.0\")",
+      "pista": "2-practicas/03-la-primera-version.md, paso 2"
+    },
+    {
+      "id": "tag-v0-1-0-anotado",
+      "descripcion": "El tag v0.1.0 existe y es anotado",
+      "api": "projects/{proyecto}/repository/tags/v0.1.0",
+      "jq": ".name == \"v0.1.0\" and .target != .commit.id",
+      "pista": "2-practicas/03-la-primera-version.md, paso 3"
+    },
+    {
+      "id": "release-v0-1-0-con-notas",
+      "descripcion": "La release v0.1.0 tiene notas generadas con al menos una categoria",
+      "api": "projects/{proyecto}/releases/v0.1.0",
+      "jq": "(.description // \"\") | test(\"(?m)^### \")",
+      "pista": "2-practicas/03-la-primera-version.md, paso 4"
+    },
+    {
+      "id": "release-v0-1-0-con-hito",
+      "descripcion": "La release v0.1.0 esta asociada al hito v0.1.0",
+      "api": "projects/{proyecto}/releases/v0.1.0",
+      "jq": "(.milestones // []) | map(.title) | index(\"v0.1.0\") != null",
+      "pista": "2-practicas/03-la-primera-version.md, paso 4"
+    },
+    {
+      "id": "hito-v0-1-0-cerrado",
+      "descripcion": "El hito v0.1.0 esta cerrado",
+      "api": "projects/{proyecto}/milestones?title=v0.1.0",
+      "jq": ".[0].state == \"closed\"",
+      "pista": "2-practicas/03-la-primera-version.md, paso 5"
+    },
+    {
+      "id": "rama-release-0-1",
+      "descripcion": "La rama release/0.1 existe y esta protegida",
+      "api": "projects/{proyecto}/repository/branches/release%2F0.1",
+      "jq": ".protected == true",
+      "pista": "2-practicas/04-el-primer-parche.md, paso 3"
+    },
+    {
+      "id": "cherry-pick-en-release",
+      "descripcion": "release/0.1 tiene un commit traido de main con cherry-pick -x",
+      "api": "projects/{proyecto}/repository/commits?ref_name=release%2F0.1&per_page=100",
+      "jq": "map(select(.message | test(\"\\\\(cherry picked from commit [0-9a-f]{40}\\\\)\"))) | length > 0",
+      "pista": "2-practicas/04-el-primer-parche.md, paso 3"
+    },
+    {
+      "id": "v0-1-1-sale-de-la-rama-de-release",
+      "descripcion": "El tag v0.1.1 tiene commits que no estan en main: sale de release/0.1",
+      "api": "projects/{proyecto}/repository/compare?from=main&to=v0.1.1",
+      "jq": "(.commits // []) | length > 0",
+      "pista": "2-practicas/04-el-primer-parche.md, paso 5"
+    },
+    {
+      "id": "release-v0-1-1-con-notas",
+      "descripcion": "La release v0.1.1 tiene notas generadas con al menos una categoria",
+      "api": "projects/{proyecto}/releases/v0.1.1",
+      "jq": "(.description // \"\") | test(\"(?m)^### \")",
+      "pista": "2-practicas/04-el-primer-parche.md, paso 6"
+    },
+    {
+      "id": "script-de-metricas",
+      "descripcion": "El script scripts/metricas.sh esta en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=scripts&per_page=100",
+      "jq": "map(.name) | index(\"metricas.sh\") != null",
+      "pista": "3-proyecto/README.md, punto 1"
+    },
+    {
+      "id": "metricas-documentadas",
+      "descripcion": "docs/metricas.md en main define las cuatro metricas",
+      "api": "projects/{proyecto}/repository/files/docs%2Fmetricas.md?ref=main",
+      "jq": ".content | @base64d | ascii_downcase | test(\"frecuencia de entrega\") and test(\"tiempo de entrega\") and test(\"tasa de fallo\") and test(\"tiempo de restauraci\")",
+      "pista": "3-proyecto/README.md, punto 1"
+    },
+    {
+      "id": "adr-006-en-la-wiki",
+      "descripcion": "La wiki tiene una pagina cuyo slug empieza por adr-006",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(select(.slug | ascii_downcase | startswith(\"adr-006\"))) | length > 0",
+      "pista": "2-practicas/01-gitlab-flow-en-app.md, paso 1"
+    }
+  ]
+}

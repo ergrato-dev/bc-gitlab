@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El primer parche de app con GitLab Flow y una rama de release</title>
+  <desc id="desc">En main entran por merge request dos cambios con trailer Changelog y el CHANGELOG de la 0.1.0, y se etiqueta v0.1.0. Después entra trabajo de la 0.2.0 y el arreglo del bug con Changelog fixed. release/0.1 se crea por API desde v0.1.0. El commit de squash del arreglo se lleva a release/0.1 con cherry-pick -x por merge request, después entra el CHANGELOG de la 0.1.1 y se etiqueta v0.1.1 en release/0.1. Nada del trabajo de la 0.2.0 llega a v0.1.1.</desc>
+  <rect width="900" height="430" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha-naranja" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">Upstream first: el arreglo entra en main y baja a release/0.1</text>
+
+    <!-- main -->
+    <text x="30" y="135" fill="#FAFAFA" font-size="15" font-weight="600">main</text>
+    <line x1="90" y1="130" x2="870" y2="130" stroke="#FC6D26" stroke-width="3"/>
+
+    <circle cx="140" cy="130" r="7" fill="#FC6D26"/>
+    <text x="140" y="104" fill="#FAFAFA" font-size="13" text-anchor="middle">feat</text>
+    <text x="140" y="160" fill="#999999" font-size="13" text-anchor="middle">added</text>
+
+    <circle cx="210" cy="130" r="7" fill="#FC6D26"/>
+    <text x="210" y="104" fill="#FAFAFA" font-size="13" text-anchor="middle">feat</text>
+    <text x="210" y="160" fill="#999999" font-size="13" text-anchor="middle">added</text>
+
+    <circle cx="290" cy="130" r="7" fill="#FC6D26"/>
+    <text x="290" y="104" fill="#FAFAFA" font-size="13" text-anchor="middle">CHANGELOG</text>
+
+    <rect x="252" y="62" width="76" height="24" rx="4" fill="#108548"/>
+    <text x="290" y="79" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">v0.1.0</text>
+
+    <circle cx="450" cy="130" r="7" fill="#554488"/>
+    <text x="450" y="104" fill="#FAFAFA" font-size="13" text-anchor="middle">feat</text>
+    <text x="450" y="160" fill="#999999" font-size="13" text-anchor="middle">de la 0.2.0</text>
+
+    <circle cx="560" cy="130" r="8" fill="#E24329"/>
+    <text x="560" y="104" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">fix</text>
+    <text x="560" y="160" fill="#999999" font-size="13" text-anchor="middle">fixed</text>
+    <text x="560" y="82" fill="#FAFAFA" font-size="13" text-anchor="middle">1 · arreglo por MR</text>
+
+    <circle cx="680" cy="130" r="7" fill="#554488"/>
+    <text x="680" y="104" fill="#FAFAFA" font-size="13" text-anchor="middle">feat</text>
+    <text x="680" y="160" fill="#999999" font-size="13" text-anchor="middle">de la 0.2.0</text>
+
+    <!-- release/0.1 -->
+    <path d="M 290 130 L 340 300 L 870 300" fill="none" stroke="#554488" stroke-width="3"/>
+    <text x="30" y="305" fill="#FAFAFA" font-size="15" font-weight="600">release/0.1</text>
+    <text x="190" y="222" fill="#FAFAFA" font-size="13">2 · POST branches</text>
+    <text x="190" y="240" fill="#999999" font-size="13">ref=v0.1.0</text>
+
+    <line x1="560" y1="139" x2="585" y2="288" stroke="#FC6D26" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#flecha-naranja)"/>
+    <text x="582" y="214" fill="#FC6D26" font-size="13">3 · cherry-pick -x</text>
+    <text x="582" y="232" fill="#999999" font-size="13">del commit de squash, por MR</text>
+
+    <circle cx="590" cy="300" r="8" fill="#E24329"/>
+    <text x="590" y="330" fill="#999999" font-size="13" text-anchor="middle">fixed</text>
+
+    <circle cx="700" cy="300" r="7" fill="#FC6D26"/>
+    <text x="700" y="330" fill="#999999" font-size="13" text-anchor="middle">CHANGELOG</text>
+    <text x="700" y="350" fill="#FAFAFA" font-size="13" text-anchor="middle">4 · 0.1.1 por MR</text>
+
+    <rect x="752" y="314" width="76" height="24" rx="4" fill="#108548"/>
+    <text x="790" y="331" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">v0.1.1</text>
+    <text x="790" y="360" fill="#FAFAFA" font-size="13" text-anchor="middle">5 · tag firmado</text>
+
+    <text x="30" y="400" fill="#999999" font-size="13">Morado: trabajo de la 0.2.0. Ninguno de esos commits llega a v0.1.1.</text>
+    <text x="30" y="420" fill="#999999" font-size="13">compare?from=main&amp;to=v0.1.1 solo muestra el parche y su CHANGELOG.</text>
+  </g>
+</svg>
