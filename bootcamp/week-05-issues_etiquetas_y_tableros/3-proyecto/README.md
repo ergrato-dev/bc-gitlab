@@ -123,6 +123,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 04](../../week-04-repositorio_como_producto/3-proyecto/README.md) | **Proyecto Semana 05** | Proyecto Semana 06 |
+| [Proyecto Semana 04](../../week-04-repositorio_como_producto/3-proyecto/README.md) | **Proyecto Semana 05** | [Proyecto Semana 06](../../week-06-merge_requests_y_code_review/3-proyecto/README.md) |
 
 [← Volver a la Semana 05](../README.md)

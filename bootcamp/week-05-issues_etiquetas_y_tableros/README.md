@@ -156,6 +156,6 @@ Las 17 comprobaciones tienen que pasar. Si alguna falla, la pista te dice en qu�
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 04 — El repositorio como producto](../week-04-repositorio_como_producto/README.md) | **Semana 05** | Semana 06 — Merge requests y code review |
+| [Semana 04 — El repositorio como producto](../week-04-repositorio_como_producto/README.md) | **Semana 05** | [Semana 06 — Merge requests y code review](../week-06-merge_requests_y_code_review/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

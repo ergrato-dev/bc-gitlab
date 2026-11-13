@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El ciclo de una merge request</title>
+  <desc id="desc">Una merge request nace de un issue del backlog. La rama empieza por el número del issue, y el push con push options abre la merge request en borrador con la plantilla Default y Closes #7. Con /ready y un revisor asignado pasa a revisión: hilos, sugerencias, revisión enviada y aprobación. Se fusiona con squash y la rama se borra, y el issue se cierra solo. Si se cierra sin fusionar, nada entra en main y el issue sigue abierto.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Del issue al cierre: el issue no se toca a mano en ningún momento</text>
+
+    <rect x="30" y="70" width="150" height="140" rx="8" fill="none" stroke="#666666"/>
+    <text x="45" y="96" fill="#FAFAFA" font-size="13" font-weight="600">Issue #7</text>
+    <text x="45" y="120" fill="#999999" font-size="11">tipo::bug</text>
+    <text x="45" y="138" fill="#999999" font-size="11">estado::en-curso</text>
+    <text x="45" y="170" fill="#FAFAFA" font-size="11">rama</text>
+    <text x="45" y="188" fill="#FAFAFA" font-size="11">7-la-multa-...</text>
+
+    <line x1="180" y1="140" x2="208" y2="140" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="210" y="70" width="150" height="140" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="225" y="96" fill="#FAFAFA" font-size="13" font-weight="600">Borrador</text>
+    <text x="225" y="120" fill="#999999" font-size="11">git push -o</text>
+    <text x="225" y="138" fill="#999999" font-size="11">merge_request.create</text>
+    <text x="225" y="170" fill="#FAFAFA" font-size="11">plantilla Default</text>
+    <text x="225" y="188" fill="#FAFAFA" font-size="11">+ Closes #7, solo</text>
+
+    <line x1="360" y1="140" x2="388" y2="140" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="390" y="70" width="150" height="140" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="405" y="96" fill="#FAFAFA" font-size="13" font-weight="600">En revisión</text>
+    <text x="405" y="120" fill="#999999" font-size="11">/ready · revisor</text>
+    <text x="405" y="138" fill="#999999" font-size="11">estado::en-revision</text>
+    <text x="405" y="170" fill="#FAFAFA" font-size="11">hilos · sugerencias</text>
+    <text x="405" y="188" fill="#FAFAFA" font-size="11">revisión · aprobación</text>
+
+    <line x1="540" y1="140" x2="568" y2="140" stroke="#FC6D26" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="570" y="70" width="150" height="140" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="585" y="96" fill="#52B87A" font-size="13" font-weight="600">Fusionada</text>
+    <text x="585" y="120" fill="#999999" font-size="11">hilos resueltos</text>
+    <text x="585" y="138" fill="#999999" font-size="11">sha revisado</text>
+    <text x="585" y="170" fill="#FAFAFA" font-size="11">squash con</text>
+    <text x="585" y="188" fill="#FAFAFA" font-size="11">Reviewed-by</text>
+
+    <line x1="720" y1="140" x2="748" y2="140" stroke="#52B87A" stroke-width="2" marker-end="url(#n)"/>
+
+    <rect x="750" y="70" width="120" height="140" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="765" y="96" fill="#52B87A" font-size="13" font-weight="600">Issue #7</text>
+    <text x="765" y="120" fill="#FAFAFA" font-size="11">cerrado</text>
+    <text x="765" y="138" fill="#999999" font-size="11">closed_by: !3</text>
+    <text x="765" y="170" fill="#999999" font-size="11">rama borrada</text>
+
+    <line x1="465" y1="210" x2="465" y2="278" stroke="#666666" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#g)"/>
+    <rect x="390" y="280" width="150" height="80" rx="8" fill="none" stroke="#666666" stroke-dasharray="5 4"/>
+    <text x="405" y="306" fill="#999999" font-size="13" font-weight="600">Cerrada</text>
+    <text x="405" y="328" fill="#999999" font-size="11">nada entra en main</text>
+    <text x="405" y="346" fill="#999999" font-size="11">el issue sigue abierto</text>
+
+    <text x="30" y="300" fill="#FAFAFA" font-size="12" font-weight="600">Lo que hace la trazabilidad</text>
+    <text x="30" y="324" fill="#999999" font-size="11">La rama que empieza por 7-</text>
+    <text x="30" y="342" fill="#999999" font-size="11">añade Closes #7 y copia</text>
+    <text x="30" y="360" fill="#999999" font-size="11">etiquetas e hito del issue.</text>
+
+    <text x="590" y="300" fill="#FAFAFA" font-size="12" font-weight="600">Lo que no se hace a mano</text>
+    <text x="590" y="324" fill="#999999" font-size="11">Escribir Closes, cerrar el issue,</text>
+    <text x="590" y="342" fill="#999999" font-size="11">borrar la rama ni escribir el</text>
+    <text x="590" y="360" fill="#999999" font-size="11">mensaje del commit de squash.</text>
+  </g>
+</svg>

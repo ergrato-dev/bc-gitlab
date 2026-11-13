@@ -166,6 +166,24 @@ _Se añaden a medida que se publica cada semana._
 | Referenciar etiquetas e hitos en Markdown | `~"tipo::bug"` y `%"v0.1.0"` se convierten en enlaces filtrados |
 | Ver qué plantillas detecta GitLab | `.../projects/$P/templates/issues \| jq -r '.[].key'` |
 
+## Semana 06 — Merge requests y code review
+
+| Truco | Cómo |
+|---|---|
+| Crear la merge request al empujar, sin abrir el navegador | `git push -o merge_request.create -o merge_request.target=main -o merge_request.draft` |
+| Saber en una palabra por qué no se puede fusionar | `.../merge_requests/<iid> \| jq -r .detailed_merge_status` |
+| Sugerir un cambio que abarca la línea anterior y las dos siguientes | Bloque ` ```suggestion:-1+2 ` en un comentario sobre la línea |
+| Pedir revisión desde un comentario | `/assign_reviewer @revisor-<dominio>` |
+| Sacar de borrador o volver a meter | `/ready` y `/draft` |
+| Enviar la revisión con veredicto desde un comentario | `/submit_review requested_changes` |
+| Rebase sin salir de GitLab, cuando no hay conflictos | `/rebase` en un comentario, o `PUT .../merge_requests/<iid>/rebase` |
+| Qué issues va a cerrar una MR, antes de fusionarla | `.../merge_requests/<iid>/closes_issues \| jq -r '.[].iid'` |
+| Qué MR cerró un issue | `.../issues/<iid>/closed_by \| jq -r '.[].web_url'` |
+| Fusionar solo si nadie empujó mientras revisabas | `PUT .../merge` con `sha=<el commit que revisaste>` |
+| Ver la MR en local sin crear rama a mano | `git fetch origin merge-requests/<iid>/head:mr-<iid>` |
+| Atajos de teclado en el diff | `]` y `[` siguiente y anterior archivo, `n` y `p` siguiente y anterior hilo sin resolver |
+| Dar crédito a quien revisó en la historia | `%{reviewed_by}` en la plantilla del commit de squash |
+
 ---
 
 [← Volver a docs](README.md)

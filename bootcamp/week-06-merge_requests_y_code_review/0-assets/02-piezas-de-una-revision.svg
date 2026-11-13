@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Las piezas de una revisión en CE</title>
+  <desc id="desc">Cuatro piezas, comparadas en tres preguntas: qué dicen, si bloquean la fusión en CE y qué rastro dejan en el commit de squash. Un comentario suelto no se resuelve, no bloquea y no deja rastro. Un hilo dice que hay algo que resolver y bloquea si el proyecto exige hilos resueltos. Una revisión enviada dice que el revisor terminó; Request changes no bloquea en CE, y deja Reviewed-by. Una aprobación dice que puede entrar; no bloquea porque la obligatoria es Premium, y deja Approved-by.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Qué dice cada pieza, qué bloquea en CE y qué queda en la historia</text>
+
+    <text x="30" y="150" fill="#999999" font-size="12">Dice</text>
+    <text x="30" y="230" fill="#999999" font-size="12">¿Bloquea en CE?</text>
+    <text x="30" y="310" fill="#999999" font-size="12">En el commit</text>
+
+    <rect x="160" y="70" width="170" height="300" rx="8" fill="none" stroke="#666666"/>
+    <text x="175" y="100" fill="#FAFAFA" font-size="14" font-weight="600">Comentario</text>
+    <text x="175" y="150" fill="#FAFAFA" font-size="12">"Buena idea esto"</text>
+    <text x="175" y="230" fill="#999999" font-size="12">No. No se resuelve</text>
+    <text x="175" y="310" fill="#999999" font-size="12">Nada</text>
+
+    <rect x="345" y="70" width="170" height="300" rx="8" fill="none" stroke="#FC6D26"/>
+    <text x="360" y="100" fill="#FAFAFA" font-size="14" font-weight="600">Hilo</text>
+    <text x="360" y="150" fill="#FAFAFA" font-size="12">"Aquí hay algo</text>
+    <text x="360" y="168" fill="#FAFAFA" font-size="12">que resolver"</text>
+    <text x="360" y="230" fill="#FC6D26" font-size="12" font-weight="600">Sí, abierto</text>
+    <text x="360" y="248" fill="#999999" font-size="11">con hilos obligatorios</text>
+    <text x="360" y="310" fill="#999999" font-size="12">Nada</text>
+
+    <rect x="530" y="70" width="170" height="300" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="545" y="100" fill="#FAFAFA" font-size="14" font-weight="600">Revisión enviada</text>
+    <text x="545" y="150" fill="#FAFAFA" font-size="12">"He terminado,</text>
+    <text x="545" y="168" fill="#FAFAFA" font-size="12">esto es todo"</text>
+    <text x="545" y="230" fill="#999999" font-size="12">No. Request changes</text>
+    <text x="545" y="248" fill="#999999" font-size="11">solo bloquea en Premium</text>
+    <text x="545" y="310" fill="#52B87A" font-size="12" font-weight="600">Reviewed-by:</text>
+
+    <rect x="715" y="70" width="155" height="300" rx="8" fill="none" stroke="#52B87A"/>
+    <text x="730" y="100" fill="#FAFAFA" font-size="14" font-weight="600">Aprobación</text>
+    <text x="730" y="150" fill="#FAFAFA" font-size="12">"Por mí,</text>
+    <text x="730" y="168" fill="#FAFAFA" font-size="12">puede entrar"</text>
+    <text x="730" y="230" fill="#999999" font-size="12">No. Obligatoria</text>
+    <text x="730" y="248" fill="#999999" font-size="11">es Premium</text>
+    <text x="730" y="310" fill="#52B87A" font-size="12" font-weight="600">Approved-by:</text>
+  </g>
+</svg>

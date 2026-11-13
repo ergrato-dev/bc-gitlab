@@ -12,6 +12,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Alta disponibilidad** (*high availability*) — Arquitectura en la que la caída de un componente no tira el servicio. En GitLab implica al menos Gitaly replicado, PostgreSQL con réplica y un pooler de conexiones.
 
+**Aprobación** (*approval*) — Free como botón y API, pero opcional: en CE no bloquea la fusión y el autor puede aprobar lo suyo. Las aprobaciones obligatorias son **Premium**; en CE lo que bloquea es un hilo sin resolver (S06), y la aprobación se comprueba por API (S07).
+
 **Artefacto** (*artifact*) — Free. Archivo o directorio que un job produce y GitLab guarda. Se pasa a jobs posteriores y se puede descargar. No confundir con la caché: el artefacto es un **resultado**, la caché es una **optimización**.
 
 **Auto DevOps** — Free. Pipeline preconfigurado que detecta el lenguaje del proyecto y aplica build, test, escaneo y despliegue sin escribir `.gitlab-ci.yml`. Poco usado porque se asume de pago; no lo es.
@@ -70,6 +72,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 ## M
 
+**Merge method** (*método de fusión*) — Free. `merge`, `rebase_merge` (semilineal) o `ff`. Decide si queda commit de fusión y si la rama tiene que contener la punta de `main`. Este bootcamp usa `rebase_merge` con squash por defecto (ADR-004, S06).
+
 **Merge request** (*MR*) — Free. La propuesta de cambio de GitLab; el equivalente al pull request de GitHub. La diferencia no es solo de nombre: el MR es también la unidad a la que se enganchan pipelines, entornos y aprobaciones.
 
 **Merge train** — **Premium**. Cola que prueba cada MR contra el resultado de fusionar los anteriores. En CE se mitiga exigiendo rebase antes de fusionar.
@@ -117,6 +121,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Sidekiq** — Free. El procesador de trabajos en segundo plano de GitLab. Cuando las colas crecen, es el primer sitio donde mirar.
 
 **SLO** (*service level objective*) — Objetivo numérico de calidad de servicio sobre un indicador medible. Sin número y sin ventana temporal no es un SLO, es una intención.
+
+**Squash** — Free. Aplastar los commits de una rama en uno al fusionar. Lo crea el servidor, sin la firma del autor; su mensaje sale de `squash_commit_template` (S06).
 
 ## T
 

@@ -1,0 +1,118 @@
+{
+  "semana": "06",
+  "titulo": "Merge requests, code review y estrategias de fusion",
+  "checks": [
+    {
+      "id": "metodo-de-fusion-lineal",
+      "descripcion": "El proyecto usa un metodo de fusion con historia lineal o semilineal",
+      "api": "projects/{proyecto}",
+      "jq": ".merge_method == \"rebase_merge\" or .merge_method == \"ff\"",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 2"
+    },
+    {
+      "id": "squash-por-defecto",
+      "descripcion": "El squash viene marcado por defecto o es obligatorio",
+      "api": "projects/{proyecto}",
+      "jq": ".squash_option == \"default_on\" or .squash_option == \"always\"",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 2"
+    },
+    {
+      "id": "hilos-resueltos-para-fusionar",
+      "descripcion": "Solo se puede fusionar con todos los hilos resueltos",
+      "api": "projects/{proyecto}",
+      "jq": ".only_allow_merge_if_all_discussions_are_resolved == true",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 2"
+    },
+    {
+      "id": "borrar-rama-al-fusionar",
+      "descripcion": "La rama de origen se borra por defecto al fusionar",
+      "api": "projects/{proyecto}",
+      "jq": ".remove_source_branch_after_merge == true",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 2"
+    },
+    {
+      "id": "plantilla-de-squash-con-revisores",
+      "descripcion": "La plantilla del commit de squash incluye a quien reviso",
+      "api": "projects/{proyecto}",
+      "jq": "(.squash_commit_template // \"\") | contains(\"%{reviewed_by}\")",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 3"
+    },
+    {
+      "id": "plantilla-de-mr-default",
+      "descripcion": "Existe la plantilla de merge request Default",
+      "api": "projects/{proyecto}/templates/merge_requests",
+      "jq": "map(.key) | index(\"Default\") != null",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 4"
+    },
+    {
+      "id": "plantilla-de-mr-enlaza-issue",
+      "descripcion": "La plantilla Default pide el issue que se cierra",
+      "api": "projects/{proyecto}/templates/merge_requests/Default",
+      "jq": ".content | test(\"Closes #\")",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 4"
+    },
+    {
+      "id": "adr-004-en-la-wiki",
+      "descripcion": "La wiki tiene una pagina cuyo slug empieza por adr-004",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(select(.slug | ascii_downcase | startswith(\"adr-004\"))) | length > 0",
+      "pista": "2-practicas/01-el-proyecto-preparado-para-revisar.md, paso 5"
+    },
+    {
+      "id": "tres-mr-fusionadas",
+      "descripcion": "El proyecto tiene al menos tres merge requests fusionadas",
+      "api": "projects/{proyecto}/merge_requests?state=merged&per_page=100",
+      "jq": "length >= 3",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md y 04-historia-y-conflictos.md"
+    },
+    {
+      "id": "mr-trazadas-a-issues",
+      "descripcion": "Al menos tres merge requests fusionadas cierran un issue desde su descripcion",
+      "api": "projects/{proyecto}/merge_requests?state=merged&per_page=100",
+      "jq": "map(select((.description // \"\") | test(\"(?i)\\\\b(close[sd]?|fix(e[sd])?|resolve[sd]?|implement(s|ed)?)\\\\s+#[0-9]+\"))) | length >= 3",
+      "pista": "2-practicas/02-de-issue-a-merge-request.md, paso 5"
+    },
+    {
+      "id": "mr-con-revisor-distinto",
+      "descripcion": "Al menos tres merge requests fusionadas tienen un revisor distinto de su autor",
+      "api": "projects/{proyecto}/merge_requests?state=merged&per_page=100",
+      "jq": "map(select(.author.id as $a | .reviewers | map(.id) | any(. != $a))) | length >= 3",
+      "pista": "2-practicas/02-de-issue-a-merge-request.md, paso 6, y 04-historia-y-conflictos.md, paso 3"
+    },
+    {
+      "id": "mr-con-conversacion",
+      "descripcion": "Al menos una merge request fusionada tiene dos o mas comentarios",
+      "api": "projects/{proyecto}/merge_requests?state=merged&per_page=100",
+      "jq": "map(select(.user_notes_count >= 2)) | length >= 1",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md, pasos 3 a 6"
+    },
+    {
+      "id": "mr-fusionada-con-squash",
+      "descripcion": "Al menos una merge request se fusiono con squash",
+      "api": "projects/{proyecto}/merge_requests?state=merged&per_page=100",
+      "jq": "map(select(.squash_commit_sha != null)) | length >= 1",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md, paso 8"
+    },
+    {
+      "id": "mr-aprobada-por-otro",
+      "descripcion": "Al menos una merge request fusionada fue aprobada por alguien distinto de su autor",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ mergeRequests(state: merged, first: 50){ nodes { author { username } approvedBy { nodes { username } } } } } }",
+      "jq": "[.data.project.mergeRequests.nodes[] | .author.username as $a | select(.approvedBy.nodes | map(.username) | any(. != $a))] | length >= 1",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md, paso 7"
+    },
+    {
+      "id": "mr-con-sugerencia",
+      "descripcion": "Al menos una merge request fusionada recibio una sugerencia de codigo",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ mergeRequests(state: merged, first: 50){ nodes { notes(first: 100){ nodes { body } } } } } }",
+      "jq": "[.data.project.mergeRequests.nodes[].notes.nodes[].body | select(test(\"```suggestion\"))] | length >= 1",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md, paso 3"
+    },
+    {
+      "id": "issues-cerrados-por-mr",
+      "descripcion": "El proyecto tiene al menos cuatro issues cerrados",
+      "api": "projects/{proyecto}/issues?state=closed&issue_type=issue&per_page=100",
+      "jq": "length >= 4",
+      "pista": "2-practicas/03-la-revision-con-otra-identidad.md, paso 9, y 04-historia-y-conflictos.md, paso 7"
+    }
+  ]
+}

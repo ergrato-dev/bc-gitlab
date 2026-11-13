@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Tres historias para las mismas dos merge requests</title>
+  <desc id="desc">Las mismas dos merge requests, B y C, empezadas a la vez desde el mismo commit de main, fusionadas con cada método. Con merge, las dos ramas salen del mismo punto y se juntan con dos commits de fusión: la historia se cruza y la combinación nunca se probó. Con rebase_merge y squash, C se rebasa sobre main antes de fusionar: cada merge request es una burbuja con su commit de squash y su commit de fusión, en línea. Con ff y squash, no hay commits de fusión: un commit por merge request, en línea recta.</desc>
+  <rect width="900" height="430" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">Dos merge requests empezadas a la vez, fusionadas con cada método</text>
+
+    <!-- merge -->
+    <text x="30" y="90" fill="#FAFAFA" font-size="13" font-weight="600">merge</text>
+    <text x="30" y="108" fill="#999999" font-size="11">sin squash</text>
+    <line x1="160" y1="100" x2="840" y2="100" stroke="#666666" stroke-width="2"/>
+    <path d="M 200 100 C 240 60, 300 60, 340 60 L 420 60 C 470 60, 500 100, 520 100" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <path d="M 200 100 C 240 140, 300 140, 340 140 L 560 140 C 620 140, 660 100, 680 100" fill="none" stroke="#52B87A" stroke-width="2"/>
+    <circle cx="200" cy="100" r="7" fill="#999999"/>
+    <circle cx="340" cy="60" r="6" fill="#FC6D26"/><circle cx="420" cy="60" r="6" fill="#FC6D26"/>
+    <circle cx="340" cy="140" r="6" fill="#52B87A"/><circle cx="440" cy="140" r="6" fill="#52B87A"/><circle cx="560" cy="140" r="6" fill="#52B87A"/>
+    <circle cx="520" cy="100" r="8" fill="#1F1F1F" stroke="#FAFAFA" stroke-width="2"/>
+    <circle cx="680" cy="100" r="8" fill="#1F1F1F" stroke="#FAFAFA" stroke-width="2"/>
+    <text x="380" y="50" fill="#FC6D26" font-size="11">B</text>
+    <text x="450" y="160" fill="#52B87A" font-size="11">C</text>
+    <text x="700" y="80" fill="#999999" font-size="11">C nunca se probó con B dentro</text>
+
+    <!-- rebase_merge -->
+    <text x="30" y="230" fill="#FAFAFA" font-size="13" font-weight="600">rebase_merge</text>
+    <text x="30" y="248" fill="#999999" font-size="11">squash por defecto</text>
+    <line x1="160" y1="240" x2="840" y2="240" stroke="#666666" stroke-width="2"/>
+    <path d="M 200 240 C 220 205, 250 205, 270 205 C 300 205, 320 240, 340 240" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <path d="M 340 240 C 360 205, 390 205, 410 205 C 440 205, 460 240, 480 240" fill="none" stroke="#52B87A" stroke-width="2"/>
+    <circle cx="200" cy="240" r="7" fill="#999999"/>
+    <circle cx="270" cy="205" r="6" fill="#FC6D26"/>
+    <circle cx="410" cy="205" r="6" fill="#52B87A"/>
+    <circle cx="340" cy="240" r="8" fill="#1F1F1F" stroke="#FAFAFA" stroke-width="2"/>
+    <circle cx="480" cy="240" r="8" fill="#1F1F1F" stroke="#FAFAFA" stroke-width="2"/>
+    <text x="262" y="193" fill="#FC6D26" font-size="11">B</text>
+    <text x="402" y="193" fill="#52B87A" font-size="11">C, rebasada</text>
+    <text x="520" y="220" fill="#999999" font-size="11">una burbuja por merge request:</text>
+    <text x="520" y="236" fill="#999999" font-size="11">squash + commit de fusión</text>
+
+    <!-- ff -->
+    <text x="30" y="350" fill="#FAFAFA" font-size="13" font-weight="600">ff</text>
+    <text x="30" y="368" fill="#999999" font-size="11">squash obligatorio</text>
+    <line x1="160" y1="360" x2="840" y2="360" stroke="#666666" stroke-width="2"/>
+    <circle cx="200" cy="360" r="7" fill="#999999"/>
+    <circle cx="300" cy="360" r="7" fill="#FC6D26"/>
+    <circle cx="400" cy="360" r="7" fill="#52B87A"/>
+    <text x="292" y="342" fill="#FC6D26" font-size="11">B</text>
+    <text x="392" y="342" fill="#52B87A" font-size="11">C</text>
+    <text x="520" y="340" fill="#999999" font-size="11">un commit por merge request,</text>
+    <text x="520" y="356" fill="#999999" font-size="11">sin marcadores de fusión</text>
+
+    <circle cx="40" cy="410" r="6" fill="#1F1F1F" stroke="#FAFAFA" stroke-width="2"/>
+    <text x="54" y="414" fill="#999999" font-size="11">commit de fusión</text>
+    <line x1="180" y1="410" x2="220" y2="410" stroke="#666666" stroke-width="2"/>
+    <text x="228" y="414" fill="#999999" font-size="11">main</text>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Qué mirar en una revisión, y en qué orden</title>
+  <desc id="desc">Cinco preguntas, de lo más caro de arreglar después a lo más barato. Uno: resuelve el issue. Dos: es correcto, con casos límite. Tres: está probado, con un test que fallaría sin el cambio. Estas tres justifican bloquear. Cuatro: se entiende; a veces bloquea. Cinco: encaja con el estilo del proyecto; casi nunca bloquea y debería comprobarlo un formateador en el pipeline.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="38" fill="#FC6D26" font-size="16" font-weight="600">De lo más caro de arreglar después a lo más barato</text>
+
+    <rect x="30" y="70" width="840" height="46" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="99" fill="#FAFAFA" font-size="14" font-weight="600">1 · ¿Resuelve el issue?</text>
+    <text x="330" y="99" fill="#999999" font-size="12">Leer los criterios de aceptación antes que el diff</text>
+    <text x="760" y="99" fill="#FC6D26" font-size="12" font-weight="600">bloquea</text>
+
+    <rect x="30" y="126" width="800" height="46" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="155" fill="#FAFAFA" font-size="14" font-weight="600">2 · ¿Es correcto?</text>
+    <text x="330" y="155" fill="#999999" font-size="12">El cero, el negativo, el domingo, el error</text>
+    <text x="720" y="155" fill="#FC6D26" font-size="12" font-weight="600">bloquea</text>
+
+    <rect x="30" y="182" width="760" height="46" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="50" y="211" fill="#FAFAFA" font-size="14" font-weight="600">3 · ¿Está probado?</text>
+    <text x="330" y="211" fill="#999999" font-size="12">Un test que falla si se quita el cambio</text>
+    <text x="680" y="211" fill="#FC6D26" font-size="12" font-weight="600">bloquea</text>
+
+    <rect x="30" y="238" width="720" height="46" rx="8" fill="none" stroke="#666666"/>
+    <text x="50" y="267" fill="#FAFAFA" font-size="14" font-weight="600">4 · ¿Se entiende?</text>
+    <text x="330" y="267" fill="#999999" font-size="12">Nombres, estructura, el porqué</text>
+    <text x="640" y="267" fill="#999999" font-size="12">a veces</text>
+
+    <rect x="30" y="294" width="680" height="46" rx="8" fill="none" stroke="#666666" stroke-dasharray="5 4"/>
+    <text x="50" y="323" fill="#999999" font-size="14" font-weight="600">5 · ¿Encaja?</text>
+    <text x="330" y="323" fill="#999999" font-size="12">Estilo y formato: trabajo de una máquina</text>
+    <text x="610" y="323" fill="#999999" font-size="12">casi nunca</text>
+  </g>
+</svg>

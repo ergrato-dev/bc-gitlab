@@ -22,7 +22,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 | Semana | Tema | Estado |
 |:--:|---|:--:|
 | [05](week-05-issues_etiquetas_y_tableros/README.md) | Issues, taxonomía de etiquetas y tableros | ✅ |
-| 06 | Merge requests y code review | ⬜ |
+| [06](week-06-merge_requests_y_code_review/README.md) | Merge requests y code review | ✅ |
 | 07 | Gobernanza de ramas y aprobaciones | ⬜ |
 | 08 | GitLab Flow, releases y métricas de flujo | ⬜ |
 
