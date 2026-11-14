@@ -23,7 +23,7 @@
 | 5 | ¿Qué diferencia hay entre un job de disparo sin `strategy`, con `strategy: depend` y con `strategy: mirror`? ¿Qué se rompería en `app` sin `mirror`? |
 | 6 | ¿Cuándo compensa un pipeline hijo dinámico? ¿Qué pierde la revisión de código con él, y qué tiene que ver eso con `CODEOWNERS`? |
 | 7 | El pipeline de `infra/entornos` lo dispara `app`. ¿Con la identidad de quién se crea, qué permisos necesita esa identidad, y qué pasa el día que esa persona deja la organización? |
-| 8 | El primer `registrar` falló con `404`. ¿Por qué un `404` y no un `403`? ¿Qué lista se cambió, la de qué proyecto, y por qué en esa dirección? |
+| 8 | El primer `registrar` falló con `403`. ¿Qué lo rechazó, si tu usuario es miembro de los dos proyectos? ¿Qué lista se cambió, la de qué proyecto, y por qué en esa dirección? |
 | 9 | ¿Por qué `infra/entornos` descarga el paquete por ID de job y no "el último artefacto de `main`"? ¿Qué sustituye todo esto a `needs:project` y en qué tier está esa palabra clave? |
 | 10 | `staging` usa `newest_first` y `production` no. ¿Qué carrera evita `resource_group` que `interruptible: false` no evita, qué ajuste del proyecto completa a `newest_first`, y por qué un programado sobre `main` necesita `.fuera-de-programados` aunque `.npm` ya tenga `changes`? |
 
@@ -44,7 +44,7 @@
 
 **7.** Con la identidad de quien creó el pipeline de `main` de `app`: quien fusionó la merge request. Necesita poder ejecutar pipelines en `infra/entornos` (Developer o más), poder fusionar en `main` de `infra/entornos` si está protegida, y el rol mínimo de variables de pipeline de `infra/entornos`, porque el disparo pasa variables. Si esa persona se va y su usuario se bloquea, los disparos que dependan de ella fallan; el pipeline de `app` ya creado no se recrea. Es el mismo problema que el propietario de un programado.
 
-**8.** GitLab no confirma la existencia de un proyecto privado a quien no puede verlo: devuelve `404` en lugar de `403`. La lista que se cambió es la de **`app`**, el proyecto al que se accede: la lista de permitidos de entrada dice "estos proyectos pueden usar su job token contra mí". Quien descarga es `infra/entornos`, pero es `app` quien decide quién le lee. Además, el usuario detrás del job token tiene que ser miembro de `app`.
+**8.** No lo rechazaron los permisos del usuario, que es miembro de `app`, sino la lista de permitidos del job token de `app`: el job token venía de `infra/entornos`, que no estaba en ella. (Si el usuario no fuera miembro de `app`, el `GET` devolvería `404`: GitLab no confirma que existe un proyecto privado a quien no puede verlo.) La lista que se cambió es la de **`app`**, el proyecto al que se accede: la lista de permitidos de entrada dice "estos proyectos pueden usar su job token contra mí". Quien descarga es `infra/entornos`, pero es `app` quien decide quién le lee. Además, el usuario detrás del job token tiene que ser miembro de `app`.
 
 **9.** Porque mientras `infra/entornos` se ejecuta, el pipeline de `app` que lo disparó sigue en marcha (esperando a `infra` por `mirror`): el último pipeline **terminado** de `main` es el anterior, y "el último artefacto" sería el paquete viejo, sin ningún error. El ID del job, pasado por `dotenv` y las variables del disparo, identifica este paquete exacto. Todo eso sustituye a `needs:project`, que es Premium y descarga artefactos de otro proyecto desde el YAML.
 
@@ -60,7 +60,7 @@
 |---|---|:--:|
 | [01 — De stages a DAG](2-practicas/01-de-stages-a-dag.md) | Tres medidas; `needs` en los cinco jobs; el error de `ci/lint` visto; `concurrent = 2` | 10 |
 | [02 — Un pipeline hijo para la documentación](2-practicas/02-un-pipeline-hijo-para-la-documentacion.md) | Fechas reales en `docs/secretos.md`; `caducidades.sh` probado con éxito y con fallo; el hijo en verde y la merge request rota bloqueada y cerrada | 10 |
-| [03 — El disparo a `infra`](2-practicas/03-disparo-a-infra.md) | `infra/entornos` restringido; el `404` antes de la lista; el registro con el `sha` de `main` y los dos pipelines en verde | 10 |
+| [03 — El disparo a `infra`](2-practicas/03-disparo-a-infra.md) | `infra/entornos` restringido; el `403` antes de la lista; el registro con el `sha` de `main` y los dos pipelines en verde | 10 |
 | [04 — Concurrencia y calendario](2-practicas/04-concurrencia-y-calendario.md) | Los candados; un `waiting_for_resource` visto; `staging` en `newest_first`; el programado con un solo job | 10 |
 
 ---

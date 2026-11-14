@@ -120,7 +120,7 @@ esperar "$P" "$PROG"                                                            
 JOB=$(curl -s -H "$H" "$API/projects/$P/pipelines/$PROG/jobs" | jq -r '.[0].id')
 curl -s -H "$H" "$API/projects/$P/jobs/$JOB/trace" | grep -E 'PRONTO|rótalos'
 
-curl -s --request DELETE "$API/projects/$P/pipeline_schedules/$SID/variables/AVISO_DIAS" -H "$H" -o /dev/null -w '%{http_code}\n'   # 204
+curl -s --request DELETE "$API/projects/$P/pipeline_schedules/$SID/variables/AVISO_DIAS" -H "$H" -o /dev/null -w '%{http_code}\n'   # 202
 curl -s --request POST "$API/projects/$P/pipeline_schedules/$SID/play" -H "$H" -o /dev/null -w '%{http_code}\n'
 sleep 15
 esperar "$P" "$(curl -s -H "$H" "$API/projects/$P/pipelines?source=schedule&per_page=1" | jq -r '.[0].id')"   # success

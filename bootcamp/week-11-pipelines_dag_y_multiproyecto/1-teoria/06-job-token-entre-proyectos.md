@@ -45,7 +45,7 @@ Además de los permisos del usuario, el **proyecto de destino** decide qué otro
 
 | Configuración de `app` | Un job de `infra/entornos` lee un artefacto de `app` |
 |---|:--:|
-| Restringida, lista con solo `app` | ❌ `404` |
+| Restringida, lista con solo `app` | ❌ `403` |
 | Restringida, lista con `app` e `infra/entornos` | ✅ si el usuario es miembro de `app` |
 | Sin restringir (*All groups and projects*) | ✅ si el usuario es miembro de `app` |
 
@@ -88,8 +88,10 @@ curl -s -H "$H" "$API/projects/$P/job_token_scope" | jq .
 # {"inbound_enabled": true, "outbound_enabled": false}
 
 # Añadir infra/entornos a la lista de app.
+# Este POST pide IDs numéricos: con la ruta codificada responde "id is invalid".
+APP_ID=$(curl -s -H "$H" "$API/projects/$P" | jq -r .id)
 PI_ID=$(curl -s -H "$H" "$API/projects/$PI" | jq -r .id)
-curl -s --request POST "$API/projects/$P/job_token_scope/allowlist" -H "$H" \
+curl -s --request POST "$API/projects/$APP_ID/job_token_scope/allowlist" -H "$H" \
   --data "target_project_id=$PI_ID" | jq .
 
 # Quién está en la lista.
@@ -122,7 +124,7 @@ curl -s --request PATCH "$API/projects/$P/job_token_scope" -H "$H" \
 ## 5. Trucos
 
 - **Quién está autenticado con un job token**: desde un job, `GET $CI_API_V4_URL/job` con `JOB-TOKEN` devuelve el job, su pipeline y su `user`.
-- **Diferenciar un `404` de permisos de uno de verdad**: prueba el mismo `GET` con tu token personal. Si a ti te responde y al job no, es la lista o la pertenencia del usuario.
+- **Diferenciar el `403` de la lista de uno de pertenencia**: prueba el mismo `GET` con tu token personal. Si a ti te responde y al job no, es la lista. Si el usuario no es miembro de `app`, el job recibe `404`: GitLab no confirma que existe un proyecto privado a quien no puede verlo.
 - **Revisar las listas de todos tus proyectos**: un bucle sobre `GET /groups/:id/projects` con `GET .../job_token_scope/allowlist` para cada uno. La Semana 17 lo convierte en auditoría.
 
 ---

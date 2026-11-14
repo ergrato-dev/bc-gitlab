@@ -127,6 +127,7 @@ cat > .markdownlint-cli2.jsonc <<'EOF'
     "MD013": false,                      // longitud de línea: la prosa no se corta a 80
     "MD033": false,                      // HTML: las insignias del README lo usan
     "MD041": false,                      // primera línea: las plantillas no empiezan por título
+    "MD060": false,                      // estilo de tabla: el repositorio escribe |---| sin espacios
     "MD024": { "siblings_only": true }   // títulos repetidos solo entre hermanos
   },
   // Lo generado no se revisa: se regenera.

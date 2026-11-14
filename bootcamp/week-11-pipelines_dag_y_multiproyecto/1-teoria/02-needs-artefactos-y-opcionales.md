@@ -46,7 +46,8 @@ Si `package` dice `needs: [build]` y en este pipeline `build` no entra por sus `
 
 ```
 'package' job needs 'build' job, but 'build' does not exist in the pipeline.
-This might be because of the only, except, or rules keywords.
+This might be because of the only, except, or rules keywords. To need a job that
+sometimes does not exist in the pipeline, use needs:optional.
 ```
 
 Es un error de creación, no de ejecución: no hay jobs, no hay log. Dos salidas:
@@ -123,7 +124,7 @@ jq -n --rawfile c .gitlab-ci.yml '{content: $c, dry_run: true, ref: "main", incl
   | jq -c '{valid, errors}'
 ```
 
-Un `needs` hacia un job que no existe en ese pipeline aparece en `errors`. `dry_run` simula un push a la rama de `ref`: no ve un pipeline de merge request ni uno programado.
+Un `needs` hacia un job que no existe en ese pipeline aparece en `errors`: si el job no está en el YAML, `undefined need: <job>`; si sus `rules` lo dejan fuera, el mensaje de arriba. `dry_run` simula un push a la rama de `ref`: no ve un pipeline de merge request ni uno programado.
 
 ---
 

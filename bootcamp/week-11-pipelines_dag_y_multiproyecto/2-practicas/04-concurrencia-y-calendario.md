@@ -155,27 +155,27 @@ Necesitas dos pipelines de `main` con `deploy-production` creado **después** de
 
 ```bash
 medir "con candados"
-JOBS=$(curl -s -H "$H" "$API/projects/$P/jobs?scope=manual&per_page=20" \
-  | jq -r '[.[] | select(.name == "deploy-production")] | sort_by(.id) | .[-2:] | .[].id')
-echo $JOBS
+JOBS=($(curl -s -H "$H" "$API/projects/$P/jobs?scope=manual&per_page=20" \
+  | jq -r '[.[] | select(.name == "deploy-production")] | sort_by(.id) | .[-2:] | .[].id'))
+echo "${JOBS[@]}"
 ```
 
-**Verifica**: dos IDs. Lánzalos uno detrás de otro, sin esperar, y mira la cola en seguida:
+**Verifica**: dos IDs. `JOBS` es un array, no una cadena: en zsh, `for j in $JOBS` no separa los IDs. Lánzalos uno detrás de otro, sin esperar, y mira la cola en seguida:
 
 ```bash
-for j in $JOBS; do curl -s --request POST "$API/projects/$P/jobs/$j/play" -H "$H" | jq -r '"\(.id) \(.status)"'; done
+for j in "${JOBS[@]}"; do curl -s --request POST "$API/projects/$P/jobs/$j/play" -H "$H" | jq -r '"\(.id) \(.status)"'; done
 sleep 3
-for j in $JOBS; do curl -s -H "$H" "$API/projects/$P/jobs/$j" | jq -r '"\(.id) \(.status)"'; done
+for j in "${JOBS[@]}"; do curl -s -H "$H" "$API/projects/$P/jobs/$j" | jq -r '"\(.id) \(.status)"'; done
 curl -s -H "$H" "$API/projects/$P/resource_groups/production/upcoming_jobs" \
   | jq -r '.[] | "\(.id) \(.name) pipeline \(.pipeline.id) \(.status)"'
 ```
 
-**Verifica**: uno `pending` o `running` y el otro `waiting_for_resource`, que aparece en `upcoming_jobs`. Con un runner de dos huecos había sitio para los dos: el que espera, espera al candado, no al runner.
+**Verifica**: al lanzarlos, los dos responden `waiting_for_resource`; tres segundos después, uno `running` y el otro todavía `waiting_for_resource`, que aparece en `upcoming_jobs`. Con un runner de dos huecos había sitio para los dos: el que espera, espera al candado, no al runner.
 
 Cuando terminen:
 
 ```bash
-for j in $JOBS; do
+for j in "${JOBS[@]}"; do
   until curl -s -H "$H" "$API/projects/$P/jobs/$j" | jq -e '.status | IN("success","failed")' > /dev/null; do sleep 5; done
   curl -s -H "$H" "$API/projects/$P/jobs/$j" | jq -r '"\(.id) \(.status) \(.started_at[11:19]) → \(.finished_at[11:19])"'
 done

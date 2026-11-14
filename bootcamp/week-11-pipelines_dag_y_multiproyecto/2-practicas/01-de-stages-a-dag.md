@@ -65,7 +65,7 @@ medir() {   # lanza un pipeline de main, espera, y anota su duración y la líne
   [[ "$PIPE" =~ ^[0-9]+$ ]] || { echo "No se creó el pipeline"; return 1; }
   echo "$ETIQUETA: pipeline $PIPE $(esperar "$P" "$PIPE")" | tee -a ~/medidas-s11.txt
   curl -s -H "$H" "$API/projects/$P/pipelines/$PIPE" \
-    | jq -r '"  duration=\(.duration)s queued=\(.queued_duration | floor)s"' | tee -a ~/medidas-s11.txt
+    | jq -r '"  duration=\(.duration)s queued=\(.queued_duration // 0 | floor)s"' | tee -a ~/medidas-s11.txt
   curl -s -H "$H" "$API/projects/$P/pipelines/$PIPE/jobs?per_page=100" \
     | jq -r '[.[] | select(.started_at)] | sort_by(.started_at) | .[]
              | "  \(.name)\t\(.started_at[11:19]) → \(.finished_at[11:19])\t\(.duration | floor)s"' \
@@ -165,7 +165,7 @@ jq -n --rawfile c .gitlab-ci.yml '{content: $c, dry_run: true, ref: "main", incl
 # {"valid":true,"errors":[],"jobs":["build","test","package","deploy-staging","deploy-production"]}
 ```
 
-Rompe el grafo a propósito, sin guardarlo: cambia `needs: [build, test]` por `needs: [build, lint]` y repite el `lint`. **Verifica** que `errors` dice que `package` necesita un job que no existe. Deshaz el cambio.
+Rompe el grafo a propósito, sin guardarlo: cambia `needs: [build, test]` por `needs: [build, lint]` y repite el `lint`. **Verifica**: `"errors":["package job: undefined need: lint"]`. Deshaz el cambio.
 
 ```bash
 git add .gitlab-ci.yml

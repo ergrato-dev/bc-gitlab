@@ -88,7 +88,7 @@ Lo que pones en `variables:` del job de disparo llega abajo como si alguien hubi
 | `maintainer` | ✅ | ✅ |
 | `developer` | ✅ | ✅ (y también cualquier Developer a mano: demasiado) |
 
-El valor con que nace un proyecto nuevo ha cambiado entre versiones y no es el mismo en gitlab.com que en una instancia propia (en la Semana 10 viste el de la tuya). Por eso en la práctica 03 lo fijas **explícitamente** en `maintainer`: que no dependa de un valor por defecto que una actualización puede cambiar.
+En 19.2.4, un proyecto nuevo de una instancia propia nace con `developer` (en gitlab.com, con `no_one_allowed`): demasiado abierto para `infra/entornos`, y el valor por defecto ya ha cambiado entre versiones. Por eso en la práctica 03 lo fijas **explícitamente** en `maintainer`: que no dependa de un valor por defecto que una actualización puede cambiar.
 
 `trigger:forward` decide qué más viaja: `yaml_variables` (las del YAML de arriba, activado por defecto) y `pipeline_variables` (las variables con que se lanzó el pipeline de arriba, desactivado). Lo prudente es no reenviar nada que no nombres.
 

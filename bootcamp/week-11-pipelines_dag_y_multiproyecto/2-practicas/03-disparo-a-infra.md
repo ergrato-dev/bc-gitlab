@@ -13,7 +13,7 @@
 
 | Paso | Qué deja hecho | Comprobación |
 |---|---|---|
-| 1 | `infra/entornos` creado, con variables de pipeline restringidas | `infra-entornos-existe`, `infra-variables-restringidas` |
+| 1 | `infra/entornos` creado, con variables de pipeline restringidas y runner | `infra-entornos-existe`, `infra-variables-restringidas` |
 | 2 | Su `.gitlab-ci.yml` y `scripts/registrar.sh` | — |
 | 3 | `package` con `dotenv` y el job de disparo `infra`, fusionados | `disparo-a-infra` |
 | 4 | El primer disparo, fallido por la razón correcta | — |
@@ -50,6 +50,17 @@ curl -s --request PUT "$API/projects/$PI" -H "$H" \
 ```
 
 **Verifica**: `"visibility": "private"` y `"ci_pipeline_variables_minimum_override_role": "maintainer"`.
+
+Y un runner. `docker-app` es un runner **de proyecto**: solo atiende a `app`. Sin esto, el pipeline de `infra/entornos` se crearía y su job se quedaría en `pending` para siempre, con el de `app` esperándolo por `mirror`. Habilítalo también en `infra/entornos` (necesitas Maintainer en los dos proyectos, y que el runner no esté bloqueado a su proyecto):
+
+```bash
+RID=$(curl -s -H "$H" "$API/projects/$P/runners" | jq -r '.[] | select(.description == "docker-app") | .id')
+curl -s -H "$H" "$API/runners/$RID" | jq '{description, runner_type, locked}'
+curl -s --request POST "$API/projects/$PI/runners" -H "$H" --data "runner_id=$RID" | jq -r .description
+curl -s -H "$H" "$API/runners/$RID" | jq -r '.projects[].path_with_namespace'
+```
+
+**Verifica**: `"locked": false`, y el runner con `app` e `infra/entornos` en su lista de proyectos. Si `locked` es `true`, desbloquéalo antes: `PUT /runners/<id>` con `locked=false`. La Semana 15 sustituye este préstamo por una flota compartida.
 
 ---
 
@@ -208,10 +219,10 @@ curl -s -H "$H" "$API/projects/$PI/jobs/$JOB/trace" | grep -E 'curl:|Falta'
 ```
 failed
 {"name":"infra","status":"failed","abajo":<id>}
-curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 403
 ```
 
-El pipeline de abajo existe, así que el disparo funcionó: tu usuario es Owner de `infra/entornos` y la restricción de variables te deja. Lo que falló es la **lectura**: el job token de `infra/entornos` no puede entrar en `app`. Un `404`, no un `403`: GitLab no confirma que el proyecto exista a quien no puede verlo. Y `main` está en rojo por `strategy: mirror`.
+El pipeline de abajo existe, así que el disparo funcionó: tu usuario es Owner de `infra/entornos` y la restricción de variables te deja. Lo que falló es la **lectura**: el job token de `infra/entornos` no puede entrar en `app`. `403`: el usuario sí es miembro de `app`, pero `app` no admite el job token de ese proyecto. Y `main` está en rojo por `strategy: mirror`.
 
 ---
 
@@ -232,9 +243,12 @@ curl -s --request PATCH "$API/projects/$P/job_token_scope" -H "$H" \
 
 Añade `infra/entornos`, y solo él:
 
+Este `POST` no acepta la ruta codificada como ID (responde `id is invalid`): pide el ID numérico de los dos proyectos.
+
 ```bash
+APP_ID=$(curl -s -H "$H" "$API/projects/$P" | jq -r .id)
 PI_ID=$(curl -s -H "$H" "$API/projects/$PI" | jq -r .id)
-curl -s --request POST "$API/projects/$P/job_token_scope/allowlist" -H "$H" \
+curl -s --request POST "$API/projects/$APP_ID/job_token_scope/allowlist" -H "$H" \
   --data "target_project_id=$PI_ID" | jq -c .
 curl -s -H "$H" "$API/projects/$P/job_token_scope/allowlist" | jq -r '.[].path_with_namespace'
 ```
@@ -285,7 +299,7 @@ curl -s -H "$H" "$API/projects/$PI/pipelines?source=pipeline" | jq -r '.[] | "\(
 - [ ] `infra/entornos`, privado, con variables de pipeline restringidas a Maintainer
 - [ ] Su `workflow` solo acepta pipelines disparados: un push no crea nada
 - [ ] `package` publica su ID por `dotenv`; `infra` dispara con `strategy: mirror` solo desde `main`
-- [ ] Viste el `404` del job token antes de la lista de permitidos
+- [ ] Viste el `403` del job token antes de la lista de permitidos
 - [ ] La lista de `app` con `infra/entornos` y nada más
 - [ ] El registro con el `sha` de `main` y tu usuario; los dos pipelines en verde
 
@@ -301,8 +315,10 @@ curl -s -H "$H" "$API/projects/$PI/pipelines?source=pipeline" | jq -r '.[] | "\(
 |---|---|---|
 | `infra` falla sin pipeline de abajo | El `workflow` de `infra/entornos` no acepta `pipeline`, o la ruta de `trigger:project` está mal | Paso 2; `GET /projects/<ruta codificada>` |
 | `infra` falla sin pipeline de abajo y la ruta está bien | Restricción de variables en `no_one_allowed` | Paso 1 |
+| `registrar` se queda en `pending` | `docker-app` no está habilitado en `infra/entornos` | Paso 1. Si lo habilitas con el job ya en cola, cancélalo y reintenta: un job pendiente no se reasigna solo |
+| `POST .../allowlist` responde `id is invalid` | Usaste la ruta codificada como ID | El ID numérico, como en el paso 5 |
 | `registrar` falla con `Falta APP_PACKAGE_JOB_ID` | `package` no generó `package.env`, o `infra` no tiene `needs: [package]` | Paso 3 |
-| `registrar` sigue con `404` tras el paso 5 | Añadiste `app` a la lista de `infra/entornos`, al revés | La lista que se toca es la de `app` |
+| `registrar` sigue con `403` tras el paso 5 | Añadiste `app` a la lista de `infra/entornos`, al revés | La lista que se toca es la de `app` |
 | Tras el reintento, `main` sigue en rojo | El pipeline de arriba no se recalculó | Reintenta el job `infra` en `app`: `POST .../jobs/<id>/retry` crea otro pipeline de abajo |
 | `unzip: not found` | Imagen distinta de `alpine` | `unzip` viene en BusyBox de `alpine:3.24.2` |
 
