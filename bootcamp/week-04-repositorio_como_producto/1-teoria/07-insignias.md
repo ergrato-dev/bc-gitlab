@@ -50,7 +50,7 @@ Aquí está la parte que hace que el sistema valga la pena. Las dos URLs admiten
 | `%{default_branch}` | La rama por defecto: `main` |
 | `%{commit_sha}` | El último commit de la rama por defecto |
 | `%{latest_tag}` | El tag más reciente |
-| `%{gitlab_server}` | El host de tu instancia |
+| `%{gitlab_server}` | Solo el host (`localhost`), sin `http://` ni puerto. Una URL que empieza por él la API la rechaza con `is blocked`: empieza la URL por `$GITLAB_URL` y usa los marcadores para la ruta |
 | `%{gitlab_pages_domain}` | El dominio de Pages |
 
 Una insignia escrita con marcadores sigue funcionando si el proyecto cambia de ruta, si cambia la rama por defecto o si se copia a otro proyecto. Una escrita a mano se rompe en el primer cambio y nadie se entera, porque una imagen rota en un README no dispara ninguna alerta.
@@ -123,8 +123,8 @@ Borrar una insignia heredada desde el proyecto no se puede: se borra donde se cr
 ```bash
 curl -s --request POST "$API/projects/$P/badges" -H "$H" \
   --data-urlencode "name=Pipeline" \
-  --data-urlencode "link_url=%{gitlab_server}/%{project_path}/-/pipelines" \
-  --data-urlencode "image_url=%{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg" \
+  --data-urlencode "link_url=$GITLAB_URL/%{project_path}/-/pipelines" \
+  --data-urlencode "image_url=$GITLAB_URL/%{project_path}/badges/%{default_branch}/pipeline.svg" \
   | jq '{id, name, rendered_image_url}'
 ```
 
@@ -142,18 +142,20 @@ Y se puede probar una insignia **antes** de crearla:
 
 ```bash
 curl -s -H "$H" --get "$API/projects/$P/badges/render" \
-  --data-urlencode "link_url=%{gitlab_server}/%{project_path}" \
-  --data-urlencode "image_url=%{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg" \
+  --data-urlencode "link_url=$GITLAB_URL/%{project_path}" \
+  --data-urlencode "image_url=$GITLAB_URL/%{project_path}/badges/%{default_branch}/pipeline.svg" \
   | jq '{rendered_link_url, rendered_image_url}'
 ```
 
 Para actualizar o retirar:
 
 ```bash
-curl -s --request PUT "$API/projects/$P/badges/1" -H "$H" \
+BID=$(curl -s -H "$H" "$API/projects/$P/badges" | jq '.[] | select(.name == "Pipeline") | .id')
+
+curl -s --request PUT "$API/projects/$P/badges/$BID" -H "$H" \
   --data-urlencode "name=Estado del pipeline" | jq '.name'
 
-curl -s --request DELETE "$API/projects/$P/badges/1" -H "$H" \
+curl -s --request DELETE "$API/projects/$P/badges/$BID" -H "$H" \
   -o /dev/null -w '%{http_code}\n'
 # 204
 ```

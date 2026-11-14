@@ -128,7 +128,7 @@ La regla: **una sugerencia es para cuando el revisor sabe exactamente el texto c
 
 | Antipatrón | Por qué duele | Qué hacer en su lugar |
 |---|---|---|
-| Sugerencias de estilo que el formateador haría | Ruido en la revisión y commits de nada | Un formateador en el pipeline (Semana 09) |
+| Sugerencias de estilo que el formateador haría | Ruido en la revisión y commits de nada | Un formateador en el pipeline (Fase 3) |
 | Aplicar veinte sugerencias una a una | Veinte commits de "aplicar sugerencia" | En lote, en un commit |
 | Aplicar sin leer | Se acepta un error del revisor | La sugerencia se revisa como cualquier código |
 | Seguir trabajando en local sin `pull` | Conflicto contigo mismo en el siguiente `push` | `git pull --rebase` tras aplicar |

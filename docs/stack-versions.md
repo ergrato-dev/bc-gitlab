@@ -44,6 +44,9 @@ Se instalan cuando la semana lo pide, no antes.
 
 | Herramienta | Versión | Semana | Imagen o paquete | Para qué |
 |---|---|:--:|---|---|
+| Node.js (imagen de CI) | `22.23.3` | 09 | `node:22.23.3-alpine3.24` | Jobs `build`, `test` y `package` de `app` |
+| Alpine (imagen de CI) | `3.24.2` | 09 | `alpine:3.24.2` | Jobs de utilidades (`gobernanza`) e imagen por defecto del runner |
+| TypeScript | `7.0.2` | 09 | `devDependencies` de `app` | Comprobación de tipos en el job `build` |
 | k3d | 5.7+ | 16, 25 | binario | Kubernetes local |
 | `kubectl` | 1.32+ | 16, 25 | binario | Cliente de Kubernetes |
 | Helm | 3.16+ | 16, 25 | binario | Runner y agente en el clúster |

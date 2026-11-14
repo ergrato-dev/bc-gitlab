@@ -20,13 +20,15 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 ## C
 
-**Caché** (*cache*) — Free. Directorio que se restaura entre ejecuciones para no repetir trabajo (`node_modules`, `.m2`). Si se pierde, el pipeline sigue funcionando: solo tarda más. Si un artefacto se pierde, el pipeline se rompe.
+**Caché** (*cache*) — Free. Directorio que se restaura entre ejecuciones para no repetir trabajo (`.npm`, `.m2`). Su clave lleva el sufijo `-protected` o `-non_protected`, así que las ramas no protegidas no comparten caché con `main`. Si se pierde, el pipeline sigue funcionando: solo tarda más. Si un artefacto se pierde, el pipeline se rompe.
 
 **Catálogo CI/CD** (*CI/CD Catalog*) — Free. Índice de componentes publicados que otros proyectos pueden buscar y consumir por versión.
 
 **CHANGELOG generado** (*changelog*) — Free. Notas de una versión que GitLab construye con los commits que llevan el trailer `Changelog:`, configurables con `.gitlab/changelog_config.yml`. `GET .../repository/changelog` las devuelve; `POST` las escribe en un archivo.
 
 **Cherry-pick** — Free en la UI y la API, y comando de Git. Aplica los cambios de un commit sobre otra rama en un commit nuevo; con `git cherry-pick -x` el mensaje dice de qué commit viene.
+
+**`CI_JOB_TOKEN`** — Free. Token que recibe cada job mientras corre, con los permisos de quien lanzó el pipeline y solo en los endpoints que lo aceptan. No lee aprobaciones ni diffs de una merge request.
 
 **Clave de firma** (*signing key*) — Free. Clave SSH registrada con `usage_type` `signing` o `auth_and_signing`. Una clave registrada solo con uso `auth` **no verifica firmas**, y el uso no se puede cambiar después: hay que borrarla y registrarla otra vez.
 
@@ -47,6 +49,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **DORA** (*DevOps Research and Assessment*) — Las cuatro métricas de referencia: frecuencia de despliegue, tiempo de entrega, tasa de fallo del cambio y tiempo de restauración. Los gráficos y la API de DORA son **Ultimate**; en CE se calculan desde la API de merge requests, releases e issues y se documenta la definición usada (S08).
 
 ## E
+
+**Ejecutor** (*executor*) — Free. Cómo ejecuta un runner sus jobs: `shell`, `docker`, `kubernetes`, `docker-autoscaler`. Con `docker`, un contenedor limpio por job.
 
 **Entorno** (*environment*) — Free. Destino con nombre al que se despliega (`staging`, `production`). Guarda el historial de despliegues y habilita la reversión. Los **entornos protegidos** son Premium.
 
@@ -96,6 +100,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Pipeline** — Free. El conjunto de jobs que se ejecuta ante un evento: un push, un MR, una programación o un disparo externo.
 
+**Pipelines must succeed** — Free. Ajuste del proyecto (`only_allow_merge_if_pipeline_succeeds`) que impide fusionar sin pipeline en verde. Un job con `allow_failure` que falla no lo impide.
+
 **Praefect** — Free. Coordinador de Gitaly Cluster. Enruta las escrituras, replica a los demás nodos y decide qué nodo es válido cuando uno se queda atrás.
 
 **Protected branch** (*rama protegida*) — Free. Regla que restringe quién puede empujar, fusionar o forzar sobre una rama. Es el mecanismo de gobernanza de CE, con un límite: cualquier Maintainer puede quitarla, porque *Allowed to unprotect* es **Premium** (S07).
@@ -114,7 +120,7 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Review app** — Free. Entorno efímero que se despliega por cada merge request y se destruye al cerrarlo.
 
-**Runner** (*GitLab Runner*) — Free. Agente que ejecuta los jobs. Puede ser compartido, de grupo o de proyecto, y usar distintos ejecutores (shell, docker, kubernetes).
+**Runner** (*GitLab Runner*) — Free. Agente que ejecuta los jobs. Puede ser de instancia, de grupo o de proyecto, se registra con un *authentication token* (`glrt-`), y usar distintos ejecutores (shell, docker, kubernetes).
 
 **Rules** — Free. Palabra clave que decide si un job se crea y en qué condiciones. Sustituye a `only`/`except`, que sigue funcionando pero ya no se recomienda.
 
@@ -136,6 +142,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Squash** — Free. Aplastar los commits de una rama en uno al fusionar. Lo crea el servidor, sin la firma del autor; su mensaje sale de `squash_commit_template` (S06).
 
+**Stage** — Free. Grupo de jobs de un pipeline. Los stages van en orden y uno no empieza hasta que el anterior termina bien.
+
 ## T
 
 **Tag anotado y firmado** (*annotated / signed tag*) — Tag que es un objeto propio con autor, fecha y mensaje; firmado con `git tag -s`. Las versiones de `app` lo son desde la S08. Por API, es anotado si `target` y `commit.id` difieren.
@@ -144,9 +152,15 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Tier** — El plan de GitLab: Free (lo que incluye CE), Premium y Ultimate. Este bootcamp usa solo Free y sustituye el resto.
 
+**Token de acceso de proyecto** (*project access token*) — Free en self-managed, Premium en GitLab.com. Token de un usuario bot que solo es miembro de un proyecto, con rol, scopes y caducidad. El job `gobernanza` de `app` usa uno de Reporter con `read_api`.
+
 ## V
 
 **Value Stream Analytics** (*VSA*) — Free a nivel de proyecto, **Premium** a nivel de grupo. Mide cuánto tarda el trabajo en recorrer cada etapa desde el issue hasta producción.
+
+**Variable de instancia** (*instance CI/CD variable*) — Free. Variable CI/CD que llega a todos los pipelines de la instancia y tiene prioridad sobre las predefinidas.
+
+**Variable oculta** (*hidden variable*) — Free. Variable enmascarada cuyo valor ya no se puede ver en la interfaz ni en la API. Se marca al crearla y no se puede desmarcar.
 
 ---
 

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" role="img" aria-labelledby="titulo desc">
   <title id="titulo">Anatomía de una insignia y por qué los marcadores importan</title>
-  <desc id="desc">Una insignia son dos URLs: image_url, la imagen que se muestra, y link_url, a dónde lleva al pulsarla. Escritas con marcadores como gitlab_server, project_path y default_branch, GitLab las sustituye al renderizar por los valores actuales del proyecto y devuelve rendered_image_url y rendered_link_url. Escritas a mano producen hoy exactamente la misma URL, pero dejan de funcionar en tres situaciones que no dan ningún aviso: si el proyecto cambia de ruta, si cambia la rama por defecto, o si la insignia se copia a otro proyecto. GitLab genera cuatro SVG por sí mismo: pipeline, coverage, release y custom, y por eso no hace falta ningún servicio externo.</desc>
+  <desc id="desc">Una insignia son dos URLs: image_url, la imagen que se muestra, y link_url, a dónde lleva al pulsarla. Escritas con marcadores como project_path y default_branch detrás de la URL de la instancia, GitLab las sustituye al renderizar por los valores actuales del proyecto y devuelve rendered_image_url y rendered_link_url. Escritas a mano producen hoy exactamente la misma URL, pero dejan de funcionar en tres situaciones que no dan ningún aviso: si el proyecto cambia de ruta, si cambia la rama por defecto, o si la insignia se copia a otro proyecto. GitLab genera cuatro SVG por sí mismo: pipeline, coverage, release y custom, y por eso no hace falta ningún servicio externo.</desc>
 
   <rect width="900" height="460" fill="#1F1F1F"/>
 
@@ -22,9 +22,9 @@
     <text x="52" y="90" fill="#108548" font-size="14" font-weight="600">Con marcadores — sobrevive</text>
 
     <text x="52" y="118" fill="#999999" font-size="11">image_url</text>
-    <text x="130" y="118" fill="#FAFAFA" font-size="11" font-family="monospace">%{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg</text>
+    <text x="130" y="118" fill="#FAFAFA" font-size="11" font-family="monospace">http://localhost:8888/%{project_path}/badges/%{default_branch}/pipeline.svg</text>
     <text x="52" y="140" fill="#999999" font-size="11">link_url</text>
-    <text x="130" y="140" fill="#FAFAFA" font-size="11" font-family="monospace">%{gitlab_server}/%{project_path}/-/pipelines</text>
+    <text x="130" y="140" fill="#FAFAFA" font-size="11" font-family="monospace">http://localhost:8888/%{project_path}/-/pipelines</text>
 
     <line x1="130" y1="156" x2="130" y2="176" stroke="#108548" stroke-width="2" marker-end="url(#b1)"/>
     <text x="146" y="172" fill="#108548" font-size="11">GitLab sustituye al renderizar</text>

@@ -11,7 +11,7 @@
 
 Las tres prácticas anteriores construyeron una historia limpia. Esta demuestra **para qué servía**: sobre una historia donde cada commit pasa sus tests, `git bisect` encuentra el culpable en unas pocas pruebas y sin intervención humana.
 
-Y termina con la auditoría que cierra la semana: preguntarle a la instancia, commit a commit, si todo está firmado y verificado. Es el mismo tipo de comprobación que en la Semana 09 se convertirá en un job de pipeline.
+Y termina con la auditoría que cierra la semana: preguntarle a la instancia, commit a commit, si todo está firmado y verificado. Es el mismo tipo de comprobación que en la Semana 07 hará el server hook en cada push.
 
 ---
 

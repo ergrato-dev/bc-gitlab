@@ -1,0 +1,168 @@
+{
+  "semana": "09",
+  "titulo": "CI/CD: fundamentos, runner, artifacts y cache",
+  "checks": [
+    {
+      "id": "runner-de-proyecto-en-linea",
+      "descripcion": "Hay un runner de proyecto en linea",
+      "api": "projects/{proyecto}/runners?type=project_type",
+      "jq": "map(select(.status == \"online\")) | length >= 1",
+      "pista": "2-practicas/01-el-runner-de-app.md, pasos 3 y 4"
+    },
+    {
+      "id": "variable-de-instancia-api",
+      "descripcion": "Los jobs llegan a la API: CI_API_V4_URL de instancia no apunta a localhost",
+      "api": "admin/ci/variables/CI_API_V4_URL",
+      "token": "admin",
+      "jq": ".value | (endswith(\"/api/v4\") and (test(\"localhost|127\\\\.0\\\\.0\\\\.1\") | not))",
+      "pista": "2-practicas/01-el-runner-de-app.md, paso 2"
+    },
+    {
+      "id": "gitlab-ci-en-main",
+      "descripcion": "El archivo .gitlab-ci.yml esta en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(.name) | index(\".gitlab-ci.yml\") != null",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 3"
+    },
+    {
+      "id": "ci-valido-en-main",
+      "descripcion": "El .gitlab-ci.yml de main es valido",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": ".valid == true",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 3"
+    },
+    {
+      "id": "stages-build-test-package",
+      "descripcion": "El pipeline tiene los stages build, test y package, en ese orden",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"\\n- build\\n- test\\n- package\\n\")",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 3"
+    },
+    {
+      "id": "workflow-rules",
+      "descripcion": "El pipeline tiene workflow:rules",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"(^|\\n)workflow:\\n  rules:\")",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 3"
+    },
+    {
+      "id": "imagenes-fijadas",
+      "descripcion": "Todas las imagenes del pipeline llevan version y ninguna es latest",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | scan(\"image:(?:\\\\s+name:)? ([^\\n]+)\")[0]] | length > 0 and all(test(\":[0-9]+\\\\.[0-9]+\\\\.[0-9]+\") and (test(\":latest\") | not))",
+      "pista": "1-teoria/02-anatomia-del-gitlab-ci-yml.md, apartado 4"
+    },
+    {
+      "id": "cache-por-lockfile",
+      "descripcion": "La cache de dependencias usa package-lock.json como clave",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"key:\\n +files:\\n +- package-lock.json\")",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 3"
+    },
+    {
+      "id": "lockfile-en-main",
+      "descripcion": "package-lock.json esta en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&per_page=100",
+      "jq": "map(.name) | index(\"package-lock.json\") != null",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 2"
+    },
+    {
+      "id": "ultimo-pipeline-de-main-en-verde",
+      "descripcion": "El ultimo pipeline de main esta en verde",
+      "api": "projects/{proyecto}/pipelines/latest?ref=main",
+      "jq": ".status == \"success\"",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 5"
+    },
+    {
+      "id": "tres-jobs-en-main",
+      "descripcion": "El ultimo pipeline de main ejecuto build, test y package con exito",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ pipelines(ref: \"main\", first: 1){ nodes { jobs { nodes { name status } } } } } }",
+      "jq": "[.data.project.pipelines.nodes[0].jobs.nodes[] | select(.status == \"SUCCESS\") | .name] as $ok | [\"build\", \"test\", \"package\"] | all(. as $j | $ok | index($j) != null)",
+      "pista": "2-practicas/02-el-primer-pipeline.md, paso 5"
+    },
+    {
+      "id": "informe-de-tests",
+      "descripcion": "El ultimo pipeline de main publico un informe de tests sin fallos",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ pipelines(ref: \"main\", first: 1){ nodes { testReportSummary { total { count failed error } } } } } }",
+      "jq": ".data.project.pipelines.nodes[0].testReportSummary.total | .count > 0 and .failed == 0 and .error == 0",
+      "pista": "2-practicas/03-artefactos-y-cache-medidos.md, paso 3"
+    },
+    {
+      "id": "cobertura-publicada",
+      "descripcion": "El ultimo pipeline de main publico la cobertura",
+      "api": "projects/{proyecto}/pipelines/latest?ref=main",
+      "jq": ".coverage != null",
+      "pista": "2-practicas/03-artefactos-y-cache-medidos.md, paso 3"
+    },
+    {
+      "id": "paquete-como-artefacto",
+      "descripcion": "El job package del ultimo pipeline de main guardo un artefacto",
+      "graphql": "query($fullPath:ID!){ project(fullPath:$fullPath){ pipelines(ref: \"main\", first: 1){ nodes { jobs { nodes { name artifacts { nodes { fileType } } } } } } } }",
+      "jq": "[.data.project.pipelines.nodes[0].jobs.nodes[] | select(.name == \"package\") | .artifacts.nodes[].fileType] | index(\"ARCHIVE\") != null",
+      "pista": "2-practicas/03-artefactos-y-cache-medidos.md, paso 3"
+    },
+    {
+      "id": "insignia-de-cobertura",
+      "descripcion": "La insignia de cobertura existe",
+      "api": "projects/{proyecto}/badges",
+      "jq": "map(.image_url) | any(test(\"coverage\\\\.svg\"))",
+      "pista": "2-practicas/03-artefactos-y-cache-medidos.md, paso 4"
+    },
+    {
+      "id": "token-de-gobernanza",
+      "descripcion": "Existe el token de proyecto gobernanza-ci, Reporter y solo read_api",
+      "api": "projects/{proyecto}/access_tokens",
+      "jq": "any(.[]; .name == \"gobernanza-ci\" and .active and .access_level == 20 and .scopes == [\"read_api\"])",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 1"
+    },
+    {
+      "id": "variable-de-gobernanza",
+      "descripcion": "GOBERNANZA_TOKEN es una variable enmascarada y oculta",
+      "api": "projects/{proyecto}/variables/GOBERNANZA_TOKEN",
+      "jq": ".masked == true and .hidden == true",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 1"
+    },
+    {
+      "id": "gobernanza-ejecutable",
+      "descripcion": "scripts/gobernanza.sh es ejecutable en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main&path=scripts&per_page=100",
+      "jq": "if type == \"array\" then (map(select(.name == \"gobernanza.sh\"))[0].mode == \"100755\") else false end",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 2"
+    },
+    {
+      "id": "pipeline-con-dueno",
+      "descripcion": "CODEOWNERS da un dueño a .gitlab-ci.yml",
+      "api": "projects/{proyecto}/repository/files/CODEOWNERS?ref=main",
+      "jq": ".content | @base64d | test(\"(^|\\n)/\\\\.gitlab-ci\\\\.yml +@\")",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 2"
+    },
+    {
+      "id": "gobernanza-en-verde-en-una-mr",
+      "descripcion": "Algun job gobernanza termino en verde",
+      "api": "projects/{proyecto}/jobs?scope[]=success&per_page=100",
+      "jq": "map(.name) | index(\"gobernanza\") != null",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 4"
+    },
+    {
+      "id": "pipelines-must-succeed",
+      "descripcion": "Solo se fusiona con el pipeline en verde",
+      "api": "projects/{proyecto}",
+      "jq": ".only_allow_merge_if_pipeline_succeeds == true and .allow_merge_on_skipped_pipeline == false",
+      "pista": "2-practicas/04-la-gobernanza-como-job.md, paso 5"
+    },
+    {
+      "id": "contributing-con-el-pipeline",
+      "descripcion": "CONTRIBUTING.md explica como reproducir el pipeline en local",
+      "api": "projects/{proyecto}/repository/files/CONTRIBUTING.md?ref=main",
+      "jq": ".content | @base64d | test(\"test:ci\") and test(\"npm ci\")",
+      "pista": "3-proyecto/README.md, punto 2"
+    },
+    {
+      "id": "adr-007-en-la-wiki",
+      "descripcion": "La wiki tiene una pagina cuyo slug empieza por adr-007",
+      "api": "projects/{proyecto}/wikis",
+      "jq": "map(.slug) | any(test(\"^adr-007\"; \"i\"))",
+      "pista": "3-proyecto/README.md, punto 1"
+    }
+  ]
+}

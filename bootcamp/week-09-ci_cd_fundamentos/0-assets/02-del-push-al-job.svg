@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Del push al job en el laboratorio: GitLab, runner y contenedor del job</title>
+  <desc id="desc">Tu navegador y git llegan a GitLab por http://localhost:8888, el puerto publicado en el host. Dentro de la red bc-gitlab-network hay tres piezas. El runner pregunta a GitLab por http://gitlab:8888 si hay jobs. Cuando recibe uno, arranca por el socket de Docker un contenedor con la imagen del job y un helper. El job clona el repositorio y llama a la API por http://gitlab:8888, gracias a clone_url y a las variables de instancia CI_API_V4_URL y CI_SERVER_URL. Si usara http://localhost:8888, llegaría a su propio contenedor y no a GitLab.</desc>
+  <rect width="900" height="470" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="flecha-roja" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E24329"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">Dentro de la red, GitLab se llama gitlab, no localhost</text>
+
+    <!-- navegador -->
+    <rect x="40" y="58" width="220" height="44" rx="6" fill="none" stroke="#666666"/>
+    <text x="150" y="85" fill="#FAFAFA" font-size="13" text-anchor="middle">Tu navegador y git</text>
+    <line x1="150" y1="104" x2="150" y2="150" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="160" y="132" fill="#999999" font-size="12">http://localhost:8888</text>
+
+    <!-- red -->
+    <rect x="20" y="118" width="860" height="300" rx="10" fill="none" stroke="#554488" stroke-width="2" stroke-dasharray="8 5"/>
+    <text x="870" y="138" fill="#554488" font-size="13" font-weight="600" text-anchor="end">red bc-gitlab-network</text>
+
+    <!-- gitlab -->
+    <rect x="40" y="154" width="220" height="110" rx="8" fill="#FC6D26"/>
+    <text x="150" y="182" fill="#1F1F1F" font-size="16" font-weight="700" text-anchor="middle">gitlab</text>
+    <text x="150" y="206" fill="#1F1F1F" font-size="12" text-anchor="middle">external_url</text>
+    <text x="150" y="224" fill="#1F1F1F" font-size="12" text-anchor="middle">http://localhost:8888</text>
+    <text x="150" y="248" fill="#1F1F1F" font-size="12" text-anchor="middle">decide qué jobs hay</text>
+
+    <!-- runner -->
+    <rect x="340" y="154" width="220" height="110" rx="8" fill="#554488"/>
+    <text x="450" y="182" fill="#FAFAFA" font-size="16" font-weight="700" text-anchor="middle">gitlab-runner</text>
+    <text x="450" y="206" fill="#FAFAFA" font-size="12" text-anchor="middle">config.toml</text>
+    <text x="450" y="224" fill="#FAFAFA" font-size="12" text-anchor="middle">url = http://gitlab:8888</text>
+    <text x="450" y="248" fill="#FAFAFA" font-size="12" text-anchor="middle">ejecutor docker</text>
+
+    <!-- job -->
+    <rect x="640" y="154" width="220" height="110" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="750" y="182" fill="#FAFAFA" font-size="16" font-weight="700" text-anchor="middle">job test</text>
+    <text x="750" y="206" fill="#FAFAFA" font-size="12" text-anchor="middle">node:22.23.3-alpine3.24</text>
+    <text x="750" y="224" fill="#999999" font-size="12" text-anchor="middle">+ helper: clona, caché,</text>
+    <text x="750" y="242" fill="#999999" font-size="12" text-anchor="middle">artefactos</text>
+
+    <!-- 1: runner pide jobs -->
+    <line x1="338" y1="190" x2="264" y2="190" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="300" y="180" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">①</text>
+    <!-- 2: runner arranca el job -->
+    <line x1="562" y1="210" x2="636" y2="210" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="600" y="200" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">②</text>
+
+    <!-- 3: job habla con gitlab -->
+    <path d="M 750 266 L 750 330 L 150 330 L 150 268" fill="none" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="450" y="322" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">③ clona y llama a la API por http://gitlab:8888</text>
+    <text x="450" y="350" fill="#999999" font-size="12" text-anchor="middle">clone_url en el runner · CI_API_V4_URL y CI_SERVER_URL como variables de instancia</text>
+
+    <!-- localhost falla -->
+    <path d="M 862 200 C 896 200 896 250 866 250" fill="none" stroke="#E24329" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#flecha-roja)"/>
+    <text x="860" y="392" fill="#E24329" font-size="12" text-anchor="end">✗ http://localhost:8888 desde el job = el propio contenedor</text>
+
+    <!-- leyenda -->
+    <text x="30" y="446" fill="#999999" font-size="12">① El runner pregunta: POST /api/v4/jobs/request   ② Arranca el contenedor del job por el socket de Docker del host   ③ El job vuelve a GitLab</text>
+  </g>
+</svg>

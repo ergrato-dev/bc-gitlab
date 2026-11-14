@@ -68,7 +68,7 @@ El glosario acumulado de toda la plataforma está en [glosario-global](../../../
 
 **Pickaxe** (`-S`) — Busca commits donde **cambia el número de apariciones** de un texto. No encuentra modificaciones que no alteren ese recuento: para eso está `-G`.
 
-**Push rule** — **Premium**. Regla de servidor que rechaza pushes que incumplen una política, incluida *Reject unsigned commits*. En CE se sustituye con un server hook `pre-receive` (Semana 07) o un job de pipeline (Semana 09).
+**Push rule** — **Premium**. Regla de servidor que rechaza pushes que incumplen una política, incluida *Reject unsigned commits*. En CE se sustituye con un server hook `pre-receive` (Semana 07).
 
 ## R
 

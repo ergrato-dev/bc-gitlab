@@ -150,6 +150,6 @@ Lo que el script **no** puede comprobar es que los tags estén firmados con tu c
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 07 — Gobernanza de ramas y aprobaciones](../week-07-gobernanza_de_ramas_y_aprobaciones/README.md) | **Semana 08** | Semana 09 — CI/CD: fundamentos, runner, artifacts y cache |
+| [Semana 07 — Gobernanza de ramas y aprobaciones](../week-07-gobernanza_de_ramas_y_aprobaciones/README.md) | **Semana 08** | [Semana 09 — CI/CD: fundamentos, runner, artifacts y cache](../week-09-ci_cd_fundamentos/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

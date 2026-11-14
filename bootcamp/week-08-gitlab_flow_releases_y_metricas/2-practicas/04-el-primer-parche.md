@@ -257,7 +257,7 @@ curl -s -H "$H" "$API/projects/$P/releases" | jq -r '.[] | "\(.tag_name)  \(.rel
 curl -s -H "$H" "$API/projects/$P/releases/permalink/latest" | jq -r .tag_name     # v0.1.1
 ```
 
-Las notas de la `v0.1.1` tienen una sola sección, `Corregido (1 cambio)`, con el asunto del arreglo. Y la insignia de última versión de la Semana 04 (`release.svg`) ya muestra `v0.1.1` en la página del proyecto.
+Las notas de la `v0.1.1` tienen una sola sección, `Corregido (1 cambio)`, con el asunto del arreglo. Si añadiste la insignia de última versión que propone la teoría 07 de la Semana 04 (`release.svg`), ya muestra `v0.1.1` en la página del proyecto.
 
 ---
 

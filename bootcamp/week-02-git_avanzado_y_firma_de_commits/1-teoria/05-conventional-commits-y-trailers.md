@@ -189,7 +189,7 @@ git commit -v
 ```
 
 > [!TIP]
-> ¿Y las herramientas que validan el formato (`commitlint`, `commitizen`)? Son útiles, pero un hook local se lo salta cualquiera y no es lo que gobierna el repositorio. Este bootcamp valida donde de verdad importa: un **job de pipeline** en la Semana 09 y un **server hook** en la Semana 07, que se ejecutan en el servidor y no dependen de la buena voluntad de cada clon.
+> ¿Y las herramientas que validan el formato (`commitlint`, `commitizen`)? Son útiles, pero un hook local se lo salta cualquiera y no es lo que gobierna el repositorio. Este bootcamp valida donde de verdad importa: un **server hook** en la Semana 07, que se ejecuta en el servidor y no dependen de la buena voluntad de cada clon.
 
 ---
 

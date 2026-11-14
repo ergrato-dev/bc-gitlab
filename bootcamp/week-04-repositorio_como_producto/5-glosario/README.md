@@ -52,7 +52,7 @@ El glosario acumulado de toda la plataforma está en [glosario-global](../../../
 
 ## M
 
-**Marcador de insignia** (*badge placeholder*) — Free. Variable que GitLab sustituye al renderizar una insignia: `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, `%{gitlab_server}`, entre otras.
+**Marcador de insignia** (*badge placeholder*) — Free. Variable que GitLab sustituye al renderizar una insignia: `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, entre otras. `%{gitlab_server}` es solo el host y no sirve para empezar una URL.
 
 **Mermaid** — Free. Sintaxis de diagramas que GitLab renderiza de forma nativa en un bloque ```` ```mermaid ````. A diferencia de PlantUML y Kroki, no necesita ningún servidor configurado.
 

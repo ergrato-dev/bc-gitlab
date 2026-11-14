@@ -30,7 +30,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| 09 | CI/CD: fundamentos, runner, artifacts y cache | ⬜ |
+| [09](week-09-ci_cd_fundamentos/README.md) | CI/CD: fundamentos, runner, artifacts y cache | ✅ |
 | 10 | Reglas, variables y secretos | ⬜ |
 | 11 | Pipelines DAG, padre-hijo y multi-proyecto | ⬜ |
 | 12 | Componentes CI/CD y catálogo | ⬜ |

@@ -172,8 +172,8 @@ curl -s -H "$H" "$API/projects/$P/snippets" | jq 'all(.[]; .visibility != "publi
 
 ```bash
 curl -s -H "$H" --get "$API/projects/$P/badges/render" \
-  --data-urlencode 'link_url=%{gitlab_server}/%{project_path}/-/pipelines' \
-  --data-urlencode 'image_url=%{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg' \
+  --data-urlencode "link_url=$GITLAB_URL/%{project_path}/-/pipelines" \
+  --data-urlencode "image_url=$GITLAB_URL/%{project_path}/badges/%{default_branch}/pipeline.svg" \
   | jq '{rendered_link_url, rendered_image_url}'
 ```
 
@@ -200,15 +200,15 @@ curl -s -H "$H" --get "$API/projects/$P/badges/render" \
 # 1. Estado del pipeline. Dira "unknown" hasta la Semana 09, y eso es correcto
 curl -s --request POST "$API/projects/$P/badges" -H "$H" \
   --data-urlencode "name=Pipeline" \
-  --data-urlencode 'link_url=%{gitlab_server}/%{project_path}/-/pipelines' \
-  --data-urlencode 'image_url=%{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg' \
+  --data-urlencode "link_url=$GITLAB_URL/%{project_path}/-/pipelines" \
+  --data-urlencode "image_url=$GITLAB_URL/%{project_path}/badges/%{default_branch}/pipeline.svg" \
   | jq '{id, name, rendered_image_url}'
 
 # 2. Licencia, con la insignia personalizada que sirve tu propia instancia
 curl -s --request POST "$API/projects/$P/badges" -H "$H" \
   --data-urlencode "name=Licencia" \
-  --data-urlencode 'link_url=%{gitlab_server}/%{project_path}/-/blob/%{default_branch}/LICENSE' \
-  --data-urlencode 'image_url=%{gitlab_server}/%{project_path}/-/badges/custom.svg?key_text=license&key_width=50&value_text=MIT&value_color=blue' \
+  --data-urlencode "link_url=$GITLAB_URL/%{project_path}/-/blob/%{default_branch}/LICENSE" \
+  --data-urlencode "image_url=$GITLAB_URL/%{project_path}/-/badges/custom.svg?key_text=license&key_width=50&value_text=MIT&value_color=blue" \
   | jq '{id, name, rendered_image_url}'
 ```
 
@@ -222,8 +222,10 @@ curl -s -H "$H" "$API/projects/$P/badges" \
 Y que las imágenes existen de verdad, que es distinto de que la URL esté bien formada:
 
 ```bash
+# El token solo va a URLs de tu instancia: una insignia heredada puede apuntar fuera
 for url in $(curl -s -H "$H" "$API/projects/$P/badges" | jq -r '.[].rendered_image_url'); do
-  printf '%s ' "$(curl -s -o /dev/null -w '%{http_code}' -H "$H" "$url")"
+  if [[ "$url" == "$GITLAB_URL"/* ]]; then auth=(-H "$H"); else auth=(); fi
+  printf '%s ' "$(curl -s -o /dev/null -w '%{http_code}' "${auth[@]}" "$url")"
   echo "$url"
 done
 # 200 http://localhost:8888/plataforma-biblioteca/app/badges/main/pipeline.svg
@@ -244,7 +246,7 @@ done
 ```bash
 # Como se veria una insignia escrita a mano hoy, si el proyecto se moviera manana
 echo "escrita a mano:  $GITLAB_URL/$PROYECTO/badges/main/pipeline.svg"
-echo "con marcadores:  %{gitlab_server}/%{project_path}/badges/%{default_branch}/pipeline.svg"
+echo "con marcadores:  $GITLAB_URL/%{project_path}/badges/%{default_branch}/pipeline.svg"
 ```
 
 La primera deja de funcionar en tres situaciones, y ninguna avisa: si el proyecto cambia de ruta (Semana 03, teoría 07), si la rama por defecto deja de ser `main`, o si copias la insignia a otro proyecto.

@@ -125,7 +125,7 @@ La regla que decide, y es la única que hace falta: **si tiene que quedar obsole
 | Los puntos de la ruta de un archivo se codifican | `assets%2Flogo%2Epng` — sin `%2E`, Rails se come `.png` como formato de respuesta |
 | Plantillas de licencia servidas por tu propia instancia | `.../templates/licenses/mit?project=app&fullname=Tu%20Nombre` |
 | Ver qué licencia ha detectado GitLab, y con qué confianza | `.../projects/$P?license=true \| jq '.license'` |
-| Insignias que sobreviven a un cambio de ruta | `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, `%{gitlab_server}` |
+| Insignias que sobreviven a un cambio de ruta | `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, tras `$GITLAB_URL/` |
 | Ver la URL final de una insignia, ya sustituida | `.../projects/$P/badges \| jq -r '.[].rendered_image_url'` |
 | Probar una insignia antes de crearla | `.../projects/$P/badges/render?link_url=...&image_url=...` |
 | Qué archivos ocupan LFS en tu clon | `git lfs ls-files --size` |

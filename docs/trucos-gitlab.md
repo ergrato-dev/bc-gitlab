@@ -141,7 +141,7 @@ _Se añaden a medida que se publica cada semana._
 | Los puntos de la ruta de un archivo se codifican | `assets%2Flogo%2Epng` — sin `%2E`, Rails se come `.png` como formato de respuesta |
 | Plantillas de licencia servidas por tu propia instancia | `.../templates/licenses/mit?project=app&fullname=Tu%20Nombre` |
 | Ver qué licencia ha detectado GitLab, y con qué confianza | `.../projects/$P?license=true \| jq '.license'` |
-| Insignias que sobreviven a un cambio de ruta | `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, `%{gitlab_server}` |
+| Insignias que sobreviven a un cambio de ruta | `%{project_path}`, `%{project_id}`, `%{default_branch}`, `%{commit_sha}`, `%{latest_tag}`, tras `$GITLAB_URL/` |
 | Ver la URL final de una insignia, ya sustituida | `.../projects/$P/badges \| jq -r '.[].rendered_image_url'` |
 | Probar una insignia antes de crearla | `.../projects/$P/badges/render?link_url=...&image_url=...` |
 | Qué archivos ocupan LFS en tu clon | `git lfs ls-files --size` |
@@ -217,6 +217,25 @@ _Se añaden a medida que se publica cada semana._
 | Crear una rama protegida desde un tag | Solo por API o web, y desde un commit que ya esté en una rama protegida |
 | La última release, sin saber su tag | `GET .../releases/permalink/latest` |
 | Mediana de duraciones con `jq` | `sort \| .[length/2 \| floor]` sobre los segundos de cada intervalo |
+
+---
+
+## Semana 09 — CI/CD: fundamentos, runner, artifacts y cache
+
+| Truco | Cómo |
+|---|---|
+| Validar `.gitlab-ci.yml` sin empujarlo | `jq -n --rawfile c .gitlab-ci.yml '{content: $c}'` y `POST .../ci/lint` |
+| Ver el YAML final con `extends` resuelto | `GET .../ci/lint?ref=main&include_merged_yaml=true \| jq -r .merged_yaml` |
+| Leer el log de un job sin colores | `GET .../jobs/<id>/trace \| sed 's/\x1b\[[0-9;]*m//g'` |
+| Por qué falló un job, sin abrir el log | `GET .../jobs/<id> \| jq .failure_reason` |
+| Esperar a que termine un pipeline | `until ... jq -e '.status \| IN("success","failed","canceled")'; do sleep 10; done` |
+| Relanzar el pipeline de una merge request | `POST .../merge_requests/<iid>/pipelines` |
+| El último paquete de `main`, sin saber el job | `GET .../jobs/artifacts/main/download?job=package` |
+| El test que falló, sin leer el log | `GET .../pipelines/<id>/test_report \| jq '.test_suites[].test_cases[] \| select(.status=="failed") \| .name'` |
+| Saber si un job usó la caché | `grep -E 'Checking cache\|Successfully extracted'` en su log |
+| Pasar un token de una API a otra sin verlo | `jq -j .token \| curl ... --data-urlencode "value@-"` |
+| Registrar un runner sin el token en los argumentos | `CI_SERVER_TOKEN="$RT" docker compose exec -e CI_SERVER_TOKEN gitlab-runner gitlab-runner register ...` |
+| Por qué no se puede fusionar | `GET .../merge_requests/<iid> \| jq -r .detailed_merge_status` |
 
 ---
 

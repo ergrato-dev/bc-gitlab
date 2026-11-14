@@ -192,6 +192,6 @@ Si alguna falla, la pista dice en qué práctica y en qué paso se arregla.
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 07](../../week-07-gobernanza_de_ramas_y_aprobaciones/3-proyecto/README.md) | **Proyecto Semana 08** | Proyecto Semana 09 |
+| [Proyecto Semana 07](../../week-07-gobernanza_de_ramas_y_aprobaciones/3-proyecto/README.md) | **Proyecto Semana 08** | [Proyecto Semana 09](../../week-09-ci_cd_fundamentos/3-proyecto/README.md) |
 
 [← Volver a la Semana 08](../README.md)

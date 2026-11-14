@@ -33,7 +33,7 @@ De lo más caro de arreglar después a lo más barato:
 | 4 | **¿Se entiende?** Nombres, estructura, un comentario donde el porqué no es obvio | El siguiente que lo toque se equivoca |
 | 5 | **¿Encaja?** Convenciones del proyecto, formato | Ruido; debería comprobarlo una máquina |
 
-Los niveles 1 a 3 justifican bloquear la merge request. El 4 a veces. El 5 casi nunca: si una regla de estilo importa, la tiene que imponer un formateador en el pipeline (Semana 09), no una persona en cada revisión.
+Los niveles 1 a 3 justifican bloquear la merge request. El 4 a veces. El 5 casi nunca: si una regla de estilo importa, la tiene que imponer una herramienta en el pipeline (Fase 3), no una persona en cada revisión.
 
 > [!TIP]
 > Antes de leer el diff, **ejecuta los tests de la rama**: `git fetch origin merge-requests/<iid>/head:mr-<iid>` y `npm test`. Y después, rompe a propósito la línea que el cambio arregla y comprueba que algún test falla. Si ninguno falla, el punto 3 no se cumple, por muy bien que se lea el test.

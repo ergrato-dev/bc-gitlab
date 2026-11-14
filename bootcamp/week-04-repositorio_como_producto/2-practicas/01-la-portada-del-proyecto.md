@@ -133,6 +133,9 @@ flowchart LR
 MIT. Ver `LICENSE`.
 ````
 
+> [!NOTE]
+> `npm ci` exige un `package-lock.json` en el repositorio. Si tu `app` todavía no lo tiene (la Semana 02 no instaló nada), créalo antes de verificar el arranque: `npm install`, y commit de `package-lock.json` con `git commit -S -m "build: fijar el árbol de dependencias"`. Sin él, `npm ci` termina con `EUSAGE` y el arranque del README no funciona en un clon limpio.
+
 **Verifica**: antes de hacer commit, comprueba que tu instancia renderiza lo que crees. La API de Markdown lo dice sin gastar un commit:
 
 ```bash

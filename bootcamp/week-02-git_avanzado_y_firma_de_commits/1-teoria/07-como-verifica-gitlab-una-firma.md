@@ -152,7 +152,7 @@ Aquí aparece la primera feature de pago de verdad del bootcamp:
 |---|---|---|
 | Push rule *Reject unsigned commits* | **Premium** | Rechaza en el servidor cualquier push con commits sin firmar |
 | **Server hook `pre-receive`** | **Free** | Lo mismo, escrito por ti. Es lo que usa este bootcamp (Semana 07) |
-| **Job de pipeline** | **Free** | Comprueba las firmas por API y falla el pipeline. Detecta, no bloquea (Semana 09) |
+| **Job de pipeline** | **Free** | Comprueba las firmas por API y falla el pipeline. Detecta, no bloquea. En `app` no hace falta: el hook de la Semana 07 ya rechaza lo que empuja una persona sin firmar |
 | Distintivo *Verified* | **Free** | La verificación en sí, y su API, están en CE |
 
 Comprobado en agosto de 2026: las *push rules* completas siguen siendo Premium. Que la **verificación** sea gratis y solo el **bloqueo automático** sea de pago es la forma habitual del reparto, y también la razón de que el server hook merezca la pena: son treinta líneas de bash y hacen exactamente lo mismo, en el mismo sitio del recorrido.
@@ -170,7 +170,7 @@ Comprobado en agosto de 2026: las *push rules* completas siguen siendo Premium. 
 | Cambiar `user.email` sin registrarlo en GitLab | `other_user` o `same_user_different_email` | El correo del commit tiene que ser uno confirmado de tu cuenta |
 | Diagnosticar por el distintivo de la interfaz | Agrupa tres fallos distintos bajo "Unverified" | El endpoint `/signature` |
 | Tratar el `404` como error del script | Es la respuesta normal a un commit sin firma | Interpretar 404 como "sin firmar" |
-| Confiar solo en el hábito para firmar | Un despiste y entra un commit sin firma que nadie ve | Server hook (S07) o job de pipeline (S09) |
+| Confiar solo en el hábito para firmar | Un despiste y entra un commit sin firma que nadie ve | Server hook (S07) |
 | Dar por hecho que la verificación es de pago | Se acaba pagando Premium por algo que CE ya hace | Verificación y API son Free; solo la push rule es Premium |
 
 ---
