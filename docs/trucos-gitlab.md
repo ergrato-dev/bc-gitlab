@@ -237,6 +237,21 @@ _Se añaden a medida que se publica cada semana._
 | Registrar un runner sin el token en los argumentos | `CI_SERVER_TOKEN="$RT" docker compose exec -e CI_SERVER_TOKEN gitlab-runner gitlab-runner register ...` |
 | Por qué no se puede fusionar | `GET .../merge_requests/<iid> \| jq -r .detailed_merge_status` |
 
+## Semana 10 — Reglas, variables y secretos
+
+| Truco | Cómo |
+|---|---|
+| Qué jobs entrarían en el pipeline de un push, sin crearlo | `POST .../ci/lint` con `dry_run=true`, `ref=<rama>` e `include_jobs=true`, y `.jobs[].name` |
+| Saber por qué no nació un pipeline | El `400` de `POST .../pipeline` dice `Review the workflow:rules` |
+| Ver los nombres de los pipelines | `GET .../pipelines \| jq -r '.[] \| "\(.id) \(.name)"'` |
+| Qué variables tiene el proyecto, sin valores | `GET .../variables \| jq -r '.[] \| "\(.key) \(.environment_scope) p=\(.protected) m=\(.masked) h=\(.hidden)"'` |
+| Cambiar una variable con ámbito | `PUT .../variables/<key>?filter%5Benvironment_scope%5D=production` (los corchetes codificados: `curl` los toma por un patrón) |
+| Leer la longitud de un secreto en un job, no el secreto | `echo "${#DEPLOY_TOKEN}"` |
+| Leer el último despliegue de un entorno | `GET .../deployments?environment=production&status=success&order_by=id&sort=desc&per_page=1` |
+| Lanzar un job manual | `POST .../jobs/<id>/play` |
+| Rotar un token de proyecto sin verlo | `POST .../access_tokens/<id>/rotate \| jq -j .token \| curl ... PUT .../variables/<key> --data-urlencode "value@-"` |
+| Restringir quién pasa variables a un pipeline | `PUT /projects/:id` con `ci_pipeline_variables_minimum_override_role=maintainer` |
+
 ---
 
 [← Volver a docs](README.md)

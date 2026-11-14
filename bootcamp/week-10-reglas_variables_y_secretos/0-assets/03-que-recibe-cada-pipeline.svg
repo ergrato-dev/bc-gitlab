@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Qué secretos recibe cada pipeline</title>
+  <desc id="desc">Tabla comprobada en el laboratorio. En la merge request de un Developer, aunque el job declare environment production: GOBERNANZA_TOKEN, no protegida, llega; DEPLOY_TOKEN y DEPLOY_SSH_KEY, protegidas, no llegan; un secure file se descarga. En deploy-staging, en main: GOBERNANZA_TOKEN llega, DEPLOY_TOKEN de staging llega, DEPLOY_SSH_KEY no porque su ámbito es production, el secure file se descargaría. En deploy-production, en main: llegan GOBERNANZA_TOKEN, DEPLOY_TOKEN de production y DEPLOY_SSH_KEY. Protected decide si un secreto sale de las refs protegidas; environment_scope decide cuál recibe cada job; los secure files no tienen ninguna de las dos.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">Qué secretos recibe cada pipeline de app</text>
+
+    <text x="40" y="84" fill="#999999" font-size="12">SECRETO</text>
+    <text x="440" y="76" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Merge request de dev</text>
+    <text x="440" y="94" fill="#999999" font-size="11" text-anchor="middle">con environment: production</text>
+    <text x="620" y="84" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">deploy-staging</text>
+    <text x="790" y="84" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">deploy-production</text>
+    <line x1="40" y1="106" x2="870" y2="106" stroke="#666666"/>
+
+    <text x="40" y="136" fill="#FAFAFA" font-size="14">GOBERNANZA_TOKEN</text>
+    <text x="40" y="154" fill="#999999" font-size="11">no protegida, ámbito *</text>
+    <text x="440" y="142" fill="#FC6D26" font-size="15" font-weight="700" text-anchor="middle">llega</text>
+    <text x="620" y="142" fill="#FAFAFA" font-size="15" text-anchor="middle">llega</text>
+    <text x="790" y="142" fill="#FAFAFA" font-size="15" text-anchor="middle">llega</text>
+    <line x1="40" y1="168" x2="870" y2="168" stroke="#333333"/>
+
+    <text x="40" y="198" fill="#FAFAFA" font-size="14">DEPLOY_TOKEN</text>
+    <text x="40" y="216" fill="#999999" font-size="11">protegida, staging y production</text>
+    <text x="440" y="204" fill="#999999" font-size="15" text-anchor="middle">no llega</text>
+    <text x="620" y="204" fill="#FAFAFA" font-size="15" text-anchor="middle">la de staging</text>
+    <text x="790" y="204" fill="#FAFAFA" font-size="15" text-anchor="middle">la de production</text>
+    <line x1="40" y1="230" x2="870" y2="230" stroke="#333333"/>
+
+    <text x="40" y="260" fill="#FAFAFA" font-size="14">DEPLOY_SSH_KEY</text>
+    <text x="40" y="278" fill="#999999" font-size="11">archivo, protegida, production</text>
+    <text x="440" y="266" fill="#999999" font-size="15" text-anchor="middle">no llega</text>
+    <text x="620" y="266" fill="#999999" font-size="15" text-anchor="middle">no llega</text>
+    <text x="790" y="266" fill="#FAFAFA" font-size="15" text-anchor="middle">llega</text>
+    <line x1="40" y1="292" x2="870" y2="292" stroke="#333333"/>
+
+    <text x="40" y="322" fill="#FAFAFA" font-size="14">Un secure file</text>
+    <text x="40" y="340" fill="#999999" font-size="11">sin protección ni ámbito</text>
+    <text x="440" y="328" fill="#FC6D26" font-size="15" font-weight="700" text-anchor="middle">se descarga</text>
+    <text x="620" y="328" fill="#FAFAFA" font-size="15" text-anchor="middle">se descarga</text>
+    <text x="790" y="328" fill="#FAFAFA" font-size="15" text-anchor="middle">se descarga</text>
+
+    <rect x="40" y="356" width="830" height="32" rx="6" fill="#554488"/>
+    <text x="455" y="377" fill="#FAFAFA" font-size="13" text-anchor="middle">protected decide si sale de las refs protegidas · environment_scope decide cuál recibe cada job</text>
+  </g>
+</svg>

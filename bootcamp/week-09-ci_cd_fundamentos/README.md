@@ -151,6 +151,6 @@ Lo que el script **no** puede comprobar es que el ADR-007 diga qué se descartó
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 08 — GitLab Flow, releases y métricas de flujo](../week-08-gitlab_flow_releases_y_metricas/README.md) | **Semana 09** | Semana 10 — Reglas, variables y secretos |
+| [Semana 08 — GitLab Flow, releases y métricas de flujo](../week-08-gitlab_flow_releases_y_metricas/README.md) | **Semana 09** | [Semana 10 — Reglas, variables y secretos](../week-10-reglas_variables_y_secretos/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Cómo decide GitLab si un job entra</title>
+  <desc id="desc">GitLab evalúa las reglas del job en orden. Para cada regla comprueba sus condiciones if, changes y exists, que se combinan con Y. La primera regla que se cumple decide: con when never el job no entra; con when manual entra y espera; sin when, o con on_success, entra. Si ninguna regla se cumple, el job no entra en el pipeline. Ejemplo: el job package tiene tres reglas, rama por defecto, release y tag; en una merge request no existe CI_COMMIT_BRANCH, ninguna coincide y package no entra.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">rules: la primera que coincide decide</text>
+
+    <rect x="40" y="70" width="190" height="56" rx="6" fill="#554488"/>
+    <text x="135" y="94" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Regla 1</text>
+    <text x="135" y="113" fill="#FAFAFA" font-size="12" text-anchor="middle">if Y changes Y exists</text>
+    <rect x="40" y="170" width="190" height="56" rx="6" fill="#554488"/>
+    <text x="135" y="194" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Regla 2</text>
+    <text x="135" y="213" fill="#FAFAFA" font-size="12" text-anchor="middle">if Y changes Y exists</text>
+    <rect x="40" y="270" width="190" height="56" rx="6" fill="#554488"/>
+    <text x="135" y="294" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Regla N</text>
+    <text x="135" y="313" fill="#FAFAFA" font-size="12" text-anchor="middle">if Y changes Y exists</text>
+
+    <line x1="135" y1="126" x2="135" y2="166" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="145" y="152" fill="#999999" font-size="12">no se cumple</text>
+    <line x1="135" y1="226" x2="135" y2="266" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="145" y="252" fill="#999999" font-size="12">no se cumple</text>
+    <line x1="135" y1="326" x2="135" y2="362" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="40" y="364" width="190" height="40" rx="6" fill="none" stroke="#666666"/>
+    <text x="135" y="389" fill="#FAFAFA" font-size="13" text-anchor="middle">ninguna: el job no entra</text>
+
+    <line x1="230" y1="98" x2="316" y2="98" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="230" y1="198" x2="316" y2="160" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="244" y="88" fill="#999999" font-size="12">se cumple</text>
+
+    <rect x="320" y="70" width="240" height="140" rx="6" fill="none" stroke="#FC6D26"/>
+    <text x="440" y="94" fill="#FC6D26" font-size="14" font-weight="600" text-anchor="middle">Decide su when</text>
+    <text x="336" y="122" fill="#FAFAFA" font-size="13">sin when, on_success: entra</text>
+    <text x="336" y="146" fill="#FAFAFA" font-size="13">manual: entra y espera</text>
+    <text x="336" y="170" fill="#FAFAFA" font-size="13">never: no entra</text>
+    <text x="336" y="194" fill="#999999" font-size="12">las reglas de debajo no se miran</text>
+
+    <rect x="600" y="70" width="270" height="256" rx="6" fill="none" stroke="#666666"/>
+    <text x="735" y="94" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">package, en cada pipeline</text>
+    <text x="616" y="124" fill="#999999" font-size="12">1  rama por defecto</text>
+    <text x="616" y="144" fill="#999999" font-size="12">2  release/*</text>
+    <text x="616" y="164" fill="#999999" font-size="12">3  tag</text>
+    <text x="616" y="198" fill="#FAFAFA" font-size="13">push a main: regla 1, entra</text>
+    <text x="616" y="222" fill="#FAFAFA" font-size="13">push a release/0.2: regla 2, entra</text>
+    <text x="616" y="246" fill="#FAFAFA" font-size="13">tag v0.2.0: regla 3, entra</text>
+    <text x="616" y="276" fill="#FC6D26" font-size="13">merge request: ninguna,</text>
+    <text x="616" y="296" fill="#FC6D26" font-size="13">no hay CI_COMMIT_BRANCH</text>
+  </g>
+</svg>

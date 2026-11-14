@@ -77,11 +77,11 @@ Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libr
 | 07 | `main` y tags `v*` protegidos, CODEOWNERS, server hook, script de auditoría `gobernanza` | Las reglas se cumplen aunque nadie mire |
 | 08 | `release/*` protegidas, `v0.1.0` y el parche `v0.1.1` desde `release/0.1`, CHANGELOG generado, `docs/metricas.md` con DORA-lite | Hay versiones y el flujo se mide con números propios |
 | 09 | Pipeline `build → test → package` en verde + runner Docker propio + job `gobernanza` | Cada commit se construye y se prueba solo |
-| 10 | `rules`, variables por `environment_scope`, secure files | Cero secretos en el YAML, cero pipelines duplicados en MR |
+| 10 | `rules`, variables por `environment_scope`, clave como variable de archivo (secure files evaluados y descartados para claves) | Cero secretos en el YAML, cero pipelines duplicados en MR |
 | 11 | DAG con `needs`, pipelines hijos, disparo a `infra`, pipeline programado | El pipeline escala y deja de ser un tren en serie |
 | 12 | `ci/componentes` con 2 componentes publicados en el catálogo | El YAML deja de duplicarse entre proyectos |
 | 13 | Imagen en el registry + política de limpieza + paquete genérico + dependency proxy | Los binarios viven versionados dentro de tu instancia |
-| 14 | `staging` y `production`, review app por MR, docs en Pages, 1 feature flag | Cada MR tiene entorno vivo y el despliegue es reversible |
+| 14 | Despliegue real a `staging` y `production` (nacen en la S10), review app por MR, docs en Pages, 1 feature flag | Cada MR tiene entorno vivo y el despliegue es reversible |
 | 15 | Flota de 3 runners etiquetados (`docker`, `dind`, protegido) + caché en SeaweedFS | La ejecución está enrutada y la caché es compartida |
 | 16 | Runner con ejecutor Kubernetes en k3d + `docs/finops.md` | La ejecución autoescala y sabes lo que cuesta cada pipeline |
 | 17 | `ci/automatizacion`: auditor por API, receptor de webhooks, job por ChatOps | La plataforma se opera por API, no a clics |

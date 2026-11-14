@@ -1,0 +1,132 @@
+{
+  "semana": "10",
+  "titulo": "Reglas, variables y secretos",
+  "checks": [
+    {
+      "id": "workflow-con-nombre",
+      "descripcion": "workflow da nombre a cada pipeline",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"(^|\\n)workflow:\\n(  .*\\n)*  name: \")",
+      "pista": "2-practicas/01-las-reglas-de-app.md, paso 2"
+    },
+    {
+      "id": "auto-cancel-interrumpible",
+      "descripcion": "Un commit nuevo cancela los jobs interrumpibles del pipeline anterior",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"on_new_commit: interruptible\")",
+      "pista": "2-practicas/01-las-reglas-de-app.md, paso 2"
+    },
+    {
+      "id": "build-y-test-con-changes",
+      "descripcion": "build y test solo se ejecutan en una merge request si cambia el codigo",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml as $y | all([\"build\", \"test\"][]; . as $j | ([$y | capture(\"\\n\" + $j + \":\\n(?<b>( .*\\n)*)\").b] | first // \"\") | test(\"changes:\"))",
+      "pista": "2-practicas/01-las-reglas-de-app.md, paso 3"
+    },
+    {
+      "id": "despliegue-a-produccion-manual",
+      "descripcion": "deploy-production es manual, no bloquea el pipeline y no se interrumpe",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\ndeploy-production:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"when: manual\") and test(\"allow_failure: true\") and test(\"interruptible: false\")",
+      "pista": "2-practicas/03-secretos-por-entorno.md, paso 3"
+    },
+    {
+      "id": "entornos-staging-y-production",
+      "descripcion": "Existen los entornos staging y production",
+      "api": "projects/{proyecto}/environments?per_page=100",
+      "jq": "map(.name) | index(\"staging\") != null and index(\"production\") != null",
+      "pista": "2-practicas/03-secretos-por-entorno.md, paso 4"
+    },
+    {
+      "id": "desplegado-en-staging",
+      "descripcion": "Hay un despliegue correcto en staging",
+      "api": "projects/{proyecto}/deployments?environment=staging&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/03-secretos-por-entorno.md, paso 4"
+    },
+    {
+      "id": "desplegado-en-production",
+      "descripcion": "Hay un despliegue correcto en production",
+      "api": "projects/{proyecto}/deployments?environment=production&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/04-archivos-secretos-y-fugas.md, paso 4"
+    },
+    {
+      "id": "deploy-token-por-entorno",
+      "descripcion": "DEPLOY_TOKEN existe para staging y para production, protegida y enmascarada en los dos",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "[.[] | select(.key == \"DEPLOY_TOKEN\" and .protected and .masked) | .environment_scope] | (index(\"staging\") != null and index(\"production\") != null)",
+      "pista": "2-practicas/03-secretos-por-entorno.md, paso 1"
+    },
+    {
+      "id": "clave-ssh-como-archivo",
+      "descripcion": "DEPLOY_SSH_KEY es una variable de tipo archivo, protegida y solo para production",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "any(.[]; .key == \"DEPLOY_SSH_KEY\" and .variable_type == \"file\" and .protected and .environment_scope == \"production\")",
+      "pista": "2-practicas/04-archivos-secretos-y-fugas.md, paso 3"
+    },
+    {
+      "id": "secretos-protegidos",
+      "descripcion": "Todas las variables del proyecto son protegidas, salvo GOBERNANZA_TOKEN",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "map(select(.protected | not) | .key) - [\"GOBERNANZA_TOKEN\"] | length == 0",
+      "pista": "1-teoria/04-proteger-enmascarar-ocultar.md, apartado 2.4"
+    },
+    {
+      "id": "secretos-enmascarados",
+      "descripcion": "Todas las variables de texto del proyecto son enmascaradas",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "map(select(.variable_type == \"env_var\")) | all(.masked)",
+      "pista": "1-teoria/04-proteger-enmascarar-ocultar.md, apartado 2.2"
+    },
+    {
+      "id": "ningun-secure-file-con-claves",
+      "descripcion": "Ningun secure file tiene nombre de clave privada",
+      "api": "projects/{proyecto}/secure_files?per_page=100",
+      "jq": "all(.[]; .name | test(\"key|ed25519|rsa|ecdsa|pem|p12|pfx\"; \"i\") | not)",
+      "pista": "2-practicas/04-archivos-secretos-y-fugas.md, paso 3"
+    },
+    {
+      "id": "variables-de-pipeline-restringidas",
+      "descripcion": "Solo Maintainer o mas puede pasar variables al lanzar un pipeline",
+      "api": "projects/{proyecto}",
+      "jq": ".ci_pipeline_variables_minimum_override_role | IN(\"maintainer\", \"owner\", \"no_one_allowed\")",
+      "pista": "2-practicas/02-variables-y-precedencia.md, paso 4"
+    },
+    {
+      "id": "gobernanza-rotado",
+      "descripcion": "El token gobernanza-ci se ha rotado: uno activo y al menos uno revocado",
+      "api": "projects/{proyecto}/access_tokens?per_page=100",
+      "jq": "map(select(.name == \"gobernanza-ci\")) | (map(select(.active)) | length == 1) and (map(select(.revoked)) | length >= 1)",
+      "pista": "3-proyecto/README.md, punto 1"
+    },
+    {
+      "id": "ultimo-pipeline-de-main-en-verde",
+      "descripcion": "El ultimo pipeline de main esta en verde",
+      "api": "projects/{proyecto}/pipelines?ref=main&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/03-secretos-por-entorno.md, paso 4"
+    },
+    {
+      "id": "ningun-secreto-en-el-yaml",
+      "descripcion": "El .gitlab-ci.yml de main no contiene nada con forma de token o de clave",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"glpat-|glptt-|glrt-|gldt-|PRIVATE KEY\") | not",
+      "pista": "1-teoria/07-secretos-fuera-del-yaml-y-del-log.md, apartado 2.1"
+    },
+    {
+      "id": "inventario-de-secretos",
+      "descripcion": "docs/secretos.md existe en main y nombra cada secreto del pipeline",
+      "api": "projects/{proyecto}/repository/files/docs%2Fsecretos.md?ref=main",
+      "jq": ".content | @base64d | test(\"DEPLOY_TOKEN\") and test(\"DEPLOY_SSH_KEY\") and test(\"GOBERNANZA_TOKEN\")",
+      "pista": "3-proyecto/README.md, punto 2"
+    },
+    {
+      "id": "adr-007-ampliado",
+      "descripcion": "El ADR-007 de la wiki explica los secretos por entorno",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-007\"; \"i\"))) | any(.content | test(\"environment_scope\"))",
+      "pista": "3-proyecto/README.md, punto 3"
+    }
+  ]
+}

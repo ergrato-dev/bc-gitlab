@@ -200,6 +200,6 @@ El requisito 2 lee una variable de instancia: necesita `GITLAB_ADMIN_TOKEN` en `
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 08](../../week-08-gitlab_flow_releases_y_metricas/3-proyecto/README.md) | **Proyecto Semana 09** | Proyecto Semana 10 |
+| [Proyecto Semana 08](../../week-08-gitlab_flow_releases_y_metricas/3-proyecto/README.md) | **Proyecto Semana 09** | [Proyecto Semana 10](../../week-10-reglas_variables_y_secretos/3-proyecto/README.md) |
 
 [← Volver a la Semana 09](../README.md)

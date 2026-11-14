@@ -42,7 +42,7 @@ Hay más —de despliegue, de runner, de impersonación— que irán apareciendo
 | Un pipeline que toca otro proyecto | De proyecto o de grupo |
 | Una integración externa | De proyecto, con el mínimo scope |
 
-En este bootcamp usarás uno personal hasta la Semana 10, donde aparecen los tokens de proyecto y `CI_JOB_TOKEN`.
+En este bootcamp usarás uno personal hasta la Semana 09, donde aparecen los tokens de proyecto y `CI_JOB_TOKEN`.
 
 ---
 

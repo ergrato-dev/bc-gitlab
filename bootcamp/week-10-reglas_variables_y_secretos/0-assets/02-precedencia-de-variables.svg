@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">De dónde sale cada variable y cuál gana</title>
+  <desc id="desc">Siete sitios de los que sale una variable, de más a menos prioridad: variables de pipeline, que pasa quien lo lanza si tiene el rol mínimo; variables de proyecto, que escribe un Maintainer; de grupo, Owner del grupo; de instancia, administrador; variables del job en el YAML y globales del YAML, que escribe cualquiera que cambie el archivo; y predefinidas, que escribe GitLab. Todo lo que está fuera del YAML gana al YAML. Ejemplo del laboratorio con ORIGEN: el job ve yaml-job; con variable de proyecto, proyecto; con variable de pipeline, pipeline; si la de proyecto es protegida y la rama no, no llega y el job vuelve a ver yaml-job sin ningún aviso.</desc>
+  <rect width="900" height="440" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">De dónde sale cada variable, y cuál gana</text>
+    <text x="40" y="66" fill="#999999" font-size="12">MÁS PRIORIDAD</text>
+    <rect x="40" y="76" width="420" height="38" rx="6" fill="#FC6D26"/>
+    <text x="56" y="100" fill="#1F1F1F" font-size="14" font-weight="600">1  Pipeline</text>
+    <text x="444" y="100" fill="#1F1F1F" font-size="12" text-anchor="end">quien lo lanza, con el rol mínimo</text>
+    <rect x="40" y="120" width="420" height="38" rx="6" fill="#FC6D26" fill-opacity="0.85"/>
+    <text x="56" y="144" fill="#1F1F1F" font-size="14" font-weight="600">2  Proyecto</text>
+    <text x="444" y="144" fill="#1F1F1F" font-size="12" text-anchor="end">Maintainer</text>
+    <rect x="40" y="164" width="420" height="38" rx="6" fill="#FC6D26" fill-opacity="0.7"/>
+    <text x="56" y="188" fill="#1F1F1F" font-size="14" font-weight="600">3  Grupo</text>
+    <text x="444" y="188" fill="#1F1F1F" font-size="12" text-anchor="end">Owner del grupo</text>
+    <rect x="40" y="208" width="420" height="38" rx="6" fill="#FC6D26" fill-opacity="0.55"/>
+    <text x="56" y="232" fill="#1F1F1F" font-size="14" font-weight="600">4  Instancia</text>
+    <text x="444" y="232" fill="#1F1F1F" font-size="12" text-anchor="end">administrador</text>
+    <line x1="40" y1="256" x2="460" y2="256" stroke="#666666" stroke-dasharray="4 4"/>
+    <text x="460" y="272" fill="#999999" font-size="11" text-anchor="end">encima de la línea: fuera del repositorio</text>
+    <rect x="40" y="280" width="420" height="38" rx="6" fill="#554488"/>
+    <text x="56" y="304" fill="#FAFAFA" font-size="14" font-weight="600">5  variables: del job</text>
+    <text x="444" y="304" fill="#FAFAFA" font-size="12" text-anchor="end">quien cambia el YAML</text>
+    <rect x="40" y="324" width="420" height="38" rx="6" fill="#554488" fill-opacity="0.75"/>
+    <text x="56" y="348" fill="#FAFAFA" font-size="14" font-weight="600">6  variables: global</text>
+    <text x="444" y="348" fill="#FAFAFA" font-size="12" text-anchor="end">quien cambia el YAML</text>
+    <rect x="40" y="368" width="420" height="38" rx="6" fill="none" stroke="#666666"/>
+    <text x="56" y="392" fill="#FAFAFA" font-size="14" font-weight="600">7  Predefinidas CI_*</text>
+    <text x="444" y="392" fill="#999999" font-size="12" text-anchor="end">GitLab</text>
+    <text x="40" y="426" fill="#999999" font-size="12">MENOS PRIORIDAD</text>
+
+    <rect x="500" y="76" width="370" height="330" rx="6" fill="none" stroke="#FC6D26"/>
+    <text x="685" y="102" fill="#FC6D26" font-size="14" font-weight="600" text-anchor="middle">La sonda, en una rama sin proteger</text>
+    <text x="516" y="136" fill="#FAFAFA" font-size="13">Solo el YAML</text>
+    <text x="854" y="136" fill="#FAFAFA" font-size="13" text-anchor="end">yaml-job</text>
+    <text x="516" y="168" fill="#FAFAFA" font-size="13">+ proyecto, sin proteger</text>
+    <text x="854" y="168" fill="#FAFAFA" font-size="13" text-anchor="end">proyecto</text>
+    <text x="516" y="200" fill="#FAFAFA" font-size="13">+ proyecto, protegida</text>
+    <text x="854" y="200" fill="#FC6D26" font-size="13" font-weight="600" text-anchor="end">yaml-job</text>
+    <text x="516" y="232" fill="#FAFAFA" font-size="13">+ pipeline</text>
+    <text x="854" y="232" fill="#FAFAFA" font-size="13" text-anchor="end">pipeline</text>
+    <line x1="516" y1="256" x2="854" y2="256" stroke="#666666" stroke-dasharray="4 4"/>
+    <text x="516" y="284" fill="#FAFAFA" font-size="13">La protegida no llega a una rama</text>
+    <text x="516" y="304" fill="#FAFAFA" font-size="13">sin proteger, y el job usa el valor</text>
+    <text x="516" y="324" fill="#FAFAFA" font-size="13">del YAML sin ningún aviso.</text>
+    <text x="516" y="358" fill="#FC6D26" font-size="13">Un secreto nunca tiene valor</text>
+    <text x="516" y="378" fill="#FC6D26" font-size="13">por defecto en el YAML.</text>
+  </g>
+</svg>

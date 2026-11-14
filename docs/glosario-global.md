@@ -54,6 +54,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Entorno** (*environment*) — Free. Destino con nombre al que se despliega (`staging`, `production`). Guarda el historial de despliegues y habilita la reversión. Los **entornos protegidos** son Premium.
 
+**Entorno protegido** (*protected environment*) — **Premium**. Limita quién despliega en un entorno, con aprobaciones opcionales. En CE: job manual solo en rama protegida y variable protegida con ámbito (Semana 10).
+
 **Épica** (*epic*) — **Premium**. Agrupación de issues por encima del hito. En CE se aproxima con hitos y etiquetas.
 
 **Error budget** — Presupuesto de fallo que deja un SLO. Si el SLO es 99.9 % mensual, el error budget es de unos 43 minutos al mes. Se gasta, no se evita.
@@ -124,6 +126,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Rules** — Free. Palabra clave que decide si un job se crea y en qué condiciones. Sustituye a `only`/`except`, que sigue funcionando pero ya no se recomienda.
 
+**Secure file** (*project-level secure file*) — Free. Archivo cifrado del proyecto, descargable con `CI_JOB_TOKEN`. Sin protección ni ámbito: lo descarga cualquier Developer. Nunca para claves privadas (Semana 10).
+
 ## S
 
 **SAST** (*static application security testing*) — **Ultimate** el nativo. Análisis del código sin ejecutarlo. En CE se implementa con Semgrep en un job propio.
@@ -160,7 +164,11 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Variable de instancia** (*instance CI/CD variable*) — Free. Variable CI/CD que llega a todos los pipelines de la instancia y tiene prioridad sobre las predefinidas.
 
+**Variable de tipo archivo** (*file type variable*) — Free. El runner escribe el valor en un archivo temporal fuera del repositorio y el job recibe la ruta. Para claves y certificados.
+
 **Variable oculta** (*hidden variable*) — Free. Variable enmascarada cuyo valor ya no se puede ver en la interfaz ni en la API. Se marca al crearla y no se puede desmarcar.
+
+**Variable protegida** (*protected variable*) — Free. Solo llega a pipelines de ramas y tags protegidos. El único atributo que impide que un secreto llegue a una merge request.
 
 ---
 

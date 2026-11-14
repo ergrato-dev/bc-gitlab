@@ -162,7 +162,7 @@ curl -s -H "$H" "$API/projects/$P/snippets" \
 | Antipatrón | Por qué duele | Qué hacer en su lugar |
 |---|---|---|
 | Snippet público "que es más cómodo" | Es una página web sin control de acceso, indexable | `private`, y si hace falta compartir, comparte el proyecto |
-| Un token o una contraseña en un snippet | No pasa por la detección de secretos y nadie lo revisa | Variables de CI (S10) o secure files |
+| Un token o una contraseña en un snippet | No pasa por la detección de secretos y nadie lo revisa | Variable de CI protegida (S10) |
 | Snippet personal para algo del equipo | Se va contigo el día que te vas | Snippet de proyecto |
 | Snippet que en realidad es documentación | Se busca en el sitio equivocado | Wiki o `README.md` |
 | Snippet que en realidad es un proyecto | Sin revisión, sin tests, sin historial útil | Un repositorio de verdad |
