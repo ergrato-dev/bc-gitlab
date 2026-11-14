@@ -252,6 +252,19 @@ _Se añaden a medida que se publica cada semana._
 | Rotar un token de proyecto sin verlo | `POST .../access_tokens/<id>/rotate \| jq -j .token \| curl ... PUT .../variables/<key> --data-urlencode "value@-"` |
 | Restringir quién pasa variables a un pipeline | `PUT /projects/:id` con `ci_pipeline_variables_minimum_override_role=maintainer` |
 
+## Semana 11 — Pipelines DAG y multiproyecto
+
+| Truco | Cómo |
+|---|---|
+| Ver los pipelines hijos por API | `GET .../pipelines?source=parent_pipeline`: sin el `source`, la lista los esconde |
+| Ir del job de disparo al pipeline que creó | `GET .../pipelines/<id>/bridges \| jq '.[] \| {name, d: .downstream_pipeline.web_url}'` |
+| Ver qué jobs esperan a un recurso | `GET .../resource_groups/<key>/upcoming_jobs` |
+| Saber quién ejecuta un programado | `GET .../pipeline_schedules \| jq '.[] \| {description, owner: .owner.username}'` |
+| Quedarte con un programado huérfano | `POST .../pipeline_schedules/<id>/take_ownership` |
+| Lanzar un programado ahora, sin esperar al cron | `POST .../pipeline_schedules/<id>/play` o `glab schedule run <id>` |
+| Pasar un dato de un job al pipeline de otro proyecto | `artifacts:reports:dotenv` en el job y `variables: { X: $X }` en el de disparo, con `needs` sobre él |
+| Probar la regla de un programado sin crear el programado | `POST .../ci/lint` con `dry_run=true` no simula `schedule`: lanza el programado con `play` sobre una rama de prueba |
+
 ---
 
 [← Volver a docs](README.md)

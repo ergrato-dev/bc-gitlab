@@ -213,6 +213,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 09](../../week-09-ci_cd_fundamentos/3-proyecto/README.md) | **Proyecto Semana 10** | Proyecto Semana 11 |
+| [Proyecto Semana 09](../../week-09-ci_cd_fundamentos/3-proyecto/README.md) | **Proyecto Semana 10** | [Proyecto Semana 11](../../week-11-pipelines_dag_y_multiproyecto/3-proyecto/README.md) |
 
 [← Volver a la Semana 10](../README.md)

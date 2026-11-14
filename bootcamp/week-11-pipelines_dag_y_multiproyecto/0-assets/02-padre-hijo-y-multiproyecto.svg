@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Padre-hijo y multiproyecto</title>
+  <desc id="desc">A la izquierda, el pipeline de app. En una merge request, el job docs dispara un pipeline hijo en el mismo proyecto y el mismo commit, con origen parent_pipeline, que ejecuta markdownlint y caducidades. En main, el job infra dispara un pipeline en otro proyecto, infra/entornos, en su rama main y con su propio YAML, con origen pipeline y la identidad de quien fusionó. El job registrar de infra/entornos descarga el paquete de app con su job token; app tiene que tener a infra/entornos en su lista de permitidos. Los dos disparos usan strategy mirror: el estado de abajo sube al job de arriba.</desc>
+  <rect width="900" height="460" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="30" y="30" width="300" height="400" rx="8" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="50" y="58" fill="#FC6D26" font-size="15" font-weight="600">app</text>
+    <rect x="50" y="80" width="260" height="44" rx="6" fill="#554488"/>
+    <text x="180" y="100" fill="#FAFAFA" font-size="13" text-anchor="middle">merge request</text>
+    <text x="180" y="117" fill="#FAFAFA" font-size="12" text-anchor="middle">job docs · trigger:include</text>
+    <rect x="50" y="300" width="260" height="44" rx="6" fill="#554488"/>
+    <text x="180" y="320" fill="#FAFAFA" font-size="13" text-anchor="middle">main</text>
+    <text x="180" y="337" fill="#FAFAFA" font-size="12" text-anchor="middle">package → job infra · trigger:project</text>
+
+    <rect x="50" y="160" width="260" height="96" rx="6" fill="none" stroke="#FC6D26" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="180" y="184" fill="#FC6D26" font-size="13" font-weight="600" text-anchor="middle">pipeline hijo · ci/docs.yml</text>
+    <text x="180" y="204" fill="#FAFAFA" font-size="12" text-anchor="middle">mismo proyecto, mismo commit</text>
+    <text x="180" y="222" fill="#FAFAFA" font-size="12" text-anchor="middle">source = parent_pipeline</text>
+    <text x="180" y="240" fill="#FAFAFA" font-size="12" text-anchor="middle">markdownlint · caducidades</text>
+    <line x1="180" y1="124" x2="180" y2="156" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="560" y="230" width="310" height="200" rx="8" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="580" y="258" fill="#FC6D26" font-size="15" font-weight="600">infra/entornos</text>
+    <text x="580" y="284" fill="#FAFAFA" font-size="12">su rama main, su propio YAML</text>
+    <text x="580" y="304" fill="#FAFAFA" font-size="12">source = pipeline</text>
+    <text x="580" y="324" fill="#FAFAFA" font-size="12">identidad: quien fusionó en app</text>
+    <rect x="580" y="342" width="270" height="40" rx="6" fill="#554488"/>
+    <text x="715" y="367" fill="#FAFAFA" font-size="13" text-anchor="middle">registrar · descarga el paquete</text>
+    <line x1="310" y1="322" x2="556" y2="300" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="360" y="296" fill="#FAFAFA" font-size="12">variables: APP_SHA, APP_PACKAGE_JOB_ID</text>
+
+    <line x1="580" y1="382" x2="314" y2="344" stroke="#E24329" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#flecha)"/>
+    <text x="360" y="404" fill="#E24329" font-size="12">CI_JOB_TOKEN: app tiene que permitir a infra/entornos</text>
+
+    <rect x="560" y="40" width="310" height="150" rx="8" fill="none" stroke="#E24329" stroke-width="2"/>
+    <text x="580" y="68" fill="#E24329" font-size="14" font-weight="600">strategy: mirror</text>
+    <text x="580" y="94" fill="#FAFAFA" font-size="12">El job de disparo espera al pipeline</text>
+    <text x="580" y="112" fill="#FAFAFA" font-size="12">de abajo y copia su estado.</text>
+    <text x="580" y="138" fill="#FAFAFA" font-size="12">Hijo en rojo: la merge request no se fusiona.</text>
+    <text x="580" y="158" fill="#FAFAFA" font-size="12">infra en rojo: main en rojo.</text>
+  </g>
+</svg>

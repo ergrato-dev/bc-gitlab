@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">La cola de un resource group</title>
+  <desc id="desc">Tres pipelines de main, 101, 102 y 103, llegan a deploy-staging. El resource group staging deja pasar a uno cada vez; los demás esperan en waiting_for_resource sin ocupar runner. Con newest_first pasa primero el 103. Cuando le llega el turno al 101 o al 102, Prevent outdated deployment jobs los hace fallar sin ejecutarse, porque staging ya tiene una versión más nueva. Resultado: staging termina en la versión del 103 y nunca vuelve atrás.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">resource_group: staging · process_mode: newest_first</text>
+    <rect x="30" y="70" width="220" height="44" rx="6" fill="#554488"/>
+    <text x="140" y="97" fill="#FAFAFA" font-size="13" text-anchor="middle">pipeline 101 · deploy-staging</text>
+    <rect x="30" y="130" width="220" height="44" rx="6" fill="#554488"/>
+    <text x="140" y="157" fill="#FAFAFA" font-size="13" text-anchor="middle">pipeline 102 · deploy-staging</text>
+    <rect x="30" y="190" width="220" height="44" rx="6" fill="#FC6D26"/>
+    <text x="140" y="217" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">pipeline 103 · deploy-staging</text>
+
+    <rect x="330" y="90" width="200" height="124" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="430" y="118" fill="#FC6D26" font-size="14" font-weight="600" text-anchor="middle">candado staging</text>
+    <text x="430" y="144" fill="#FAFAFA" font-size="12" text-anchor="middle">uno dentro</text>
+    <text x="430" y="164" fill="#FAFAFA" font-size="12" text-anchor="middle">los demás en</text>
+    <text x="430" y="184" fill="#FAFAFA" font-size="12" text-anchor="middle">waiting_for_resource</text>
+    <line x1="250" y1="212" x2="326" y2="180" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="250" y1="92" x2="326" y2="120" stroke="#666666" stroke-width="2" stroke-dasharray="5 4"/>
+    <line x1="250" y1="152" x2="326" y2="150" stroke="#666666" stroke-width="2" stroke-dasharray="5 4"/>
+
+    <rect x="610" y="80" width="260" height="56" rx="6" fill="#FC6D26"/>
+    <text x="740" y="104" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">1.º 103 despliega</text>
+    <text x="740" y="122" fill="#1F1F1F" font-size="12" text-anchor="middle">staging = versión del 103</text>
+    <rect x="610" y="160" width="260" height="56" rx="6" fill="none" stroke="#E24329" stroke-width="2"/>
+    <text x="740" y="184" fill="#E24329" font-size="13" font-weight="600" text-anchor="middle">2.º y 3.º: 102 y 101 fallan</text>
+    <text x="740" y="202" fill="#FAFAFA" font-size="12" text-anchor="middle">obsoletos, sin ejecutarse</text>
+    <line x1="530" y1="152" x2="606" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="530" y1="160" x2="606" y2="188" stroke="#E24329" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="30" y="280" width="840" height="90" rx="6" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="50" y="310" fill="#FAFAFA" font-size="13">Sin el candado: los tres a la vez y gana el que termina el último, sea cual sea.</text>
+    <text x="50" y="332" fill="#FAFAFA" font-size="13">Sin Prevent outdated deployment jobs: 103, luego 102 y 101 encima. staging vuelve atrás.</text>
+    <text x="50" y="354" fill="#FAFAFA" font-size="13">Con los dos: staging solo avanza.</text>
+  </g>
+</svg>

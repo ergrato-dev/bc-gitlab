@@ -1,0 +1,132 @@
+{
+  "semana": "11",
+  "titulo": "Pipelines DAG y multiproyecto",
+  "checks": [
+    {
+      "id": "test-no-espera-a-build",
+      "descripcion": "test empieza sin esperar a build",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\ntest:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"needs: \\\\[\\\\]\")",
+      "pista": "2-practicas/01-de-stages-a-dag.md, paso 2"
+    },
+    {
+      "id": "gobernanza-no-espera",
+      "descripcion": "gobernanza empieza sin esperar a ningun job",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\ngobernanza:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"needs: \\\\[\\\\]\")",
+      "pista": "2-practicas/01-de-stages-a-dag.md, paso 2"
+    },
+    {
+      "id": "package-espera-a-build-y-test",
+      "descripcion": "package espera solo a build y a test",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\npackage:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"needs:\") and test(\"- build\") and test(\"- test\")",
+      "pista": "2-practicas/01-de-stages-a-dag.md, paso 2"
+    },
+    {
+      "id": "ultimo-pipeline-de-main-en-verde",
+      "descripcion": "El ultimo pipeline de main por push esta en verde",
+      "api": "projects/{proyecto}/pipelines?ref=main&source=push&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 6"
+    },
+    {
+      "id": "hijo-de-documentacion",
+      "descripcion": "Un job dispara ci/docs.yml como pipeline hijo con strategy mirror",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"ci/docs.yml\") and test(\"strategy: mirror\")",
+      "pista": "2-practicas/02-un-pipeline-hijo-para-la-documentacion.md, paso 3"
+    },
+    {
+      "id": "pipeline-hijo-correcto",
+      "descripcion": "Hay al menos un pipeline hijo terminado en verde",
+      "api": "projects/{proyecto}/pipelines?source=parent_pipeline&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/02-un-pipeline-hijo-para-la-documentacion.md, paso 4"
+    },
+    {
+      "id": "infra-entornos-existe",
+      "descripcion": "Existe el proyecto entornos dentro del subgrupo infra",
+      "api": "projects/{grupo}%2Finfra%2Fentornos",
+      "jq": ".path == \"entornos\"",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 1"
+    },
+    {
+      "id": "infra-variables-restringidas",
+      "descripcion": "En infra/entornos solo Maintainer o mas puede pasar variables a un pipeline",
+      "api": "projects/{grupo}%2Finfra%2Fentornos",
+      "jq": ".ci_pipeline_variables_minimum_override_role | IN(\"maintainer\", \"owner\")",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 1"
+    },
+    {
+      "id": "disparo-a-infra",
+      "descripcion": "El pipeline de app dispara un pipeline en infra/entornos",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"project: [^\\n]*/infra/entornos\")",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 3"
+    },
+    {
+      "id": "pipeline-de-infra-desde-app",
+      "descripcion": "infra/entornos tiene un pipeline multiproyecto terminado en verde",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/pipelines?source=pipeline&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 6"
+    },
+    {
+      "id": "job-token-de-app-acotado",
+      "descripcion": "El job token de otros proyectos solo entra en app si esta en su lista de permitidos",
+      "api": "projects/{proyecto}/job_token_scope",
+      "jq": ".inbound_enabled == true",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 5"
+    },
+    {
+      "id": "infra-en-la-lista-de-app",
+      "descripcion": "infra/entornos esta en la lista de permitidos del job token de app",
+      "api": "projects/{proyecto}/job_token_scope/allowlist?per_page=100",
+      "jq": "any(.[]; .path_with_namespace | endswith(\"/infra/entornos\"))",
+      "pista": "2-practicas/03-disparo-a-infra.md, paso 5"
+    },
+    {
+      "id": "resource-groups-de-despliegue",
+      "descripcion": "Existen los resource groups staging y production",
+      "api": "projects/{proyecto}/resource_groups?per_page=100",
+      "jq": "map(.key) | index(\"staging\") != null and index(\"production\") != null",
+      "pista": "2-practicas/04-concurrencia-y-calendario.md, paso 2"
+    },
+    {
+      "id": "staging-despliega-lo-mas-nuevo",
+      "descripcion": "El resource group staging atiende primero al pipeline mas nuevo",
+      "api": "projects/{proyecto}/resource_groups/staging",
+      "jq": ".process_mode == \"newest_first\"",
+      "pista": "2-practicas/04-concurrencia-y-calendario.md, paso 3"
+    },
+    {
+      "id": "programa-de-caducidades",
+      "descripcion": "Hay un pipeline programado activo que vigila las caducidades",
+      "api": "projects/{proyecto}/pipeline_schedules?per_page=100",
+      "jq": "any(.[]; .active and (.description | test(\"caducidad\"; \"i\")))",
+      "pista": "2-practicas/04-concurrencia-y-calendario.md, paso 5"
+    },
+    {
+      "id": "programado-en-verde",
+      "descripcion": "Hay al menos un pipeline programado terminado en verde",
+      "api": "projects/{proyecto}/pipelines?source=schedule&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/04-concurrencia-y-calendario.md, paso 6"
+    },
+    {
+      "id": "programados-sin-despliegue",
+      "descripcion": "deploy-staging no entra en los pipelines programados",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\ndeploy-staging:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"CI_PIPELINE_SOURCE == \\\"schedule\\\"\")",
+      "pista": "2-practicas/04-concurrencia-y-calendario.md, paso 2"
+    },
+    {
+      "id": "adr-008-topologia",
+      "descripcion": "El ADR-008 de la wiki explica la topologia de pipelines",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-008\"; \"i\"))) | any(.content | test(\"needs\") and test(\"infra/entornos\"))",
+      "pista": "3-proyecto/README.md, punto 2"
+    }
+  ]
+}

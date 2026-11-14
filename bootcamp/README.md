@@ -32,7 +32,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 |:--:|---|:--:|
 | [09](week-09-ci_cd_fundamentos/README.md) | CI/CD: fundamentos, runner, artifacts y cache | ✅ |
 | [10](week-10-reglas_variables_y_secretos/README.md) | Reglas, variables y secretos | ✅ |
-| 11 | Pipelines DAG, padre-hijo y multi-proyecto | ⬜ |
+| [11](week-11-pipelines_dag_y_multiproyecto/README.md) | Pipelines DAG y multiproyecto | ✅ |
 | 12 | Componentes CI/CD y catálogo | ⬜ |
 | 13 | Registry de contenedores y de paquetes | ⬜ |
 

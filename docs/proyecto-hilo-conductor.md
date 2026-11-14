@@ -31,18 +31,20 @@ O el tuyo propio. La única regla: **que puedas inventar issues creíbles**, por
 
 ---
 
-## 2. La estructura: un grupo, tres proyectos
+## 2. La estructura: un grupo, tres subgrupos
 
 ```
 plataforma-<tu-dominio>/          ← grupo raíz
 ├── app/                          ← el producto. Nace en la S01
-├── infra/                        ← Terraform y manifiestos. Nace en la S11
+├── infra/                        ← subgrupo (S03)
+│   ├── entornos/                 ← qué versión hay en cada entorno. Nace en la S11
+│   └── terraform/                ← Terraform y estado remoto. Nace en la S24
 └── ci/
     ├── componentes/              ← componentes CI/CD publicados. Nace en la S12
     └── automatizacion/           ← scripts de API, webhooks, ChatOps. Nace en la S17
 ```
 
-`app/` es el que más se toca y el que apuntas en `~/.bc-gitlab`. Los otros tres aparecen cuando la semana que los necesita llega; no los crees antes.
+`app/` es el que más se toca y el que apuntas en `~/.bc-gitlab`. Los demás proyectos aparecen cuando la semana que los necesita llega; no los crees antes.
 
 ---
 

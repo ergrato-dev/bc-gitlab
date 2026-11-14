@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Stages frente a DAG</title>
+  <desc id="desc">Arriba, el pipeline por stages: build 40 segundos, luego test 70, luego package 20, luego deploy-staging 25, en serie, 155 segundos. Abajo, el mismo pipeline en DAG con needs: build y test empiezan a la vez, package espera a los dos, deploy-staging a package; 115 segundos. El camino crítico es test, package y deploy-staging. Nota: con concurrent igual a 1 el DAG dura lo mismo que los stages, porque build y test no pueden ejecutarse a la vez.</desc>
+  <rect width="900" height="440" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="16" font-weight="600">Stages: cada job espera al stage anterior entero</text>
+    <rect x="30" y="56" width="160" height="40" rx="6" fill="#554488"/>
+    <text x="110" y="81" fill="#FAFAFA" font-size="13" text-anchor="middle">build · 40 s</text>
+    <rect x="190" y="56" width="280" height="40" rx="6" fill="#554488"/>
+    <text x="330" y="81" fill="#FAFAFA" font-size="13" text-anchor="middle">test · 70 s</text>
+    <rect x="470" y="56" width="80" height="40" rx="6" fill="#554488"/>
+    <text x="510" y="81" fill="#FAFAFA" font-size="13" text-anchor="middle">package</text>
+    <rect x="550" y="56" width="100" height="40" rx="6" fill="#554488"/>
+    <text x="600" y="81" fill="#FAFAFA" font-size="13" text-anchor="middle">deploy</text>
+    <text x="670" y="81" fill="#FAFAFA" font-size="14" font-weight="600">155 s</text>
+
+    <text x="30" y="156" fill="#FC6D26" font-size="16" font-weight="600">DAG: cada job espera solo a lo que nombra en needs</text>
+    <rect x="30" y="176" width="160" height="40" rx="6" fill="#554488"/>
+    <text x="110" y="201" fill="#FAFAFA" font-size="13" text-anchor="middle">build · 40 s</text>
+    <rect x="30" y="226" width="280" height="40" rx="6" fill="#FC6D26"/>
+    <text x="170" y="251" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">test · 70 s · needs: []</text>
+    <rect x="310" y="201" width="80" height="40" rx="6" fill="#FC6D26"/>
+    <text x="350" y="226" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">package</text>
+    <rect x="390" y="201" width="100" height="40" rx="6" fill="#FC6D26"/>
+    <text x="440" y="226" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">deploy</text>
+    <text x="510" y="226" fill="#FAFAFA" font-size="14" font-weight="600">115 s</text>
+    <line x1="190" y1="196" x2="306" y2="214" stroke="#666666" stroke-width="2"/>
+    <text x="600" y="196" fill="#FAFAFA" font-size="13">Naranja: el camino crítico.</text>
+    <text x="600" y="216" fill="#FAFAFA" font-size="13">Acortar build no cambia nada;</text>
+    <text x="600" y="236" fill="#FAFAFA" font-size="13">acortar test, sí.</text>
+
+    <rect x="30" y="320" width="840" height="90" rx="6" fill="none" stroke="#E24329" stroke-width="2"/>
+    <text x="50" y="350" fill="#E24329" font-size="14" font-weight="600">La condición que nadie lee</text>
+    <text x="50" y="374" fill="#FAFAFA" font-size="13">Con concurrent = 1 el runner ejecuta un job cada vez: build y test no se solapan</text>
+    <text x="50" y="394" fill="#FAFAFA" font-size="13">y el DAG dura lo mismo que los stages. Con concurrent = 2, el camino crítico manda.</text>
+  </g>
+</svg>

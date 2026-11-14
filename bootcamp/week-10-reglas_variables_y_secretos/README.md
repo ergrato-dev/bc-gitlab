@@ -147,6 +147,6 @@ Lo que el script **no** puede comprobar es que ningún secreto haya pasado por t
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 09 — CI/CD: fundamentos, runner, artifacts y cache](../week-09-ci_cd_fundamentos/README.md) | **Semana 10** | Semana 11 — Pipelines DAG y multiproyecto |
+| [Semana 09 — CI/CD: fundamentos, runner, artifacts y cache](../week-09-ci_cd_fundamentos/README.md) | **Semana 10** | [Semana 11 — Pipelines DAG y multiproyecto](../week-11-pipelines_dag_y_multiproyecto/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)
