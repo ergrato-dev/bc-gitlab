@@ -42,7 +42,7 @@ gobernanza:
 | `image: alpine:3.24.2` | El script necesita `bash`, `curl` y `jq`, no Node. Una imagen pequeña y fijada |
 | `rules: merge_request_event` | Solo tiene sentido con una merge request: necesita `CI_MERGE_REQUEST_IID` |
 | `allow_failure: true` | Detecta, no bloquea (ADR-005). Si falla, el pipeline queda en verde con aviso |
-| `apk add` | Tres paquetes, unos segundos. Una imagen propia con ellos llega en la Semana 13 |
+| `apk add` | Tres paquetes, unos segundos. Con el componente `imagen` de la Semana 13 se podría construir una imagen propia con ellos |
 | `script: scripts/gobernanza.sh` | Sin argumentos: el script lee `CI_MERGE_REQUEST_IID` |
 
 El script **no cambia**. Desde la Semana 07 lee `CI_API_V4_URL`, `CI_PROJECT_ID` y `CI_MERGE_REQUEST_IID` antes que las variables de tu `~/.bc-gitlab`, y `GOBERNANZA_TOKEN` antes que `GITLAB_TOKEN`. Necesita el bit de ejecución en Git (`100755`); si falta, el job falla con `Permission denied`.

@@ -34,7 +34,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 | [10](week-10-reglas_variables_y_secretos/README.md) | Reglas, variables y secretos | ✅ |
 | [11](week-11-pipelines_dag_y_multiproyecto/README.md) | Pipelines DAG y multiproyecto | ✅ |
 | [12](week-12-componentes_ci_cd_y_catalogo/README.md) | Componentes CI/CD y catálogo | ✅ |
-| 13 | Registry de contenedores y de paquetes | ⬜ |
+| [13](week-13-registry_de_contenedores_y_paquetes/README.md) | Registry de contenedores y paquetes | ✅ |
 
 ### Fase 4 — Entrega, escala y automatización (S14-17, 32 h)
 

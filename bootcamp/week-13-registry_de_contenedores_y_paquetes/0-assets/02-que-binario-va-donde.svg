@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Qué binario va dónde</title>
+  <desc id="desc">Un commit de main de app produce tres cosas con vidas distintas. El artefacto del job package, el .tgz, caduca en una semana y sirve solo para pasar archivos entre jobs. El paquete genérico app, con el SHA del commit como versión, vive en el registro de paquetes y es lo que infra/entornos descarga. La imagen, etiquetada con el SHA corto, vive en el container registry y la política de limpieza la borra cuando hay diez más nuevas y tiene más de 30 días. Un tag v0.2.0 añade la versión 0.2.0 al paquete y a la imagen, que la limpieza no toca y nadie puede sobrescribir, y la release v0.2.0 enlaza a los dos.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="30" y="150" width="150" height="70" rx="6" fill="#554488"/>
+    <text x="105" y="180" fill="#FAFAFA" font-size="13" text-anchor="middle">commit en main</text>
+    <text x="105" y="200" fill="#FAFAFA" font-size="12" text-anchor="middle">o tag v0.2.0</text>
+
+    <line x1="180" y1="170" x2="276" y2="80" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="180" y1="185" x2="276" y2="185" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="180" y1="200" x2="276" y2="290" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="280" y="45" width="300" height="70" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="300" y="73" fill="#FAFAFA" font-size="13" font-weight="600">Artefacto del job · *.tgz</text>
+    <text x="300" y="95" fill="#A8A8A8" font-size="12">caduca en 1 semana · solo entre jobs</text>
+
+    <rect x="280" y="150" width="300" height="70" rx="6" fill="#2B2B2B" stroke="#7DD3A0"/>
+    <text x="300" y="178" fill="#FAFAFA" font-size="13" font-weight="600">Paquete genérico app</text>
+    <text x="300" y="200" fill="#A8A8A8" font-size="12">versión = SHA · y 0.2.0, sin duplicados</text>
+
+    <rect x="280" y="255" width="300" height="70" rx="6" fill="#2B2B2B" stroke="#7DD3A0"/>
+    <text x="300" y="283" fill="#FAFAFA" font-size="13" font-weight="600">Imagen en el container registry</text>
+    <text x="300" y="305" fill="#A8A8A8" font-size="12">SHA corto: la limpia · 0.2.0: protegida</text>
+
+    <line x1="580" y1="185" x2="666" y2="185" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="670" y="150" width="200" height="70" rx="6" fill="#554488"/>
+    <text x="770" y="178" fill="#FAFAFA" font-size="13" text-anchor="middle">infra/entornos</text>
+    <text x="770" y="200" fill="#FAFAFA" font-size="12" text-anchor="middle">descarga por APP_SHA</text>
+
+    <rect x="670" y="255" width="200" height="70" rx="6" fill="#554488"/>
+    <text x="770" y="283" fill="#FAFAFA" font-size="13" text-anchor="middle">release v0.2.0</text>
+    <text x="770" y="305" fill="#FAFAFA" font-size="12" text-anchor="middle">enlaza paquete e imagen</text>
+    <line x1="580" y1="290" x2="666" y2="290" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="580" y1="200" x2="666" y2="275" stroke="#FC6D26" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#flecha)"/>
+  </g>
+</svg>

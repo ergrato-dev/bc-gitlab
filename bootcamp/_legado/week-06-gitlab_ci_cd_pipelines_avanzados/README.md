@@ -26,14 +26,12 @@
 ### Teoría
 1. [01-variables-ci-cd.md](./1-teoria/01-variables-ci-cd.md) — Variables, alcance, mascaras
 2. [02-rules-y-condicionales.md](./1-teoria/02-rules-y-condicionales.md) — rules, only, except, when
-3. [03-include-y-modularizacion.md](./1-teoria/03-include-y-modularizacion.md) — include: local, remote, template
 4. [04-environments-y-deployments.md](./1-teoria/04-environments-y-deployments.md) — Dev, staging, production
 5. [05-triggers-y-pipelines-multi-proyecto.md](./1-teoria/05-triggers-y-pipelines-multi-proyecto.md) — Downstream pipelines
 
 ### Prácticas
 1. [01-variables-y-secretos/](./2-practicas/01-variables-y-secretos/) — Variables protegidas y enmascaradas
 2. [02-rules-condicionales/](./2-practicas/02-rules-condicionales/) — Rules por rama, tag, variable
-3. [03-include-templates/](./2-practicas/03-include-templates/) — Modularizar pipeline
 4. [04-environments/](./2-practicas/04-environments/) — Deploy a staging/production
 
 ### Proyecto

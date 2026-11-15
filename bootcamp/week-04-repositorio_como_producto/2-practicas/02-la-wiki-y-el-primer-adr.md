@@ -166,7 +166,7 @@ TypeScript con tests en el runner nativo de Node.
 
 ## Consecuencias
 
-**Facilita**: publicar un paquete npm (S13), imagen pequena, tests rapidos,
+**Facilita**: publicar el paquete en el registry (S13), imagen pequena, tests rapidos,
 escaneres con soporte de sobra.
 
 **Dificulta**: el ecosistema de Node arrastra muchas dependencias, y eso hara

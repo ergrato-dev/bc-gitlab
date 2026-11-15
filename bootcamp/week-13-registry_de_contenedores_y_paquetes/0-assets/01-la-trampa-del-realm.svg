@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">La trampa del realm</title>
+  <desc id="desc">Dos clientes hablan con el mismo registry. El daemon de Docker del host, que descarga las imágenes de los jobs, llega al registry por localhost:5050; el registry le responde 401 con el realm http://localhost:8888/jwt/auth, que desde el host también existe, y la autenticación funciona. Kaniko, dentro de un job en la red del compose, llega al registry por gitlab:5050, pero recibe el mismo realm, localhost:8888, que dentro del contenedor del job no es GitLab: connection refused. La solución: el job pide el token a $CI_SERVER_URL/jwt/auth, que sí alcanza, y se lo da a kaniko como registrytoken; kaniko ya no consulta el realm.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="340" y="150" width="220" height="110" rx="6" fill="#554488"/>
+    <text x="450" y="185" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">GitLab + registry</text>
+    <text x="450" y="210" fill="#FAFAFA" font-size="12" text-anchor="middle">401 · realm=</text>
+    <text x="450" y="230" fill="#FAFAFA" font-size="12" text-anchor="middle">http://localhost:8888/jwt/auth</text>
+
+    <text x="30" y="40" fill="#FC6D26" font-size="15" font-weight="600">Host</text>
+    <rect x="30" y="60" width="240" height="80" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="150" y="92" fill="#FAFAFA" font-size="13" text-anchor="middle">daemon de Docker</text>
+    <text x="150" y="114" fill="#A8A8A8" font-size="12" text-anchor="middle">image: del job · docker login</text>
+    <line x1="270" y1="100" x2="336" y2="170" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="250" y="160" fill="#FAFAFA" font-size="12">localhost:5050</text>
+    <text x="30" y="170" fill="#7DD3A0" font-size="13">✓ el realm existe en el host</text>
+
+    <text x="630" y="40" fill="#FC6D26" font-size="15" font-weight="600">Job (red del compose)</text>
+    <rect x="630" y="60" width="240" height="80" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="750" y="92" fill="#FAFAFA" font-size="13" text-anchor="middle">kaniko</text>
+    <text x="750" y="114" fill="#A8A8A8" font-size="12" text-anchor="middle">construye y sube</text>
+    <line x1="630" y1="100" x2="564" y2="170" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="580" y="160" fill="#FAFAFA" font-size="12">gitlab:5050</text>
+    <text x="630" y="170" fill="#F28B82" font-size="13">✗ localhost es el propio job</text>
+
+    <rect x="30" y="300" width="840" height="90" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="50" y="330" fill="#FC6D26" font-size="14" font-weight="600">La salida, dentro del componente imagen</text>
+    <text x="50" y="355" fill="#FAFAFA" font-size="13">1. El job pide el token a $CI_SERVER_URL/jwt/auth, que sí alcanza, con gitlab-ci-token:$CI_JOB_TOKEN</text>
+    <text x="50" y="377" fill="#FAFAFA" font-size="13">2. Lo escribe como registrytoken para gitlab:5050: kaniko lo usa tal cual y no consulta el realm</text>
+  </g>
+</svg>

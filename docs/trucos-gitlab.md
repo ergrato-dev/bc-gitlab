@@ -278,6 +278,19 @@ _Se añaden a medida que se publica cada semana._
 | Probar un cambio de un componente antes de publicarlo | En una rama del consumidor, `@<SHA>` del commit del componente. Nunca en `main` |
 | Marcar un proyecto para el catálogo sin la UI | Mutación GraphQL `catalogResourcesCreate(input: {projectPath:})`; no hay REST |
 
+## Semana 13 — Registry de contenedores y paquetes
+
+| Truco | Cómo |
+|---|---|
+| Ver dónde pide token el registry | `curl -sI http://localhost:5050/v2/ \| grep -i www-authenticate` |
+| Construir como el pipeline, sin pipeline ni subida | `docker run --rm -v "$PWD:/w" ghcr.io/osscontainertools/kaniko:v1.29.0-debug --context /w --no-push` |
+| Subir con kaniko sin pasar por el realm | `{"auths":{"<registry>":{"registrytoken":"<token>"}}}` en `/kaniko/.docker/config.json`, con el token de `$CI_SERVER_URL/jwt/auth` |
+| Ensayar la política de limpieza ya | `DELETE …/registry/repositories/<id>/tags` con `name_regex_delete`: los mismos criterios, una vez por hora |
+| Comprobar una expresión como la ancla GitLab | `grep -xE '[0-9a-f]{8}'` sobre la lista de tags |
+| El tamaño real de un repositorio de imágenes | `GET /registry/repositories/<id>?size=true`; las estadísticas del proyecto llegan tarde |
+| Un `404` de un job contra otro proyecto | Es la lista de permitidos del job token del **destino**, no la URL |
+| Duplicados prohibidos salvo los SHA | `updateNamespacePackageSettings` con `genericDuplicateExceptionRegex: "^[0-9a-f]{40}$"`; no hay REST |
+
 ---
 
 [← Volver a docs](README.md)

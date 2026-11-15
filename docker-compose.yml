@@ -39,7 +39,7 @@ services:
         gitlab_rails['initial_root_password'] = '${GITLAB_ROOT_PASSWORD:-ChangeMe123!}'
 
         # ── Container Registry integrado (S13) ──
-        registry_external_url 'http://${GITLAB_HOST:-gitlab}:${REGISTRY_PORT:-5050}'
+        registry_external_url 'http://localhost:${REGISTRY_PORT:-5050}'
         registry['enable'] = true
         registry['nginx']['listen_port'] = ${REGISTRY_PORT:-5050}
         registry['nginx']['listen_https'] = false

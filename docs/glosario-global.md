@@ -44,7 +44,11 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **DAG** (*directed acyclic graph*) — Free. Pipeline en el que los jobs declaran sus dependencias con `needs` en vez de esperar a que termine la etapa entera. Es lo que convierte un pipeline en serie en uno paralelo.
 
-**Dependency Proxy** — Free. Cache de imágenes de Docker Hub servida por tu propia instancia. Evita el rate limit de los pulls anónimos.
+**Dependency Proxy** — Free. Cache de imágenes de Docker Hub de cada grupo raíz, servida por tu propia instancia. Se usa con `${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/imagen:versión` (S13). Evita el rate limit de los pulls anónimos.
+
+**Deploy token** — Free. Credencial de proyecto o grupo para máquinas fuera de GitLab, con `read_registry` y `read_package_registry`. No ocupa un usuario y no puede subir a lo protegido (S13).
+
+**Digest** — Hash del manifiesto de una imagen (`sha256:…`). Un tag se puede mover; un digest no. Lo que se despliega y se firma (S13, S20).
 
 **DORA** (*DevOps Research and Assessment*) — Las cuatro métricas de referencia: frecuencia de despliegue, tiempo de entrega, tasa de fallo del cambio y tiempo de restauración. Los gráficos y la API de DORA son **Ultimate**; en CE se calculan desde la API de merge requests, releases e issues y se documenta la definición usada (S08).
 
@@ -88,6 +92,10 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Job** — Free. Unidad de ejecución de un pipeline. Corre en un runner, en su propio entorno, y puede terminar en éxito o fallo.
 
+## K
+
+**kaniko** — Construye imágenes desde un `Dockerfile` en un contenedor sin privilegios y sin daemon. El original se archivó en junio de 2025; el bootcamp usa el fork mantenido `osscontainertools/kaniko` (S13).
+
 ## M
 
 **Merge method** (*método de fusión*) — Free. `merge`, `rebase_merge` (semilineal) o `ff`. Decide si queda commit de fusión y si la rama tiene que contener la punta de `main`. Este bootcamp usa `rebase_merge` con squash por defecto (ADR-004, S06).
@@ -106,11 +114,15 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Pages** (*GitLab Pages*) — Free. Alojamiento de sitios estáticos publicados desde un job de pipeline. Gratis también en instancias autohospedadas.
 
+**Paquete genérico** (*Generic package*) — Free. Cualquier archivo en el registro de paquetes, con nombre y versión en la URL. `app` publica el suyo por SHA (S13).
+
 **PgBouncer** — Pooler de conexiones para PostgreSQL. Con muchos procesos de GitLab, sin él PostgreSQL se queda sin conexiones antes de quedarse sin CPU.
 
 **Pipeline** — Free. El conjunto de jobs que se ejecuta ante un evento: un push, un MR, una programación o un disparo externo.
 
 **Pipelines must succeed** — Free. Ajuste del proyecto (`only_allow_merge_if_pipeline_succeeds`) que impide fusionar sin pipeline en verde. Un job con `allow_failure` que falla no lo impide.
+
+**Política de limpieza** (*Cleanup policy*) — Free. Reglas por proyecto que borran tags del registry por expresión, número y antigüedad. Desactivada por defecto; nunca borra `latest` ni los tags protegidos. El disco lo libera después la recolección de basura (S13).
 
 **Praefect** — Free. Coordinador de Gitaly Cluster. Enruta las escrituras, replica a los demás nodos y decide qué nodo es válido cuando uno se queda atrás.
 
@@ -123,6 +135,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Rails console** — Free. Consola interactiva de la aplicación (`gitlab-rails console`). El último recurso del administrador y la forma más rápida de romper la instancia. Solo lectura salvo que sepas exactamente qué haces.
 
 **Rama de release** (*release branch*) — Rama de larga vida `release/X.Y` que contiene una versión menor y sus parches. Se protege como `main` y solo recibe arreglos llevados desde `main` con *cherry-pick*.
+
+**Realm** — URL a la que el registry manda a pedir el token, en la cabecera del `401`. Sale de `external_url` y tiene que alcanzarla el cliente: dentro de un job del laboratorio, no lo hace (S13).
 
 **Registry** (*Container Registry*) — Free. Registro de imágenes Docker integrado en cada proyecto, con políticas de limpieza por etiqueta y antigüedad.
 
@@ -159,6 +173,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 ## T
 
 **Tag anotado y firmado** (*annotated / signed tag*) — Tag que es un objeto propio con autor, fecha y mensaje; firmado con `git tag -s`. Las versiones de `app` lo son desde la S08. Por API, es anotado si `target` y `commit.id` difieren.
+
+**Tag protegido del registry** (*Protected container tag*) — Free. Rol mínimo para subir y borrar los tags de imagen que cumplen una expresión. Los inmutables, que nadie puede tocar, son **Ultimate** (S13).
 
 **Terraform state backend** — Free. GitLab puede almacenar el estado de Terraform, con bloqueo incluido, sin necesidad de S3 ni Terraform Cloud.
 

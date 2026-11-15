@@ -97,7 +97,7 @@ La **capa 12** de tu plataforma: el YAML deja de duplicarse entre proyectos. Det
 
 | Lo que quieres | Semana 12 | Después |
 |---|---|---|
-| Que la imagen de un componente sea tuya y esté firmada | Imágenes públicas con tag fijo | Registry propio (Semana 13), firma (Semana 20) |
+| Que la imagen de un componente sea tuya y esté firmada | Imágenes públicas con tag fijo | Caché en tu instancia con el dependency proxy (Semana 13), firma (Semana 20) |
 | Imponer un job en todos los proyectos, quieran o no | Componentes que es más fácil usar que no usar | *Pipeline execution policies*: Ultimate |
 | Exigir la aprobación del dueño en `ci/componentes` | `gobernanza` lo audita y deja rastro | Aprobaciones por CODEOWNERS: Premium |
 | Saber qué proyecto usa qué versión de un componente | Un bucle sobre `ci/lint` | Detalle de uso en el catálogo: Premium |
@@ -149,6 +149,6 @@ Lo que el script **no** puede comprobar es que la segunda versión respete la ve
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 11 — Pipelines DAG y multiproyecto](../week-11-pipelines_dag_y_multiproyecto/README.md) | **Semana 12** | Semana 13 — Registry de contenedores y paquetes |
+| [Semana 11 — Pipelines DAG y multiproyecto](../week-11-pipelines_dag_y_multiproyecto/README.md) | **Semana 12** | [Semana 13 — Registry de contenedores y paquetes](../week-13-registry_de_contenedores_y_paquetes/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

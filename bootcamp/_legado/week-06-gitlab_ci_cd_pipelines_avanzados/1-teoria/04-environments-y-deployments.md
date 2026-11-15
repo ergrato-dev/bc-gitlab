@@ -334,5 +334,5 @@ promote-canary:
 
 ---
 
-⬅️ **Lección anterior:** [03 — Include y Modularización](./03-include-y-modularizacion.md)
+⬅️ **Lección anterior:** (absorbida por la Semana 12)
 ➡️ **Siguiente lección:** [05 — Triggers y Pipelines Multi-Proyecto](./05-triggers-y-pipelines-multi-proyecto.md)

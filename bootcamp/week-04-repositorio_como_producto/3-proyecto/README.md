@@ -17,7 +17,7 @@ La Semana 03 dejó una organización con permisos probados. Esta decide **qué e
 | Lo que creas esta semana | Se usa a partir de |
 |---|---|
 | `README.md` con arranque verificado | S09 (el pipeline ejecuta los mismos comandos), S26 (defensa) |
-| `LICENSE` con identificador SPDX | S13 (metadatos del paquete), S20 (SBOM y política de licencias) |
+| `LICENSE` con identificador SPDX | S20 (SBOM y política de licencias) |
 | `CONTRIBUTING.md` | S06 (plantilla de merge request), S07 (CODEOWNERS y aprobaciones) |
 | Descripción y temas | S17 (auditoría por API del inventario de proyectos) |
 | `logo.png` como avatar | S14 (sitio de documentación en Pages) |

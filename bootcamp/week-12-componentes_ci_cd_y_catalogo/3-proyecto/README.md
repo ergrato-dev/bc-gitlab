@@ -19,7 +19,7 @@ Dejar en pie la **capa 12** de tu plataforma: `ci/componentes` publicado en el c
 | El componente `gobernanza` | S17 (la auditoría también por webhook), S26 (auditoría de las 25 capas) |
 | El pipeline que prueba los componentes | S19 (se prueba también que el escaneo detecta lo que debe) |
 | `infra/entornos` con `spec:inputs` | S14 (`entorno` decide de verdad adónde se despliega) |
-| La lista de permitidos de `ci/componentes` | S13 (el registry), S17 (auditoría por API) |
+| La lista de permitidos de `ci/componentes` | S17 (auditoría por API) |
 
 La decisión con más recorrido es **qué versión pide cada consumidor**. `@1` hace que las correcciones lleguen solas y que una *minor* mal clasificada también. El ADR-009 tiene que dejar escrito qué cambios son *major* en tu proyecto de componentes, porque a partir de la Semana 13 habrá más de dos.
 
@@ -195,6 +195,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 11](../../week-11-pipelines_dag_y_multiproyecto/3-proyecto/README.md) | **Proyecto Semana 12** | Proyecto Semana 13 |
+| [Proyecto Semana 11](../../week-11-pipelines_dag_y_multiproyecto/3-proyecto/README.md) | **Proyecto Semana 12** | [Proyecto Semana 13](../../week-13-registry_de_contenedores_y_paquetes/3-proyecto/README.md) |
 
 [← Volver a la Semana 12](../README.md)

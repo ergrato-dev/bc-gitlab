@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Cómo decide la limpieza</title>
+  <desc id="desc">La política de limpieza evalúa cada tag de cada repositorio de imágenes en este orden, según la documentación de GitLab: el tag latest se conserva siempre; los tags que no cumplen name_regex se conservan; los que cumplen name_regex_keep se conservan; de los que quedan, ordenados por fecha, se conservan los keep_n más recientes; se conservan los más nuevos que older_than; y se conservan los protegidos. Solo un tag que pasa por las seis preguntas sin salvarse se borra. Ejemplo en app: 0.2.0 se conserva por name_regex_keep y por estar protegido; un SHA corto de hoy se conserva por estar entre los diez más nuevos; un SHA corto de hace 40 días con once más nuevos se borra. Borrar el tag no libera disco hasta la recolección de basura.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="40" fill="#FC6D26" font-size="15" font-weight="600">Para cada tag, en este orden</text>
+
+    <rect x="30" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="92.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿se llama</text>
+    <text x="92.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">latest?</text>
+    <line x1="155" y1="110" x2="169" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="173" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="235.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿no cumple</text>
+    <text x="235.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">name_regex?</text>
+    <line x1="298" y1="110" x2="312" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="316" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="378.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿cumple</text>
+    <text x="378.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">name_regex_keep?</text>
+    <line x1="441" y1="110" x2="455" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="459" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="521.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿entre los</text>
+    <text x="521.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">keep_n más nuevos?</text>
+    <line x1="584" y1="110" x2="598" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="602" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="664.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿más nuevo</text>
+    <text x="664.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">que older_than?</text>
+    <line x1="727" y1="110" x2="741" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="745" y="70" width="125" height="80" rx="6" fill="#554488"/>
+    <text x="807.5" y="102" fill="#FAFAFA" font-size="13" text-anchor="middle">¿está</text>
+    <text x="807.5" y="124" fill="#FAFAFA" font-size="11" text-anchor="middle">protegido?</text>
+
+    <text x="450" y="185" fill="#7DD3A0" font-size="13" text-anchor="middle">Un «sí» en cualquier caja: se conserva. Seis «no»: se borra.</text>
+
+    <rect x="30" y="220" width="840" height="150" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="50" y="250" fill="#FC6D26" font-size="14" font-weight="600">app, con keep_n 10 · older_than 30d · name_regex [0-9a-f]{8} · keep [0-9]+\.[0-9]+\.[0-9]+</text>
+    <text x="50" y="280" fill="#FAFAFA" font-size="13">0.2.0 — protegido y cumple keep: se conserva siempre</text>
+    <text x="50" y="305" fill="#FAFAFA" font-size="13">3f2a9c1e, de hoy — cumple name_regex, pero es de los 10 más nuevos: se conserva</text>
+    <text x="50" y="330" fill="#FAFAFA" font-size="13">1a2b3c4d, de hace 40 días, con 11 más nuevos — ningún «sí»: se borra</text>
+    <text x="50" y="355" fill="#A8A8A8" font-size="12">Borrar el tag no libera disco: lo hace la recolección de basura del registry</text>
+  </g>
+</svg>

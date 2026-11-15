@@ -1,0 +1,125 @@
+{
+  "semana": "13",
+  "titulo": "Registry de contenedores y paquetes",
+  "checks": [
+    {
+      "id": "dockerfile-en-main",
+      "descripcion": "app tiene Dockerfile y .dockerignore en main",
+      "api": "projects/{proyecto}/repository/tree?ref=main",
+      "jq": "any(.[]; .name == \"Dockerfile\") and any(.[]; .name == \".dockerignore\")",
+      "pista": "2-practicas/01-el-registry-y-el-dockerfile.md, paso 3"
+    },
+    {
+      "id": "tags-de-imagen-protegidos",
+      "descripcion": "Solo Maintainer puede subir o borrar en app una imagen con etiqueta de version",
+      "api": "projects/{proyecto}/registry/protection/tag/rules",
+      "jq": "any(.[]; . as $r | $r.minimum_access_level_for_push == \"maintainer\" and $r.minimum_access_level_for_delete == \"maintainer\" and (\"0.2.0\" | test($r.tag_name_pattern)) and (\"1a2b3c4d\" | test($r.tag_name_pattern) | not))",
+      "pista": "2-practicas/01-el-registry-y-el-dockerfile.md, paso 5"
+    },
+    {
+      "id": "componente-imagen",
+      "descripcion": "componentes tiene el componente imagen",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/tree?path=templates&ref=main",
+      "jq": "any(.[]; .name == \"imagen.yml\" or .name == \"imagen\")",
+      "pista": "2-practicas/02-el-componente-imagen.md, paso 2"
+    },
+    {
+      "id": "componentes-sigue-en-verde",
+      "descripcion": "El ultimo pipeline de main en componentes esta en verde",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/pipelines?ref=main&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/02-el-componente-imagen.md, paso 4"
+    },
+    {
+      "id": "imagen-publicada",
+      "descripcion": "Hay una version publicada de componentes que incluye el componente imagen",
+      "graphql": "{ ciCatalogResources(search:\"componentes\"){ nodes { fullPath versions { nodes { name components { nodes { name } } } } } } }",
+      "jq": "any(.data.ciCatalogResources.nodes[]; (.fullPath | endswith(\"/ci/componentes\")) and any(.versions.nodes[]; any(.components.nodes[]; .name == \"imagen\")))",
+      "pista": "2-practicas/02-el-componente-imagen.md, paso 5"
+    },
+    {
+      "id": "app-usa-imagen",
+      "descripcion": "app consume el componente imagen por version, no por rama ni por ~latest",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": "any(.includes[]; .type == \"component\" and (.location | test(\"/ci/componentes/imagen@[0-9]+(\\\\.[0-9]+){0,2}$\")))",
+      "pista": "2-practicas/02-el-componente-imagen.md, paso 6"
+    },
+    {
+      "id": "imagen-por-sha",
+      "descripcion": "El registry de app tiene una imagen etiquetada con el SHA corto de un commit",
+      "api": "projects/{proyecto}/registry/repositories?tags=true",
+      "jq": "any(.[]; (.path | split(\"/\") | length) == 2 and any(.tags[]; .name | test(\"^[0-9a-f]{8}$\")))",
+      "pista": "2-practicas/02-el-componente-imagen.md, paso 6"
+    },
+    {
+      "id": "limpieza-activa",
+      "descripcion": "app tiene activa una politica de limpieza que borra las imagenes por SHA y conserva las versiones",
+      "api": "projects/{proyecto}",
+      "jq": ".container_expiration_policy as $p | $p.enabled and (\"1a2b3c4d\" | test($p.name_regex)) and (\"0.2.0\" | test($p.name_regex_keep // \"^$\"))",
+      "pista": "2-practicas/03-limpieza-y-dependency-proxy.md, paso 2"
+    },
+    {
+      "id": "proxy-con-caducidad",
+      "descripcion": "El dependency proxy del grupo esta activo y borra lo que no se usa",
+      "graphql": "query($grupo:ID!){ group(fullPath:$grupo){ dependencyProxySetting { enabled } dependencyProxyImageTtlPolicy { enabled ttl } } }",
+      "jq": ".data.group | .dependencyProxySetting.enabled and .dependencyProxyImageTtlPolicy.enabled",
+      "pista": "2-practicas/03-limpieza-y-dependency-proxy.md, paso 4"
+    },
+    {
+      "id": "app-usa-dependency-proxy",
+      "descripcion": "app descarga sus imagenes de Docker Hub a traves del dependency proxy",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": ".merged_yaml | test(\"CI_DEPENDENCY_PROXY_[A-Z_]*IMAGE_PREFIX\")",
+      "pista": "2-practicas/03-limpieza-y-dependency-proxy.md, paso 5"
+    },
+    {
+      "id": "duplicados-solo-por-sha",
+      "descripcion": "El grupo rechaza paquetes genericos duplicados salvo las versiones por SHA",
+      "graphql": "query($grupo:ID!){ namespace(fullPath:$grupo){ packageSettings { genericDuplicatesAllowed genericDuplicateExceptionRegex } } }",
+      "jq": ".data.namespace.packageSettings | (.genericDuplicatesAllowed | not) and ((.genericDuplicateExceptionRegex // \"\") | length > 0)",
+      "pista": "2-practicas/04-el-paquete-por-sha.md, paso 1"
+    },
+    {
+      "id": "infra-baja-del-registry",
+      "descripcion": "infra/entornos descarga el paquete del registry de paquetes por su SHA",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/scripts%2Fregistrar.sh?ref=main",
+      "jq": ".content | @base64d | test(\"/packages/generic/\") and (test(\"APP_PACKAGE_JOB_ID\") | not)",
+      "pista": "2-practicas/04-el-paquete-por-sha.md, paso 2"
+    },
+    {
+      "id": "paquete-por-sha",
+      "descripcion": "app publica su paquete generico con el SHA del commit como version",
+      "api": "projects/{proyecto}/packages?package_type=generic&package_name=app&per_page=100",
+      "jq": "any(.[]; .version | test(\"^[0-9a-f]{40}$\"))",
+      "pista": "2-practicas/04-el-paquete-por-sha.md, paso 3"
+    },
+    {
+      "id": "app-sin-id-de-job",
+      "descripcion": "El disparo a infra/entornos ya no pasa el ID del job de package",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": ".merged_yaml | test(\"APP_PACKAGE_JOB_ID|PACKAGE_JOB_ID\") | not",
+      "pista": "2-practicas/04-el-paquete-por-sha.md, paso 3"
+    },
+    {
+      "id": "infra-en-verde",
+      "descripcion": "El ultimo pipeline multiproyecto de infra/entornos esta en verde",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/pipelines?source=pipeline&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/04-el-paquete-por-sha.md, paso 3"
+    },
+    {
+      "id": "release-enlaza-paquete",
+      "descripcion": "La release v0.2.0 de app enlaza el paquete y la imagen de esa version",
+      "api": "projects/{proyecto}/releases/v0.2.0",
+      "jq": "any(.assets.links[]; .link_type == \"package\" and (.direct_asset_url | test(\"/-/releases/v0\\\\.2\\\\.0/downloads/\"))) and any(.assets.links[]; .link_type == \"image\")",
+      "pista": "3-proyecto/README.md"
+    },
+    {
+      "id": "adr-010-registry",
+      "descripcion": "La wiki de app tiene el ADR-010 sobre el registry",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-010\"; \"i\"))) | any(.content | test(\"registry\") and test(\"limpieza\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}
