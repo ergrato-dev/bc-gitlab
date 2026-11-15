@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">De un tag al catálogo</title>
+  <desc id="desc">Flujo de publicación de una versión de ci/componentes. Una merge request cambia un componente; su pipeline lo prueba con include del propio componente en el SHA del commit. Se fusiona en main, protegida. Un Maintainer crea el tag 1.1.0, protegido, en semver sin v. El pipeline del tag vuelve a probar y, si todo pasa, el job publicar con la palabra clave release crea la release. La release publica la versión 1.1.0 en el catálogo. En su siguiente pipeline, app, que pide npm@1, recibe la última 1.x.y publicada: 1.1.0. Una versión 2.0.0 no le llegaría hasta que app cambie a @2.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="40" fill="#FC6D26" font-size="15" font-weight="600">ci/componentes</text>
+
+    <rect x="30" y="60" width="180" height="70" rx="6" fill="#554488"/>
+    <text x="120" y="88" fill="#FAFAFA" font-size="13" text-anchor="middle">merge request</text>
+    <text x="120" y="108" fill="#FAFAFA" font-size="12" text-anchor="middle">prueba npm@$CI_COMMIT_SHA</text>
+    <line x1="210" y1="95" x2="246" y2="95" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="250" y="60" width="180" height="70" rx="6" fill="#554488"/>
+    <text x="340" y="88" fill="#FAFAFA" font-size="13" text-anchor="middle">main protegida</text>
+    <text x="340" y="108" fill="#FAFAFA" font-size="12" text-anchor="middle">vuelve a probar</text>
+    <line x1="430" y1="95" x2="466" y2="95" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="470" y="60" width="180" height="70" rx="6" fill="#554488"/>
+    <text x="560" y="88" fill="#FAFAFA" font-size="13" text-anchor="middle">tag 1.1.0</text>
+    <text x="560" y="108" fill="#FAFAFA" font-size="12" text-anchor="middle">protegido · semver sin v</text>
+    <line x1="650" y1="95" x2="686" y2="95" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="690" y="60" width="180" height="70" rx="6" fill="#554488"/>
+    <text x="780" y="88" fill="#FAFAFA" font-size="13" text-anchor="middle">pipeline del tag</text>
+    <text x="780" y="108" fill="#FAFAFA" font-size="12" text-anchor="middle">pruebas → job publicar</text>
+    <line x1="780" y1="130" x2="780" y2="176" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="610" y="180" width="260" height="70" rx="6" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="740" y="208" fill="#FC6D26" font-size="13" font-weight="600" text-anchor="middle">release: (en un job)</text>
+    <text x="740" y="228" fill="#FAFAFA" font-size="12" text-anchor="middle">crea la release del tag</text>
+    <line x1="610" y1="215" x2="474" y2="215" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="250" y="180" width="220" height="70" rx="6" fill="none" stroke="#E24329" stroke-width="2"/>
+    <text x="360" y="208" fill="#E24329" font-size="13" font-weight="600" text-anchor="middle">catálogo</text>
+    <text x="360" y="228" fill="#FAFAFA" font-size="12" text-anchor="middle">1.0.0 · 1.1.0</text>
+    <line x1="360" y1="250" x2="360" y2="296" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <rect x="30" y="300" width="840" height="76" rx="8" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="50" y="326" fill="#FC6D26" font-size="15" font-weight="600">app</text>
+    <text x="50" y="350" fill="#FAFAFA" font-size="13">component: …/ci/componentes/npm@1  →  en su próximo pipeline recibe 1.1.0, la última 1.x.y publicada</text>
+    <text x="50" y="368" fill="#FAFAFA" font-size="12">Una 2.0.0 no le llega hasta que alguien cambie a @2 en una merge request.</text>
+  </g>
+</svg>

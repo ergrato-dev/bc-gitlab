@@ -97,7 +97,7 @@ El pipeline de esta semana es deliberadamente pequeño. Cada pieza que falta tie
 | Que no haya pipelines duplicados | `workflow:rules`, copiado | Las reglas desmontadas (Semana 10) |
 | Secretos en el pipeline | Un token de solo lectura sin proteger, con el riesgo escrito | Variables protegidas y por entorno, *secure files* (Semana 10) |
 | Que los jobs no esperen al stage entero | Stages en serie | `needs` y pipelines hijos (Semana 11) |
-| No copiar el YAML en `infra` | Un job oculto y `extends` | Componentes del catálogo (Semana 12) |
+| No copiar el YAML de `app` en cada proyecto nuevo | Un job oculto y `extends` | Componentes del catálogo (Semana 12) |
 | Publicar el paquete | Artefacto de una semana | Registro de paquetes (Semana 13) |
 | Más de un runner | Uno de proyecto, `concurrent = 1` | Flota etiquetada y caché compartida (Semana 15) |
 

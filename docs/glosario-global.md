@@ -54,6 +54,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Entorno** (*environment*) — Free. Destino con nombre al que se despliega (`staging`, `production`). Guarda el historial de despliegues y habilita la reversión. Los **entornos protegidos** son Premium.
 
+**`extends` y `!reference`** — Free. Reutilizar claves de otro job: `extends` hereda con fusión profunda; `!reference [.job, clave]` copia una clave concreta, también de un archivo incluido, y sirve para componer listas (S12).
+
 **Entorno protegido** (*protected environment*) — **Premium**. Limita quién despliega en un entorno, con aprobaciones opcionales. En CE: job manual solo en rama protegida y variable protegida con ámbito (Semana 10).
 
 **Épica** (*epic*) — **Premium**. Agrupación de issues por encima del hito. En CE se aproxima con hitos y etiquetas.
@@ -75,6 +77,12 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 ## H
 
 **Hito** (*milestone*) — Free. Agrupación de issues y merge requests con fecha. En CE es el nivel de planificación más alto disponible.
+
+## I
+
+**`include`** — Free. Mete en el pipeline el YAML de otro archivo: del mismo proyecto, de otro, de una URL, una plantilla o un componente. Las listas definidas en los dos lados no se suman: gana la última (S12).
+
+**Input** (*CI/CD input*) — Free. Parámetro tipado que un archivo o un componente declara en `spec:inputs` y que se sustituye al crear el pipeline. Un input de pipeline se pasa por API, con `trigger:inputs` o con `git push -o ci.input=`, y no cuenta para la restricción de variables de pipeline (S12).
 
 ## J
 

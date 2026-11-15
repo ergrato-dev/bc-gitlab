@@ -96,7 +96,7 @@ La **capa 11** de tu plataforma: el pipeline escala y deja de ser un tren en ser
 
 | Lo que quieres | Semana 11 | Después |
 |---|---|---|
-| Reutilizar el YAML entre `app` e `infra` | Se copia, a sabiendas | Componentes del catálogo (Semana 12) |
+| Reutilizar el YAML de `app` en otros proyectos | Se copia, a sabiendas | Componentes del catálogo (Semana 12) |
 | Que `infra/entornos` despliegue de verdad | Registra qué versión de `app` le llega | Despliegue real y *rollback* (Semana 14) |
 | Pasar datos tipados entre pipelines | `variables` en el job de disparo | `spec:inputs` (Semana 12) |
 | Descargar artefactos de otro proyecto con `needs:project` | Premium: el job token y la API de artefactos | — |
@@ -148,6 +148,6 @@ Lo que el script **no** puede comprobar es que la medición del DAG sea honrada,
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 10 — Reglas, variables y secretos](../week-10-reglas_variables_y_secretos/README.md) | **Semana 11** | Semana 12 — Componentes CI/CD y catálogo |
+| [Semana 10 — Reglas, variables y secretos](../week-10-reglas_variables_y_secretos/README.md) | **Semana 11** | [Semana 12 — Componentes CI/CD y catálogo](../week-12-componentes_ci_cd_y_catalogo/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

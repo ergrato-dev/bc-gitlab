@@ -21,7 +21,7 @@ Dejar en pie la **capa 9** de tu plataforma: un runner de proyecto propio, un pi
 | Informe JUnit y cobertura | S16 (la duración del pipeline se mide sobre ellos), S19 (los escáneres añaden sus informes) |
 | Job `gobernanza` y `GOBERNANZA_TOKEN` | S10 (qué secretos llegan a una merge request), S11 (auditoría programada) |
 | *Pipelines must succeed* | Cada merge request a partir de hoy |
-| ADR-007 | S10, S11 y S12 lo amplían |
+| ADR-007 | S10 lo amplía |
 
 La decisión con más recorrido es **qué hace el pipeline cuando falla `gobernanza`**. Hoy, avisar. Si algún día bloquea, cambia el ADR-005 y el ADR-007, no una línea de YAML a escondidas.
 

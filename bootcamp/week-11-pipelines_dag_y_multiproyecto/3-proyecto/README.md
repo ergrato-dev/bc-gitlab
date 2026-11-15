@@ -206,6 +206,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 10](../../week-10-reglas_variables_y_secretos/3-proyecto/README.md) | **Proyecto Semana 11** | Proyecto Semana 12 |
+| [Proyecto Semana 10](../../week-10-reglas_variables_y_secretos/3-proyecto/README.md) | **Proyecto Semana 11** | [Proyecto Semana 12](../../week-12-componentes_ci_cd_y_catalogo/3-proyecto/README.md) |
 
 [← Volver a la Semana 11](../README.md)

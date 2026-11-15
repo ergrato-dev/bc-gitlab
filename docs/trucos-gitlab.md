@@ -265,6 +265,19 @@ _Se añaden a medida que se publica cada semana._
 | Pasar un dato de un job al pipeline de otro proyecto | `artifacts:reports:dotenv` en el job y `variables: { X: $X }` en el de disparo, con `needs` sobre él |
 | Probar la regla de un programado sin crear el programado | `POST .../ci/lint` con `dry_run=true` no simula `schedule`: lanza el programado con `play` sobre una rama de prueba |
 
+## Semana 12 — Componentes CI/CD y catálogo
+
+| Truco | Cómo |
+|---|---|
+| Lint de una rama sin abrir la merge request | `GET .../ci/lint?content_ref=<rama>`; `?ref=` no cambia de rama |
+| Saber a qué versión se resolvió `@1` | `GET .../ci/lint \| jq '.includes[] \| select(.type=="component") \| .blob'`: el SHA está en la URL |
+| Demostrar que partir el YAML no cambia nada | `diff <(sort antes.yml) <(sort despues.yml)` sobre los dos `merged_yaml`: el orden cambia, las líneas no |
+| Por qué un pipeline se creó en `failed` sin ningún job | GraphQL `project { pipeline(iid:) { errorMessages { nodes { content } } } }`: la REST no lo da |
+| Los inputs de un componente sin abrir su repositorio | GraphQL `ciCatalogResources { nodes { versions { nodes { components { nodes { inputs { name default type } } } } } } }` |
+| Lanzar un pipeline con inputs desde la terminal | `git push -o ci.input='entorno=production'` |
+| Probar un cambio de un componente antes de publicarlo | En una rama del consumidor, `@<SHA>` del commit del componente. Nunca en `main` |
+| Marcar un proyecto para el catálogo sin la UI | Mutación GraphQL `catalogResourcesCreate(input: {projectPath:})`; no hay REST |
+
 ---
 
 [← Volver a docs](README.md)

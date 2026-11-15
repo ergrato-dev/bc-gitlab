@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Tres formas de reutilizar YAML</title>
+  <desc id="desc">Tres columnas. extends: un job hereda de un job oculto del mismo pipeline; reutiliza dentro de un pipeline y no tiene versión ni contrato. include: un archivo se pega en el pipeline antes de evaluarlo; puede venir del mismo repositorio o de otro proyecto en una rama o tag, y sus nombres de job se mezclan con los tuyos. Componente: un archivo de templates en un proyecto propio, con spec:inputs como contrato, versión semántica publicada en el catálogo y referencia del tipo localhost:8888/grupo/ci/componentes/npm@1. Las tres terminan en el mismo YAML fusionado, que es lo que el runner ve.</desc>
+  <rect width="900" height="440" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="30" y="30" width="260" height="260" rx="8" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="160" y="60" fill="#FC6D26" font-size="16" font-weight="600" text-anchor="middle">extends</text>
+    <text x="160" y="84" fill="#FAFAFA" font-size="12" text-anchor="middle">job a job, dentro del pipeline</text>
+    <rect x="55" y="104" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="160" y="129" fill="#FAFAFA" font-size="13" text-anchor="middle">.deploy (oculto)</text>
+    <line x1="160" y1="144" x2="160" y2="176" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="55" y="180" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="160" y="205" fill="#FAFAFA" font-size="13" text-anchor="middle">deploy-staging</text>
+    <text x="160" y="248" fill="#FAFAFA" font-size="12" text-anchor="middle">Sin versión. Sin contrato.</text>
+    <text x="160" y="268" fill="#FAFAFA" font-size="12" text-anchor="middle">Fusión profunda de claves.</text>
+
+    <rect x="320" y="30" width="260" height="260" rx="8" fill="none" stroke="#666666" stroke-width="2"/>
+    <text x="450" y="60" fill="#FC6D26" font-size="16" font-weight="600" text-anchor="middle">include</text>
+    <text x="450" y="84" fill="#FAFAFA" font-size="12" text-anchor="middle">archivo pegado antes de evaluar</text>
+    <rect x="345" y="104" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="450" y="129" fill="#FAFAFA" font-size="13" text-anchor="middle">local: ci/deploy.yml</text>
+    <rect x="345" y="156" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="450" y="181" fill="#FAFAFA" font-size="13" text-anchor="middle">project: … ref: main</text>
+    <text x="450" y="228" fill="#FAFAFA" font-size="12" text-anchor="middle">Versión: una rama o un tag.</text>
+    <text x="450" y="248" fill="#FAFAFA" font-size="12" text-anchor="middle">Contrato: opcional (spec:inputs).</text>
+    <text x="450" y="268" fill="#FAFAFA" font-size="12" text-anchor="middle">Sus nombres chocan con los tuyos.</text>
+
+    <rect x="610" y="30" width="260" height="260" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="740" y="60" fill="#FC6D26" font-size="16" font-weight="600" text-anchor="middle">componente</text>
+    <text x="740" y="84" fill="#FAFAFA" font-size="12" text-anchor="middle">proyecto propio, versionado</text>
+    <rect x="635" y="104" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="740" y="129" fill="#FAFAFA" font-size="13" text-anchor="middle">templates/npm.yml</text>
+    <rect x="635" y="156" width="210" height="40" rx="6" fill="#554488"/>
+    <text x="740" y="181" fill="#FAFAFA" font-size="13" text-anchor="middle">spec:inputs = contrato</text>
+    <text x="740" y="228" fill="#FAFAFA" font-size="12" text-anchor="middle">Versión: semver en el catálogo.</text>
+    <text x="740" y="248" fill="#FAFAFA" font-size="12" text-anchor="middle">…/ci/componentes/npm@1</text>
+    <text x="740" y="268" fill="#FAFAFA" font-size="12" text-anchor="middle">Probado en su propio pipeline.</text>
+
+    <line x1="160" y1="290" x2="420" y2="346" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="450" y1="290" x2="450" y2="342" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="740" y1="290" x2="480" y2="346" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="300" y="350" width="300" height="60" rx="8" fill="none" stroke="#E24329" stroke-width="2"/>
+    <text x="450" y="375" fill="#E24329" font-size="14" font-weight="600" text-anchor="middle">un solo YAML fusionado</text>
+    <text x="450" y="396" fill="#FAFAFA" font-size="12" text-anchor="middle">merged_yaml: lo único que ve el runner</text>
+  </g>
+</svg>

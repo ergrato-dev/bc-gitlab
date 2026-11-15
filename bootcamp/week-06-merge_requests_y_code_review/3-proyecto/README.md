@@ -18,7 +18,7 @@ La Semana 05 dejó el trabajo modelado: backlog, hito y tablero. Esta conecta es
 |---|---|
 | Método de fusión, squash y hilos obligatorios | S07 (la rama protegida hace que no haya otro camino), S11 (los pipelines de MR) |
 | Plantilla del commit de squash con *trailers* | S08 (changelog y métricas por merge request) |
-| `Default.md` de merge request | S07 (el script `gobernanza` comprueba que la MR cierra un issue; job desde la S09), S12 (se comparte como componente) |
+| `Default.md` de merge request | S07 (el script `gobernanza` comprueba que la MR cierra un issue; job desde la S09), S12 (el componente `gobernanza` lleva esa comprobación a cualquier proyecto) |
 | ADR-004 | S08 (GitLab Flow parte de esta decisión), S26 (auditoría) |
 | Tres merge requests fusionadas | S08 (cuentan en el tiempo de entrega de `docs/metricas.md`; sin trailer `Changelog:`, no salen en el CHANGELOG) |
 | `revisor` como revisor habitual | S07 (CODEOWNERS lo nombra) |

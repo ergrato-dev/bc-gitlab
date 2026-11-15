@@ -145,7 +145,7 @@ Si tus commits siguen el formato convencional, `%{first_commit_title}` produce t
 | Plantillas en `.gitlab/merge_request_templates/` | Free | ✅ |
 | Plantilla `Default` aplicada sola | Free | ✅ |
 | Plantilla por defecto escrita en los ajustes del proyecto (`merge_requests_template`) | Premium | La plantilla `Default.md` del repositorio |
-| Plantillas compartidas desde un proyecto del grupo o de la instancia | Premium | Copiar `Default.md` en cada proyecto; en la Semana 12 lo hará un componente |
+| Plantillas compartidas desde un proyecto del grupo o de la instancia | Premium | Copiar `Default.md` en cada proyecto; desde la Semana 12, el componente `gobernanza` comprueba en todos ellos lo que la plantilla pide |
 
 ---
 

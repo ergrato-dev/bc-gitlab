@@ -110,7 +110,7 @@ curl --fail -sS -o app.tgz --header "JOB-TOKEN: $CI_JOB_TOKEN" \
   "$CI_API_V4_URL/projects/$APP_PROJECT_ID/jobs/$APP_PACKAGE_JOB_ID/artifacts"
 ```
 
-Cuesta tres líneas y una entrada en la lista de permitidos de `app`. Compensa pagar Premium cuando tienes decenas de proyectos encadenados y esas tres líneas se multiplican: los componentes de la Semana 12 las reducen a una.
+Cuesta tres líneas y una entrada en la lista de permitidos de `app`. Compensa pagar Premium cuando tienes decenas de proyectos encadenados y esas tres líneas se multiplican: un componente, como los que escribirás en la Semana 12, podría reducirlas a una.
 
 ---
 

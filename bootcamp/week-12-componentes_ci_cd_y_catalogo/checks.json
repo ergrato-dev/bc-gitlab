@@ -1,0 +1,125 @@
+{
+  "semana": "12",
+  "titulo": "Componentes CI/CD y catálogo",
+  "checks": [
+    {
+      "id": "despliegue-en-su-archivo",
+      "descripcion": "Los despliegues de app viven en ci/deploy.yml",
+      "api": "projects/{proyecto}/repository/files/ci%2Fdeploy.yml?ref=main",
+      "jq": ".content | @base64d | test(\"\\ndeploy-staging:\") and test(\"\\ninfra:\")",
+      "pista": "2-practicas/01-include-en-app.md, paso 2"
+    },
+    {
+      "id": "app-incluye-deploy",
+      "descripcion": "El .gitlab-ci.yml de app incluye ci/deploy.yml",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": "any(.includes[]; .type == \"local\" and (.location | endswith(\"ci/deploy.yml\")))",
+      "pista": "2-practicas/01-include-en-app.md, paso 2"
+    },
+    {
+      "id": "componentes-existe",
+      "descripcion": "Existe el proyecto componentes dentro del subgrupo ci",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes",
+      "jq": ".path == \"componentes\"",
+      "pista": "2-practicas/02-los-dos-componentes.md, paso 1"
+    },
+    {
+      "id": "componente-npm",
+      "descripcion": "componentes tiene el componente npm",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/tree?path=templates&ref=main",
+      "jq": "any(.[]; .name == \"npm.yml\" or .name == \"npm\")",
+      "pista": "2-practicas/02-los-dos-componentes.md, paso 2"
+    },
+    {
+      "id": "componente-gobernanza",
+      "descripcion": "componentes tiene el componente gobernanza",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/tree?path=templates&ref=main",
+      "jq": "any(.[]; .name == \"gobernanza.yml\" or .name == \"gobernanza\")",
+      "pista": "2-practicas/02-los-dos-componentes.md, paso 4"
+    },
+    {
+      "id": "componentes-se-prueba",
+      "descripcion": "El ultimo pipeline de main en componentes esta en verde",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/pipelines?ref=main&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/02-los-dos-componentes.md, paso 5"
+    },
+    {
+      "id": "componentes-en-el-catalogo",
+      "descripcion": "componentes esta marcado como recurso del catalogo CI/CD",
+      "graphql": "query($grupo:ID!){ group(fullPath:$grupo){ projects(includeSubgroups:true, search:\"componentes\"){ nodes { fullPath isCatalogResource } } } }",
+      "jq": "any(.data.group.projects.nodes[]; (.fullPath | endswith(\"/ci/componentes\")) and .isCatalogResource)",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 3"
+    },
+    {
+      "id": "tags-de-componentes-protegidos",
+      "descripcion": "En componentes solo Maintainer o mas puede crear tags",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/protected_tags",
+      "jq": "any(.[]; .name == \"*\" and all(.create_access_levels[]; .access_level >= 40))",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 1"
+    },
+    {
+      "id": "versiones-semver-sin-v",
+      "descripcion": "Todas las versiones de componentes son semver sin v delante",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/releases?per_page=100",
+      "jq": "length >= 1 and all(.[]; .tag_name | test(\"^[0-9]+\\\\.[0-9]+\\\\.[0-9]+$\"))",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 4"
+    },
+    {
+      "id": "dos-versiones-publicadas",
+      "descripcion": "componentes tiene al menos dos versiones publicadas",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/releases?per_page=100",
+      "jq": "length >= 2",
+      "pista": "3-proyecto/README.md"
+    },
+    {
+      "id": "grupo-lee-componentes",
+      "descripcion": "El job token de los proyectos del grupo puede leer componentes",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/job_token_scope/groups_allowlist",
+      "jq": "any(.[]; .web_url | test(\"/groups/[^/]+$\"))",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 5"
+    },
+    {
+      "id": "app-usa-npm",
+      "descripcion": "app consume el componente npm por version, no por rama ni por ~latest",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": "any(.includes[]; .type == \"component\" and (.location | test(\"/ci/componentes/npm@[0-9]+(\\\\.[0-9]+){0,2}$\")))",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 6"
+    },
+    {
+      "id": "app-usa-gobernanza",
+      "descripcion": "app consume el componente gobernanza por version, no por rama ni por ~latest",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": "any(.includes[]; .type == \"component\" and (.location | test(\"/ci/componentes/gobernanza@[0-9]+(\\\\.[0-9]+){0,2}$\")))",
+      "pista": "2-practicas/03-publicar-y-consumir.md, paso 6"
+    },
+    {
+      "id": "infra-declara-entorno",
+      "descripcion": "infra/entornos declara el input entorno con una lista cerrada de valores",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/.gitlab-ci.yml?ref=main",
+      "jq": ".content | @base64d | test(\"spec:\") and test(\"\\n +entorno:\\n( +.*\\n)*? +options:\")",
+      "pista": "2-practicas/04-inputs-en-infra.md, paso 2"
+    },
+    {
+      "id": "app-dispara-con-inputs",
+      "descripcion": "El disparo de app a infra/entornos pasa el entorno como input",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"trigger:\\n( +.*\\n)*? +inputs:\\n +entorno: staging\")",
+      "pista": "2-practicas/04-inputs-en-infra.md, paso 3"
+    },
+    {
+      "id": "infra-sabe-su-entorno",
+      "descripcion": "El ultimo pipeline multiproyecto de infra/entornos esta en verde y lleva el entorno en el nombre",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/pipelines?source=pipeline&per_page=1",
+      "jq": ".[0].status == \"success\" and (.[0].name | test(\"staging\"))",
+      "pista": "2-practicas/04-inputs-en-infra.md, paso 4"
+    },
+    {
+      "id": "adr-009-ci-compartido",
+      "descripcion": "La wiki de app tiene el ADR-009 sobre el CI compartido",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-009\"; \"i\"))) | any(.content | test(\"componentes\") and test(\"inputs\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}
