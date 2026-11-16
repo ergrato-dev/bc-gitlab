@@ -15,7 +15,7 @@ Dejar en pie la **capa 15** de tu plataforma: tres runners en un proceso, enruta
 | Lo que creas esta semana | Se usa a partir de |
 |---|---|
 | Las etiquetas `docker`, `dind` y `deploy` | S16 (el runner de Kubernetes entra en la flota con las mismas etiquetas y los pipelines no cambian) |
-| La duración de cada job por runner, medida en el ADR-012 | S16 (`docs/finops.md` calcula el coste por pipeline con esas cifras) |
+| La duración de cada job por runner, medida en el ADR-012 | S16 (la línea base de `docs/linea-base-s16.json` la vuelve a medir, tres pipelines por runner, y `docs/finops.md` la convierte en coste) |
 | `deploy-infra`, `ref_protected` | S18 (el informe de endurecimiento audita quién puede llegar a la máquina de despliegue), S25 (el agente de Kubernetes sustituye al SSH, el runner protegido se queda) |
 | `dind-app` con privilegio limitado | S19 (los escáneres de imágenes corren sin privilegios; `dind` sigue siendo la excepción documentada) |
 | La caducidad de los tokens de runner | S18 (rotación de credenciales) |
@@ -168,6 +168,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 14](../../week-14-entornos_review_apps_y_feature_flags/3-proyecto/README.md) | **Proyecto Semana 15** | Proyecto Semana 16 |
+| [Proyecto Semana 14](../../week-14-entornos_review_apps_y_feature_flags/3-proyecto/README.md) | **Proyecto Semana 15** | [Proyecto Semana 16](../../week-16-runners_en_kubernetes_y_finops/3-proyecto/README.md) |
 
 [← Volver a la Semana 15](../README.md)

@@ -94,7 +94,7 @@ Correspondencia aproximada:
 | 04 Issues, MR y code review | 05, 06 |
 | 05 CI/CD fundamentos | 09, 10 |
 | 06 CI/CD pipelines avanzados | 11, 12, 14 (entornos) |
-| 07 GitLab Runner | 15, 16 |
+| 07 GitLab Runner | 15, 16; las métricas del runner (`1-teoria/06`), a la 21 |
 | 08 Container y Package Registry | 13, 19 (escaneo de imágenes) |
 | 09 API y automatización | 17 |
 | 10 Administración y seguridad | 18 |

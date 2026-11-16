@@ -42,6 +42,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Conventional Commits** — Convención de mensaje `tipo(ambito): resumen`. No es de GitLab, pero es lo que permite decidir la versión sin discutirla. El CHANGELOG lo genera GitLab a partir de otro trailer, `Changelog:` (S08).
 
+**Compute quota** — Premium. Límite de minutos de cómputo por grupo o proyecto en los runners de instancia; cuando se acaba, los jobs dejan de correr en ellos. En CE, los minutos se sacan sumando `duration` de los jobs por API y se convierten en coste en `docs/finops.md` (Semana 16).
+
 ## D
 
 **DAG** (*directed acyclic graph*) — Free. Pipeline en el que los jobs declaran sus dependencias con `needs` en vez de esperar a que termine la etapa entera. Es lo que convierte un pipeline en serie en uno paralelo.
@@ -69,6 +71,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Épica** (*epic*) — **Premium**. Agrupación de issues por encima del hito. En CE se aproxima con hitos y etiquetas.
 
 **Error budget** — Presupuesto de fallo que deja un SLO. Si el SLO es 99.9 % mensual, el error budget es de unos 43 minutos al mes. Se gasta, no se evita.
+
+**Ejecutor Kubernetes** (*Kubernetes executor*) — Free. Ejecutor de GitLab Runner que crea un pod por job en un clúster y lo borra al terminar. En este bootcamp, el runner `k8s-app` en un clúster k3d, instalado con el chart oficial de Helm (Semana 16).
 
 ## F
 
@@ -101,6 +105,12 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 ## K
 
 **kaniko** — Construye imágenes desde un `Dockerfile` en un contenedor sin privilegios y sin daemon. El original se archivó en junio de 2025; el bootcamp usa el fork mantenido `osscontainertools/kaniko` (S13).
+
+**k3d** — Herramienta que ejecuta k3s, una distribución ligera de Kubernetes, en contenedores de Docker. En este bootcamp, el clúster `bootcamp` en la red `bc-gitlab-network`: desde la Semana 16 ejecuta los jobs de `app`, y en la 25 recibe sus despliegues.
+
+## L
+
+**Línea base** (*baseline*) — La medida de antes de un cambio, versionada, contra la que se compara la de después. Duración, cola y minutos de job de tres pipelines con cada runner en `docs/linea-base-s16.json` (Semana 16).
 
 ## M
 

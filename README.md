@@ -139,9 +139,9 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 | Git | **2.46+** | Control de versiones |
 | `glab` | **1.50+** | CLI oficial de GitLab. La UI cambia; el CLI es estable |
 | `jq` | **1.7+** | Autograding y scripting de la API |
-| k3d | **5.7+** | Kubernetes local (S16, S25) |
-| `kubectl` | **1.32+** | Cliente de Kubernetes |
-| Helm | **3.16+** | GitLab Runner y agente en el clúster |
+| k3d | **5.9.0** (k3s `v1.35.10-k3s1`) | Kubernetes local (S16, S25) |
+| `kubectl` | **1.34-1.36** | Cliente de Kubernetes |
+| Helm | **3.22.1** | GitLab Runner y agente en el clúster |
 | Terraform | **1.9+** | La plataforma como código (S24) |
 | PostgreSQL | **16+** | Backend de GitLab; replicado en S23 |
 | Prometheus · Grafana · Loki | **3.14.0 · 13.1.4 · 3.6.11** | Observabilidad (S21) |
@@ -154,7 +154,7 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 
 **16 GB de RAM.** No es una recomendación: las semanas 16, 21, 23 y 25 levantan Kubernetes, un stack de observabilidad o seis contenedores de alta disponibilidad. Con 8 GB se puede llegar hasta la Semana 15.
 
-Los perfiles de Docker Compose son **mutuamente excluyentes en memoria**: `base`, `observabilidad` y `ha` no caben a la vez. Kubernetes **no es un perfil**: las semanas 16 y 25 levantan un clúster de k3d aparte, y antes hay que apagar observabilidad. Cada semana declara qué necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
+Los perfiles de Docker Compose son **mutuamente excluyentes en memoria**: `base`, `observabilidad` y `ha` no caben a la vez. Kubernetes **no es un perfil**: la Semana 16 levanta un clúster de k3d aparte, que desde entonces ejecuta los jobs de `app`, y antes hay que apagar observabilidad. En las semanas que no caben con él, se apaga y `docker-app` vuelve a servicio. Cada semana declara qué necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
 
 ### Lo que GitLab CE no incluye
 

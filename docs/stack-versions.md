@@ -50,9 +50,11 @@ Se instalan cuando la semana lo pide, no antes.
 | **kaniko** (fork mantenido) | `1.29.0` | 13 | `ghcr.io/osscontainertools/kaniko:v1.29.0-debug` | Componente `imagen`: construye sin privilegios |
 | Node.js + OpenSSH (servicio `destino`) | `22.23.3` | 14 | `node:22.23.3-alpine3.24`, construida como `bc-gitlab-destino:1.0.0` | El destino de los despliegues de `staging`, `production` y las review apps |
 | **Pandoc** | `3.11.0` | 14 | `pandoc/minimal:3.11.0-alpine` | Job `pages` de `app` |
-| k3d | 5.7+ | 16, 25 | binario | Kubernetes local |
-| `kubectl` | 1.32+ | 16, 25 | binario | Cliente de Kubernetes |
-| Helm | 3.16+ | 16, 25 | binario | Runner y agente en el clúster |
+| **k3d** | `5.9.0` | 16, 25 | binario, con su suma ([setup-entorno](setup-entorno.md#k3d-y-kubectl--desde-la-semana-16)) | Kubernetes local |
+| **k3s** (nodos de k3d) | `v1.35.10-k3s1` | 16, 25 | `rancher/k3s:v1.35.10-k3s1`, con `--image` | La versión de Kubernetes del clúster `bootcamp`. Sin `--image`, k3d `5.9.0` usaría `v1.32.5` |
+| `kubectl` | `v1.35.10` (vale 1.34-1.36) | 16, 25 | binario | Cliente de Kubernetes: una versión menor de distancia del clúster como mucho |
+| **Helm** | `3.22.1` | 16, 25 | binario | Runner y agente en el clúster |
+| **Chart `gitlab/gitlab-runner`** | `0.91.2` | 16 | `helm install … --version 0.91.2` | Instala el runner `19.2.2`, la misma versión que `RUNNER_VERSION` |
 | **SeaweedFS** | `4.40` | 15 | `chrislusf/seaweedfs:4.40` | Servicio `cache-s3`: caché distribuida de los runners (`weed mini`) |
 | **Docker** (cliente y daemon en el job) | `29.9.3` | 15 | `docker:29.9.3-cli`, servicio `docker:29.9.3-dind` | Job `probar-imagen` de `app`, en el runner `dind` |
 | Keycloak | 26+ | 18 | `quay.io/keycloak/keycloak` | OIDC contra la instancia |

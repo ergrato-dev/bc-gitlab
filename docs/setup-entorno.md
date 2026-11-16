@@ -77,27 +77,43 @@ brew install jq          # macOS
 jq --version             # 1.7+
 ```
 
-### k3d y kubectl — solo para las semanas 16 y 25
+### k3d y kubectl — desde la Semana 16
 
-Puedes dejarlo para entonces, pero instalarlo ahora ahorra una interrupción a mitad de semana.
+Puedes dejarlo para entonces, pero instalarlo ahora ahorra una interrupción a mitad de semana. Son tres binarios, con versión fijada: `k3d` `5.9.0`, `kubectl` `v1.35.10` (la misma versión menor que el clúster) y `helm` `3.22.1`.
 
 > [!WARNING]
 > El instalador oficial de k3d se distribuye como `curl … | bash`, que ejecuta
-> sin leer un script descargado de internet. Descárgalo, míralo y ejecútalo
-> después: es un minuto y es el hábito que este bootcamp enseña.
+> sin leer un script descargado de internet. Aquí se descarga el binario de la
+> versión fijada y se comprueba su suma antes de instalarlo: es el hábito que
+> este bootcamp enseña.
+
+Linux en `amd64` (en macOS, cambia `linux` por `darwin`, y `amd64` por `arm64` si tu Mac es Apple Silicon):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh -o install-k3d.sh
-less install-k3d.sh          # revísalo
-bash install-k3d.sh
-rm install-k3d.sh
+mkdir -p ~/.local/bin && cd "$(mktemp -d)"
 
-k3d version                  # 5.7+
-kubectl version --client     # 1.32+
+curl -fsSLO https://github.com/k3d-io/k3d/releases/download/v5.9.0/k3d-linux-amd64
+curl -fsSL https://github.com/k3d-io/k3d/releases/download/v5.9.0/checksums.txt \
+  | grep ' _dist/k3d-linux-amd64$' | sed 's| _dist/| |' | sha256sum -c \
+  && install -m 755 k3d-linux-amd64 ~/.local/bin/k3d
+
+curl -fsSLO https://dl.k8s.io/release/v1.35.10/bin/linux/amd64/kubectl
+echo "$(curl -fsSL https://dl.k8s.io/release/v1.35.10/bin/linux/amd64/kubectl.sha256)  kubectl" | sha256sum -c \
+  && install -m 755 kubectl ~/.local/bin/kubectl
+
+curl -fsSLO https://get.helm.sh/helm-v3.22.1-linux-amd64.tar.gz
+curl -fsSL https://get.helm.sh/helm-v3.22.1-linux-amd64.tar.gz.sha256sum | sha256sum -c \
+  && tar xzf helm-v3.22.1-linux-amd64.tar.gz && install -m 755 linux-amd64/helm ~/.local/bin/helm
+
+cd - > /dev/null
+k3d version | head -1        # k3d version v5.9.0
+kubectl version --client | head -1   # Client Version: v1.35.10
+helm version --short         # v3.22.1+…
 ```
 
-En Fedora, macOS y Arch hay paquete y te ahorras el script: `dnf install k3d`,
-`brew install k3d`, `pacman -S k3d`.
+Cada `sha256sum -c` tiene que decir `OK`; cada `install` va encadenado con `&&` a su comprobación, así que con un `FAILED` ese binario no se instala. Borra el directorio temporal y vuelve a descargar. `~/.local/bin` tiene que estar en tu `PATH`.
+
+`kubectl` admite una versión menor de diferencia con el clúster: con k3s `v1.35`, cualquier `kubectl` de `1.34` a `1.36` sirve. Si ya tienes uno en ese rango, sáltate su bloque.
 
 ---
 

@@ -320,6 +320,19 @@ _Se añaden a medida que se publica cada semana._
 | Saber qué runners hay detrás de un proyecto, también los de grupo | GraphQL `project { runners { nodes { description runnerType } } }` |
 | Pegar `gitlab-runner list` en un issue sin regalar tokens | No lo pegues: imprime el token de cada runner. Usa la API |
 
+## Semana 16 — Runners en Kubernetes y FinOps
+
+| Truco | Cómo |
+|---|---|
+| Ver nacer y morir un pod por job | `kubectl -n gitlab-runner get pods -w` en otra terminal mientras corre un pipeline |
+| Saber en qué pod y con qué gestor corrió un job | La línea `Running on <pod> via <gestor>` del log |
+| De qué ejecutor es cada runner | GraphQL `runners { nodes { managers { nodes { executorName } } } }`: el campo está en el gestor, no en el runner |
+| `kubectl` sin tocar otros clústeres | `--kubeconfig-switch-context=false` al crear, y `export KUBECONFIG=$(k3d kubeconfig write bootcamp)` |
+| Imágenes de Docker Hub sin gastar su límite en k3d | `--registry-config` con un espejo `docker.io` en `http://registry-cache:5000` |
+| Que lo versionado sea lo que corre | `diff -B` entre `helm get manifest` y `helm template … -f <archivo versionado>` |
+| Por qué un pod no arranca antes de que falle el job | `kubectl -n gitlab-runner get events --sort-by=.lastTimestamp \| tail` |
+| Liberar memoria sin perder el clúster | `k3d cluster stop bootcamp`, y `start` al volver |
+
 ---
 
 [← Volver a docs](README.md)

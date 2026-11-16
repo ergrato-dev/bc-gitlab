@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Más rápido no es más barato</title>
+  <desc id="desc">Dos pares de barras con las medidas del pipeline de prueba del laboratorio. La duración del pipeline baja de 70 segundos con docker-app y limit 2 a 44 segundos con el runner de Kubernetes y concurrent 6, porque los cuatro tests corren a la vez. Los minutos de job no cambian: unos 2,1 en los dos casos, porque el trabajo es el mismo. Lo que se paga por máquina sigue a los minutos de job y a las horas encendidas, no a la duración.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="40" y="40" fill="#FC6D26" font-size="15" font-weight="600">Duración del pipeline</text>
+    <text x="40" y="92" fill="#FAFAFA" font-size="13">docker-app</text>
+    <rect x="150" y="72" width="280" height="30" fill="#554488"/>
+    <text x="440" y="92" fill="#FAFAFA" font-size="13">70 s</text>
+    <text x="40" y="142" fill="#FAFAFA" font-size="13">Kubernetes</text>
+    <rect x="150" y="122" width="176" height="30" fill="#FC6D26"/>
+    <text x="336" y="142" fill="#FAFAFA" font-size="13">44 s</text>
+    <text x="40" y="185" fill="#A8A8A8" font-size="13">lo que espera quien hizo el push: baja un 37 %</text>
+
+    <text x="480" y="40" fill="#FC6D26" font-size="15" font-weight="600">Minutos de job por pipeline</text>
+    <text x="480" y="92" fill="#FAFAFA" font-size="13">docker-app</text>
+    <rect x="590" y="72" width="210" height="30" fill="#554488"/>
+    <text x="810" y="92" fill="#FAFAFA" font-size="13">2,1</text>
+    <text x="480" y="142" fill="#FAFAFA" font-size="13">Kubernetes</text>
+    <rect x="590" y="122" width="210" height="30" fill="#FC6D26"/>
+    <text x="810" y="142" fill="#FAFAFA" font-size="13">2,1</text>
+    <text x="480" y="185" fill="#A8A8A8" font-size="13">el trabajo hecho: no cambia</text>
+
+    <rect x="40" y="230" width="820" height="110" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <text x="450" y="265" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">coste del mes = minutos de job × coste por minuto + horas encendidas sin jobs × precio por hora</text>
+    <text x="450" y="295" fill="#A8A8A8" font-size="13" text-anchor="middle">Kubernetes acorta la espera. Abarata solo si los nodos bajan a cero cuando no hay jobs,</text>
+    <text x="450" y="317" fill="#A8A8A8" font-size="13" text-anchor="middle">y eso pide autoescalado de nodos: en una nube, no en k3d</text>
+  </g>
+</svg>

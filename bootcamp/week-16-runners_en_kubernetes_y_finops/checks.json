@@ -1,0 +1,90 @@
+{
+  "semana": "16",
+  "titulo": "Runners en Kubernetes y FinOps",
+  "checks": [
+    {
+      "id": "runner-kubernetes-en-linea",
+      "descripcion": "app tiene en linea un runner de proyecto con la etiqueta docker y ejecutor kubernetes",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ tagList paused managers{ nodes{ executorName status } } } } } }",
+      "jq": "[.data.project.runners.nodes[] | select((.tagList | index(\"docker\")) and (.paused | not)) | .managers.nodes[] | select(.executorName == \"kubernetes\" and .status == \"ONLINE\")] | length >= 1",
+      "pista": "2-practicas/03-el-relevo.md, paso 4"
+    },
+    {
+      "id": "runner-kubernetes-en-version-fijada",
+      "descripcion": "El runner de Kubernetes corre la version fijada del runner, 19.2.2",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ managers{ nodes{ executorName version } } } } } }",
+      "jq": "[.data.project.runners.nodes[].managers.nodes[] | select(.executorName == \"kubernetes\")] | length >= 1 and all(.version == \"19.2.2\")",
+      "pista": "2-practicas/02-el-runner-en-el-cluster.md, paso 4"
+    },
+    {
+      "id": "docker-app-en-pausa",
+      "descripcion": "docker-app sigue registrado, en pausa, como vuelta atras",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ tagList paused managers{ nodes{ executorName } } } } } }",
+      "jq": "[.data.project.runners.nodes[] | select((.tagList | index(\"docker\")) and any(.managers.nodes[]; .executorName == \"docker\"))] | length >= 1 and all(.paused)",
+      "pista": "2-practicas/03-el-relevo.md, paso 4"
+    },
+    {
+      "id": "un-solo-runner-docker-activo",
+      "descripcion": "Solo un runner de app sin pausar tiene la etiqueta docker",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ tagList paused } } } }",
+      "jq": "[.data.project.runners.nodes[] | select((.tagList | index(\"docker\")) and (.paused | not))] | length == 1",
+      "pista": "2-practicas/03-el-relevo.md, paso 4"
+    },
+    {
+      "id": "dind-sigue-en-linea",
+      "descripcion": "El runner dind de la Semana 15 sigue en linea y sin pausar",
+      "api": "projects/{proyecto}/runners?type=project_type&tag_list=dind",
+      "jq": "length >= 1 and any(.[]; .status == \"online\" and (.paused | not))",
+      "pista": "2-practicas/03-el-relevo.md, paso 5"
+    },
+    {
+      "id": "main-en-kubernetes",
+      "descripcion": "El ultimo pipeline de main en verde construyo en el runner de Kubernetes",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ pipelines(ref: \"main\", status: SUCCESS, first: 1){ nodes{ jobs{ nodes{ name runner{ managers{ nodes{ executorName } } } } } } } } }",
+      "jq": "[.data.project.pipelines.nodes[0].jobs.nodes[] | select(.name == \"build\") | .runner.managers.nodes[].executorName] | index(\"kubernetes\") != null",
+      "pista": "2-practicas/03-el-relevo.md, paso 5"
+    },
+    {
+      "id": "linea-base-versionada",
+      "descripcion": "app versiona docs/linea-base-s16.json con tres pipelines antes y tres despues",
+      "api": "projects/{proyecto}/repository/files/docs%2Flinea-base-s16.json?ref=main",
+      "jq": ".content != null and (.content | @base64d | fromjson | (.antes.pipelines | length) >= 3 and (.despues.pipelines | length) >= 3)",
+      "pista": "2-practicas/03-el-relevo.md, paso 6"
+    },
+    {
+      "id": "linea-base-compara-runners",
+      "descripcion": "La linea base mide docker-app antes y el runner de Kubernetes despues",
+      "api": "projects/{proyecto}/repository/files/docs%2Flinea-base-s16.json?ref=main",
+      "jq": ".content != null and (.content | @base64d | fromjson | all(.antes.pipelines[]; .runners | index(\"docker-app\")) and all(.despues.pipelines[]; .runners | index(\"docker-app\") | not))",
+      "pista": "2-practicas/03-el-relevo.md, pasos 3 y 5"
+    },
+    {
+      "id": "linea-base-en-verde",
+      "descripcion": "Todos los pipelines de la linea base terminaron en verde",
+      "api": "projects/{proyecto}/repository/files/docs%2Flinea-base-s16.json?ref=main",
+      "jq": ".content != null and (.content | @base64d | fromjson | all(.antes.pipelines[], .despues.pipelines[]; .estado == \"success\"))",
+      "pista": "2-practicas/03-el-relevo.md, paso 3"
+    },
+    {
+      "id": "values-en-infra",
+      "descripcion": "infra/entornos versiona los values de Helm del runner de Kubernetes con la cache en S3",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/runners%2Fk8s-app.values.yaml?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"kubernetes\") and test(\"cache-s3\") and test(\"concurrent\"))",
+      "pista": "2-practicas/04-escalar-y-medir.md, paso 6"
+    },
+    {
+      "id": "values-sin-secretos",
+      "descripcion": "Los values del runner no contienen ningun token de runner ni claves S3",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/runners%2Fk8s-app.values.yaml?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"glrt-\") or test(\"(?i)(access|secret)_?key\\\\s*[=:]\\\\s*\\\\S\") | not)",
+      "pista": "2-practicas/04-escalar-y-medir.md, paso 6"
+    },
+    {
+      "id": "finops-versionado",
+      "descripcion": "app versiona docs/finops.md con el coste por minuto y por pipeline",
+      "api": "projects/{proyecto}/repository/files/docs%2Ffinops.md?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"minuto\"; \"i\") and test(\"pipeline\"; \"i\") and test(\"linea-base-s16\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}

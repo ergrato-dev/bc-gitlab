@@ -151,6 +151,6 @@ Lo que el script **no** puede comprobar es que la caché viaje de verdad por `ca
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 14 — Entornos, review apps y feature flags](../week-14-entornos_review_apps_y_feature_flags/README.md) | **Semana 15** | Semana 16 — Runners en Kubernetes y FinOps |
+| [Semana 14 — Entornos, review apps y feature flags](../week-14-entornos_review_apps_y_feature_flags/README.md) | **Semana 15** | [Semana 16 — Runners en Kubernetes y FinOps](../week-16-runners_en_kubernetes_y_finops/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

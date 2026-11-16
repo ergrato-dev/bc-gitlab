@@ -31,12 +31,16 @@ docker compose --profile observabilidad down      # apaga solo ese perfil
 
 ### Kubernetes no es un perfil
 
-Las semanas 16 y 25 usan **k3d**, que crea su propio clúster fuera de Docker Compose. No hay perfil que lo cubra. Antes de levantarlo, apaga observabilidad:
+Desde la Semana 16, **k3d** crea un clúster fuera de Docker Compose que ejecuta los jobs de `app`; la 25 despliega en él. No hay perfil que lo cubra. Antes de levantarlo, apaga observabilidad:
 
 ```bash
 docker compose --profile observabilidad down
-k3d cluster create bootcamp --servers 1 --agents 1
+k3d cluster create bootcamp --servers 1 --agents 1 --image rancher/k3s:v1.35.10-k3s1 \
+  --network bc-gitlab-network --k3s-arg "--disable=traefik@server:*" \
+  --kubeconfig-update-default=false --kubeconfig-switch-context=false
 ```
+
+El comando completo, con el espejo de Docker Hub, está en la [práctica 01 de la Semana 16](../bootcamp/week-16-runners_en_kubernetes_y_finops/2-practicas/01-el-cluster.md). `--network bc-gitlab-network` es lo que deja a los pods llegar a `gitlab`, `cache-s3` y `registry-cache`. Si `k3d` no termina de arrancar y el log del server dice `inotify_init: too many open files`, sube `fs.inotify.max_user_instances` a 512.
 
 ---
 
@@ -46,7 +50,7 @@ Las semanas que aprietan de verdad son cuatro. Estas son las cuentas y qué apag
 
 ### Semana 16 — Runners en Kubernetes (~11-12 GB)
 
-`base` + k3d (1 server + 1 agent) + el runner ejecutándose en un pod.
+`base` + k3d (1 server + 1 agent, ~1,5 GB medidos) + el gestor del runner (~50 MB) + un pod por job mientras dura.
 
 Antes de empezar, baja el consumo de GitLab en `.env` y reconfigura:
 
@@ -56,17 +60,17 @@ sidekiq['concurrency'] = 8
 prometheus_monitoring['enable'] = false
 ```
 
-Y crea el clúster pequeño: `k3d cluster create bootcamp --servers 1 --agents 1`.
+Y crea el clúster pequeño, como arriba. Entre sesiones, `k3d cluster stop bootcamp` devuelve la memoria sin borrar nada.
 
 ### Semana 21 — Observabilidad (~10 GB)
 
-`base` + `observabilidad`. Es la combinación cómoda: cabe sin tocar nada.
+`base` + `observabilidad`. Es la combinación cómoda: cabe sin tocar nada, **con el clúster k3d parado**. Desde la Semana 16, los jobs de `app` corren en él: esta semana, antes de levantar observabilidad, haz la vuelta atrás de la práctica 03 de la Semana 16 (`docker-app` con `paused=false`, `k8s-app` con `paused=true`) y `k3d cluster stop bootcamp`. Al terminar, el relevo otra vez.
 
 La retención de Loki está en 24 h y el scrape de Prometheus en 30 s a propósito. Subirlos llena el disco en un fin de semana.
 
 ### Semana 23 — Alta disponibilidad (~13-14 GB, sin margen)
 
-**La semana más ajustada del bootcamp.** `base` + `ha` son seis contenedores nuevos.
+**La semana más ajustada del bootcamp.** `base` + `ha` son seis contenedores nuevos. El clúster k3d **no cabe**: como en la Semana 21, `docker-app` en servicio, `k8s-app` en pausa y `k3d cluster stop bootcamp`.
 
 Obligatorio antes de empezar:
 

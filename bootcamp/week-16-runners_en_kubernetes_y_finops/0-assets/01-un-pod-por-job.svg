@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Un pod por job</title>
+  <desc id="desc">En GitLab, el proyecto app tiene tres runners: k8s-app con la etiqueta docker y activo, docker-app con la misma etiqueta en pausa, y dind-app con la etiqueta dind. El gestor de k8s-app es un pod del clúster k3d, en el namespace gitlab-runner, que pide jobs a GitLab y crea un pod por job con los contenedores build y helper. Los pods de los jobs llegan por la red bc-gitlab-network a cache-s3, al registry en gitlab:5050 y a registry-cache, y desaparecen cuando el job termina.</desc>
+  <rect width="900" height="440" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="15" font-weight="600">GitLab · app</text>
+    <rect x="30" y="50" width="230" height="340" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="50" y="75" width="190" height="70" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="145" y="102" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">k8s-app</text>
+    <text x="145" y="124" fill="#FAFAFA" font-size="13" text-anchor="middle">docker · activo</text>
+    <rect x="50" y="165" width="190" height="70" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="145" y="192" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">docker-app</text>
+    <text x="145" y="214" fill="#A8A8A8" font-size="13" text-anchor="middle">docker · en pausa</text>
+    <rect x="50" y="255" width="190" height="70" rx="6" fill="#554488"/>
+    <text x="145" y="282" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">dind-app</text>
+    <text x="145" y="304" fill="#FAFAFA" font-size="13" text-anchor="middle">dind · en el compose</text>
+    <text x="145" y="365" fill="#A8A8A8" font-size="13" text-anchor="middle">el .gitlab-ci.yml no cambia</text>
+
+    <text x="310" y="36" fill="#FC6D26" font-size="15" font-weight="600">k3d · namespace gitlab-runner</text>
+    <rect x="310" y="50" width="300" height="340" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="335" y="75" width="250" height="70" rx="6" fill="#554488"/>
+    <text x="460" y="102" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Gestor (pod del chart)</text>
+    <text x="460" y="124" fill="#FAFAFA" font-size="13" text-anchor="middle">pide jobs · crea pods</text>
+    <rect x="335" y="200" width="115" height="110" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="392" y="226" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">pod de build</text>
+    <text x="392" y="252" fill="#FAFAFA" font-size="13" text-anchor="middle">build</text>
+    <text x="392" y="274" fill="#FAFAFA" font-size="13" text-anchor="middle">helper</text>
+    <rect x="470" y="200" width="115" height="110" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="527" y="226" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">pod de test</text>
+    <text x="527" y="252" fill="#FAFAFA" font-size="13" text-anchor="middle">build</text>
+    <text x="527" y="274" fill="#FAFAFA" font-size="13" text-anchor="middle">helper</text>
+    <text x="460" y="345" fill="#A8A8A8" font-size="13" text-anchor="middle">nacen con el job y se borran al acabar</text>
+
+    <text x="660" y="36" fill="#FC6D26" font-size="15" font-weight="600">bc-gitlab-network</text>
+    <rect x="660" y="50" width="210" height="340" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="680" y="120" width="170" height="50" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="765" y="151" fill="#FAFAFA" font-size="13" text-anchor="middle">cache-s3:8333</text>
+    <rect x="680" y="200" width="170" height="50" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="765" y="231" fill="#FAFAFA" font-size="13" text-anchor="middle">gitlab:5050</text>
+    <rect x="680" y="280" width="170" height="50" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="765" y="311" fill="#FAFAFA" font-size="13" text-anchor="middle">registry-cache:5000</text>
+
+    <line x1="240" y1="110" x2="331" y2="110" stroke="#FC6D26" stroke-width="2" marker-start="url(#flecha)" marker-end="url(#flecha)"/>
+    <text x="285" y="100" fill="#A8A8A8" font-size="13" text-anchor="middle">jobs</text>
+    <line x1="460" y1="145" x2="460" y2="196" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="585" y1="230" x2="676" y2="150" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="585" y1="255" x2="676" y2="228" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="585" y1="280" x2="676" y2="303" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="450" y="420" fill="#A8A8A8" font-size="13" text-anchor="middle">probar-imagen pide dind y sigue en dind-app; todo lo demás corre en pods</text>
+  </g>
+</svg>
