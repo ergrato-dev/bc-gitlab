@@ -14,7 +14,7 @@ Dejar en pie la **capa 13** de tu plataforma: el componente `imagen` publicado e
 
 | Lo que creas esta semana | Se usa a partir de |
 |---|---|
-| La imagen de `app` en el registry | S14 (se despliega en `staging` y `production`), S19 (Trivy la escanea), S20 (Cosign la firma por digest) |
+| La imagen de `app` en el registry | S19 (Trivy la escanea), S20 (Cosign la firma por digest) |
 | El componente `imagen` | S19 (un componente de escaneo la recibe por digest), S20 (añade firma y SBOM) |
 | El paquete genérico por SHA | S14 (`infra/entornos` despliega lo que descarga), S20 (SBOM del `.tgz`) |
 | La política de limpieza | S17 (la auditoría por API comprueba que todos los proyectos la tienen), S22 (cuánto ocupa el backup) |
@@ -240,6 +240,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 12](../../week-12-componentes_ci_cd_y_catalogo/3-proyecto/README.md) | **Proyecto Semana 13** | Proyecto Semana 14 |
+| [Proyecto Semana 12](../../week-12-componentes_ci_cd_y_catalogo/3-proyecto/README.md) | **Proyecto Semana 13** | [Proyecto Semana 14](../../week-14-entornos_review_apps_y_feature_flags/3-proyecto/README.md) |
 
 [← Volver a la Semana 13](../README.md)

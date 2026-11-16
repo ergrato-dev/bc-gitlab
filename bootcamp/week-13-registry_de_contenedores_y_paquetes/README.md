@@ -102,7 +102,7 @@ La **capa 13** de tu plataforma: los binarios viven versionados dentro de tu ins
 | Saber si la imagen tiene vulnerabilidades | — | Trivy en el pipeline (Semana 19) |
 | Saber que la imagen que corre es la que salió del pipeline | Digest en la release | Firma con Cosign y SBOM (Semana 20) |
 | Borrar los paquetes por SHA viejos | A mano, o por API | Automatizado por API (Semana 17) |
-| Desplegar la imagen | Arranca en tu máquina | `staging` y `production` (Semana 14) |
+| Desplegar la imagen | Arranca en tu máquina | En un clúster (Semana 25); la Semana 14 despliega el paquete |
 | Que el `FROM` del build pase por el dependency proxy | Sale a Docker Hub: kaniko no llega a `localhost:8888` | Fuera del laboratorio, con un nombre que resuelve igual dentro y fuera de los contenedores |
 
 ---
@@ -150,6 +150,6 @@ Lo que el script **no** puede comprobar es que la imagen no lleve nada que sobre
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 12 — Componentes CI/CD y catálogo](../week-12-componentes_ci_cd_y_catalogo/README.md) | **Semana 13** | Semana 14 — Entornos, review apps y feature flags |
+| [Semana 12 — Componentes CI/CD y catálogo](../week-12-componentes_ci_cd_y_catalogo/README.md) | **Semana 13** | [Semana 14 — Entornos, review apps y feature flags](../week-14-entornos_review_apps_y_feature_flags/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

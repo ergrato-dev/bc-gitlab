@@ -304,7 +304,7 @@ El aviso del proyecto es esperado hasta que lo crees en la Semana 01.
 | Síntoma | Causa | Solución |
 |---|---|---|
 | `502 Whoops, GitLab is taking too much time to respond` | Todavía está arrancando, o falta memoria | Espera 5 min. Si persiste, `docker stats` y mira [perfiles-de-laboratorio.md](perfiles-de-laboratorio.md) |
-| `port is already allocated` | Otro proceso ocupa 8888, 5050, 8090 o 2224 | Cambia el puerto en `.env` y `docker compose --profile base up -d` |
+| `port is already allocated` | Otro proceso ocupa 8888, 5050, 8090, 8095 o 2224 | Cambia el puerto en `.env` y `docker compose --profile base up -d` |
 | `Permission denied (publickey)` al hacer push | La clave no está en GitLab, o falta el puerto 2224 | Revisa el paso 6 y usa el host `gitlab-lab` |
 | Los commits salen como **Unverified** | La clave está registrada solo para autenticación | Regístrala también con uso *Signing* (paso 7) |
 | `docker compose up -d` no levanta nada | Falta el perfil | `docker compose --profile base up -d` |

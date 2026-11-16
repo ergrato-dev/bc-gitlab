@@ -47,6 +47,9 @@ Se instalan cuando la semana lo pide, no antes.
 | Node.js (imagen de CI) | `22.23.3` | 09 | `node:22.23.3-alpine3.24` | Jobs `build`, `test` y `package` de `app` |
 | Alpine (imagen de CI) | `3.24.2` | 09 | `alpine:3.24.2` | Jobs de utilidades (`gobernanza`) e imagen por defecto del runner |
 | TypeScript | `7.0.2` | 09 | `devDependencies` de `app` | Comprobación de tipos en el job `build` |
+| **kaniko** (fork mantenido) | `1.29.0` | 13 | `ghcr.io/osscontainertools/kaniko:v1.29.0-debug` | Componente `imagen`: construye sin privilegios |
+| Node.js + OpenSSH (servicio `destino`) | `22.23.3` | 14 | `node:22.23.3-alpine3.24`, construida como `bc-gitlab-destino:1.0.0` | El destino de los despliegues de `staging`, `production` y las review apps |
+| **Pandoc** | `3.11.0` | 14 | `pandoc/minimal:3.11.0-alpine` | Job `pages` de `app` |
 | k3d | 5.7+ | 16, 25 | binario | Kubernetes local |
 | `kubectl` | 1.32+ | 16, 25 | binario | Cliente de Kubernetes |
 | Helm | 3.16+ | 16, 25 | binario | Runner y agente en el clúster |

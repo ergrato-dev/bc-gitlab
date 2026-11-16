@@ -1,0 +1,132 @@
+{
+  "semana": "14",
+  "titulo": "Entornos, review apps y feature flags",
+  "checks": [
+    {
+      "id": "claves-por-entorno-en-infra",
+      "descripcion": "infra/entornos tiene una clave SSH de despliegue por entorno, como archivo y protegida",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/variables?per_page=100",
+      "jq": "[.[] | select(.key == \"DEPLOY_SSH_KEY\" and .variable_type == \"file\" and .protected) | .environment_scope] | index(\"staging\") != null and index(\"production\") != null",
+      "pista": "2-practicas/01-el-destino-y-staging.md, paso 4"
+    },
+    {
+      "id": "huella-del-destino",
+      "descripcion": "infra/entornos conoce la huella del destino como variable de tipo archivo",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/variables?per_page=100",
+      "jq": "any(.[]; .key == \"DESTINO_KNOWN_HOSTS\" and .variable_type == \"file\")",
+      "pista": "2-practicas/01-el-destino-y-staging.md, paso 4"
+    },
+    {
+      "id": "resource-groups-en-infra",
+      "descripcion": "infra/entornos serializa los despliegues con un resource group por entorno",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/resource_groups?per_page=100",
+      "jq": "map(.key) | index(\"staging\") != null and index(\"production\") != null",
+      "pista": "2-practicas/01-el-destino-y-staging.md, paso 5"
+    },
+    {
+      "id": "staging-desplegado",
+      "descripcion": "infra/entornos ha desplegado con exito en staging",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/deployments?environment=staging&status=success&per_page=1",
+      "jq": "length >= 1",
+      "pista": "2-practicas/01-el-destino-y-staging.md, paso 6"
+    },
+    {
+      "id": "app-sin-secretos-de-entornos",
+      "descripcion": "app ya no guarda las credenciales de staging ni de production",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "all(.[]; .key != \"DEPLOY_SSH_KEY\" and .key != \"DEPLOY_TOKEN\")",
+      "pista": "2-practicas/02-produccion-y-rollback.md, paso 1"
+    },
+    {
+      "id": "produccion-manual-desde-app",
+      "descripcion": "app dispara production a mano, como input de infra/entornos",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": "[.merged_yaml | capture(\"\\ninfra-production:\\n(?<b>( .*\\n)*)\").b] | first // \"\" | test(\"when: manual\") and test(\"entorno: production\")",
+      "pista": "2-practicas/02-produccion-y-rollback.md, paso 2"
+    },
+    {
+      "id": "production-desplegado",
+      "descripcion": "infra/entornos ha desplegado con exito en production",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/deployments?environment=production&status=success&per_page=1",
+      "jq": "length >= 1",
+      "pista": "2-practicas/02-produccion-y-rollback.md, paso 3"
+    },
+    {
+      "id": "rollback-en-staging",
+      "descripcion": "staging ha vuelto con exito a una version anterior a la ultima que se desplego",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/deployments?environment=staging&order_by=id&sort=asc&per_page=100",
+      "jq": "reduce .[] as $d ({max: 0, rb: false}; ($d.deployable.pipeline.id // 0) as $p | .rb = (.rb or ($d.status == \"success\" and $p < .max)) | .max = ([.max, $p] | max)) | .rb",
+      "pista": "2-practicas/02-produccion-y-rollback.md, paso 5"
+    },
+    {
+      "id": "review-con-clave-propia",
+      "descripcion": "app tiene una clave SSH propia para las review apps, limitada a review/*",
+      "api": "projects/{proyecto}/variables?per_page=100",
+      "jq": "any(.[]; .key == \"REVIEW_SSH_KEY\" and .variable_type == \"file\" and .environment_scope == \"review/*\")",
+      "pista": "2-practicas/03-review-apps.md, paso 1"
+    },
+    {
+      "id": "review-app-dinamica",
+      "descripcion": "app crea un entorno review/ por merge request, con su job de parada y caducidad",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_merged_yaml=true",
+      "jq": ".merged_yaml | test(\"name: review/\\\\$CI_MERGE_REQUEST_IID\") and test(\"on_stop: \") and test(\"auto_stop_in: \")",
+      "pista": "2-practicas/03-review-apps.md, paso 2"
+    },
+    {
+      "id": "review-desplegada",
+      "descripcion": "Una merge request de app ha desplegado su review app",
+      "api": "projects/{proyecto}/deployments?status=success&order_by=id&sort=desc&per_page=100",
+      "jq": "any(.[]; .environment.name | startswith(\"review/\"))",
+      "pista": "2-practicas/03-review-apps.md, paso 3"
+    },
+    {
+      "id": "review-parada",
+      "descripcion": "Una review app de app se ha parado al cerrarse su merge request",
+      "api": "projects/{proyecto}/environments?states=stopped&search=review/&per_page=100",
+      "jq": "any(.[]; .name | startswith(\"review/\"))",
+      "pista": "2-practicas/03-review-apps.md, paso 5"
+    },
+    {
+      "id": "app-lee-los-flags",
+      "descripcion": "app pregunta a GitLab por sus feature flags con el nombre del entorno",
+      "api": "projects/{proyecto}/repository/files/src%2Fflags.ts?ref=main",
+      "jq": ".content | @base64d | test(\"UNLEASH-APPNAME\")",
+      "pista": "2-practicas/04-feature-flag-y-pages.md, paso 2"
+    },
+    {
+      "id": "flag-por-entorno",
+      "descripcion": "app tiene un feature flag activo con estrategias distintas segun el entorno",
+      "api": "projects/{proyecto}/feature_flags?per_page=100",
+      "jq": "any(.[]; .active and ([.strategies[].scopes[].environment_scope] | unique | length) >= 2)",
+      "pista": "2-practicas/04-feature-flag-y-pages.md, paso 3"
+    },
+    {
+      "id": "pages-publicado",
+      "descripcion": "app publica su documentacion en GitLab Pages",
+      "api": "projects/{proyecto}/pages",
+      "jq": "(.deployments | length) >= 1",
+      "pista": "2-practicas/04-feature-flag-y-pages.md, paso 5"
+    },
+    {
+      "id": "pages-solo-miembros",
+      "descripcion": "El sitio de Pages de app solo lo ven sus miembros",
+      "api": "projects/{proyecto}",
+      "jq": ".pages_access_level == \"private\"",
+      "pista": "2-practicas/04-feature-flag-y-pages.md, paso 6"
+    },
+    {
+      "id": "metricas-cuentan-despliegues",
+      "descripcion": "scripts/metricas.sh cuenta los despliegues de production, no las releases",
+      "api": "projects/{proyecto}/repository/files/scripts%2Fmetricas.sh?ref=main",
+      "jq": ".content | @base64d | test(\"/deployments\") and test(\"production\")",
+      "pista": "3-proyecto/README.md"
+    },
+    {
+      "id": "adr-011-entornos",
+      "descripcion": "La wiki de app tiene el ADR-011 sobre entornos y despliegues",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-011\"; \"i\"))) | any(.content | test(\"rollback\"; \"i\") and test(\"feature flag\"; \"i\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}

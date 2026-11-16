@@ -77,7 +77,7 @@ src/*.test.ts
 | `USER node` | La imagen oficial ya trae ese usuario; el proceso no corre como root |
 | El `CMD` importa cada módulo | Una prueba de humo: si un archivo no carga, la imagen no arranca |
 
-`app` es una librería, así que "arrancar" significa que sus módulos se cargan. En la Semana 14 la imagen se despliega; si tu dominio tiene un servidor, el `CMD` lo arrancará entonces.
+`app` es una librería, así que "arrancar" significa que sus módulos se cargan. La Semana 14 despliega el paquete, no la imagen, en un destino que ya trae Node; la imagen se despliega en la Semana 25, en un clúster. Si tu dominio tiene un servidor, el `CMD` lo arrancará entonces.
 
 ### 2.4 La trampa del realm
 

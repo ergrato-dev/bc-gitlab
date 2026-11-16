@@ -113,7 +113,7 @@ Cambiar una ruta parece un detalle de estética hasta que se ve la lista de siti
 | Imagen del registry (S13) | `localhost:5050/plataforma-biblioteca/app:1.0.0` |
 | Paquete del registry (S13) | `.../api/v4/projects/plataforma-biblioteca%2Fapp/packages/...` |
 | Insignia de pipeline (S04) | `.../plataforma-biblioteca/app/badges/main/pipeline.svg` |
-| GitLab Pages (S14) | `http://plataforma-biblioteca.pages.localhost/app/` |
+| GitLab Pages (S14) | `http://app-<sufijo>.pages.localhost:8090`: dominio único por proyecto, con un sufijo que pone GitLab |
 | Componente CI/CD (S12) | `include: component: $CI_SERVER_FQDN/plataforma-biblioteca/ci/componentes/npm@1` |
 | Tu `~/.bc-gitlab` | `PROYECTO=plataforma-biblioteca/app` |
 

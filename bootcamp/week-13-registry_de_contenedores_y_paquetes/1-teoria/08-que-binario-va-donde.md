@@ -41,7 +41,7 @@ La Semana 04 dejó una regla: lo que se deriva del código no se versiona en el 
 | `junit.xml`, cobertura | Artefacto | — | Solo interesan a esta merge request |
 | El `.tgz` de `npm pack` | Artefacto, 1 semana | — | Para que el job siguiente lo suba |
 | El mismo `.tgz` | Paquete `app` | SHA, y `0.2.0` en el tag | Lo que `infra/entornos` descarga |
-| La imagen | Registry de `app` | SHA corto, y `0.2.0` en el tag | Lo que la Semana 14 despliega |
+| La imagen | Registry de `app` | SHA corto, y `0.2.0` en el tag | Lo que la Semana 25 despliega en un clúster |
 | `v0.2.0` | Release | La del tag | Lo que lee quien usa `app` |
 
 El artefacto del `.tgz` sigue existiendo: es como el job de subida recibe el archivo. Lo que desaparece es que **otro proyecto** dependa de él.

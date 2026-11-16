@@ -138,6 +138,9 @@ La **capa 11** de tu plataforma: el pipeline escala y deja de ser un tren en ser
 ./scripts/verificar-semana.sh 11
 ```
 
+> [!NOTE]
+> Desde la [Semana 14](../week-14-entornos_review_apps_y_feature_flags/README.md), `programados-sin-despliegue` fallan **a propósito**: los despliegues de `staging` y `production` se mudan de `app` a `infra/entornos`, y con ellos sus jobs y sus credenciales. Si repasas esta semana después de la 14, esos fallos son el estado correcto.
+
 Las 18 comprobaciones tienen que pasar.
 
 Lo que el script **no** puede comprobar es que la medición del DAG sea honrada, que el ADR-008 diga por qué `infra/entornos` es un proyecto aparte y no una carpeta de `app`, ni que hayas visto fallar `caducidades` con una fecha cercana. Eso lo evalúa la rúbrica.

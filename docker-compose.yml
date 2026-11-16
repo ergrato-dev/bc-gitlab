@@ -49,6 +49,8 @@ services:
         gitlab_pages['enable'] = true
         gitlab_pages['listen_proxy'] = "0.0.0.0:8090"
         gitlab_pages['nginx']['enable'] = false
+        # Sin esto, el sitio de un proyecto privado lo lee cualquiera (S14).
+        gitlab_pages['access_control'] = true
 
         # ── Funcionalidad usada por el bootcamp ──
         gitlab_rails['lfs_enabled'] = true
@@ -173,6 +175,30 @@ services:
       - base
 
   # ============================================
+  # Destino de despliegue — donde corren staging, production y las review apps (S14)
+  # ============================================
+  destino:
+    build: ./destino
+    image: bc-gitlab-destino:1.0.0
+    container_name: destino
+    restart: unless-stopped
+    environment:
+      # La API Unleash de los feature flags de app (S14). Vacías, los flags valen "apagado".
+      UNLEASH_URL: "${UNLEASH_URL:-}"
+      UNLEASH_INSTANCE_ID: "${UNLEASH_INSTANCE_ID:-}"
+    ports:
+      - "${DESTINO_PORT:-8095}:8080"
+    volumes:
+      - destino-entornos:/srv/entornos
+      - destino-ssh:/home/deploy/.ssh
+      - destino-claves:/etc/ssh/claves
+    networks:
+      - gitlab-network
+    mem_limit: 128m
+    profiles:
+      - base
+
+  # ============================================
   # Prometheus — métricas (S21)
   # ============================================
   prometheus:
@@ -273,6 +299,12 @@ volumes:
     name: bc-gitlab-grafana
   loki-data:
     name: bc-gitlab-loki
+  destino-entornos:
+    name: bc-gitlab-destino-entornos
+  destino-ssh:
+    name: bc-gitlab-destino-ssh
+  destino-claves:
+    name: bc-gitlab-destino-claves
 
 # ============================================
 # Red interna

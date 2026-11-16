@@ -139,6 +139,9 @@ La **capa 12** de tu plataforma: el YAML deja de duplicarse entre proyectos. Det
 ./scripts/verificar-semana.sh 12
 ```
 
+> [!NOTE]
+> Desde la [Semana 14](../week-14-entornos_review_apps_y_feature_flags/README.md), `despliegue-en-su-archivo` fallan **a propósito**: los despliegues de `staging` y `production` se mudan de `app` a `infra/entornos`, y con ellos sus jobs y sus credenciales. Si repasas esta semana después de la 14, esos fallos son el estado correcto.
+
 Las 17 comprobaciones tienen que pasar.
 
 Lo que el script **no** puede comprobar es que la segunda versión respete la versión semántica, que el README de `ci/componentes` sirva a alguien que no lo escribió, ni que el ADR-009 explique por qué las tres variables del disparo no son inputs. Eso lo evalúa la rúbrica.

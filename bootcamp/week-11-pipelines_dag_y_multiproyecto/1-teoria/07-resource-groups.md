@@ -72,6 +72,9 @@ Para `staging`, que se despliega en cada fusión y solo importa la última, la t
 
 El reintento manual de un despliegue viejo, que es como se hace un *rollback*, sigue permitido por un segundo ajuste del mismo bloque (*Allow job retries for rollback deployments*). La Semana 14 lo usa.
 
+> [!WARNING]
+> Todo esto vale porque `staging` se despliega desde `app`, y cada despliegue lleva el SHA de su commit. Desde la Semana 14 se despliega desde `infra/entornos`, cuyos pipelines corren todos sobre el mismo commit: con el SHA repetido, ningún despliegue es obsoleto y la tercera fila deja de funcionar. Allí se usa `oldest_first` ([Semana 14, teoría 05](../../week-14-entornos_review_apps_y_feature_flags/1-teoria/05-despliegue-reversible.md)).
+
 ### 2.4 Un candado para un pipeline entero
 
 Un job de disparo (teorías 03 y 05) también admite `resource_group`. Con `strategy: mirror`, el candado se mantiene **hasta que termina el pipeline de abajo**. Es la forma de que dos pipelines de `infra/entornos` disparados desde `app` no se pisen, aunque el despliegue sean varios jobs abajo.

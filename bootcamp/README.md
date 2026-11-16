@@ -40,7 +40,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| 14 | Entornos, review apps y feature flags | ⬜ |
+| [14](week-14-entornos_review_apps_y_feature_flags/README.md) | Entornos, review apps y feature flags | ✅ |
 | 15 | Runners: ejecutores y configuración | ⬜ |
 | 16 | Runners en Kubernetes y FinOps | ⬜ |
 | 17 | API, webhooks y ChatOps | ⬜ |

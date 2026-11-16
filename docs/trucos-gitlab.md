@@ -291,6 +291,20 @@ _Se añaden a medida que se publica cada semana._
 | Un `404` de un job contra otro proyecto | Es la lista de permitidos del job token del **destino**, no la URL |
 | Duplicados prohibidos salvo los SHA | `updateNamespacePackageSettings` con `genericDuplicateExceptionRegex: "^[0-9a-f]{40}$"`; no hay REST |
 
+
+## Semana 14 — Entornos, review apps y feature flags
+
+| Truco | Cómo |
+|---|---|
+| Ver qué hay desplegado en cada entorno, sin GitLab | `curl -s localhost:8095/ \| jq` |
+| Abrir un sitio `*.pages.localhost` con un `curl` antiguo | `curl --resolve <sitio>.pages.localhost:8090:127.0.0.1 http://<sitio>.pages.localhost:8090/` |
+| Una clave SSH que solo sirve para una cosa | `command="…",restrict` delante de la clave en `authorized_keys` |
+| Una variable de tipo archivo que ssh acepte | `chmod 600 "$DEPLOY_SSH_KEY"`: el runner la escribe con `0666` |
+| Rollback sin buscar el botón | `POST /projects/:id/jobs/<job del despliegue viejo>/retry` |
+| Saber qué estrategias ve un entorno | `GET /api/v4/feature_flags/unleash/<id>/client/features` con `UNLEASH-APPNAME: <entorno>` |
+| Borrar de golpe las review apps viejas | `DELETE /projects/:id/environments/review_apps?before=<fecha>&dry_run=false`; sin `dry_run=false` solo simula, y sin `before` solo mira las de hace más de 30 días |
+| Qué versión de `app` desplegó cada pipeline de `infra` | `GET …/pipelines?per_page=5`, campo `name`: el SHA del despliegue es el de `infra` |
+
 ---
 
 [← Volver a docs](README.md)

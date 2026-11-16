@@ -102,6 +102,7 @@ curl -I http://localhost:8888
 | Container Registry | `localhost:5050` | 5050 |
 | GitLab Pages | `http://pages.localhost:8090` | 8090 |
 | Registry Cache | `localhost:5000` | 5000 |
+| Destino de despliegues | `http://localhost:8095` | 8095 (desde S14) |
 | Prometheus | `http://localhost:9090` | 9090 (perfil: observabilidad) |
 | Grafana | `http://localhost:3000` | 3000 (perfil: observabilidad) |
 | Loki | `http://localhost:3100` | 3100 (perfil: observabilidad) |

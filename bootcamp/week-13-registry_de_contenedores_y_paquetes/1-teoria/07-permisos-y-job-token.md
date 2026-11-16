@@ -57,7 +57,7 @@ Lo mismo vale para un `image:` que apunta al registry de otro proyecto: el runne
 | Miembros de un grupo invitado a `app` (Semana 03) | La suya; manda el rol tope de la invitación | Con Reporter descargan imágenes y paquetes; no suben nada |
 | Una máquina fuera de GitLab (un servidor de despliegue) | **Deploy token** con `read_registry` y `read_package_registry` | No es una persona: no ocupa un usuario ni se va cuando alguien deja el equipo |
 
-Un deploy token se llama `gitlab+deploy-token-N`. Si lo creas con el nombre exacto `gitlab-deploy-token`, GitLab lo expone en los jobs como `CI_DEPLOY_USER` y `CI_DEPLOY_PASSWORD`. La Semana 14 lo usa para que el entorno descargue la imagen.
+Un deploy token se llama `gitlab+deploy-token-N`. Si lo creas con el nombre exacto `gitlab-deploy-token`, GitLab lo expone en los jobs como `CI_DEPLOY_USER` y `CI_DEPLOY_PASSWORD`. La Semana 25 lo usa para que el clúster descargue la imagen.
 
 Un deploy token **no puede subir** a un repositorio de imágenes ni a un paquete protegido, tenga el scope que tenga (teoría 03).
 

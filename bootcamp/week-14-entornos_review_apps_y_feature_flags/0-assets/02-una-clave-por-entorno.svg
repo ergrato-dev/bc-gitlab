@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Una clave por entorno, dos cerrojos</title>
+  <desc id="desc">Tres claves SSH. Las dos DEPLOY_SSH_KEY viven en infra/entornos, protegidas, con environment_scope staging y production; en el destino, cada una solo puede ejecutar desplegar en su entorno. REVIEW_SSH_KEY vive en app, sin proteger porque las ramas de merge request no son protegidas, con environment_scope review/*; en el destino solo puede tocar review-*. Si un cerrojo falla, el otro sigue limitando la clave.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="40" fill="#FC6D26" font-size="15" font-weight="600">Cerrojo 1: GitLab</text>
+    <text x="510" y="40" fill="#FC6D26" font-size="15" font-weight="600">Cerrojo 2: el destino</text>
+
+    <rect x="30" y="60" width="400" height="80" rx="6" fill="#554488"/>
+    <text x="50" y="90" fill="#FAFAFA" font-size="13" font-weight="600">infra/entornos · DEPLOY_SSH_KEY</text>
+    <text x="50" y="114" fill="#FAFAFA" font-size="12">protegida · archivo · environment_scope: staging</text>
+    <rect x="510" y="60" width="360" height="80" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="530" y="90" fill="#FAFAFA" font-size="13">command="desplegar staging"</text>
+    <text x="530" y="114" fill="#A8A8A8" font-size="12">solo /srv/entornos/staging</text>
+
+    <rect x="30" y="160" width="400" height="80" rx="6" fill="#554488"/>
+    <text x="50" y="190" fill="#FAFAFA" font-size="13" font-weight="600">infra/entornos · DEPLOY_SSH_KEY</text>
+    <text x="50" y="214" fill="#FAFAFA" font-size="12">protegida · archivo · environment_scope: production</text>
+    <rect x="510" y="160" width="360" height="80" rx="6" fill="#2B2B2B" stroke="#A8A8A8"/>
+    <text x="530" y="190" fill="#FAFAFA" font-size="13">command="desplegar production"</text>
+    <text x="530" y="214" fill="#A8A8A8" font-size="12">solo /srv/entornos/production</text>
+
+    <rect x="30" y="260" width="400" height="80" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="50" y="290" fill="#FAFAFA" font-size="13" font-weight="600">app · REVIEW_SSH_KEY</text>
+    <text x="50" y="314" fill="#FAFAFA" font-size="12">sin proteger · archivo · environment_scope: review/*</text>
+    <rect x="510" y="260" width="360" height="80" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="530" y="290" fill="#FAFAFA" font-size="13">command="desplegar review-*"</text>
+    <text x="530" y="314" fill="#A8A8A8" font-size="12">nunca staging ni production</text>
+
+    <line x1="434" y1="100" x2="506" y2="100" stroke="#FC6D26" stroke-width="2"/>
+    <line x1="434" y1="200" x2="506" y2="200" stroke="#FC6D26" stroke-width="2"/>
+    <line x1="434" y1="300" x2="506" y2="300" stroke="#FC6D26" stroke-width="2"/>
+
+    <text x="30" y="378" fill="#FAFAFA" font-size="13">La clave sin proteger es aceptable solo porque el destino no la deja salir de review-*.</text>
+  </g>
+</svg>

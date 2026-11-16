@@ -71,7 +71,7 @@ El paso 3 es la trampa de esta semana: el realm sale de `external_url`, y tiene 
 | Credencial | Scopes o rol | Para quién |
 |---|---|---|
 | PAT | `read_registry`, `write_registry` | Tú, desde tu terminal |
-| Deploy token | `read_registry`, `write_registry` | Una máquina fuera de GitLab que solo descarga (Semana 14) |
+| Deploy token | `read_registry`, `write_registry` | Una máquina fuera de GitLab que solo descarga (Semana 25) |
 | `CI_JOB_TOKEN` | Los permisos de quien lanzó el pipeline | Un job. Sin crear nada, caduca al acabar el job |
 
 En un job, el runner expone las tres variables que necesitas, y además se autentica **solo** cuando descarga una `image:` de tu registry:

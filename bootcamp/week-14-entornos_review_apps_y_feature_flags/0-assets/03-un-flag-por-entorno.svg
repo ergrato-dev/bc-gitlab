@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Un flag, tres entornos, tres respuestas</title>
+  <desc id="desc">El flag multa-progresiva de app tiene dos estrategias: All users con ámbito staging y review/*, y User IDs socio-7 y socio-9 con ámbito production. El cliente flags.ts de cada entorno pregunta a la API Unleash con UNLEASH-APPNAME igual al nombre del entorno y recibe solo las estrategias de su ámbito: staging y review/12 la ven encendida para todos, production solo para socio-7 y socio-9, y un entorno sin ámbito recibe la lista vacía y la ve apagada. Apagar el flag cambia las respuestas en 15 segundos sin desplegar.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="30" y="110" width="300" height="150" rx="6" fill="#554488"/>
+    <text x="180" y="140" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">multa-progresiva</text>
+    <text x="50" y="172" fill="#FAFAFA" font-size="12">All users</text>
+    <text x="50" y="190" fill="#FAFAFA" font-size="11">ámbito: staging, review/*</text>
+    <text x="50" y="222" fill="#FAFAFA" font-size="12">User IDs: socio-7, socio-9</text>
+    <text x="50" y="240" fill="#FAFAFA" font-size="11">ámbito: production</text>
+
+    <text x="340" y="36" fill="#A8A8A8" font-size="12">UNLEASH-APPNAME: &lt;entorno&gt;</text>
+    <line x1="334" y1="150" x2="536" y2="80" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="334" y1="170" x2="536" y2="160" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="334" y1="210" x2="536" y2="240" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="334" y1="240" x2="536" y2="320" stroke="#666666" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+
+    <rect x="540" y="50" width="330" height="56" rx="6" fill="#2B2B2B" stroke="#7DD3A0"/>
+    <text x="560" y="76" fill="#FAFAFA" font-size="13">staging</text>
+    <text x="560" y="96" fill="#7DD3A0" font-size="12">default · encendido para todos</text>
+    <rect x="540" y="130" width="330" height="56" rx="6" fill="#2B2B2B" stroke="#7DD3A0"/>
+    <text x="560" y="156" fill="#FAFAFA" font-size="13">review/12</text>
+    <text x="560" y="176" fill="#7DD3A0" font-size="12">default · encendido para todos</text>
+    <rect x="540" y="210" width="330" height="56" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="560" y="236" fill="#FAFAFA" font-size="13">production</text>
+    <text x="560" y="256" fill="#FC6D26" font-size="12">userWithId · solo socio-7 y socio-9</text>
+    <rect x="540" y="290" width="330" height="56" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <text x="560" y="316" fill="#FAFAFA" font-size="13">un entorno sin ámbito</text>
+    <text x="560" y="336" fill="#A8A8A8" font-size="12">lista vacía · apagado</text>
+
+    <text x="30" y="300" fill="#FAFAFA" font-size="12">active: false apaga las cuatro</text>
+    <text x="30" y="320" fill="#FAFAFA" font-size="12">en 15 s, sin pipeline</text>
+  </g>
+</svg>
