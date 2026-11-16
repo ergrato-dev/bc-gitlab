@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Un proceso, tres runners</title>
+  <desc id="desc">El contenedor gitlab-runner ejecuta un solo proceso, con un system_id, que lee config.toml con tres bloques runners: docker-app y dind-app, runners de proyecto de app, y deploy-infra, runner de grupo de infra. Cada bloque presenta su token a GitLab con POST jobs/request y recibe solo los jobs que encajan con sus etiquetas y su protección. Los tres usan el ejecutor docker, que crea los contenedores de los jobs en el Docker del host, y los tres guardan la caché en el bucket runner-cache del servicio cache-s3.</desc>
+  <rect width="900" height="460" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="15" font-weight="600">GitLab</text>
+    <rect x="30" y="50" width="250" height="360" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="50" y="75" width="210" height="90" rx="6" fill="#554488"/>
+    <text x="155" y="100" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">app</text>
+    <text x="155" y="122" fill="#FAFAFA" font-size="12" text-anchor="middle">runner docker-app (proyecto)</text>
+    <text x="155" y="142" fill="#FAFAFA" font-size="12" text-anchor="middle">runner dind-app (proyecto)</text>
+    <rect x="50" y="190" width="210" height="90" rx="6" fill="#554488"/>
+    <text x="155" y="215" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">grupo infra</text>
+    <text x="155" y="237" fill="#FAFAFA" font-size="12" text-anchor="middle">runner deploy-infra (grupo)</text>
+    <text x="155" y="257" fill="#FAFAFA" font-size="12" text-anchor="middle">ref_protected, 900 s</text>
+    <rect x="50" y="305" width="210" height="80" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="155" y="332" fill="#FAFAFA" font-size="12" text-anchor="middle">Cola de jobs</text>
+    <text x="155" y="354" fill="#A8A8A8" font-size="12" text-anchor="middle">tags · protección · alcance</text>
+
+    <text x="350" y="36" fill="#FC6D26" font-size="15" font-weight="600">Contenedor gitlab-runner</text>
+    <rect x="350" y="50" width="260" height="360" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="480" y="78" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">1 proceso · 1 system_id</text>
+    <text x="480" y="98" fill="#A8A8A8" font-size="12" text-anchor="middle">config.toml · concurrent = 3</text>
+    <rect x="370" y="115" width="220" height="70" rx="6" fill="#FC6D26"/>
+    <text x="480" y="142" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">[[runners]] docker-app</text>
+    <text x="480" y="164" fill="#1F1F1F" font-size="12" text-anchor="middle">limit 2 · sin privilegios</text>
+    <rect x="370" y="200" width="220" height="70" rx="6" fill="#E24329"/>
+    <text x="480" y="227" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">[[runners]] dind-app</text>
+    <text x="480" y="249" fill="#FAFAFA" font-size="12" text-anchor="middle">limit 1 · privilegio solo en dind</text>
+    <rect x="370" y="285" width="220" height="70" rx="6" fill="#FC6D26"/>
+    <text x="480" y="312" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">[[runners]] deploy-infra</text>
+    <text x="480" y="334" fill="#1F1F1F" font-size="12" text-anchor="middle">limit 2 · sin privilegios</text>
+    <text x="480" y="390" fill="#A8A8A8" font-size="12" text-anchor="middle">executor = "docker" en los tres</text>
+
+    <line x1="370" y1="150" x2="262" y2="120" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="370" y1="235" x2="262" y2="140" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="370" y1="320" x2="262" y2="235" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="315" y="300" fill="#FAFAFA" font-size="11" text-anchor="middle">POST</text>
+    <text x="315" y="314" fill="#FAFAFA" font-size="11" text-anchor="middle">jobs/request</text>
+
+    <text x="670" y="36" fill="#FC6D26" font-size="15" font-weight="600">Docker del host</text>
+    <rect x="670" y="50" width="200" height="200" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="690" y="75" width="160" height="40" rx="6" fill="#1F1F1F" stroke="#A8A8A8"/>
+    <text x="770" y="100" fill="#FAFAFA" font-size="12" text-anchor="middle">contenedor del job</text>
+    <rect x="690" y="125" width="160" height="40" rx="6" fill="#1F1F1F" stroke="#A8A8A8"/>
+    <text x="770" y="150" fill="#FAFAFA" font-size="12" text-anchor="middle">servicio (docker:dind)</text>
+    <rect x="690" y="175" width="160" height="40" rx="6" fill="#1F1F1F" stroke="#A8A8A8"/>
+    <text x="770" y="200" fill="#FAFAFA" font-size="12" text-anchor="middle">auxiliar (helper)</text>
+    <rect x="670" y="290" width="200" height="90" rx="6" fill="#554488"/>
+    <text x="770" y="320" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">cache-s3</text>
+    <text x="770" y="342" fill="#FAFAFA" font-size="12" text-anchor="middle">bucket runner-cache</text>
+    <text x="770" y="362" fill="#FAFAFA" font-size="12" text-anchor="middle">Shared = true</text>
+    <line x1="612" y1="150" x2="668" y2="130" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="612" y1="320" x2="668" y2="330" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="640" y="430" fill="#A8A8A8" font-size="12" text-anchor="middle">Los tres runners comparten proceso, ejecutor y caché; los separan sus etiquetas, su protección y sus límites.</text>
+  </g>
+</svg>

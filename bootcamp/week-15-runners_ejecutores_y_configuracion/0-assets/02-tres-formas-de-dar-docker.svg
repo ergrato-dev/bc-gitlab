@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Tres formas de dar Docker a un job</title>
+  <desc id="desc">Tres columnas. Socket del host: el job monta /var/run/docker.sock y controla el Docker del host, donde también corre GitLab; no se usa. dind privilegiado: el job y el servicio docker:dind son privilegiados; el job tiene poder de más. dind con lista: solo el servicio docker:29.9.3-dind es privilegiado, el job docker:29.9.3-cli no, y hablan por TCP 2376 con TLS usando los certificados de /certs/client; es la forma de este bootcamp.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="150" y="36" fill="#FAFAFA" font-size="15" font-weight="600" text-anchor="middle">Socket del host</text>
+    <text x="450" y="36" fill="#FAFAFA" font-size="15" font-weight="600" text-anchor="middle">dind privilegiado</text>
+    <text x="750" y="36" fill="#FC6D26" font-size="15" font-weight="600" text-anchor="middle">dind con lista</text>
+
+    <rect x="40" y="60" width="220" height="60" rx="6" fill="#E24329"/>
+    <text x="150" y="86" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">job</text>
+    <text x="150" y="106" fill="#FAFAFA" font-size="12" text-anchor="middle">monta docker.sock</text>
+    <line x1="150" y1="122" x2="150" y2="188" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="40" y="190" width="220" height="110" rx="6" fill="#2B2B2B" stroke="#E24329"/>
+    <text x="150" y="216" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Docker del host</text>
+    <text x="150" y="240" fill="#A8A8A8" font-size="12" text-anchor="middle">gitlab · gitlab-runner</text>
+    <text x="150" y="260" fill="#A8A8A8" font-size="12" text-anchor="middle">destino · cache-s3</text>
+    <text x="150" y="284" fill="#A8A8A8" font-size="12" text-anchor="middle">y todos sus volúmenes</text>
+    <text x="150" y="340" fill="#E24329" font-size="13" font-weight="600" text-anchor="middle">El job es root en tu máquina</text>
+
+    <rect x="340" y="60" width="220" height="60" rx="6" fill="#E24329"/>
+    <text x="450" y="86" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">job (privilegiado)</text>
+    <text x="450" y="106" fill="#FAFAFA" font-size="12" text-anchor="middle">docker:29.9.3-cli</text>
+    <line x1="450" y1="122" x2="450" y2="188" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="340" y="190" width="220" height="60" rx="6" fill="#E24329"/>
+    <text x="450" y="216" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">servicio (privilegiado)</text>
+    <text x="450" y="236" fill="#FAFAFA" font-size="12" text-anchor="middle">docker:29.9.3-dind</text>
+    <text x="450" y="340" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Daemon propio, job con poder de más</text>
+
+    <rect x="640" y="60" width="220" height="60" rx="6" fill="#554488"/>
+    <text x="750" y="86" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">job (sin privilegios)</text>
+    <text x="750" y="106" fill="#FAFAFA" font-size="12" text-anchor="middle">docker:29.9.3-cli</text>
+    <line x1="750" y1="122" x2="750" y2="188" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="760" y="152" fill="#FAFAFA" font-size="11">tcp://docker:2376 · TLS</text>
+    <rect x="640" y="190" width="220" height="60" rx="6" fill="#E24329"/>
+    <text x="750" y="216" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">servicio (privilegiado)</text>
+    <text x="750" y="236" fill="#FAFAFA" font-size="12" text-anchor="middle">docker:29.9.3-dind</text>
+    <rect x="640" y="265" width="220" height="40" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="750" y="290" fill="#A8A8A8" font-size="12" text-anchor="middle">volumen /certs/client compartido</text>
+    <text x="750" y="340" fill="#FC6D26" font-size="13" font-weight="600" text-anchor="middle">El privilegio solo donde hace falta</text>
+    <text x="450" y="380" fill="#A8A8A8" font-size="12" text-anchor="middle">allowed_privileged_services y allowed_privileged_images = ["docker:29.9.3-dind"]</text>
+  </g>
+</svg>

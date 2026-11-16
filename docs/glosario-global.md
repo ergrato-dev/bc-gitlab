@@ -22,6 +22,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Caché** (*cache*) — Free. Directorio que se restaura entre ejecuciones para no repetir trabajo (`.npm`, `.m2`). Su clave lleva el sufijo `-protected` o `-non_protected`, así que las ramas no protegidas no comparten caché con `main`. Si se pierde, el pipeline sigue funcionando: solo tarda más. Si un artefacto se pierde, el pipeline se rompe.
 
+**Caché distribuida** (*distributed cache*) — Free. Caché de runner en un almacén S3 en vez de en un volumen local; con `Shared = true` la ven todos los runners del bucket. En este bootcamp, SeaweedFS en el servicio `cache-s3` (Semana 15).
+
 **Catálogo CI/CD** (*CI/CD Catalog*) — Free. Índice de componentes publicados que otros proyectos pueden buscar y consumir por versión.
 
 **CHANGELOG generado** (*changelog*) — Free. Notas de una versión que GitLab construye con los commits que llevan el trailer `Changelog:`, configurables con `.gitlab/changelog_config.yml`. `GET .../repository/changelog` las devuelve; `POST` las escribe en un archivo.
@@ -45,6 +47,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **DAG** (*directed acyclic graph*) — Free. Pipeline en el que los jobs declaran sus dependencias con `needs` en vez de esperar a que termine la etapa entera. Es lo que convierte un pipeline en serie en uno paralelo.
 
 **Dependency Proxy** — Free. Cache de imágenes de Docker Hub de cada grupo raíz, servida por tu propia instancia. Se usa con `${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/imagen:versión` (S13). Evita el rate limit de los pulls anónimos.
+
+**Docker in Docker** (`dind`) — Un daemon de Docker como servicio de un job, en un contenedor privilegiado. Con `allowed_privileged_services` el privilegio se queda en el daemon y no llega al `script` (Semana 15).
 
 **Deploy token** — Free. Credencial de proyecto o grupo para máquinas fuera de GitLab, con `read_registry` y `read_package_registry`. No ocupa un usuario y no puede subir a lo protegido (S13).
 
@@ -71,6 +75,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Feature flag** — Free. Interruptor que activa o desactiva una funcionalidad en tiempo de ejecución sin desplegar. GitLab CE incluye el servicio completo, basado en Unleash.
 
 ## G
+
+**Gestor de runner** (*runner manager*) — Free. Cada proceso que presenta el token de un runner, identificado por su `system_id`. Un proceso puede ser el gestor de varios runners (Semana 15).
 
 **Gitaly** — Free. Servicio que atiende todas las operaciones de Git. Ningún otro componente toca el disco de los repositorios directamente.
 

@@ -10,7 +10,7 @@ Por eso el laboratorio está partido en **perfiles de Docker Compose**. Cada sem
 
 | Perfil | Qué levanta | Semanas | RAM aprox. | Estado |
 |---|---|---|:--:|---|
-| `base` | GitLab CE, GitLab Runner, cache de registry, `destino` (desde S14, 128 MB) | Todas | ~5 GB | ✅ en `docker-compose.yml` |
+| `base` | GitLab CE, GitLab Runner, cache de registry, `destino` (desde S14, 128 MB), `cache-s3` (desde S15, 256 MB) | Todas | ~5 GB | ✅ en `docker-compose.yml` |
 | `observabilidad` | Prometheus, Grafana, Loki, Promtail | 21 | +4 GB | ✅ en `docker-compose.yml` |
 | `ha` | Praefect, 3 Gitaly, PostgreSQL primario y réplica, PgBouncer | 23 | +8 GB | ⬜ se añade al escribir la Semana 23 |
 

@@ -1,0 +1,118 @@
+{
+  "semana": "15",
+  "titulo": "Runners: ejecutores y configuración",
+  "checks": [
+    {
+      "id": "docker-app-en-linea",
+      "descripcion": "app tiene en linea su runner de proyecto con la etiqueta docker",
+      "api": "projects/{proyecto}/runners?type=project_type&tag_list=docker&status=online",
+      "jq": "length >= 1",
+      "pista": "2-practicas/01-la-cache-compartida.md, paso 4"
+    },
+    {
+      "id": "una-gestora-para-app",
+      "descripcion": "Los runners de proyecto de app los atiende un solo proceso gitlab-runner",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ managers{ nodes{ systemId } } } } } }",
+      "jq": "[.data.project.runners.nodes[]] | length >= 2 and ([.[].managers.nodes[].systemId] | unique | length == 1)",
+      "pista": "2-practicas/02-el-runner-dind.md, paso 3"
+    },
+    {
+      "id": "flota-en-version-fijada",
+      "descripcion": "Los runners de app corren la version fijada del runner, 19.2.2",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ managers{ nodes{ version } } } } } }",
+      "jq": "[.data.project.runners.nodes[].managers.nodes[].version] | length >= 1 and all(. == \"19.2.2\")",
+      "pista": "1-teoria/08-operar-la-flota.md, apartado 2"
+    },
+    {
+      "id": "dind-en-linea",
+      "descripcion": "app tiene en linea un runner de proyecto con la etiqueta dind",
+      "api": "projects/{proyecto}/runners?type=project_type&tag_list=dind&status=online",
+      "jq": "length >= 1",
+      "pista": "2-practicas/02-el-runner-dind.md, pasos 2 y 3"
+    },
+    {
+      "id": "dind-solo-etiquetado",
+      "descripcion": "El runner dind de app no acepta jobs sin etiqueta",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ runners(type: PROJECT_TYPE){ nodes{ tagList runUntagged } } } }",
+      "jq": "[.data.project.runners.nodes[] | select(.tagList | index(\"dind\"))] | length >= 1 and all(.runUntagged == false)",
+      "pista": "2-practicas/02-el-runner-dind.md, paso 2"
+    },
+    {
+      "id": "imagen-probada-en-dind",
+      "descripcion": "app ha ejecutado con exito el job probar-imagen en el runner dind",
+      "api": "projects/{proyecto}/jobs?scope[]=success&per_page=100",
+      "jq": "any(.[]; .name == \"probar-imagen\" and (.tag_list | index(\"dind\")) != null and .runner.runner_type == \"project_type\")",
+      "pista": "2-practicas/02-el-runner-dind.md, paso 5"
+    },
+    {
+      "id": "app-sin-runners-compartidos",
+      "descripcion": "app no usa runners de instancia",
+      "api": "projects/{proyecto}",
+      "jq": ".shared_runners_enabled == false",
+      "pista": "2-practicas/02-el-runner-dind.md, paso 6"
+    },
+    {
+      "id": "deploy-en-linea",
+      "descripcion": "El grupo infra tiene en linea un runner de grupo con la etiqueta deploy",
+      "api": "groups/{grupo}%2Finfra/runners?type=group_type&tag_list=deploy&status=online",
+      "jq": "length >= 1",
+      "pista": "2-practicas/03-el-runner-protegido.md, pasos 1 y 2"
+    },
+    {
+      "id": "deploy-solo-ramas-protegidas",
+      "descripcion": "El runner deploy solo ejecuta jobs de ramas y tags protegidos",
+      "graphql": "query($grupo: ID!){ group(fullPath: $grupo){ runners(membership: DESCENDANTS, type: GROUP_TYPE, tagList: [\"deploy\"]){ nodes{ accessLevel } } } }",
+      "jq": "[.data.group.runners.nodes[]] | length >= 1 and all(.accessLevel == \"REF_PROTECTED\")",
+      "pista": "2-practicas/03-el-runner-protegido.md, paso 1"
+    },
+    {
+      "id": "deploy-con-tiempo-maximo",
+      "descripcion": "El runner deploy corta cualquier job que pase de 30 minutos",
+      "graphql": "query($grupo: ID!){ group(fullPath: $grupo){ runners(membership: DESCENDANTS, type: GROUP_TYPE, tagList: [\"deploy\"]){ nodes{ maximumTimeout } } } }",
+      "jq": "[.data.group.runners.nodes[]] | length >= 1 and all(.maximumTimeout != null and .maximumTimeout <= 1800)",
+      "pista": "2-practicas/03-el-runner-protegido.md, paso 1"
+    },
+    {
+      "id": "infra-sin-runners-de-proyecto",
+      "descripcion": "infra/entornos ya no usa el runner docker-app",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/runners?type=project_type",
+      "jq": "length == 0",
+      "pista": "2-practicas/03-el-runner-protegido.md, paso 4"
+    },
+    {
+      "id": "infra-sin-runners-compartidos",
+      "descripcion": "infra/entornos no usa runners de instancia",
+      "api": "projects/{grupo}%2Finfra%2Fentornos",
+      "jq": ".shared_runners_enabled == false",
+      "pista": "2-practicas/03-el-runner-protegido.md, paso 4"
+    },
+    {
+      "id": "desplegar-en-runner-protegido",
+      "descripcion": "infra/entornos ha desplegado con exito desde el runner deploy",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/jobs?scope[]=success&per_page=100",
+      "jq": "any(.[]; .name == \"desplegar\" and (.tag_list | index(\"deploy\")) != null and .runner.runner_type == \"group_type\")",
+      "pista": "2-practicas/03-el-runner-protegido.md, paso 5"
+    },
+    {
+      "id": "plantilla-con-cache-s3",
+      "descripcion": "infra/entornos versiona la plantilla del config.toml con la cache en S3",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/runners%2Fconfig.toml.plantilla?ref=main",
+      "jq": ".content | @base64d | test(\"\\\\[runners\\\\.cache\\\\.s3\\\\]\") and test(\"concurrent\")",
+      "pista": "2-practicas/04-operar-la-flota.md, paso 5"
+    },
+    {
+      "id": "plantilla-sin-secretos",
+      "descripcion": "La plantilla del config.toml no contiene ningun token de runner",
+      "api": "projects/{grupo}%2Finfra%2Fentornos/repository/files/runners%2Fconfig.toml.plantilla?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"glrt-\") | not)",
+      "pista": "2-practicas/04-operar-la-flota.md, paso 5"
+    },
+    {
+      "id": "adr-012-flota",
+      "descripcion": "La wiki de app tiene el ADR-012 sobre la flota de runners",
+      "api": "projects/{proyecto}/wikis?with_content=1",
+      "jq": "map(select(.slug | test(\"^adr-012\"; \"i\"))) | any(.content | test(\"dind\"; \"i\") and test(\"protegid\"; \"i\") and test(\"cach\"; \"i\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}

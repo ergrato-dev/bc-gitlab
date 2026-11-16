@@ -199,6 +199,29 @@ services:
       - base
 
   # ============================================
+  # Caché S3 de los runners — SeaweedFS en modo mini (S15)
+  # ============================================
+  # Un solo proceso con maestro, volumen, filer y pasarela S3. Sin puerto en el
+  # host: solo lo usan los jobs, que lo alcanzan como cache-s3:8333 por la red
+  # del laboratorio. Crea el bucket runner-cache al arrancar.
+  cache-s3:
+    image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION:-4.40}
+    container_name: cache-s3
+    restart: unless-stopped
+    command: ["mini", "-dir=/data", "-bucket=runner-cache", "-admin.ui=false"]
+    environment:
+      # La identidad S3 que el runner usa en [runners.cache.s3]. Cámbiala en .env.
+      AWS_ACCESS_KEY_ID: "${RUNNER_CACHE_ACCESS_KEY:-runnercache}"
+      AWS_SECRET_ACCESS_KEY: "${RUNNER_CACHE_SECRET_KEY:-cambia-esta-clave}"
+    volumes:
+      - cache-s3-data:/data
+    networks:
+      - gitlab-network
+    mem_limit: 256m
+    profiles:
+      - base
+
+  # ============================================
   # Prometheus — métricas (S21)
   # ============================================
   prometheus:
@@ -305,6 +328,8 @@ volumes:
     name: bc-gitlab-destino-ssh
   destino-claves:
     name: bc-gitlab-destino-claves
+  cache-s3-data:
+    name: bc-gitlab-cache-s3
 
 # ============================================
 # Red interna

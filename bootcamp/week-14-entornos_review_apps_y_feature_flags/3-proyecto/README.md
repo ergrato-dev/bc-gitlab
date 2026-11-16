@@ -194,6 +194,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 13](../../week-13-registry_de_contenedores_y_paquetes/3-proyecto/README.md) | **Proyecto Semana 14** | Proyecto Semana 15 |
+| [Proyecto Semana 13](../../week-13-registry_de_contenedores_y_paquetes/3-proyecto/README.md) | **Proyecto Semana 14** | [Proyecto Semana 15](../../week-15-runners_ejecutores_y_configuracion/3-proyecto/README.md) |
 
 [← Volver a la Semana 14](../README.md)

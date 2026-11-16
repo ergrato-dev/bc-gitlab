@@ -307,4 +307,19 @@ _Se añaden a medida que se publica cada semana._
 
 ---
 
+## Semana 15 — Runners: ejecutores y configuración
+
+| Truco | Cómo |
+|---|---|
+| Qué proceso atiende a cada runner | `GET /runners/:id/managers`, campo `system_id`: si dos runners comparten `system_id`, comparten proceso |
+| Por qué un job se queda en `pending` | En el job, `tag_list`; en los runners del proyecto, `GET /projects/:id/runners?tag_list=<tag>&status=online`. Vacío = nadie puede cogerlo |
+| Limpiar de `config.toml` los runners que ya borraste en GitLab | `gitlab-runner verify --delete`, tras comprobar con `verify` a secas que solo sale inválido el que quieres quitar |
+| Privilegio solo para `dind`, no para el job | `allowed_privileged_services` y `allowed_privileged_images` en `[runners.docker]` |
+| Que `dind` no gaste el límite de Docker Hub | `command: ["--registry-mirror=http://registry-cache:5000"]` en el servicio |
+| Ver si la caché viene del almacén compartido | En el log del job, `Downloading cache from http://cache-s3:8333/…` |
+| Saber qué runners hay detrás de un proyecto, también los de grupo | GraphQL `project { runners { nodes { description runnerType } } }` |
+| Pegar `gitlab-runner list` en un issue sin regalar tokens | No lo pegues: imprime el token de cada runner. Usa la API |
+
+---
+
 [← Volver a docs](README.md)

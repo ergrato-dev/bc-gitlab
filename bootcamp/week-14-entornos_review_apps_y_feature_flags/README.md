@@ -154,6 +154,6 @@ Lo que el script **no** puede comprobar es que el destino rechace de verdad lo q
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 13 — Registry de contenedores y paquetes](../week-13-registry_de_contenedores_y_paquetes/README.md) | **Semana 14** | Semana 15 — Runners: ejecutores y configuración |
+| [Semana 13 — Registry de contenedores y paquetes](../week-13-registry_de_contenedores_y_paquetes/README.md) | **Semana 14** | [Semana 15 — Runners: ejecutores y configuración](../week-15-runners_ejecutores_y_configuracion/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

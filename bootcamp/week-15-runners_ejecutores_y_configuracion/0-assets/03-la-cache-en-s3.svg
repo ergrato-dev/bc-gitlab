@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">La caché en S3</title>
+  <desc id="desc">El proceso gitlab-runner guarda las credenciales S3 en config.toml y firma URL que caducan. El auxiliar del job de docker-app sube cache.zip con una URL prefirmada a cache-s3:8333, al objeto runner-cache/project/2/clave-protected. Más tarde, el auxiliar de un job de deploy-infra descarga ese mismo objeto con otra URL prefirmada. El contenedor del job nunca ve las credenciales.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="320" y="30" width="260" height="80" rx="6" fill="#2B2B2B" stroke="#FC6D26"/>
+    <text x="450" y="58" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">proceso gitlab-runner</text>
+    <text x="450" y="80" fill="#A8A8A8" font-size="12" text-anchor="middle">AccessKey y SecretKey en config.toml</text>
+    <text x="450" y="98" fill="#A8A8A8" font-size="12" text-anchor="middle">firma URL que caducan</text>
+
+    <rect x="40" y="170" width="230" height="80" rx="6" fill="#FC6D26"/>
+    <text x="155" y="198" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">job en docker-app</text>
+    <text x="155" y="220" fill="#1F1F1F" font-size="12" text-anchor="middle">auxiliar: sube cache.zip</text>
+    <text x="155" y="238" fill="#1F1F1F" font-size="12" text-anchor="middle">al terminar</text>
+
+    <rect x="630" y="170" width="230" height="80" rx="6" fill="#FC6D26"/>
+    <text x="745" y="198" fill="#1F1F1F" font-size="13" font-weight="600" text-anchor="middle">job en deploy-infra</text>
+    <text x="745" y="220" fill="#1F1F1F" font-size="12" text-anchor="middle">auxiliar: baja cache.zip</text>
+    <text x="745" y="238" fill="#1F1F1F" font-size="12" text-anchor="middle">al empezar</text>
+
+    <rect x="300" y="270" width="300" height="80" rx="6" fill="#554488"/>
+    <text x="450" y="298" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">cache-s3:8333 (SeaweedFS)</text>
+    <text x="450" y="320" fill="#FAFAFA" font-size="12" text-anchor="middle">runner-cache/project/2/</text>
+    <text x="450" y="338" fill="#FAFAFA" font-size="12" text-anchor="middle">&lt;clave&gt;-&lt;índice&gt;-protected</text>
+
+    <line x1="320" y1="90" x2="200" y2="168" stroke="#666666" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#flecha)"/>
+    <line x1="580" y1="90" x2="700" y2="168" stroke="#666666" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#flecha)"/>
+    <text x="215" y="125" fill="#A8A8A8" font-size="11" text-anchor="middle">URL prefirmada</text>
+    <text x="685" y="125" fill="#A8A8A8" font-size="11" text-anchor="middle">URL prefirmada</text>
+    <line x1="200" y1="252" x2="330" y2="290" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="570" y1="290" x2="700" y2="252" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="230" y="290" fill="#FAFAFA" font-size="11" text-anchor="middle">PUT</text>
+    <text x="670" y="290" fill="#FAFAFA" font-size="11" text-anchor="middle">GET</text>
+  </g>
+</svg>

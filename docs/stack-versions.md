@@ -53,7 +53,8 @@ Se instalan cuando la semana lo pide, no antes.
 | k3d | 5.7+ | 16, 25 | binario | Kubernetes local |
 | `kubectl` | 1.32+ | 16, 25 | binario | Cliente de Kubernetes |
 | Helm | 3.16+ | 16, 25 | binario | Runner y agente en el clúster |
-| **SeaweedFS** | `4.40` | 15 | `chrislusf/seaweedfs:4.40` | Caché distribuida de runners |
+| **SeaweedFS** | `4.40` | 15 | `chrislusf/seaweedfs:4.40` | Servicio `cache-s3`: caché distribuida de los runners (`weed mini`) |
+| **Docker** (cliente y daemon en el job) | `29.9.3` | 15 | `docker:29.9.3-cli`, servicio `docker:29.9.3-dind` | Job `probar-imagen` de `app`, en el runner `dind` |
 | Keycloak | 26+ | 18 | `quay.io/keycloak/keycloak` | OIDC contra la instancia |
 | **Semgrep** | `1.173.0` | 19 | `semgrep/semgrep:1.173.0` | SAST |
 | **Gitleaks** | `8.30.1` | 19 | `zricethezav/gitleaks:v8.30.1` | Detección de secretos |
