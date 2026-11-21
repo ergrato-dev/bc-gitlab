@@ -81,7 +81,7 @@ curl -s --request POST "$API/projects/$P/repository/changelog" -H "$H" \
 
 cd /ruta/a/tu/clon/de/app && git fetch && git switch "$RAMA"
 npm pkg set version=0.2.0 && npm install --package-lock-only --no-audit --no-fund
-git add package.json package-lock.json && git commit -S -m "chore: version 0.2.0" && git push
+git add package.json package-lock.json && git commit -S -m "chore: versión 0.2.0" && git push
 MR=$(curl -s --request POST "$API/projects/$P/merge_requests" -H "$H" \
   --data-urlencode "source_branch=$RAMA" --data-urlencode "target_branch=main" \
   --data-urlencode "title=docs: changelog y versión 0.2.0" --data-urlencode "description=Closes #$IID" | jq -r .iid)

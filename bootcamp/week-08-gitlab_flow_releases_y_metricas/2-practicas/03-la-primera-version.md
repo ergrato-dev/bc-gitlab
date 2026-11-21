@@ -85,7 +85,7 @@ curl -s -H "$H" "$API/projects/$P/repository/files/CHANGELOG.md/raw?ref=$RAMA"
 
 Una cabecera `## 0.1.0 (<hoy>)` y las mismas secciones que la vista previa de la práctica 02.
 
-Si tu lenguaje guarda la versión en un archivo (`package.json`, `pyproject.toml`), añade ahora un commit firmado a esta rama que la suba a `0.1.0`: `git fetch && git switch "$RAMA"`, edita, `git commit -S -m "chore: version 0.1.0"`, `git push`.
+Si tu lenguaje guarda la versión en un archivo (`package.json`, `pyproject.toml`), añade ahora un commit firmado a esta rama que la suba a `0.1.0`: `git fetch && git switch "$RAMA"`, edita, `git commit -S -m "chore: versión 0.1.0"`, `git push`.
 
 ---
 
