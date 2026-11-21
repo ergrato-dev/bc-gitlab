@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Entregar, reenviar, deduplicar</title>
+  <desc id="desc">Línea de tiempo de un webhook. A las 3:12 GitLab envía el evento A con el receptor caído: el registro de entregas lo apunta como internal error y no hay reintento. El receptor vuelve. Se reenvía A desde el registro: mismo Idempotency-Key, timestamp y firma nuevos, el receptor lo anota y contesta 200. Un segundo reenvío de A llega con la misma Idempotency-Key: el receptor contesta 200 y no lo anota otra vez.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="60" fill="#FC6D26" font-size="15" font-weight="600">GitLab</text>
+    <text x="30" y="300" fill="#FC6D26" font-size="15" font-weight="600">Receptor</text>
+    <line x1="120" y1="55" x2="870" y2="55" stroke="#666666" stroke-width="2"/>
+    <line x1="120" y1="295" x2="870" y2="295" stroke="#666666" stroke-width="2"/>
+    <rect x="120" y="280" width="200" height="30" fill="#E24329" opacity="0.35"/>
+    <text x="220" y="330" fill="#FAFAFA" font-size="12" text-anchor="middle">caído</text>
+    <line x1="190" y1="60" x2="190" y2="270" stroke="#E24329" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#flecha)"/>
+    <text x="198" y="100" fill="#FAFAFA" font-size="13" font-weight="600">3:12 · evento A</text>
+    <text x="198" y="120" fill="#999999" font-size="12">internal error</text>
+    <text x="198" y="138" fill="#999999" font-size="12">sin reintento</text>
+    <line x1="460" y1="60" x2="460" y2="290" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="468" y="100" fill="#FAFAFA" font-size="13" font-weight="600">resend de A</text>
+    <text x="468" y="120" fill="#999999" font-size="12">misma Idempotency-Key</text>
+    <text x="468" y="138" fill="#999999" font-size="12">timestamp y firma nuevos</text>
+    <text x="468" y="350" fill="#FAFAFA" font-size="12">200 · anotado en el canal</text>
+    <line x1="720" y1="60" x2="720" y2="290" stroke="#554488" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="728" y="100" fill="#FAFAFA" font-size="13" font-weight="600">resend de A otra vez</text>
+    <text x="728" y="120" fill="#999999" font-size="12">clave ya vista</text>
+    <text x="728" y="350" fill="#FAFAFA" font-size="12">200 · no se anota</text>
+    <text x="450" y="385" fill="#999999" font-size="12" text-anchor="middle">Lo que se pierde no vuelve solo: GET …/hooks/:id/events?status=server_failure y resend.</text>
+  </g>
+</svg>

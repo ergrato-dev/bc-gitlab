@@ -150,6 +150,6 @@ Lo que el script **no** puede comprobar es que el `concurrent` elegido quepa en 
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 15 — Runners: ejecutores y configuración](../week-15-runners_ejecutores_y_configuracion/README.md) | **Semana 16** | Semana 17 — API, webhooks y ChatOps |
+| [Semana 15 — Runners: ejecutores y configuración](../week-15-runners_ejecutores_y_configuracion/README.md) | **Semana 16** | [Semana 17 — API, webhooks y ChatOps](../week-17-api_webhooks_y_chatops/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

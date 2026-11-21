@@ -44,6 +44,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Compute quota** — Premium. Límite de minutos de cómputo por grupo o proyecto en los runners de instancia; cuando se acaba, los jobs dejan de correr en ellos. En CE, los minutos se sacan sumando `duration` de los jobs por API y se convierten en coste en `docs/finops.md` (Semana 16).
 
+**ChatOps** — Free. Ejecutar jobs de CI desde un chat con `run <job>`, mediante la integración de slash commands de Mattermost. Crea un pipeline de origen `chat` y devuelve al canal la sección `chat_reply` del log (S17).
+
 ## D
 
 **DAG** (*directed acyclic graph*) — Free. Pipeline en el que los jobs declaran sus dependencias con `needs` en vez de esperar a que termine la etapa entera. Es lo que convierte un pipeline en serie en uno paralelo.
@@ -88,6 +90,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **GitLab Flow** — Modelo de ramas de GitLab: `main` como integración, ramas de funcionalidad cortas, y ramas de larga vida solo cuando hacen falta, de entorno o de release (`release/X.Y`). Su regla es *upstream first*: todo entra primero en `main`. Más simple que Git Flow, más disciplinado que trunk-based puro.
 
+**GraphQL** — Free. La segunda API de GitLab, en `/api/graphql`: una consulta pide exactamente los campos que quiere, pagina por cursor y devuelve los errores con HTTP 200. Lo que el token no puede ver sale vacío, sin error (S17).
+
 ## H
 
 **Hito** (*milestone*) — Free. Agrupación de issues y merge requests con fecha. En CE es el nivel de planificación más alto disponible.
@@ -111,6 +115,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 ## L
 
 **Línea base** (*baseline*) — La medida de antes de un cambio, versionada, contra la que se compara la de después. Duración, cola y minutos de job de tres pipelines con cada runner en `docs/linea-base-s16.json` (Semana 16).
+
+**Lista de hosts permitidos** (*outbound local requests allowlist*) — Free. Ajuste de la instancia con las únicas direcciones de la red local a las que pueden llamar webhooks e integraciones. En el bootcamp, solo `destino` (S17).
 
 ## M
 
@@ -146,6 +152,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Protected tag** (*tag protegido*) — Free. Regla que decide quién puede crear tags que coinciden con un patrón, como `v*`. Un tag protegido no se puede mover y solo se borra desde la UI o la API (S07).
 
+**Paginación por claves** (*keyset pagination*) — Free. `pagination=keyset&order_by=id` en la API REST: cada página sigue al último ID visto, y la siguiente llega en la cabecera `Link`. No se desordena si el listado cambia mientras se recorre (S17).
+
 ## R
 
 **Rails console** — Free. Consola interactiva de la aplicación (`gitlab-rails console`). El último recurso del administrador y la forma más rápida de romper la instancia. Solo lectura salvo que sepas exactamente qué haces.
@@ -165,6 +173,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Rules** — Free. Palabra clave que decide si un job se crea y en qué condiciones. Sustituye a `only`/`except`, que sigue funcionando pero ya no se recomienda.
 
 **Secure file** (*project-level secure file*) — Free. Archivo cifrado del proyecto, descargable con `CI_JOB_TOKEN`. Sin protección ni ámbito: lo descarga cualquier Developer. Nunca para claves privadas (Semana 10).
+
+**Registro de entregas de un webhook** (*recent events*) — Free. Cada entrega con cabeceras, cuerpo, código y duración, y el botón (o `POST …/resend`) para reenviarla con la misma `Idempotency-Key`. GitLab no reintenta solo (S17).
 
 ## S
 
@@ -198,6 +208,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Token de acceso de proyecto** (*project access token*) — Free en self-managed, Premium en GitLab.com. Token de un usuario bot que solo es miembro de un proyecto, con rol, scopes y caducidad. El job `gobernanza` de `app` usa uno de Reporter con `read_api`.
 
+**Token de acceso de grupo** (*group access token*) — Free en self-managed, Premium en GitLab.com. Token de un usuario bot miembro del grupo, con rol, scopes y caducidad obligatoria. Se rota por API conservando el bot. El auditor de `ci/automatizacion` usa uno de Reporter con `read_api` (S17).
+
 ## V
 
 **Value Stream Analytics** (*VSA*) — Free a nivel de proyecto, **Premium** a nivel de grupo. Mide cuánto tarda el trabajo en recorrer cada etapa desde el issue hasta producción.
@@ -209,6 +221,10 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Variable oculta** (*hidden variable*) — Free. Variable enmascarada cuyo valor ya no se puede ver en la interfaz ni en la API. Se marca al crearla y no se puede desmarcar.
 
 **Variable protegida** (*protected variable*) — Free. Solo llega a pipelines de ramas y tags protegidos. El único atributo que impide que un secreto llegue a una merge request.
+
+## W
+
+**Webhook firmado** (*webhook with signing token*) — Free para webhooks de proyecto; los de grupo son **Premium**. GitLab firma cada entrega con HMAC-SHA256 sobre `id.timestamp.cuerpo` (cabecera `webhook-signature`); el receptor la recalcula, compara en tiempo constante y rechaza firmas de más de cinco minutos (S17).
 
 ---
 

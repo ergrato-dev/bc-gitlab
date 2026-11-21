@@ -102,6 +102,16 @@ curl -s -H "$H" "$API/projects/$P/runners?type=project_type" | jq -c '.[] | {des
 
 `k8s-app` con `paused: false` y `status: online`; `docker-app` con `paused: true` y `status: paused`; `dind-app` sin cambios.
 
+`docker-app` también ejecutaba los pipelines de `ci/componentes` (Semana 12). Pausado, esos jobs se quedarían en `pending`: asigna `k8s-app` a ese proyecto también.
+
+```bash
+curl -s --request POST "$API/projects/plataforma-<tu-dominio>%2Fci%2Fcomponentes/runners" -H "$H" \
+  --data "runner_id=$RID_K8S" | jq -r .description
+curl -s -H "$H" "$API/runners/$RID_K8S" | jq -r '.projects[].path_with_namespace'
+```
+
+`k8s-app`, y después `app` y `ci/componentes`.
+
 ---
 
 ## Paso 5: Después, con Kubernetes

@@ -186,6 +186,9 @@ services:
       # La API Unleash de los feature flags de app (S14). Vacías, los flags valen "apagado".
       UNLEASH_URL: "${UNLEASH_URL:-}"
       UNLEASH_INSTANCE_ID: "${UNLEASH_INSTANCE_ID:-}"
+      # El receptor de webhooks de ci/automatizacion (S17). Vacías, rechaza todo.
+      RECEPTOR_SIGNING_KEY: "${RECEPTOR_SIGNING_KEY:-}"
+      RECEPTOR_CANAL_TOKEN: "${RECEPTOR_CANAL_TOKEN:-}"
     ports:
       - "${DESTINO_PORT:-8095}:8080"
     volumes:

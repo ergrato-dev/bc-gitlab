@@ -335,4 +335,19 @@ _Se añaden a medida que se publica cada semana._
 
 ---
 
+## Semana 17 — API, webhooks y ChatOps
+
+| Truco | Cómo |
+|---|---|
+| Cuántas páginas tiene un listado sin descargarlas | `curl -sI` y las cabeceras `X-Total` y `X-Total-Pages` (no existen en la paginación por claves) |
+| Cuánto le cuesta tu consulta a GraphQL | Añade `queryComplexity { score limit }` a la propia consulta |
+| Ver lo que GitLab envió y lo que contestaron | `GET /projects/:id/hooks/:hook_id/events`: cabeceras, código y duración de cada entrega |
+| Probar un webhook sin provocar el evento | `POST /projects/:id/hooks/:hook_id/test/push_events` |
+| Saber si un reenvío es un evento repetido | `Idempotency-Key` no cambia en el reenvío; `X-Gitlab-Event-UUID` sí |
+| Una variable que ni tú puedes volver a leer | `masked_and_hidden=true` al crearla: la API devuelve `"value": null` |
+| Qué token de grupo nadie usa | `GET /groups/:id/access_tokens` y su `last_used_at`: incluye los revocados, filtra por `active` |
+| Ver las variables que recibe un job de chat | `env \| grep ^CHAT_` en el job: `CHAT_INPUT`, `CHAT_CHANNEL`, `CHAT_USER_ID` |
+
+---
+
 [← Volver a docs](README.md)

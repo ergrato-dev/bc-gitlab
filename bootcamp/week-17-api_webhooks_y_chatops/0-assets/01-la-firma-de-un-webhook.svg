@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">La firma de un webhook</title>
+  <desc id="desc">GitLab une webhook-id, webhook-timestamp y el cuerpo crudo separados por puntos, calcula HMAC-SHA256 con la clave que va detrás de whsec_ y envía el resultado en base64 en la cabecera webhook-signature con el prefijo v1. El receptor repite la misma cuenta con su copia de la clave, rechaza si el timestamp tiene más de cinco minutos, compara en tiempo constante y descarta el envío si su Idempotency-Key ya se había visto.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="30" y="36" fill="#FC6D26" font-size="15" font-weight="600">GitLab</text>
+    <rect x="30" y="50" width="380" height="330" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="50" y="70" width="340" height="80" rx="6" fill="#1F1F1F" stroke="#554488" stroke-width="2"/>
+    <text x="220" y="96" fill="#FAFAFA" font-size="13" text-anchor="middle">texto firmado</text>
+    <text x="220" y="122" fill="#FAFAFA" font-size="13" font-family="ui-monospace, monospace" text-anchor="middle">webhook-id . timestamp . cuerpo</text>
+    <text x="220" y="140" fill="#999999" font-size="12" text-anchor="middle">el cuerpo tal cual sale, sin reformatear</text>
+    <rect x="50" y="175" width="340" height="60" rx="6" fill="#1F1F1F" stroke="#FC6D26" stroke-width="2"/>
+    <text x="220" y="200" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">HMAC-SHA256</text>
+    <text x="220" y="221" fill="#FAFAFA" font-size="12" text-anchor="middle">clave = base64 detrás de whsec_</text>
+    <line x1="220" y1="150" x2="220" y2="173" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="50" y="260" width="340" height="100" rx="6" fill="#1F1F1F" stroke="#666666"/>
+    <text x="66" y="284" fill="#FAFAFA" font-size="12" font-family="ui-monospace, monospace">Idempotency-Key: 39f8…</text>
+    <text x="66" y="306" fill="#FAFAFA" font-size="12" font-family="ui-monospace, monospace">webhook-id: 39f8…</text>
+    <text x="66" y="328" fill="#FAFAFA" font-size="12" font-family="ui-monospace, monospace">webhook-timestamp: 1795255013</text>
+    <text x="66" y="350" fill="#FC6D26" font-size="12" font-family="ui-monospace, monospace">webhook-signature: v1,bmNR…</text>
+    <line x1="220" y1="235" x2="220" y2="258" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="410" y1="310" x2="488" y2="310" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="449" y="300" fill="#FAFAFA" font-size="12" text-anchor="middle">POST</text>
+    <text x="490" y="36" fill="#FC6D26" font-size="15" font-weight="600">Receptor en destino</text>
+    <rect x="490" y="50" width="380" height="330" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <rect x="510" y="70" width="340" height="56" rx="6" fill="#1F1F1F" stroke="#554488" stroke-width="2"/>
+    <text x="680" y="94" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">1 · ¿hace menos de 5 minutos?</text>
+    <text x="680" y="114" fill="#999999" font-size="12" text-anchor="middle">si no: 401, es una repetición</text>
+    <rect x="510" y="140" width="340" height="56" rx="6" fill="#1F1F1F" stroke="#554488" stroke-width="2"/>
+    <text x="680" y="164" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">2 · misma cuenta, su copia de la clave</text>
+    <text x="680" y="184" fill="#999999" font-size="12" text-anchor="middle">sobre el cuerpo crudo recibido</text>
+    <rect x="510" y="210" width="340" height="56" rx="6" fill="#1F1F1F" stroke="#FC6D26" stroke-width="2"/>
+    <text x="680" y="234" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">3 · timingSafeEqual</text>
+    <text x="680" y="254" fill="#999999" font-size="12" text-anchor="middle">si no coincide: 401</text>
+    <rect x="510" y="280" width="340" height="80" rx="6" fill="#1F1F1F" stroke="#554488" stroke-width="2"/>
+    <text x="680" y="304" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">4 · ¿Idempotency-Key ya vista?</text>
+    <text x="680" y="324" fill="#999999" font-size="12" text-anchor="middle">sí: 200 y no se procesa otra vez</text>
+    <text x="680" y="344" fill="#999999" font-size="12" text-anchor="middle">no: se anota en el canal y 200</text>
+    <line x1="680" y1="126" x2="680" y2="138" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="680" y1="196" x2="680" y2="208" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="680" y1="266" x2="680" y2="278" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="450" y="405" fill="#999999" font-size="12" text-anchor="middle">Formato Standard Webhooks. Capturado en GitLab CE 19.2.4.</text>
+  </g>
+</svg>

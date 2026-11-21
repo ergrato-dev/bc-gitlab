@@ -43,7 +43,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 | [14](week-14-entornos_review_apps_y_feature_flags/README.md) | [Entornos, review apps y feature flags](week-14-entornos_review_apps_y_feature_flags/README.md) | ✅ |
 | [15](week-15-runners_ejecutores_y_configuracion/README.md) | [Runners: ejecutores y configuración](week-15-runners_ejecutores_y_configuracion/README.md) | ✅ |
 | [16](week-16-runners_en_kubernetes_y_finops/README.md) | [Runners en Kubernetes y FinOps](week-16-runners_en_kubernetes_y_finops/README.md) | ✅ |
-| 17 | API, webhooks y ChatOps | ⬜ |
+| [17](week-17-api_webhooks_y_chatops/README.md) | [API, webhooks y ChatOps](week-17-api_webhooks_y_chatops/README.md) | ✅ |
 
 ### Fase 5 — Seguridad y cadena de suministro (S18-20, 24 h)
 

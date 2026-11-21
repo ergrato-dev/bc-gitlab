@@ -1,0 +1,119 @@
+{
+  "semana": "17",
+  "titulo": "API, webhooks y ChatOps",
+  "checks": [
+    {
+      "id": "automatizacion-existe",
+      "descripcion": "ci/automatizacion protege main y no admite force push",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/protected_branches/main",
+      "jq": ".name == \"main\" and (.allow_force_push | not)",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 1"
+    },
+    {
+      "id": "automatizacion-privado",
+      "descripcion": "ci/automatizacion es privado",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion",
+      "jq": ".visibility == \"private\"",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 1"
+    },
+    {
+      "id": "token-auditor-solo-lectura",
+      "descripcion": "El grupo tiene un token de grupo auditor activo, solo con read_api y rol Reporter",
+      "api": "groups/{grupo}/access_tokens",
+      "jq": "[.[] | select(.name == \"auditor\" and .active)] | length == 1 and all(.scopes == [\"read_api\"] and .access_level == 20)",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 2"
+    },
+    {
+      "id": "token-auditor-caduca",
+      "descripcion": "El token auditor caduca en 90 dias o menos",
+      "api": "groups/{grupo}/access_tokens",
+      "jq": "[.[] | select(.name == \"auditor\" and .active)] | length == 1 and all(.expires_at != null and ((.expires_at | strptime(\"%Y-%m-%d\") | mktime) - now) <= 90 * 86400)",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 2"
+    },
+    {
+      "id": "auditor-token-oculto",
+      "descripcion": "AUDITOR_TOKEN es una variable enmascarada, oculta y protegida de ci/automatizacion",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/variables/AUDITOR_TOKEN",
+      "jq": ".masked and .hidden and .protected",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 4"
+    },
+    {
+      "id": "auditoria-programada",
+      "descripcion": "ci/automatizacion tiene activa una programacion sobre main",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/pipeline_schedules",
+      "jq": "any(.[]; .active and .ref == \"refs/heads/main\")",
+      "pista": "2-practicas/04-chatops.md, paso 9"
+    },
+    {
+      "id": "auditoria-en-verde",
+      "descripcion": "El ultimo pipeline programado de ci/automatizacion termino en verde y guardo auditoria.json",
+      "graphql": "query($grupo: ID!){ group(fullPath: $grupo){ projects(includeSubgroups: true, search: \"automatizacion\"){ nodes{ fullPath pipelines(source: \"schedule\", ref: \"main\", first: 1){ nodes{ status jobs{ nodes{ name artifacts{ nodes{ fileType } } } } } } } } } }",
+      "jq": "[.data.group.projects.nodes[] | select(.fullPath | endswith(\"/ci/automatizacion\")) | .pipelines.nodes[0] | select(.status == \"SUCCESS\") | .jobs.nodes[] | select(.name == \"auditar\") | .artifacts.nodes[] | select(.fileType == \"ARCHIVE\")] | length >= 1",
+      "pista": "2-practicas/04-chatops.md, paso 9"
+    },
+    {
+      "id": "receptor-desplegado",
+      "descripcion": "ci/automatizacion desplego el receptor en el entorno receptor",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/deployments?environment=receptor&status=success",
+      "jq": "length >= 1",
+      "pista": "2-practicas/02-el-receptor.md, paso 5"
+    },
+    {
+      "id": "receptor-verifica-firma",
+      "descripcion": "El receptor verifica webhook-signature con una comparacion de tiempo constante",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/repository/files/src%2Ffirma.ts?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"webhook-signature\") and test(\"timingSafeEqual\") and test(\"webhook-timestamp\"))",
+      "pista": "2-practicas/02-el-receptor.md, paso 1"
+    },
+    {
+      "id": "solo-destino-permitido",
+      "descripcion": "La instancia bloquea las peticiones a la red local salvo a destino",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": "(.allow_local_requests_from_web_hooks_and_services | not) and (.outbound_local_requests_whitelist | index(\"destino\") != null)",
+      "pista": "2-practicas/03-los-webhooks.md, paso 2"
+    },
+    {
+      "id": "webhook-app-firmado",
+      "descripcion": "app envia sus eventos de pipeline y despliegue al receptor, firmados",
+      "api": "projects/{proyecto}/hooks",
+      "jq": "any(.[]; (.url | test(\"://destino:8080/receptor/webhook$\")) and .pipeline_events and .deployment_events and .signing_token_present)",
+      "pista": "2-practicas/03-los-webhooks.md, paso 3"
+    },
+    {
+      "id": "webhook-automatizacion-firmado",
+      "descripcion": "ci/automatizacion envia sus eventos de pipeline al receptor, firmados",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/hooks",
+      "jq": "any(.[]; (.url | test(\"://destino:8080/receptor/webhook$\")) and .pipeline_events and .signing_token_present)",
+      "pista": "2-practicas/03-los-webhooks.md, paso 3"
+    },
+    {
+      "id": "automatizacion-en-kubernetes",
+      "descripcion": "ci/automatizacion tiene asignado el runner de Kubernetes de app",
+      "graphql": "query($grupo: ID!){ group(fullPath: $grupo){ projects(includeSubgroups: true, search: \"automatizacion\"){ nodes{ fullPath runners(type: PROJECT_TYPE){ nodes{ paused managers{ nodes{ executorName } } } } } } } }",
+      "jq": "[.data.group.projects.nodes[] | select(.fullPath | endswith(\"/ci/automatizacion\")) | .runners.nodes[] | select(.paused | not) | .managers.nodes[] | select(.executorName == \"kubernetes\")] | length >= 1",
+      "pista": "2-practicas/01-el-bot-auditor.md, paso 1"
+    },
+    {
+      "id": "chatops-activo",
+      "descripcion": "ci/automatizacion tiene activa la integracion de slash commands de Mattermost",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/integrations/mattermost-slash-commands",
+      "jq": ".active == true",
+      "pista": "2-practicas/04-chatops.md, paso 1"
+    },
+    {
+      "id": "chatops-ejecutado",
+      "descripcion": "ChatOps ha ejecutado en verde los jobs auditar y estado",
+      "graphql": "query($grupo: ID!){ group(fullPath: $grupo){ projects(includeSubgroups: true, search: \"automatizacion\"){ nodes{ fullPath pipelines(source: \"chat\", status: SUCCESS, first: 20){ nodes{ jobs{ nodes{ name } } } } } } } }",
+      "jq": "[.data.group.projects.nodes[] | select(.fullPath | endswith(\"/ci/automatizacion\")) | .pipelines.nodes[].jobs.nodes[].name] | index(\"auditar\") != null and index(\"estado\") != null",
+      "pista": "2-practicas/04-chatops.md, pasos 5 y 7"
+    },
+    {
+      "id": "runbook-versionado",
+      "descripcion": "ci/automatizacion versiona un README con como rotar el token y la clave de firma y como reenviar una entrega",
+      "api": "projects/{grupo}%2Fci%2Fautomatizacion/repository/files/README.md?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"rotate\") and test(\"signing_token\") and test(\"resend\"))",
+      "pista": "3-proyecto/README.md"
+    }
+  ]
+}

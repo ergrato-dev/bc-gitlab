@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El viaje de un comando de chat</title>
+  <desc id="desc">En el laboratorio, curl hace de Mattermost: envía run estado production al endpoint trigger de la integración de slash commands. GitLab comprueba el token, la cuenta vinculada y la verificación, crea un pipeline con source chat en main con solo el job estado y contesta que el job se ha creado. El job corre en k8s-app, lee con el token del auditor los entornos de infra/entornos y escribe la respuesta entre las marcas chat_reply. Al terminar, GitLab envía esa sección al response_url, que es la ruta canal del receptor en destino.</desc>
+  <rect width="900" height="420" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <rect x="30" y="60" width="200" height="110" rx="6" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="130" y="88" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">curl (hace de</text>
+    <text x="130" y="108" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Mattermost)</text>
+    <text x="130" y="138" fill="#FAFAFA" font-size="12" font-family="ui-monospace, monospace" text-anchor="middle">run estado production</text>
+    <text x="130" y="158" fill="#999999" font-size="11" text-anchor="middle">+ token, user_id, response_url</text>
+    <rect x="330" y="40" width="300" height="200" rx="6" fill="#2B2B2B" stroke="#FC6D26" stroke-width="2"/>
+    <text x="480" y="66" fill="#FC6D26" font-size="15" font-weight="600" text-anchor="middle">GitLab · ci/automatizacion</text>
+    <text x="350" y="96" fill="#FAFAFA" font-size="13">1 · token de la integración</text>
+    <text x="350" y="118" fill="#FAFAFA" font-size="13">2 · cuenta vinculada y verificada</text>
+    <text x="350" y="140" fill="#FAFAFA" font-size="13">3 · el usuario puede crear pipelines</text>
+    <text x="350" y="170" fill="#FAFAFA" font-size="13" font-weight="600">pipeline source: chat, en main</text>
+    <text x="350" y="192" fill="#FAFAFA" font-size="13">solo el job estado</text>
+    <text x="350" y="222" fill="#999999" font-size="12">CHAT_INPUT=production</text>
+    <line x1="230" y1="110" x2="328" y2="110" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="279" y="100" fill="#FAFAFA" font-size="12" text-anchor="middle">trigger</text>
+    <path d="M 330 190 C 280 190 280 160 232 150" fill="none" stroke="#666666" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="268" y="210" fill="#999999" font-size="11" text-anchor="middle">"job created"</text>
+    <rect x="330" y="290" width="300" height="100" rx="6" fill="#2B2B2B" stroke="#666666"/>
+    <text x="480" y="316" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">pod en k8s-app</text>
+    <text x="480" y="340" fill="#FAFAFA" font-size="12" text-anchor="middle">src/estado.ts con AUDITOR_TOKEN</text>
+    <text x="480" y="362" fill="#FAFAFA" font-size="12" font-family="ui-monospace, monospace" text-anchor="middle">section_start … chat_reply</text>
+    <text x="480" y="380" fill="#999999" font-size="11" text-anchor="middle">solo esto vuelve al canal</text>
+    <line x1="480" y1="240" x2="480" y2="288" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <rect x="700" y="140" width="170" height="130" rx="6" fill="#2B2B2B" stroke="#554488" stroke-width="2"/>
+    <text x="785" y="168" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Receptor</text>
+    <text x="785" y="190" fill="#FAFAFA" font-size="12" text-anchor="middle">en destino</text>
+    <text x="785" y="220" fill="#FAFAFA" font-size="11" font-family="ui-monospace, monospace" text-anchor="middle">/receptor/canal/…</text>
+    <text x="785" y="250" fill="#999999" font-size="11" text-anchor="middle">hace de canal</text>
+    <path d="M 630 140 C 670 140 680 180 698 190" fill="none" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="640" y="104" fill="#FAFAFA" font-size="12">al terminar:</text>
+    <text x="640" y="120" fill="#FAFAFA" font-size="12">response_url</text>
+  </g>
+</svg>
