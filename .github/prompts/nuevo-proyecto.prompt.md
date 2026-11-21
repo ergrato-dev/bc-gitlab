@@ -60,9 +60,10 @@ Lo que la API no ve y sí puntúa la rúbrica.
 3. **Los criterios de calidad son lo que la API no puede ver**: nombres que se
    entienden, un `.gitlab-ci.yml` legible, un mensaje de commit que explica el
    porqué. Son los 40 puntos manuales del producto.
-4. **La tabla de dominios trae 3-4 dominios de los de
-   `docs/proyecto-hilo-conductor.md`**, con la concreción real de esta capa en
-   cada uno.
+4. **La tabla de dominios trae 3-4 dominios**: biblioteca (el de los
+   ejemplos) y otros del catálogo privado `ergrato-dev/bc-dominios`
+   (`catalogos/bc-gitlab.md`), con la concreción real de esta capa en cada uno.
+   El catálogo completo no se publica: el dominio lo asigna el instructor.
 5. **Nada de crear proyectos nuevos** salvo que la tabla de capas lo diga
    (`ci/componentes` en la S12, `ci/automatizacion` en la S17, `infra` en la S11).
 6. **Los errores comunes salen de haberlo hecho**, no de imaginarlos.
@@ -76,7 +77,8 @@ Lo que la API no ve y sí puntúa la rúbrica.
 - [ ] Los requisitos coinciden literalmente con `checks.json`
 - [ ] La capa coincide con la tabla de `docs/proyecto-hilo-conductor.md`
 - [ ] Se explica el encaje con la semana anterior y la siguiente
-- [ ] La tabla de dominios usa los dominios oficiales
+- [ ] La tabla de dominios usa dominios del catálogo de `bc-dominios`
+- [ ] La solución del instructor está en `bc-instructor/bc-gitlab/week-NN-slug/3-proyecto/`, no en este repo
 - [ ] Enlaces de navegación correctos
 
 $input

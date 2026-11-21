@@ -98,7 +98,7 @@ Las semanas con código de apoyo añaden `starter/`.
 ## Antes de empezar
 
 1. [Preparar el entorno](../docs/setup-entorno.md) — Docker, `glab`, `jq`, k3d, firma de commits y token.
-2. [Elegir dominio y crear el proyecto](../docs/proyecto-hilo-conductor.md) — el mismo durante 26 semanas.
+2. [Recibir tu dominio y entender el proyecto](../docs/proyecto-hilo-conductor.md) — el mismo durante 26 semanas.
 3. [Entender el autograding](../docs/autograding.md) — quién corrige y qué no puede corregir.
 
 ## Verificar una semana

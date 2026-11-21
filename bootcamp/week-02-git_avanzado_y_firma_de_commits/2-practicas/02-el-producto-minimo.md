@@ -14,7 +14,7 @@ A partir de la Semana 09, cada commit dispara un pipeline que construye, prueba 
 Este no es un bootcamp de programación y el código va a ser diminuto a propósito: tres o cuatro funciones con lógica de tu dominio y sus tests. Lo que sí importa aquí es **cómo entra ese código en la historia**: un commit por idea, firmado, con un mensaje que explica el porqué.
 
 > [!NOTE]
-> Los ejemplos usan el dominio *biblioteca*. Sustituye por el tuyo: si elegiste gimnasio, las funciones serán `puedeReservar`, `cupoDisponible`, `calcularPenalizacion`. La forma es la misma.
+> Los ejemplos usan el dominio *biblioteca*. Sustituye por el tuyo: si te asignaron gimnasio, las funciones serán `puedeReservar`, `cupoDisponible`, `calcularPenalizacion`. La forma es la misma.
 
 ---
 

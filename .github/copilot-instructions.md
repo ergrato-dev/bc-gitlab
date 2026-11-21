@@ -234,6 +234,10 @@ La capa que esta semana añade al hilo conductor. Ocho secciones:
 7. `## 🧯 Errores comunes`
 8. `## 🔗 Navegación`
 
+**La solución del instructor no va en este repo.** Se escribe en el repo privado `ergrato-dev/bc-instructor`, en `bc-gitlab/week-NN-slug/3-proyecto/`: los archivos que el alumno versiona en su instancia (manuales, `.gitlab-ci.yml`, scripts) resueltos para el dominio biblioteca, y un `README.md` con los comandos que dejan cada requisito en verde. Ni `solution/` ni archivos ignorados por git aquí.
+
+**Los dominios los asigna el instructor.** El catálogo vive en el repo privado `ergrato-dev/bc-dominios` (`catalogos/bc-gitlab.md`); este repo no lleva `docs/dominios.md` ni la lista completa. Los textos dicen "el dominio asignado", nunca "elige tu dominio".
+
 ### 4-recursos/
 
 Tres subcarpetas: `ebooks-free/`, `videografia/`, `webgrafia/`. **Cada recurso lleva una línea de por qué vale la pena**, no solo el enlace. Los enlaces se comprueban y se fecha la comprobación.
@@ -336,7 +340,7 @@ test:
 
 | Placeholder | Uso |
 |---|---|
-| `<tu-dominio>` | El dominio que eligió el alumno |
+| `<tu-dominio>` | El dominio que el instructor asignó al alumno |
 | `<grupo>/<proyecto>` | Ruta genérica |
 | `plataforma-biblioteca/app` | Ejemplo concreto, siempre el mismo |
 | `<TOKEN>` | Cualquier token |

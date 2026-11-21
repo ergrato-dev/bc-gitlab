@@ -3,7 +3,7 @@
 > El grupo, el proyecto y el primer commit que van a crecer durante veintiséis semanas.
 
 **Duración estimada**: 50 min
-**Prerrequisitos**: Prácticas 01 y 02 completadas · [proyecto-hilo-conductor](../../../docs/proyecto-hilo-conductor.md) leído y **dominio elegido**
+**Prerrequisitos**: Prácticas 01 y 02 completadas · [proyecto-hilo-conductor](../../../docs/proyecto-hilo-conductor.md) leído y **dominio asignado**
 
 ---
 
@@ -14,7 +14,7 @@ Todo lo que construyas de aquí a la Semana 26 cuelga de lo que crees hoy. No es
 Por eso hay una decisión que conviene tomar bien desde el principio: **el proyecto cuelga del grupo, no de tu espacio personal**. Funciona igual de las dos formas, y hacerlo mal significa rehacer permisos, rutas y URLs en la Semana 03.
 
 > [!IMPORTANT]
-> Si todavía no has elegido dominio, párate y lee [proyecto-hilo-conductor](../../../docs/proyecto-hilo-conductor.md). Necesitas uno sobre el que puedas inventar issues creíbles durante seis meses.
+> Si todavía no tienes dominio, párate y pídeselo al instructor. Lee [proyecto-hilo-conductor](../../../docs/proyecto-hilo-conductor.md): vas a inventar issues creíbles sobre él durante seis meses.
 
 ---
 
@@ -208,7 +208,7 @@ Producto del hilo conductor del **Bootcamp GitLab CE**.
 ## Dominio
 
 Sistema de préstamos de una biblioteca: socios, libros y préstamos con fecha de
-devolución. El dominio se eligió en la Semana 01 y no cambia durante las 26 semanas.
+devolución. El dominio se asignó en la Semana 01 y no cambia durante las 26 semanas.
 
 ## Estado
 

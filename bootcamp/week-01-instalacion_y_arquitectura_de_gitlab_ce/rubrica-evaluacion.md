@@ -81,7 +81,7 @@ Los ejecuta `./scripts/verificar-semana.sh 01`. Cinco puntos cada uno.
 | 6 | Existe el proyecto app dentro de ese grupo | 5 |
 | 7 | El proyecto cuelga del grupo, no de tu espacio personal | 5 |
 | 8 | El proyecto es privado | 5 |
-| 9 | La descripcion del proyecto declara el dominio que elegiste | 5 |
+| 9 | La descripcion del proyecto declara el dominio asignado | 5 |
 | 10 | La rama por defecto del proyecto se llama main | 5 |
 | 11 | El repositorio tiene al menos un commit tuyo | 5 |
 | 12 | Hay un README.md en la raiz del repositorio | 5 |

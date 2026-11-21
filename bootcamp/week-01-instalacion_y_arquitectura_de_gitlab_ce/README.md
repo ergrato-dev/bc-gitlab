@@ -26,7 +26,7 @@ Al terminar serás capaz de:
 ## 📋 Prerrequisitos
 
 - **Entorno preparado** — Docker 27+, Git 2.46+, `glab`, `jq` y una clave SSH. Todo en [setup-entorno](../../docs/setup-entorno.md)
-- **Dominio elegido** — lee [proyecto-hilo-conductor](../../docs/proyecto-hilo-conductor.md) antes del proyecto de esta semana
+- **Dominio asignado** — el que te dio el instructor; lee [proyecto-hilo-conductor](../../docs/proyecto-hilo-conductor.md) antes del proyecto de esta semana
 - **16 GB de RAM** y unos 40 GB de disco libres
 - **Perfil de laboratorio**: `base` — ver [perfiles-de-laboratorio](../../docs/perfiles-de-laboratorio.md)
 - Saber `clone`, `commit`, `push` y qué es una rama. Nada más: Git se trabaja a fondo en la Semana 02

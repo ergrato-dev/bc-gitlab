@@ -17,7 +17,7 @@
 ## Orden de lectura antes de la Semana 01
 
 1. **[setup-entorno.md](setup-entorno.md)** — sin esto no arrancas.
-2. **[proyecto-hilo-conductor.md](proyecto-hilo-conductor.md)** — eliges dominio antes de escribir la primera línea.
+2. **[proyecto-hilo-conductor.md](proyecto-hilo-conductor.md)** — el dominio que te asigna el instructor y cómo crece la plataforma.
 3. **[autograding.md](autograding.md)** — entender quién corrige evita frustración en la Semana 03.
 
 Vuelve a [trucos-gitlab.md](trucos-gitlab.md) al terminar cada semana: crece contigo.

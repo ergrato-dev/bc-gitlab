@@ -11,12 +11,13 @@ Cada semana añade una capa a uno de los dos. Ninguna semana empieza de cero.
 
 ---
 
-## 1. Elige tu dominio
+## 1. Tu dominio
 
-Tu plataforma necesita un dominio real. No importa cuál — importa que sea concreto y que te dure 26 semanas sin aburrirte.
+Tu plataforma necesita un dominio real. **Te lo asigna el instructor** en la Semana 01: dos personas de la misma cohorte no comparten dominio, así que no hay dos plataformas iguales que copiar.
 
-| Dominio | Recurso principal | Ejemplo de issue real |
-|---|---|---|
+El dominio trae lo que necesitas para 26 semanas: el nombre del grupo (`plataforma-<tu-dominio>`), el recurso principal que gestiona `app`, sus primeras funciones y un primer issue creíble. Todos los ejemplos del bootcamp usan **biblioteca**: socios, libros y préstamos. Donde un ejemplo diga `biblioteca`, pon tu dominio.
+
+---|---|---|
 | 📖 Biblioteca | Libros, préstamos | "Un préstamo vencido no notifica" |
 | 🏋️ Gimnasio | Miembros, rutinas | "Permite reservar una clase con el cupo lleno" |
 | 🎥 Cine | Funciones, asientos | "Doble reserva del mismo asiento" |
@@ -54,15 +55,12 @@ plataforma-<tu-dominio>/          ← grupo raíz
 
 Mínimo suficiente: una librería o CLI en **TypeScript** con
 
-- 3-5 funciones con lógica de tu dominio
+- 3-5 funciones con lógica de tu dominio (el instructor te da las primeras)
 - tests con el runner nativo de Node (`node:test`) o Vitest
 - un `package.json` publicable
 - un `Dockerfile` que produzca una imagen que arranque
 
 Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libro)`, `puedePrestar(socio)`. Suficiente para que haya tests que fallen, merge requests que revisar, imágenes que firmar y versiones que publicar.
-
-> [!NOTE]
-> ¿Ya tienes un proyecto propio? Úsalo, siempre que puedas reescribir su historia sin drama. Es la mejor opción: aplicas las 26 semanas sobre algo que te importa.
 
 ---
 
@@ -70,7 +68,7 @@ Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libr
 
 | Semana | Capa que se añade | Estado tras la semana |
 |:--:|---|---|
-| 01 | Instancia + grupo + proyecto `app` con el dominio elegido | Tienes un GitLab propio y un repositorio que declara tu dominio |
+| 01 | Instancia + grupo + proyecto `app` con el dominio asignado | Tienes un GitLab propio y un repositorio que declara tu dominio |
 | 02 | La app mínima (3-5 funciones + tests), historia limpia, commits firmados | El repositorio tiene código real y verificable |
 | 03 | Árbol de subgrupos `app`/`infra`/`ci`, 3 usuarios de laboratorio con roles | La organización existe y los permisos se prueban de verdad |
 | 04 | README, LICENSE, CONTRIBUTING, wiki con ADR-001, snippet, insignias | Un tercero lo entiende y lo arranca sin preguntarte |

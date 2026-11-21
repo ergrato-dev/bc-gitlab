@@ -230,9 +230,9 @@ EOF
 ./scripts/verificar-semana.sh --doctor
 ```
 
-### 5. Elegir dominio y empezar
+### 5. Recibir el dominio y empezar
 
-Lee [`docs/proyecto-hilo-conductor.md`](./docs/proyecto-hilo-conductor.md), elige tu dominio y ve a `bootcamp/week-01-instalacion_y_arquitectura_de_gitlab_ce/`.
+Lee [`docs/proyecto-hilo-conductor.md`](./docs/proyecto-hilo-conductor.md), pide tu dominio al instructor y ve a `bootcamp/week-01-instalacion_y_arquitectura_de_gitlab_ce/`.
 
 ---
 
@@ -295,7 +295,7 @@ La tabla de tiempos del README de cada semana suma exactamente 8 h. Si suma más
 
 ### 🧵 Tu plataforma
 
-Eliges un dominio en la Semana 01 y no lo sueltas. Un solo grupo, una sola instancia, 26 capas. Al terminar tienes una plataforma DevOps completa que puedes enseñar en una entrevista y defender. Ver [`docs/proyecto-hilo-conductor.md`](./docs/proyecto-hilo-conductor.md).
+El instructor te asigna un dominio en la Semana 01 y no lo sueltas. Un solo grupo, una sola instancia, 26 capas. Al terminar tienes una plataforma DevOps completa que puedes enseñar en una entrevista y defender. Ver [`docs/proyecto-hilo-conductor.md`](./docs/proyecto-hilo-conductor.md).
 
 ---
 

@@ -39,7 +39,7 @@ Los comprueba `./scripts/verificar-semana.sh 01` contra la API de tu instancia.
 6. Existe el proyecto app dentro de ese grupo
 7. El proyecto cuelga del grupo, no de tu espacio personal
 8. El proyecto es privado
-9. La descripcion del proyecto declara el dominio que elegiste
+9. La descripcion del proyecto declara el dominio asignado
 10. La rama por defecto del proyecto se llama main
 11. El repositorio tiene al menos un commit tuyo
 12. Hay un README.md en la raiz del repositorio

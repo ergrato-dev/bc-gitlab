@@ -9,7 +9,7 @@
 
 ## Contexto
 
-Hasta ahora todo lo que sabe tu plataforma está en el código o en tu cabeza. Por qué elegiste ese dominio, por qué TypeScript, por qué `app` no se movió a un subgrupo en la Semana 03: nada de eso se deduce leyendo el repositorio, y dentro de seis meses tú tampoco lo recordarás con precisión.
+Hasta ahora todo lo que sabe tu plataforma está en el código o en tu cabeza. Qué es tu dominio, por qué TypeScript, por qué `app` no se movió a un subgrupo en la Semana 03: nada de eso se deduce leyendo el repositorio, y dentro de seis meses tú tampoco lo recordarás con precisión.
 
 Esta práctica monta la wiki del proyecto y escribe las primeras decisiones. Es la documentación que **no envejece con el código**: no se revisa en un merge request, no dispara pipelines, y vive en un repositorio Git propio que vas a clonar.
 

@@ -61,7 +61,7 @@
     },
     {
       "id": "proyecto-declara-dominio",
-      "descripcion": "La descripcion del proyecto declara el dominio que elegiste",
+      "descripcion": "La descripcion del proyecto declara el dominio asignado",
       "api": "projects/{proyecto}",
       "jq": "(.description // \"\") | length >= 20",
       "pista": "3-proyecto/README.md"
