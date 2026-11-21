@@ -86,7 +86,7 @@ Lista sacada de `lib/gitlab/quick_actions/` en la instancia 19.2.4-ce.0, filtrad
 Un commit cuyo mensaje contiene `Closes #12` **cierra el issue 12** cuando ese commit llega a la **rama por defecto**. Lo mismo vale para la descripción de una merge request, en el momento de fusionarla (Semana 06).
 
 ```bash
-git commit -S -m "fix: count overdue days on business days only
+git commit -S -m "fix: contar solo días hábiles de retraso
 
 Closes #7"
 git push origin main

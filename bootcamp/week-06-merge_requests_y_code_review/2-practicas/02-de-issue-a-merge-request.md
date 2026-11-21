@@ -129,7 +129,7 @@ El comentario de la función es deliberadamente pobre: el revisor tendrá algo q
 
 ```bash
 git add src/prestamos.ts src/prestamos.test.ts
-git commit -m "fix(multas): do not charge late fees on Sundays"
+git commit -m "fix(multas): no cobrar multa por los domingos"
 git log --show-signature -1 | head -3
 
 git push -u origin HEAD \

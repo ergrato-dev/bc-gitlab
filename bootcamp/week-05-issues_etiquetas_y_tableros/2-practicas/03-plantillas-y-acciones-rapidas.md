@@ -307,7 +307,7 @@ Elige el issue de documentación del hito —en el ejemplo, "El README no explic
 $EDITOR README.md      # añade el comando para ejecutar un archivo de test concreto
 
 git add README.md
-git commit -m "docs: explain how to run a single test file
+git commit -m "docs: explicar cómo ejecutar un solo archivo de tests
 
 Closes #<iid>"
 git push origin main

@@ -94,7 +94,7 @@ Como **revisor** (`$HR`):
 ```bash
 curl -s --request POST "$API/projects/$P/repository/commits" -H "$HR" -H "Content-Type: application/json" \
   --data '{"branch": "main",
-           "commit_message": "docs: urgent note",
+           "commit_message": "docs: nota urgente",
            "actions": [{"action": "create", "file_path": "URGENTE.md", "content": "arreglo rapido\n"}]}' \
   -w '\n%{http_code}\n'
 ```

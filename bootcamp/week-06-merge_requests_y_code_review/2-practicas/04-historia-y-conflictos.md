@@ -83,7 +83,7 @@ test("un prestamo vencido impide llevarse otro", () => {
 EOF
 
 git diff --stat && npm test
-git commit -am "fix(prestamos): block new loans while one is overdue"
+git commit -am "fix(prestamos): bloquear préstamos nuevos con uno vencido"
 git push -u origin HEAD -o merge_request.create -o merge_request.target=main
 ```
 
@@ -103,7 +103,7 @@ test("una multa de centimos no impide prestar", () => {
 EOF
 
 git diff --stat && npm test
-git commit -am "feat(prestamos): tolerate fines up to one euro"
+git commit -am "feat(prestamos): tolerar multas de hasta un euro"
 git push -u origin HEAD -o merge_request.create -o merge_request.target=main
 ```
 
@@ -207,7 +207,7 @@ En `src/prestamos.ts` verás algo así:
     && !socio.tienePrestamoVencido;
 =======
     && socio.multaPendienteCentimos <= MULTA_TOLERADA_CENTIMOS;
->>>>>>> feat(prestamos): tolerate fines up to one euro
+>>>>>>> feat(prestamos): tolerar multas de hasta un euro
 ```
 
 `HEAD` es `main` con B dentro; lo de abajo es tu commit de C. La resolución correcta **no es elegir uno**: son las dos reglas a la vez.

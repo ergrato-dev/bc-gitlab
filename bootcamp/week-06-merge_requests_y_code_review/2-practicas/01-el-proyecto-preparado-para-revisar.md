@@ -81,7 +81,7 @@ SQUASH=$(printf '%s\n\n%s\n\n%s\n%s\n%s' \
   '%{title} (%{local_reference})' '%{issues}' '%{reviewed_by}' '%{approved_by}' '%{co_authored_by}')
 
 SUGERENCIA=$(printf '%s\n\n%s' \
-  'fix: apply %{suggestions_count} review suggestion(s)' '%{co_authored_by}')
+  'fix: aplicar %{suggestions_count} sugerencia(s) de revisión' '%{co_authored_by}')
 
 curl -s --request PUT "$API/projects/$P" -H "$H" \
   --data-urlencode "squash_commit_template=$SQUASH" \

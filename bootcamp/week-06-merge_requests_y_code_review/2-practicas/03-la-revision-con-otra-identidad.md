@@ -176,7 +176,7 @@ GitLab acaba de crear un commit en tu rama. Mira su mensaje:
 curl -s -H "$H" "$API/projects/$P/merge_requests/$MR/commits" | jq -r '.[0].message'
 ```
 
-**Verifica**: `applied: true`, y el mensaje es `fix: apply 1 review suggestion(s)` seguido de una línea `Co-authored-by:` con el revisor. Es la plantilla de la práctica 01.
+**Verifica**: `applied: true`, y el mensaje es `fix: aplicar 1 sugerencia(s) de revisión` seguido de una línea `Co-authored-by:` con el revisor. Es la plantilla de la práctica 01.
 
 ---
 
@@ -197,7 +197,7 @@ EOF
 
 npm test
 git add src/prestamos.test.ts
-git commit -m "test(multas): cover a Sunday return date"
+git commit -m "test(multas): cubrir la devolución en domingo"
 git push
 ```
 
