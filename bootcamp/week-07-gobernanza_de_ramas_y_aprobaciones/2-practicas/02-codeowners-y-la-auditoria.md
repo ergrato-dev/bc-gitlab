@@ -140,8 +140,8 @@ sed -n 2p scripts/gobernanza.sh                    # el comentario "Auditoría d
 **Por qué**: dos cambios, dos commits convencionales. El título de la merge request tiene que ser convencional también: con squash, es el asunto del commit que entra en `main`, y el hook de la práctica 03 lo exigirá.
 
 ```bash
-git add CODEOWNERS && git commit -S -m "chore: add CODEOWNERS"
-git add scripts/gobernanza.sh && git commit -S -m "chore: add governance audit script"
+git add CODEOWNERS && git commit -S -m "chore: declarar los responsables de código en CODEOWNERS"
+git add scripts/gobernanza.sh && git commit -S -m "chore: añadir el script de auditoría de gobernanza"
 
 git push -u origin "$IID-codeowners" \
   -o merge_request.create \

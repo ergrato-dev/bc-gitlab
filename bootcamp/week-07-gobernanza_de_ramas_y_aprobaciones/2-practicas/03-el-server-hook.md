@@ -124,9 +124,9 @@ curl -s --request PUT "$API/projects/$P" -H "$H" \
 
 ```bash
 git add scripts/hooks/pre-receive
-git commit -S -m "feat: add pre-receive governance hook"
+git commit -S -m "feat: añadir el hook pre-receive de gobernanza"
 git push -u origin "$IID-server-hook" -o merge_request.create -o merge_request.target=main \
-  -o merge_request.title="feat: add pre-receive governance hook"
+  -o merge_request.title="feat: añadir el hook pre-receive de gobernanza"
 
 MR=$(curl -s -H "$H" "$API/projects/$P/merge_requests?source_branch=$IID-server-hook&state=opened" | jq -r '.[0].iid')
 curl -s --request PUT "$API/projects/$P/merge_requests/$MR" -H "$H" --data-urlencode "reviewer_ids[]=$UID_REV" -o /dev/null

@@ -324,7 +324,7 @@ desplegar-receptor:
 ```
 
 ```bash
-git add -A && git commit -S -m "feat: signed webhook receiver deployed to destino"
+git add -A && git commit -S -m "feat: desplegar en destino el receptor de webhooks con firma"
 git push
 sleep 5
 PIPE=$(curl -s -H "$H" "$API/projects/$PA/pipelines?per_page=1" | jq -r '.[0].id')

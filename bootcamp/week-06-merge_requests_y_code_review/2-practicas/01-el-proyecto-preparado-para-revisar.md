@@ -137,7 +137,7 @@ Si el cambio no cierra ningún issue, explica aquí por qué existe.
 EOF
 
 git add .gitlab/merge_request_templates/Default.md
-git commit -m "docs: add default merge request template"
+git commit -m "docs: añadir la plantilla predeterminada de merge request"
 git push origin main
 ```
 

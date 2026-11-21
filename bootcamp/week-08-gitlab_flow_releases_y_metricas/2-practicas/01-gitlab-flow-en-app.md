@@ -187,11 +187,11 @@ mkdir -p .gitlab
 $EDITOR .gitlab/changelog_config.yml      # pega el YAML de la teoría 04
 
 git add .gitlab/changelog_config.yml
-git commit -S -m "chore: add changelog configuration"
+git commit -S -m "chore: configurar la generación del changelog"
 git push -u origin "$IID-changelog-config" \
   -o merge_request.create \
   -o merge_request.target=main \
-  -o merge_request.title="chore: add changelog configuration"
+  -o merge_request.title="chore: configurar la generación del changelog"
 ```
 
 Este commit **no** lleva trailer: a quien usa `app` no le importa cómo se genera el CHANGELOG.

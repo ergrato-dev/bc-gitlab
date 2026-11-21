@@ -112,7 +112,7 @@ Es un archivo: se crea en una rama y entra por merge request, como cualquier cam
 git switch -c 12-codeowners
 $EDITOR CODEOWNERS
 git add CODEOWNERS
-git commit -S -m "chore: add CODEOWNERS"
+git commit -S -m "chore: declarar los responsables de código en CODEOWNERS"
 ```
 
 Leerlo desde la API, el de `main`:
