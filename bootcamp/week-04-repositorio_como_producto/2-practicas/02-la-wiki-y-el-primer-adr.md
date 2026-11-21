@@ -285,7 +285,7 @@ Crea `_sidebar.md`:
 
 ```bash
 git add .
-git commit -m "docs(wiki): add ADR-001, ADR-002, runbook and sidebar"
+git commit -m "docs(wiki): registrar el ADR-001, el ADR-002, un runbook y la barra lateral"
 git push origin $(git branch --show-current)
 ```
 

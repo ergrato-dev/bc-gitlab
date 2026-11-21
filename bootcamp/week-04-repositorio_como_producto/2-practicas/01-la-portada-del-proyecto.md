@@ -98,14 +98,15 @@ npm test
 ```
 
 ```
-Tests 12 passed (12)
+ℹ tests 10
+ℹ pass 10
+ℹ fail 0
 ```
 
 ## Estructura
 
 ```
-src/       Las funciones del dominio
-test/      Tests con el runner nativo de Node
+src/       Las funciones del dominio y sus tests (*.test.ts, runner nativo de Node)
 docs/      Documentación que envejece con el código
 ```
 
@@ -231,7 +232,7 @@ Que describa **tu** flujo real, no uno ideal. Con lo que hay hasta ahora en el b
 ## Requisitos de un commit
 
 - Firmado con tu clave SSH de firma (Semana 02)
-- Mensaje convencional, en inglés, en imperativo
+- Mensaje convencional, en imperativo
 - `npm test` en verde antes de empujarlo
 
 ## Licencia de lo que aportas
@@ -286,7 +287,7 @@ curl -s -H "$H" "$API/projects/$P" | jq '{largo: (.description | length), temas:
 
 ```bash
 git add README.md LICENSE CONTRIBUTING.md logo.png package.json
-git commit -S -m "docs: add project front page, license and contribution guide"
+git commit -S -m "docs: crear la portada del proyecto, la licencia y la guía de contribución"
 git push origin main
 ```
 

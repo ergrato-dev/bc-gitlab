@@ -60,7 +60,7 @@ Mínimo suficiente: una librería o CLI en **TypeScript** con
 - un `package.json` publicable
 - un `Dockerfile` que produzca una imagen que arranque
 
-Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `estaDisponible(libro)`, `puedePrestar(socio)`. Suficiente para que haya tests que fallen, merge requests que revisar, imágenes que firmar y versiones que publicar.
+Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `ejemplaresDisponibles(total, prestados)`, `puedePrestar(socio)`. Suficiente para que haya tests que fallen, merge requests que revisar, imágenes que firmar y versiones que publicar.
 
 ---
 

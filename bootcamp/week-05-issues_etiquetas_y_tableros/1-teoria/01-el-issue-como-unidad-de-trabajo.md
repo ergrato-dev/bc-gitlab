@@ -72,7 +72,7 @@ Un título se lee en un listado de cincuenta, entre otros cuarenta y nueve. Tien
 |---|---|---|
 | Bug en multas | La multa se calcula sobre días naturales en vez de hábiles | Dice qué falla y cómo |
 | Mejorar préstamos | Un socio con dos préstamos vencidos puede pedir un tercero | Describe el comportamiento, no la intención |
-| Revisar | `estaDisponible` devuelve `true` para un libro dado de baja | Se entiende sin contexto |
+| Revisar | `ejemplaresDisponibles` acepta un número negativo de prestados | Se entiende sin contexto |
 | URGENTE!!! | (la urgencia va en la etiqueta `prioridad::`) | El título no es un canal de alarma |
 
 La regla práctica: **el título describe el comportamiento observable**, no la solución. "Añadir validación de cupo" es una solución; "Se puede reservar una clase con el cupo lleno" es el problema. El primero obliga a quien lo resuelve a hacer lo que se dijo; el segundo le deja encontrar la mejor forma.

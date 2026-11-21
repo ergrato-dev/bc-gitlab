@@ -125,7 +125,8 @@ El bloque de arranque rápido es el que más se usa y el que más falla. Tres re
 
   ```bash
   npm test
-  # Tests 12 passed (12)
+  # ℹ tests 10
+  # ℹ pass 10
   ```
 
 - **Sin placeholders que parezcan reales.** `<TU-TOKEN>` no se copia por error; `glpat-xxxxx` sí, y además dispara la detección de secretos de la propia instancia.

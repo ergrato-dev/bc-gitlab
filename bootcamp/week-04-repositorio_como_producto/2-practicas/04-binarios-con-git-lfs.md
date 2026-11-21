@@ -143,7 +143,7 @@ Y entra en su propio commit, antes que nada:
 
 ```bash
 git add .gitattributes
-git commit -S -m "chore: track binary assets with git-lfs"
+git commit -S -m "chore: guardar los binarios de assets/ en Git LFS"
 ```
 
 > [!IMPORTANT]
@@ -197,7 +197,7 @@ assets/logo-grande.png: PNG image data, 1024 x 1024
 
 ```bash
 git add assets/logo-grande.png
-git commit -S -m "feat: add large logo asset stored in lfs"
+git commit -S -m "feat: añadir el logo grande, guardado en LFS"
 ```
 
 Antes de empujar, mira lo que hay realmente en el commit:

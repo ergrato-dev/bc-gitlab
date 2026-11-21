@@ -148,7 +148,7 @@ done
 
 ```bash
 git add .gitlab/issue_templates
-git commit -m "docs: add bug, feature and default issue templates"
+git commit -m "docs: añadir las plantillas de issue de bug, de feature y la predeterminada"
 git push origin main
 ```
 

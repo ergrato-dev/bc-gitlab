@@ -140,7 +140,7 @@ Las plantillas son archivos: se crean con un commit, como cualquier otro.
 mkdir -p .gitlab/issue_templates
 $EDITOR .gitlab/issue_templates/Bug.md
 git add .gitlab/issue_templates
-git commit -S -m "docs: add bug and feature issue templates"
+git commit -S -m "docs: añadir las plantillas de issue de bug y de feature"
 git push
 ```
 
