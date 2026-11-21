@@ -163,9 +163,16 @@ Calculadas con `scripts/metricas.sh` sobre la API v4 de GitLab CE. Ventana: 30 d
 | Fecha | Frecuencia | Tiempo de entrega | Tasa de fallo | Restauración | Contexto |
 |---|---|---|---|---|---|
 | 2026-11-13 | 0.5 / semana | 2.4 h | 50 % (1 de 2) | 0.6 h | Primera medición: v0.1.0 y v0.1.1 |
+
+## Cambios de proceso
+
+| Fecha | Cambio | Qué número puede moverse |
+|---|---|---|
+| 2026-11-09 | Todo cambio entra por merge request, con revisión (Semana 06) | Tiempo de entrega |
+| 2026-11-12 | `main` protegida y aprobación obligatoria por el hook (Semana 07) | Tiempo de entrega |
 ```
 
-La columna **Contexto** es la que hace útil la tabla dentro de seis meses.
+La columna **Contexto** es la que hace útil la tabla dentro de seis meses. La sección **Cambios de proceso** explica los saltos de la serie: cada vez que cambia cómo se trabaja, una línea con la fecha.
 
 ---
 
