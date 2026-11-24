@@ -1,0 +1,144 @@
+{
+  "semana": "18",
+  "titulo": "Administracion, hardening y actualizaciones",
+  "checks": [
+    {
+      "id": "plataforma-protege-main",
+      "descripcion": "infra/plataforma protege main y no admite force push",
+      "api": "projects/{grupo}%2Finfra%2Fplataforma/protected_branches/main",
+      "jq": ".name == \"main\" and (.allow_force_push | not)",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 1"
+    },
+    {
+      "id": "plataforma-privado",
+      "descripcion": "infra/plataforma es privado",
+      "api": "projects/{grupo}%2Finfra%2Fplataforma",
+      "jq": ".visibility == \"private\"",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 1"
+    },
+    {
+      "id": "registro-cerrado",
+      "descripcion": "El registro publico de usuarios esta desactivado",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".signup_enabled == false",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 3"
+    },
+    {
+      "id": "admin-con-2fa",
+      "descripcion": "Los administradores necesitan 2FA y el modo admin esta activo",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".require_admin_two_factor_authentication and .admin_mode",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 4"
+    },
+    {
+      "id": "contrasenas",
+      "descripcion": "Las contrasenas tienen 12 caracteres o mas y Git por HTTP no acepta contrasena",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".minimum_password_length >= 12 and (.password_authentication_enabled_for_git | not)",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 5"
+    },
+    {
+      "id": "visibilidad-publica-restringida",
+      "descripcion": "Solo un admin puede hacer algo publico y los proyectos nacen privados",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": "(.restricted_visibility_levels | index(\"public\") != null) and .default_project_visibility == \"private\"",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 6"
+    },
+    {
+      "id": "cuentas-dormidas",
+      "descripcion": "Las cuentas sin actividad durante 90 dias se desactivan solas",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".deactivate_dormant_users and .deactivate_dormant_users_period == 90",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 7"
+    },
+    {
+      "id": "registro-runner-legado-cerrado",
+      "descripcion": "Los tokens de registro de runners heredados estan desactivados",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".allow_runner_registration_token == false",
+      "pista": "2-practicas/01-la-politica-de-la-instancia.md, paso 8"
+    },
+    {
+      "id": "oidc-cuentas-vinculadas",
+      "descripcion": "Al menos dos usuarios activos entran con Keycloak por OIDC",
+      "api": "users?per_page=100",
+      "token": "admin",
+      "jq": "[.[] | select(.state == \"active\" and any(.identities[]?; .provider == \"openid_connect\"))] | length >= 2",
+      "pista": "2-practicas/02-login-con-keycloak.md, paso 7"
+    },
+    {
+      "id": "oidc-alta-en-espera",
+      "descripcion": "Un usuario creado desde Keycloak queda pendiente de aprobacion",
+      "api": "users?per_page=100",
+      "token": "admin",
+      "jq": "any(.[]; .state == \"blocked_pending_approval\" and any(.identities[]?; .provider == \"openid_connect\"))",
+      "pista": "2-practicas/02-login-con-keycloak.md, paso 8"
+    },
+    {
+      "id": "sso-sin-contrasena",
+      "descripcion": "Quien tiene identidad SSO no puede entrar con contrasena",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".disable_password_authentication_for_users_with_sso_identities == true",
+      "pista": "2-practicas/02-login-con-keycloak.md, paso 9"
+    },
+    {
+      "id": "limites-de-peticiones",
+      "descripcion": "La API autenticada, la API anonima y la web anonima tienen limite de peticiones",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".throttle_authenticated_api_enabled and .throttle_unauthenticated_api_enabled and .throttle_unauthenticated_web_enabled",
+      "pista": "2-practicas/03-limites-y-superficie.md, paso 2"
+    },
+    {
+      "id": "rutas-protegidas",
+      "descripcion": "El limite de rutas protegidas esta activo",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": ".throttle_protected_paths_enabled == true",
+      "pista": "2-practicas/03-limites-y-superficie.md, paso 3"
+    },
+    {
+      "id": "hooks-sin-red-local",
+      "descripcion": "Ni los webhooks ni los hooks de sistema llegan a la red local fuera de la lista permitida",
+      "api": "application/settings",
+      "token": "admin",
+      "jq": "(.allow_local_requests_from_web_hooks_and_services | not) and (.allow_local_requests_from_system_hooks | not)",
+      "pista": "2-practicas/03-limites-y-superficie.md, paso 5"
+    },
+    {
+      "id": "endurecimiento-documentado",
+      "descripcion": "infra/plataforma tiene docs/endurecimiento.md con la politica, el OIDC y la lista de monitoreo",
+      "api": "projects/{grupo}%2Finfra%2Fplataforma/repository/files/docs%2Fendurecimiento.md?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"OIDC\") and test(\"monitoring_whitelist\") and test(\"admin_mode\"))",
+      "pista": "2-practicas/03-limites-y-superficie.md, paso 8"
+    },
+    {
+      "id": "informe-de-actualizacion",
+      "descripcion": "infra/plataforma tiene el informe del ensayo de 19.1 a 19.2 con backup y migraciones",
+      "api": "projects/{grupo}%2Finfra%2Fplataforma/repository/files/docs%2Factualizaciones%2F19.1-a-19.2.md?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"gitlab-backup\") and test(\"19\\\\.2\\\\.4\") and test(\"batched_background_migrations\"))",
+      "pista": "2-practicas/04-el-ensayo-de-actualizacion.md, paso 9"
+    },
+    {
+      "id": "laboratorio-en-version-fijada",
+      "descripcion": "La instancia del laboratorio sigue en 19.2.4",
+      "api": "version",
+      "jq": ".version == \"19.2.4\"",
+      "pista": "2-practicas/04-el-ensayo-de-actualizacion.md, paso 1"
+    },
+    {
+      "id": "manual-de-la-instancia",
+      "descripcion": "infra/plataforma versiona un README con el acceso de emergencia, como aprobar altas y la proxima actualizacion",
+      "api": "projects/{grupo}%2Finfra%2Fplataforma/repository/files/README.md?ref=main",
+      "jq": ".content != null and (.content | @base64d | test(\"emergencia\"; \"i\") and test(\"approve\") and test(\"19\\\\.5\"))",
+      "pista": "3-proyecto/README.md, paso 2"
+    }
+  ]
+}

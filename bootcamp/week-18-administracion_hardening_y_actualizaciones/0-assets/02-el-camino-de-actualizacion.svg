@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">El camino de actualización</title>
+  <desc id="desc">Una línea de versiones de la serie 19: 19.1.10, de donde parte el ensayo; las paradas obligatorias 19.2, 19.5, 19.8 y 19.11; el laboratorio está en 19.2.4. Entre la partida y la parada, cuatro pasos: backup con gitlab-backup create y copia de gitlab-secrets.json; salto cambiando la versión de la imagen; reconfigure con migraciones y la lista Deprecations; esperar a que todas las migraciones en segundo plano estén en finished antes del siguiente salto. La flecha de vuelta atrás desde 19.2.4 a 19.1.10 solo existe restaurando el backup.</desc>
+  <rect width="900" height="380" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="flecha-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8877CC"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="450" y="34" fill="#FAFAFA" font-size="17" font-weight="600" text-anchor="middle">Serie 19: las paradas obligatorias</text>
+
+    <!-- eje de versiones -->
+    <line x1="60" y1="110" x2="850" y2="110" stroke="#666666" stroke-width="2"/>
+
+    <circle cx="110" cy="110" r="9" fill="#1F1F1F" stroke="#999999" stroke-width="2"/>
+    <text x="110" y="85" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">19.1.10</text>
+    <text x="110" y="140" fill="#999999" font-size="12" text-anchor="middle">partida del ensayo</text>
+
+    <circle cx="290" cy="110" r="11" fill="#FC6D26"/>
+    <text x="290" y="85" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">19.2.4</text>
+    <text x="290" y="140" fill="#FC6D26" font-size="12" text-anchor="middle">parada · laboratorio</text>
+
+    <circle cx="470" cy="110" r="11" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="470" y="85" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">19.5</text>
+    <text x="470" y="140" fill="#999999" font-size="12" text-anchor="middle">parada</text>
+
+    <circle cx="630" cy="110" r="11" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="630" y="85" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">19.8</text>
+    <text x="630" y="140" fill="#999999" font-size="12" text-anchor="middle">parada</text>
+
+    <circle cx="790" cy="110" r="11" fill="none" stroke="#FC6D26" stroke-width="2"/>
+    <text x="790" y="85" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">19.11</text>
+    <text x="790" y="140" fill="#999999" font-size="12" text-anchor="middle">parada</text>
+
+    <!-- salto del ensayo -->
+    <path d="M 122 100 Q 200 58 278 100" fill="none" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- vuelta atrás -->
+    <path d="M 280 124 Q 200 178 120 124" fill="none" stroke="#8877CC" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#flecha-m)"/>
+    <text x="200" y="172" fill="#8877CC" font-size="12" text-anchor="middle">vuelta atrás: solo restaurando</text>
+
+    <!-- pasos del salto -->
+    <g font-size="13">
+      <rect x="40" y="210" width="190" height="130" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+      <text x="135" y="236" fill="#FAFAFA" font-weight="600" text-anchor="middle">1 · Backup</text>
+      <text x="135" y="262" fill="#999999" font-size="12" text-anchor="middle">gitlab-backup create</text>
+      <text x="135" y="282" fill="#999999" font-size="12" text-anchor="middle">STRATEGY=copy</text>
+      <text x="135" y="308" fill="#999999" font-size="12" text-anchor="middle">+ gitlab-secrets.json</text>
+      <text x="135" y="326" fill="#999999" font-size="12" text-anchor="middle">en la versión de partida</text>
+
+      <rect x="255" y="210" width="190" height="130" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+      <text x="350" y="236" fill="#FAFAFA" font-weight="600" text-anchor="middle">2 · Salto</text>
+      <text x="350" y="262" fill="#999999" font-size="12" text-anchor="middle">versión exacta de la imagen</text>
+      <text x="350" y="282" fill="#999999" font-size="12" text-anchor="middle">nunca latest</text>
+      <text x="350" y="308" fill="#999999" font-size="12" text-anchor="middle">up -d y esperar</text>
+      <text x="350" y="326" fill="#999999" font-size="12" text-anchor="middle">/-/readiness</text>
+
+      <rect x="470" y="210" width="190" height="130" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+      <text x="565" y="236" fill="#FAFAFA" font-weight="600" text-anchor="middle">3 · Reconfigure</text>
+      <text x="565" y="262" fill="#999999" font-size="12" text-anchor="middle">migraciones del esquema</text>
+      <text x="565" y="282" fill="#999999" font-size="12" text-anchor="middle">Deprecations: claves</text>
+      <text x="565" y="300" fill="#999999" font-size="12" text-anchor="middle">que cambian de sitio</text>
+      <text x="565" y="326" fill="#999999" font-size="12" text-anchor="middle">y un PUT de ajustes</text>
+
+      <rect x="685" y="210" width="190" height="130" rx="8" fill="none" stroke="#FC6D26" stroke-width="2"/>
+      <text x="780" y="236" fill="#FAFAFA" font-weight="600" text-anchor="middle">4 · Esperar</text>
+      <text x="780" y="262" fill="#999999" font-size="12" text-anchor="middle">batched background</text>
+      <text x="780" y="282" fill="#999999" font-size="12" text-anchor="middle">migrations</text>
+      <text x="780" y="308" fill="#999999" font-size="12" text-anchor="middle">todas finished antes</text>
+      <text x="780" y="326" fill="#999999" font-size="12" text-anchor="middle">del siguiente salto</text>
+    </g>
+    <line x1="230" y1="275" x2="253" y2="275" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="445" y1="275" x2="468" y2="275" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="660" y1="275" x2="683" y2="275" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+  </g>
+</svg>

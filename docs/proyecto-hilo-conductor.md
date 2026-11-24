@@ -39,6 +39,7 @@ plataforma-<tu-dominio>/          ← grupo raíz
 ├── app/                          ← el producto. Nace en la S01
 ├── infra/                        ← subgrupo (S03)
 │   ├── entornos/                 ← qué versión hay en cada entorno. Nace en la S11
+│   ├── plataforma/               ← política, OIDC y actualizaciones de la instancia. Nace en la S18
 │   └── terraform/                ← Terraform y estado remoto. Nace en la S24
 └── ci/
     ├── componentes/              ← componentes CI/CD publicados. Nace en la S12
@@ -85,7 +86,7 @@ Ejemplo (dominio biblioteca): `calcularMulta(diasRetraso)`, `ejemplaresDisponibl
 | 15 | Flota de 3 runners etiquetados (`docker`, `dind`, protegido) + caché en SeaweedFS | La ejecución está enrutada y la caché es compartida |
 | 16 | Runner con ejecutor Kubernetes en k3d + `docs/finops.md` | La ejecución autoescala y sabes lo que cuesta cada pipeline |
 | 17 | `ci/automatizacion`: auditor por API, receptor de webhooks, job por ChatOps | La plataforma se opera por API, no a clics |
-| 18 | Instancia endurecida + login OIDC con Keycloak + informe de actualización | La instancia está administrada como producción |
+| 18 | `infra/plataforma`: instancia endurecida, login OIDC con Keycloak, informe del ensayo de actualización | La instancia está administrada como producción |
 | 19 | Stage `seguridad` con Semgrep, Gitleaks, OSV-Scanner y Trivy | Nada se fusiona sin pasar cuatro escáneres |
 | 20 | SBOM, firma con Cosign, gate de Conftest | Solo se despliega lo firmado y con inventario |
 | 21 | Prometheus + Grafana + Loki + `docs/slo.md` con 3 SLO | La instancia tiene métricas, logs y umbrales declarados |

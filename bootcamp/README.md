@@ -49,7 +49,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 
 | Semana | Tema | Estado |
 |:--:|---|:--:|
-| 18 | Administración, hardening y actualizaciones | ⬜ |
+| [18](week-18-administracion_hardening_y_actualizaciones/README.md) | [Administración, hardening y actualizaciones](week-18-administracion_hardening_y_actualizaciones/README.md) | ✅ |
 | 19 | Seguridad del pipeline con herramientas OSS | ⬜ |
 | 20 | Cadena de suministro y políticas como código | ⬜ |
 
@@ -110,7 +110,7 @@ Las semanas con código de apoyo añaden `starter/`.
 
 ## Perfiles del laboratorio
 
-No todas las semanas levantan lo mismo, y algunos perfiles no caben juntos en memoria. Consulta [perfiles-de-laboratorio.md](../docs/perfiles-de-laboratorio.md) antes de las semanas 16, 21, 23 y 25.
+No todas las semanas levantan lo mismo, y algunos perfiles no caben juntos en memoria. Consulta [perfiles-de-laboratorio.md](../docs/perfiles-de-laboratorio.md) antes de las semanas 16, 18, 21, 23 y 25.
 
 ```bash
 docker compose --profile base up -d

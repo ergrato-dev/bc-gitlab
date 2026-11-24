@@ -154,7 +154,7 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 
 **16 GB de RAM.** No es una recomendación: las semanas 16, 21, 23 y 25 levantan Kubernetes, un stack de observabilidad o seis contenedores de alta disponibilidad. Con 8 GB se puede llegar hasta la Semana 15.
 
-Los perfiles de Docker Compose son **mutuamente excluyentes en memoria**: `base`, `observabilidad` y `ha` no caben a la vez. Kubernetes **no es un perfil**: la Semana 16 levanta un clúster de k3d aparte, que desde entonces ejecuta los jobs de `app`, y antes hay que apagar observabilidad. En las semanas que no caben con él, se apaga y `docker-app` vuelve a servicio. Cada semana declara qué necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
+Los perfiles de Docker Compose son **mutuamente excluyentes en memoria**: `base`, `observabilidad` y `ha` no caben a la vez, y el `ensayo` de la Semana 18 sustituye a `base` mientras dura. Kubernetes **no es un perfil**: la Semana 16 levanta un clúster de k3d aparte, que desde entonces ejecuta los jobs de `app`, y antes hay que apagar observabilidad. En las semanas que no caben con él, se apaga y `docker-app` vuelve a servicio. Cada semana declara qué necesita — ver [perfiles-de-laboratorio.md](./docs/perfiles-de-laboratorio.md).
 
 ### Lo que GitLab CE no incluye
 

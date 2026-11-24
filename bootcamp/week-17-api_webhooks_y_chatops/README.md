@@ -144,6 +144,6 @@ Lo que el script **no** puede comprobar es que el receptor rechace una firma fal
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 16 — Runners en Kubernetes y FinOps](../week-16-runners_en_kubernetes_y_finops/README.md) | **Semana 17** | Semana 18 — Administración, hardening y actualizaciones |
+| [Semana 16 — Runners en Kubernetes y FinOps](../week-16-runners_en_kubernetes_y_finops/README.md) | **Semana 17** | [Semana 18 — Administración, hardening y actualizaciones](../week-18-administracion_hardening_y_actualizaciones/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

@@ -12,6 +12,8 @@ Por eso el laboratorio está partido en **perfiles de Docker Compose**. Cada sem
 |---|---|---|:--:|---|
 | `base` | GitLab CE, GitLab Runner, cache de registry, `destino` (desde S14, 128 MB), `cache-s3` (desde S15, 256 MB) | Todas | ~5 GB | ✅ en `docker-compose.yml` |
 | `observabilidad` | Prometheus, Grafana, Loki, Promtail | 21 | +4 GB | ✅ en `docker-compose.yml` |
+| `sso` | Keycloak 26.8.2 (`localhost:8180`), proveedor OIDC de GitLab | 18, 26 | +0,6 GB | ✅ en `docker-compose.yml` |
+| `ensayo` | Un segundo GitLab CE desechable (`gitlab-ensayo`, `localhost:8889`) en la versión de `ENSAYO_VERSION` | 18 (práctica 04) | ~4 GB, **sustituye** a `base` | ✅ en `docker-compose.yml` |
 | `ha` | Praefect, 3 Gitaly, PostgreSQL primario y réplica, PgBouncer | 23 | +8 GB | ⬜ se añade al escribir la Semana 23 |
 
 ```bash
@@ -46,7 +48,7 @@ El comando completo, con el espejo de Docker Hub, está en la [práctica 01 de l
 
 ## Presupuesto de memoria por semana
 
-Las semanas que aprietan de verdad son cuatro. Estas son las cuentas y qué apagar en cada una.
+Las semanas que aprietan de verdad son cuatro, más el ensayo de la 18. Estas son las cuentas y qué apagar en cada una.
 
 ### Semana 16 — Runners en Kubernetes (~11-12 GB)
 
@@ -61,6 +63,24 @@ prometheus_monitoring['enable'] = false
 ```
 
 Y crea el clúster pequeño, como arriba. Entre sesiones, `k3d cluster stop bootcamp` devuelve la memoria sin borrar nada.
+
+### Semana 18 — Administración y actualizaciones
+
+`base` + `sso` + k3d: unos 7 GB, cómodo. Keycloak tiene `mem_limit: 768m` y usa ~530 MB en marcha.
+
+La práctica 04 levanta `ensayo`, un GitLab entero, y **no cabe junto al laboratorio**: se para todo antes y se vuelve a levantar después.
+
+```bash
+docker compose --profile base --profile sso stop && k3d cluster stop bootcamp
+docker compose --profile ensayo up -d gitlab-ensayo
+# ... el ensayo ...
+docker compose --profile ensayo rm -sf gitlab-ensayo
+docker volume rm bc-gitlab-ensayo-config bc-gitlab-ensayo-logs bc-gitlab-ensayo-data
+docker compose --profile base --profile sso up -d && k3d cluster start bootcamp
+```
+
+> [!WARNING]
+> El ensayo se borra **por nombre**. `docker compose down -v` borra los volúmenes de todos los servicios del compose, también los del laboratorio principal.
 
 ### Semana 21 — Observabilidad (~10 GB)
 

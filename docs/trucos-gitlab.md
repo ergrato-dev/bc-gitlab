@@ -348,6 +348,19 @@ _Se añaden a medida que se publica cada semana._
 | Qué token de grupo nadie usa | `GET /groups/:id/access_tokens` y su `last_used_at`: incluye los revocados, filtra por `active` |
 | Ver las variables que recibe un job de chat | `env \| grep ^CHAT_` en el job: `CHAT_INPUT`, `CHAT_CHANNEL`, `CHAT_USER_ID` |
 
+## Semana 18 — Administración, hardening y actualizaciones
+
+| Truco | Cómo |
+|---|---|
+| Todos los ajustes de la instancia en un archivo | `GET /application/settings > ajustes.json` antes de tocar nada; `diff` con el de después |
+| Un ajuste cambiado que "no hace nada" | Cada proceso cachea los ajustes alrededor de un minuto: espera antes de dar la prueba por fallida |
+| Qué límite te ha frenado | La cabecera `RateLimit-Name` del `429` (`throttle_unauthenticated_protected_paths`, por ejemplo) |
+| Quién entra por SSO y quién por contraseña | `GET /users?per_page=100` como admin y mira `identities[].provider`; las altas en espera, con `state == "blocked_pending_approval"` |
+| Los administradores sin 2FA | `GET /users?admins=true&two_factor=disabled` |
+| El emisor que Keycloak pone en los tokens | `curl -s http://localhost:8180/realms/bootcamp/.well-known/openid-configuration \| jq -r .issuer` |
+| Las claves que una versión ha deprecado | La línea `Deprecations:` al final de `gitlab-ctl reconfigure` |
+| Si quedan migraciones antes del siguiente salto | `GET /admin/batched_background_migrations` como admin: todo `finished` |
+
 ---
 
 [← Volver a docs](README.md)

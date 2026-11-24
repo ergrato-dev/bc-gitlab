@@ -102,6 +102,45 @@ services:
         gitlab_exporter['enable'] = true
         redis_exporter['enable'] = true
         postgres_exporter['enable'] = true
+
+        # ── Login con Keycloak por OIDC (S18) ──
+        # Apagado hasta OIDC_ENABLED=true en .env. El navegador va a
+        # localhost:8180 (authorization_endpoint); GitLab pide el token y la
+        # informacion del usuario a keycloak:8080 por la red interna. Por eso
+        # discovery va en false y los endpoints se escriben a mano.
+        gitlab_rails['omniauth_enabled'] = ${OIDC_ENABLED:-false}
+        gitlab_rails['omniauth_allow_single_sign_on'] = ['openid_connect']
+        # Quien entra por Keycloak sin cuenta previa queda bloqueado hasta que
+        # un admin lo apruebe.
+        gitlab_rails['omniauth_block_auto_created_users'] = true
+        # Las cuentas existentes se vinculan por email.
+        gitlab_rails['omniauth_auto_link_user'] = ['openid_connect']
+        gitlab_rails['omniauth_providers'] = [
+          {
+            name: 'openid_connect',
+            label: 'Keycloak',
+            args: {
+              name: 'openid_connect',
+              scope: ['openid', 'profile', 'email'],
+              response_type: 'code',
+              issuer: 'http://localhost:${KEYCLOAK_PORT:-8180}/realms/bootcamp',
+              discovery: false,
+              pkce: true,
+              client_auth_method: 'basic',
+              uid_field: 'sub',
+              client_options: {
+                identifier: 'gitlab',
+                secret: '${OIDC_CLIENT_SECRET:-}',
+                redirect_uri: '${GITLAB_EXTERNAL_URL:-http://localhost:8888}/users/auth/openid_connect/callback',
+                authorization_endpoint: 'http://localhost:${KEYCLOAK_PORT:-8180}/realms/bootcamp/protocol/openid-connect/auth',
+                token_endpoint: 'http://keycloak:8080/realms/bootcamp/protocol/openid-connect/token',
+                userinfo_endpoint: 'http://keycloak:8080/realms/bootcamp/protocol/openid-connect/userinfo',
+                jwks_uri: 'http://keycloak:8080/realms/bootcamp/protocol/openid-connect/certs',
+                end_session_endpoint: 'http://localhost:${KEYCLOAK_PORT:-8180}/realms/bootcamp/protocol/openid-connect/logout'
+              }
+            }
+          }
+        ]
     ports:
       - "${GITLAB_HTTP_PORT:-8888}:8888"
       - "${REGISTRY_PORT:-5050}:5050"
@@ -225,6 +264,92 @@ services:
       - base
 
   # ============================================
+  # Keycloak — proveedor de identidad OIDC de la instancia (S18)
+  # ============================================
+  # Perfil propio: se suma a base solo en las semanas 18 y 26.
+  #   docker compose --profile base --profile sso up -d
+  # GitLab no lo usa hasta que OIDC_ENABLED=true en .env.
+  #
+  # start-dev guarda los datos en H2 dentro del volumen: vale para el
+  # laboratorio, no para produccion (alli, start + PostgreSQL + HTTPS).
+  # KC_HOSTNAME fija el emisor (issuer) de los tokens: el navegador entra por
+  # localhost:8180 y GitLab habla con keycloak:8080 por la red interna, pero
+  # los dos ven el mismo issuer. Ver la teoria 04 de la S18.
+  keycloak:
+    # 26.8.2, digest del 2026-11-12. Excepcion documentada en docs/stack-versions.md.
+    image: quay.io/keycloak/keycloak:26.8.2@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0
+    container_name: keycloak
+    restart: unless-stopped
+    command: ["start-dev"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: "${KEYCLOAK_ADMIN:-admin}"
+      KC_BOOTSTRAP_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD:-cambia-esta-clave}"
+      KC_HOSTNAME: "http://localhost:${KEYCLOAK_PORT:-8180}"
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+      JAVA_OPTS_KC_HEAP: "-XX:MaxRAMPercentage=60"
+    ports:
+      # Solo en 127.0.0.1: la consola de admin no se publica a la red local.
+      - "127.0.0.1:${KEYCLOAK_PORT:-8180}:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    networks:
+      - gitlab-network
+    mem_limit: 768m
+    profiles:
+      - sso
+
+  # ============================================
+  # Instancia de ensayo de actualizaciones (S18)
+  # ============================================
+  # Un GitLab desechable para ensayar un salto de version sin tocar el del
+  # laboratorio. Nace en ENSAYO_VERSION y se sube cambiando esa variable.
+  # Excluyente con base por memoria: apaga base antes de levantarlo.
+  #   docker compose --profile base --profile sso stop
+  #   docker compose --profile ensayo up -d
+  # Al terminar se borra entero, contenedor y sus tres volumenes, por nombre:
+  #   docker compose --profile ensayo rm -sf gitlab-ensayo
+  #   docker volume rm bc-gitlab-ensayo-config bc-gitlab-ensayo-logs bc-gitlab-ensayo-data
+  # Nunca 'down -v': borra tambien los volumenes del laboratorio.
+  gitlab-ensayo:
+    image: gitlab/gitlab-ce:${ENSAYO_VERSION:-19.1.10-ce.0}
+    container_name: gitlab-ensayo
+    hostname: gitlab-ensayo
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:8889'
+        gitlab_rails['initial_root_password'] = '${ENSAYO_ROOT_PASSWORD:-ChangeMe123!}'
+        gitlab_rails['usage_ping_enabled'] = false
+        gitlab_rails['sentry_enabled'] = false
+        gitlab_rails['smtp_enable'] = false
+        gitlab_rails['gitlab_email_enabled'] = false
+        # Clave antigua a proposito: en 19.2 paso a gitlab_rails['nginx'][...].
+        # El informe del ensayo tiene que encontrarla.
+        nginx['client_max_body_size'] = '256m'
+        registry['enable'] = false
+        gitlab_pages['enable'] = false
+        prometheus_monitoring['enable'] = false
+        puma['worker_processes'] = 2
+        sidekiq['concurrency'] = 10
+    ports:
+      - "8889:8889"
+    volumes:
+      - ensayo-config:/etc/gitlab
+      - ensayo-logs:/var/log/gitlab
+      - ensayo-data:/var/opt/gitlab
+    shm_size: '256m'
+    healthcheck:
+      test: curl -f http://localhost:8889/-/health || exit 1
+      interval: 60s
+      timeout: 30s
+      retries: 10
+      start_period: 300s
+    networks:
+      - gitlab-network
+    profiles:
+      - ensayo
+
+  # ============================================
   # Prometheus — métricas (S21)
   # ============================================
   prometheus:
@@ -333,6 +458,14 @@ volumes:
     name: bc-gitlab-destino-claves
   cache-s3-data:
     name: bc-gitlab-cache-s3
+  keycloak-data:
+    name: bc-gitlab-keycloak
+  ensayo-config:
+    name: bc-gitlab-ensayo-config
+  ensayo-logs:
+    name: bc-gitlab-ensayo-logs
+  ensayo-data:
+    name: bc-gitlab-ensayo-data
 
 # ============================================
 # Red interna

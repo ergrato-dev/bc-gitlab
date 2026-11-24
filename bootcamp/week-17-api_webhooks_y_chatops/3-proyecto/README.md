@@ -154,6 +154,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 16](../../week-16-runners_en_kubernetes_y_finops/3-proyecto/README.md) | **Proyecto Semana 17** | Proyecto Semana 18 |
+| [Proyecto Semana 16](../../week-16-runners_en_kubernetes_y_finops/3-proyecto/README.md) | **Proyecto Semana 17** | [Proyecto Semana 18](../../week-18-administracion_hardening_y_actualizaciones/3-proyecto/README.md) |
 
 [← Volver a la Semana 17](../README.md)

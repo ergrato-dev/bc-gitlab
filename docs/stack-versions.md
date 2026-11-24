@@ -57,7 +57,8 @@ Se instalan cuando la semana lo pide, no antes.
 | **Chart `gitlab/gitlab-runner`** | `0.91.2` | 16 | `helm install … --version 0.91.2` | Instala el runner `19.2.2`, la misma versión que `RUNNER_VERSION` |
 | **SeaweedFS** | `4.40` | 15 | `chrislusf/seaweedfs:4.40` | Servicio `cache-s3`: caché distribuida de los runners (`weed mini`) |
 | **Docker** (cliente y daemon en el job) | `29.9.3` | 15 | `docker:29.9.3-cli`, servicio `docker:29.9.3-dind` | Job `probar-imagen` de `app`, en el runner `dind` |
-| Keycloak | 26+ | 18 | `quay.io/keycloak/keycloak` | OIDC contra la instancia |
+| **Keycloak** | `26.8.2` | 18, 26 | `quay.io/keycloak/keycloak:26.8.2@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0`, perfil `sso` | Proveedor OIDC de la instancia. **Excepción** a "anterior a la última": 26.8.1 tiene CVE-2026-107889 (XSS en la página de login) y CVE-2026-107124 (`id_token_hint`), corregidas en 26.8.2 (publicada el 2026-11-05). Quay reconstruyó el tag el 2026-11-19, con menos de 7 días al fijarlo: se fija por el digest de la imagen del 2026-11-12. Al cambiarla, digest nuevo con 7 días o más |
+| GitLab CE (instancia de ensayo) | `19.1.10-ce.0` → `19.2.4-ce.0` | 18 | `.env` → `ENSAYO_VERSION`, perfil `ensayo` | Versión de partida del ensayo de actualización. Una 19.1 cualquiera vale. El laboratorio principal no cambia |
 | **Semgrep** | `1.173.0` | 19 | `semgrep/semgrep:1.173.0` | SAST |
 | **Gitleaks** | `8.30.1` | 19 | `zricethezav/gitleaks:v8.30.1` | Detección de secretos |
 | **OSV-Scanner** | `2.5.1` | 19 | `ghcr.io/google/osv-scanner:v2.5.1` | Vulnerabilidades de dependencias |
