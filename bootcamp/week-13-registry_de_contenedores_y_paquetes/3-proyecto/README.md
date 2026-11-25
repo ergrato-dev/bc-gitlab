@@ -15,7 +15,7 @@ Dejar en pie la **capa 13** de tu plataforma: el componente `imagen` publicado e
 | Lo que creas esta semana | Se usa a partir de |
 |---|---|
 | La imagen de `app` en el registry | S19 (Trivy la escanea), S20 (Cosign la firma por digest) |
-| El componente `imagen` | S19 (un componente de escaneo la recibe por digest), S20 (añade firma y SBOM) |
+| El componente `imagen` | S19 (el input `tar` deja la imagen como artefacto y el componente `seguridad` la escanea), S20 (añade firma y SBOM) |
 | El paquete genérico por SHA | S14 (`infra/entornos` despliega lo que descarga), S20 (SBOM del `.tgz`) |
 | La política de limpieza | S17 (la auditoría por API comprueba que todos los proyectos la tienen), S22 (cuánto ocupa el backup) |
 | El dependency proxy | S16 (los jobs en Kubernetes descargan del mismo sitio), S19 (inventario de imágenes externas) |

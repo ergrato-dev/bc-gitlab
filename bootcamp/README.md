@@ -50,7 +50,7 @@ La columna **Estado** dice la verdad sobre el repositorio: ✅ la semana está e
 | Semana | Tema | Estado |
 |:--:|---|:--:|
 | [18](week-18-administracion_hardening_y_actualizaciones/README.md) | [Administración, hardening y actualizaciones](week-18-administracion_hardening_y_actualizaciones/README.md) | ✅ |
-| 19 | Seguridad del pipeline con herramientas OSS | ⬜ |
+| [19](week-19-seguridad_del_pipeline_con_herramientas_oss/README.md) | [Seguridad del pipeline con herramientas OSS](week-19-seguridad_del_pipeline_con_herramientas_oss/README.md) | ✅ |
 | 20 | Cadena de suministro y políticas como código | ⬜ |
 
 ### Fase 6 — Operación, observabilidad y HA (S21-23, 24 h)

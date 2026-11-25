@@ -52,6 +52,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Dependency Proxy** — Free. Cache de imágenes de Docker Hub de cada grupo raíz, servida por tu propia instancia. Se usa con `${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/imagen:versión` (S13). Evita el rate limit de los pulls anónimos.
 
+**Dependency Scanning** — **Ultimate**. Escáner nativo de dependencias: su plantilla comprueba `$GITLAB_FEATURES` y en CE no crea ningún job. En CE, OSV-Scanner sobre el lockfile (S19).
+
 **Docker in Docker** (`dind`) — Un daemon de Docker como servicio de un job, en un contenedor privilegiado. Con `allowed_privileged_services` el privilegio se queda en el daemon y no llega al `script` (Semana 15).
 
 **Deploy token** — Free. Credencial de proyecto o grupo para máquinas fuera de GitLab, con `read_registry` y `read_package_registry`. No ocupa un usuario y no puede subir a lo protegido (S13).
@@ -96,7 +98,11 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 **Hito** (*milestone*) — Free. Agrupación de issues y merge requests con fecha. En CE es el nivel de planificación más alto disponible.
 
+**Huella de Gitleaks** (*fingerprint*) — `<commit>:<archivo>:<regla>:<línea>`: lo que se apunta en `.gitleaksignore`, con el motivo en un comentario encima (S19).
+
 ## I
+
+**Informe JUnit** (`artifacts:reports:junit`) — Free. Lleva los resultados de un job al *Test summary* de la merge request, comparados con la rama de destino. En CE, el canal por el que los hallazgos de seguridad llegan al revisor (S19).
 
 **`include`** — Free. Mete en el pipeline el YAML de otro archivo: del mismo proyecto, de otro, de una URL, una plantilla o un componente. Las listas definidas en los dos lados no se suman: gana la última (S12).
 
@@ -178,11 +184,15 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 
 ## S
 
-**SAST** (*static application security testing*) — **Ultimate** el nativo. Análisis del código sin ejecutarlo. En CE se implementa con Semgrep en un job propio.
+**SAST** (*static application security testing*) — Análisis del código sin ejecutarlo. La plantilla `Jobs/SAST` es Free, pero en CE solo deja un JSON y su job lleva `allow_failure: true`; el widget en la merge request y las reglas propias son **Ultimate**. En CE, Semgrep con reglas propias en el componente `seguridad` (S19).
+
+**SARIF** (*Static Analysis Results Interchange Format*) — Formato JSON estándar de hallazgos de análisis. Los cuatro escáneres del componente `seguridad` lo guardan 30 días, también con lo que queda bajo el umbral (S19).
 
 **SBOM** (*software bill of materials*) — Inventario de todo lo que compone un artefacto. Se genera con Syft y se firma junto a la imagen.
 
 **Scoped label** (*etiqueta con ámbito*) — **Premium**. Etiquetas mutuamente excluyentes con la sintaxis `clave::valor`. En CE el `::` se acepta en el nombre pero no impone nada; este bootcamp usa igualmente `clave::valor` (para que Premium la active sin renombrar) y vigila la exclusividad con el tablero y una comprobación por API (S05).
+
+**Secret push protection** — **Ultimate**. Bloquea un secreto en el momento del push. En CE, Gitleaks en el pipeline (el secreto ya está en el servidor) o un server hook (S07, S19).
 
 **SemVer** (*Semantic Versioning*) — Convención `MAYOR.MENOR.PARCHE`: rompe, añade, arregla. Con `MAYOR = 0` no hay contrato, y cada proyecto fija su regla por escrito.
 
@@ -221,6 +231,8 @@ Términos de toda la plataforma. Complementa —no sustituye— el glosario de c
 **Variable oculta** (*hidden variable*) — Free. Variable enmascarada cuyo valor ya no se puede ver en la interfaz ni en la API. Se marca al crearla y no se puede desmarcar.
 
 **Variable protegida** (*protected variable*) — Free. Solo llega a pipelines de ramas y tags protegidos. El único atributo que impide que un secreto llegue a una merge request.
+
+**Vulnerability report** — **Ultimate**. La lista de vulnerabilidades de un proyecto con su estado. En CE, los SARIF de cada pipeline y un issue con `due_date` por hallazgo abierto (S19).
 
 ## W
 

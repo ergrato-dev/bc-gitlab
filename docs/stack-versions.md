@@ -59,10 +59,12 @@ Se instalan cuando la semana lo pide, no antes.
 | **Docker** (cliente y daemon en el job) | `29.9.3` | 15 | `docker:29.9.3-cli`, servicio `docker:29.9.3-dind` | Job `probar-imagen` de `app`, en el runner `dind` |
 | **Keycloak** | `26.8.2` | 18, 26 | `quay.io/keycloak/keycloak:26.8.2@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0`, perfil `sso` | Proveedor OIDC de la instancia. **Excepción** a "anterior a la última": 26.8.1 tiene CVE-2026-107889 (XSS en la página de login) y CVE-2026-107124 (`id_token_hint`), corregidas en 26.8.2 (publicada el 2026-11-05). Quay reconstruyó el tag el 2026-11-19, con menos de 7 días al fijarlo: se fija por el digest de la imagen del 2026-11-12. Al cambiarla, digest nuevo con 7 días o más |
 | GitLab CE (instancia de ensayo) | `19.1.10-ce.0` → `19.2.4-ce.0` | 18 | `.env` → `ENSAYO_VERSION`, perfil `ensayo` | Versión de partida del ensayo de actualización. Una 19.1 cualquiera vale. El laboratorio principal no cambia |
-| **Semgrep** | `1.173.0` | 19 | `semgrep/semgrep:1.173.0` | SAST |
-| **Gitleaks** | `8.30.1` | 19 | `zricethezav/gitleaks:v8.30.1` | Detección de secretos |
-| **OSV-Scanner** | `2.5.1` | 19 | `ghcr.io/google/osv-scanner:v2.5.1` | Vulnerabilidades de dependencias |
-| **Trivy** | `0.74.0` | 19 | `aquasec/trivy:0.74.0` | Escaneo de imágenes |
+| **Semgrep** | `1.185.0` | 19 | `semgrep/semgrep:1.185.0@sha256:67518c174185a2043fdbed16c70631b79209499b3671178e7194379b48295a0d` | SAST con reglas propias, componente `seguridad` |
+| **Gitleaks** | `8.30.0` | 19 | `zricethezav/gitleaks:v8.30.0@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9` | Detección de secretos en el historial. `8.30.1` es la última publicada |
+| **OSV-Scanner** | `2.7.0` | 19 | `ghcr.io/google/osv-scanner:v2.7.0@sha256:4f3b7e2c64b9d38a5febc5a7e4a3dfef1d1362f726dea7a2ef4762b46469fcd0` | Vulnerabilidades del lockfile |
+| **Trivy** | `0.76.2` | 19 | `aquasec/trivy:0.76.2@sha256:8f6bb947dbc528902e11f2f5be52f7b519f6a39d5d148f41166f2040499768fb` | Escaneo de la imagen. **Excepción** a "anterior a la última": `0.76.2` (publicada el 2026-11-05) reconstruye su propia imagen sobre Alpine 3.24.3 y corrige `musl` (CVE-2026-107891), `libcurl` (CVE-2026-92392, HIGH) y dependencias de Go; `0.76.1` las arrastra. Un escáner con CVE altas en su imagen tumbaría su propio umbral |
+| `alpine` (imagen de prueba de `ci/componentes`) | `3.24.3` | 19 | `alpine:3.24.3` en `tests/imagen/Dockerfile` | `3.24.2` tiene la CVE alta de `musl`; `3.24.4` es la última |
+| `node` (base de `app`) | `22.23.4-alpine3.24` | 19 | `Dockerfile` de `app` | `22.23.3` arrastra `musl` y `zlib` altas; `22.23.5` es la última |
 | **Syft** | `1.51.0` | 20 | `anchore/syft:v1.51.0` | Generación de SBOM |
 | **Cosign** | `3.1.3` | 20 | `ghcr.io/sigstore/cosign/cosign:v3.1.3` | Firma de artefactos |
 | **Conftest / OPA** | `0.69.0` | 20, 24 | `openpolicyagent/conftest:v0.69.0` | Política como código |
@@ -73,7 +75,7 @@ Se instalan cuando la semana lo pide, no antes.
 | PgBouncer | 1.23+ | 23 | `edoburu/pgbouncer` | Pooling de conexiones |
 | **Registry (cache)** | `2.8.3` | Todas | `registry:2.8.3` | Cache de Docker Hub, perfil `base` |
 
-Las versiones **en negrita se fijaron y se auditaron el 23 de agosto de 2026** con las cuatro comprobaciones de más abajo: tag existente en el registro, CVEs consultadas en OSV y contrastadas con el aviso del propio proyecto cuando el feed no distinguía entre versiones. Cuando llegue la tanda de su semana hay que **repetir la auditoría**, no dar por buena la fecha.
+Las versiones **en negrita se fijaron y se auditaron el 23 de agosto de 2026** con las cuatro comprobaciones de más abajo: tag existente en el registro, CVEs consultadas en OSV y contrastadas con el aviso del propio proyecto cuando el feed no distinguía entre versiones. Cuando llegue la tanda de su semana hay que **repetir la auditoría**, no dar por buena la fecha. Las cuatro de la Semana 19 se re-auditaron el 24 de noviembre de 2026 y se fijaron por digest.
 
 Las que van con `+` son herramientas del anfitrión que no entran en ninguna imagen del laboratorio; ahí la versión mínima basta y se pinnea en el momento de instalarlas.
 
@@ -82,7 +84,7 @@ Las que van con `+` son herramientas del anfitrión que no entran en ninguna ima
 
 ### Tres hallazgos de la auditoría de agosto de 2026
 
-**Trivy — compromiso de la cadena de suministro (marzo de 2026).** Unas credenciales robadas publicaron una release maliciosa: **binario `v0.69.4`** e **imágenes de Docker Hub `0.69.5` y `0.69.6`**, más `trivy-action` `0.0.1`-`0.34.2` y `setup-trivy` `0.2.0`-`0.2.5`. El código exfiltraba secretos del entorno de CI. `CVE-2026-33634` / `GHSA-69fq-xp46-6x23`. La entrada de OSV **no tiene evento `fixed`**, así que marca como afectada cualquier versión posterior; leyendo el aviso, la línea remediada empieza en `v0.69.2`/`v0.69.3` y sigue en las series posteriores, entre ellas la `0.74.0` que fija este bootcamp. Es el ejemplo con el que la Semana 20 explica por qué se pinnea por digest y no por tag.
+**Trivy — compromiso de la cadena de suministro (marzo de 2026).** Unas credenciales robadas publicaron una release maliciosa: **binario `v0.69.4`** e **imágenes de Docker Hub `0.69.5` y `0.69.6`**, más `trivy-action` `0.0.1`-`0.34.2` y `setup-trivy` `0.2.0`-`0.2.5`. El código exfiltraba secretos del entorno de CI. `CVE-2026-33634` / `GHSA-69fq-xp46-6x23`. La entrada de OSV **no tiene evento `fixed`**, así que marca como afectada cualquier versión posterior; leyendo el aviso, la línea remediada empieza en `v0.69.2`/`v0.69.3` y sigue en las series posteriores, entre ellas la `0.76.2` que fija este bootcamp. Es el ejemplo con el que la Semana 20 explica por qué se pinnea por digest y no por tag.
 
 **El stack de observabilidad estaba dos años atrasado.** El compose fijaba Prometheus `2.54.1`, Grafana `11.2.0` y Loki `3.2.0`, todas de mediados de 2024. La decisiva es Grafana: **`CVE-2024-9264`** es ejecución remota de código a través de las *SQL Expressions*, y se corrigió en **`11.2.1`** — es decir, la versión que fijaba el laboratorio era exactamente la afectada. Re-pinadas a `3.14.0`, `13.1.4` y `3.6.11`. El `registry:2` de la cache, que era un tag flotante de la serie 2.x, queda en `2.8.3`.
 

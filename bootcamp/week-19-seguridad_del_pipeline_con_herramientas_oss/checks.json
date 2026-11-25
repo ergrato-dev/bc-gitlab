@@ -1,0 +1,118 @@
+{
+  "semana": "19",
+  "titulo": "Seguridad del pipeline con herramientas OSS",
+  "checks": [
+    {
+      "id": "componente-seguridad",
+      "descripcion": "componentes tiene el componente seguridad",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/tree?path=templates&ref=main",
+      "jq": "any(.[]; .name == \"seguridad.yml\")",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 2"
+    },
+    {
+      "id": "escaneres-por-digest",
+      "descripcion": "Las cuatro imagenes del componente seguridad van fijadas por digest",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/files/templates%2Fseguridad.yml?ref=main",
+      "jq": "(.content | @base64d) as $c | all([\"semgrep/semgrep\", \"zricethezav/gitleaks\", \"ghcr.io/google/osv-scanner\", \"aquasec/trivy\"][]; . as $i | $c | test($i + \":[^ @]+@sha256:[0-9a-f]{64}\")) and ($c | test(\":latest\") | not)",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 2"
+    },
+    {
+      "id": "reglas-propias",
+      "descripcion": "El componente seguridad trae reglas de Semgrep propias y no descarga reglas del registro",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/files/templates%2Fseguridad.yml?ref=main",
+      "jq": "(.content | @base64d) as $c | ($c | test(\"(?m)^ *rules:$\")) and ($c | test(\"--metrics=off\")) and ($c | test(\"--config (p/|auto)\") | not)",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 2"
+    },
+    {
+      "id": "imagen-guarda-tar",
+      "descripcion": "El componente imagen puede dejar la imagen como artefacto para escanearla",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/repository/files/templates%2Fimagen.yml?ref=main",
+      "jq": ".content | @base64d | test(\"--tar-path\")",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 1"
+    },
+    {
+      "id": "componentes-sigue-en-verde",
+      "descripcion": "El ultimo pipeline de main en componentes esta en verde",
+      "api": "projects/{grupo}%2Fci%2Fcomponentes/pipelines?ref=main&per_page=1",
+      "jq": ".[0].status == \"success\"",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 5"
+    },
+    {
+      "id": "seguridad-publicada",
+      "descripcion": "Hay una version publicada de componentes que incluye el componente seguridad",
+      "graphql": "{ ciCatalogResources(search:\"componentes\"){ nodes { fullPath versions { nodes { name components { nodes { name } } } } } } }",
+      "jq": "any(.data.ciCatalogResources.nodes[]; (.fullPath | endswith(\"/ci/componentes\")) and any(.versions.nodes[]; any(.components.nodes[]; .name == \"seguridad\")))",
+      "pista": "2-practicas/02-el-componente-seguridad.md, paso 6"
+    },
+    {
+      "id": "app-usa-seguridad",
+      "descripcion": "app usa el componente seguridad del catalogo por su version mayor",
+      "api": "projects/{proyecto}/ci/lint?ref=main",
+      "jq": "any(.includes[]; .type == \"component\" and (.location | test(\"/ci/componentes/seguridad@1$\")))",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 2"
+    },
+    {
+      "id": "cuatro-escaneres-bloquean",
+      "descripcion": "El pipeline de app tiene los cuatro escaneres en el stage seguridad y ninguno admite fallo",
+      "api": "projects/{proyecto}/ci/lint?ref=main&include_jobs=true",
+      "jq": "[.jobs[] | select(.stage == \"seguridad\")] as $j | all([\"semgrep\", \"gitleaks\", \"osv-scanner\", \"trivy\"][]; . as $n | any($j[]; .name == $n and (.allow_failure | not)))",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 2"
+    },
+    {
+      "id": "main-escaneada",
+      "descripcion": "El ultimo pipeline de main en app esta en verde y paso los cuatro escaneres",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ pipelines(ref: \"main\", first: 1){ nodes { status jobs { nodes { name status } } } } } }",
+      "jq": ".data.project.pipelines.nodes[0] as $p | $p.status == \"SUCCESS\" and all([\"semgrep\", \"gitleaks\", \"osv-scanner\", \"trivy\"][]; . as $n | any($p.jobs.nodes[]; .name == $n and .status == \"SUCCESS\"))",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 6"
+    },
+    {
+      "id": "informes-junit",
+      "descripcion": "El ultimo pipeline de main en app publica un informe JUnit por escaner",
+      "graphql": "query($fullPath: ID!){ project(fullPath: $fullPath){ pipelines(ref: \"main\", first: 1){ nodes { testReportSummary { testSuites { nodes { name } } } } } } }",
+      "jq": "[.data.project.pipelines.nodes[0].testReportSummary.testSuites.nodes[].name] as $s | all([\"semgrep\", \"gitleaks\", \"osv-scanner\", \"trivy\"][]; . as $n | $s | index($n) != null)",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 6"
+    },
+    {
+      "id": "imagen-base-corregida",
+      "descripcion": "La imagen de app ya no parte de node 22.23.3 y no lleva npm dentro",
+      "api": "projects/{proyecto}/repository/files/Dockerfile?ref=main",
+      "jq": ".content | @base64d | (test(\"node:22\\\\.23\\\\.3-\") | not) and test(\"rm -rf /usr/local/lib/node_modules\")",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 4"
+    },
+    {
+      "id": "fusion-exige-pipeline",
+      "descripcion": "app sigue sin permitir fusionar con el pipeline en rojo ni con el pipeline saltado",
+      "api": "projects/{proyecto}",
+      "jq": ".only_allow_merge_if_pipeline_succeeds == true and .allow_merge_on_skipped_pipeline == false",
+      "pista": "2-practicas/03-app-detras-de-los-cuatro.md, paso 1"
+    },
+    {
+      "id": "los-cuatro-han-parado-algo",
+      "descripcion": "Cada uno de los cuatro escaneres ha hecho fallar al menos un job de app",
+      "api": "projects/{proyecto}/jobs?scope[]=failed&per_page=100",
+      "jq": "[.[].name] as $f | all([\"semgrep\", \"gitleaks\", \"osv-scanner\", \"trivy\"][]; . as $n | $f | index($n) != null)",
+      "pista": "2-practicas/04-la-merge-request-envenenada.md, paso 3"
+    },
+    {
+      "id": "excepcion-con-motivo",
+      "descripcion": "app versiona .gitleaksignore y cada huella lleva encima un comentario con el motivo",
+      "api": "projects/{proyecto}/repository/files/.gitleaksignore?ref=main",
+      "jq": ".content | @base64d | split(\"\\n\") as $l | [range(0; $l | length) | select($l[.] | test(\"^[0-9a-f]{40}:\"))] as $h | ($h | length) > 0 and all($h[]; . > 0 and ($l[. - 1] | test(\"^#.{10,}\")))",
+      "pista": "2-practicas/04-la-merge-request-envenenada.md, paso 6"
+    },
+    {
+      "id": "excepciones-con-dueno",
+      "descripcion": "CODEOWNERS de app asigna dueno a los tres archivos de excepciones",
+      "api": "projects/{proyecto}/repository/files/CODEOWNERS?ref=main",
+      "jq": ".content | @base64d | test(\"(?m)^/\\\\.gitleaksignore +@\") and test(\"(?m)^/osv-scanner\\\\.toml +@\") and test(\"(?m)^/\\\\.trivyignore\\\\.yaml +@\")",
+      "pista": "2-practicas/04-la-merge-request-envenenada.md, paso 1"
+    },
+    {
+      "id": "politica-de-seguridad",
+      "descripcion": "app versiona docs/seguridad.md con el umbral, los plazos y el proceso de excepciones",
+      "api": "projects/{proyecto}/repository/files/docs%2Fseguridad.md?ref=main",
+      "jq": ".content | @base64d | test(\"(?m)^## Umbral\") and test(\"(?m)^## Plazos\") and test(\"(?m)^## Excepciones\")",
+      "pista": "3-proyecto/README.md, paso 3"
+    }
+  ]
+}

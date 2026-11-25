@@ -363,4 +363,21 @@ _Se añaden a medida que se publica cada semana._
 
 ---
 
+## Semana 19 — Seguridad del pipeline con herramientas OSS
+
+| Truco | Cómo |
+|---|---|
+| El escáner del pipeline, en tu terminal y con la misma versión | `docker run --rm -v "$PWD:/src" -w /src <imagen@digest> …`: la misma línea que el job, antes de empujar |
+| Probar una regla de Semgrep antes de publicarla | `semgrep --test <carpeta>`: `reglas.yaml` y `reglas.ts` con comentarios `// ruleid:` y `// ok:` |
+| Semgrep dentro de un job de GitLab | `unset SEMGREP_IN_DOCKER`: la imagen da por hecho que el código está en `/src` y aborta si no |
+| Secretos solo en lo que no has commiteado | `gitleaks dir .` lee la carpeta; `gitleaks git .` lee el historial |
+| La huella exacta para `.gitleaksignore` | `Fingerprint` en el informe JSON o SARIF: `<commit>:<archivo>:<regla>:<línea>` |
+| Volver a pintar un informe de Trivy sin escanear otra vez | `trivy convert --format table --severity HIGH,CRITICAL trivy.json` |
+| La base de datos de Trivy que no se vuelve a bajar | `cache:` con `when: always`: sin él, un job que falla no la guarda y el siguiente la descarga entera |
+| Todos los hallazgos de un pipeline por API | `GET /projects/:id/pipelines/:pipeline_id/test_report \| jq '.test_suites[].test_cases[] \| select(.status=="failed")'` |
+
+---
+
+---
+
 [← Volver a docs](README.md)

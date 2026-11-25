@@ -167,6 +167,6 @@ cd /ruta/a/bc-gitlab
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Proyecto Semana 17](../../week-17-api_webhooks_y_chatops/3-proyecto/README.md) | **Proyecto Semana 18** | Proyecto Semana 19 |
+| [Proyecto Semana 17](../../week-17-api_webhooks_y_chatops/3-proyecto/README.md) | **Proyecto Semana 18** | [Proyecto Semana 19](../../week-19-seguridad_del_pipeline_con_herramientas_oss/3-proyecto/README.md) |
 
 [← Volver a la Semana 18](../README.md)

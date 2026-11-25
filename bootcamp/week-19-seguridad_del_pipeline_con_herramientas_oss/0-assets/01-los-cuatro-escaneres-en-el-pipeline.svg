@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Los cuatro escáneres en el pipeline de app</title>
+  <desc id="desc">Pipeline de app como DAG. En el segundo cero arrancan a la vez build, test y, con needs vacío, semgrep, que lee el código; gitleaks, que lee el historial completo; y osv-scanner, que lee el lockfile. Después de build y test, el job imagen construye con kaniko, sube la imagen en main y la deja como imagen.tar. Trivy espera a imagen y escanea ese tarball. Los cuatro escáneres dejan un JUnit en el widget de tests de la merge request y un SARIF como artefacto. Si los cuatro terminan en verde, la merge request se puede fusionar; si cualquiera falla, la API responde 405 y el estado es ci_must_pass.</desc>
+  <rect width="900" height="430" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="flecha-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="450" y="34" fill="#FAFAFA" font-size="17" font-weight="600" text-anchor="middle">Tres escáneres no esperan a nadie; Trivy espera a la imagen</text>
+
+    <!-- cabeceras de columna -->
+    <text x="120" y="70" fill="#999999" font-size="12" text-anchor="middle">segundo 0 · needs: []</text>
+    <text x="370" y="70" fill="#999999" font-size="12" text-anchor="middle">package</text>
+    <text x="580" y="70" fill="#999999" font-size="12" text-anchor="middle">seguridad</text>
+    <text x="790" y="70" fill="#999999" font-size="12" text-anchor="middle">la merge request</text>
+
+    <!-- build y test -->
+    <rect x="40" y="85" width="160" height="38" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="120" y="109" fill="#FAFAFA" font-size="14" text-anchor="middle">build</text>
+    <rect x="40" y="133" width="160" height="38" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="120" y="157" fill="#FAFAFA" font-size="14" text-anchor="middle">test</text>
+
+    <!-- imagen -->
+    <rect x="290" y="105" width="160" height="50" rx="6" fill="#2A2A2A" stroke="#554488" stroke-width="2"/>
+    <text x="370" y="126" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">imagen</text>
+    <text x="370" y="145" fill="#999999" font-size="11" text-anchor="middle">kaniko · tar: true → imagen.tar</text>
+    <line x1="200" y1="104" x2="286" y2="122" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <line x1="200" y1="152" x2="286" y2="138" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+
+    <!-- trivy -->
+    <rect x="500" y="105" width="160" height="50" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="580" y="126" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">trivy</text>
+    <text x="580" y="145" fill="#999999" font-size="11" text-anchor="middle">la imagen: apk + Node.js</text>
+    <line x1="450" y1="130" x2="496" y2="130" stroke="#FC6D26" stroke-width="2" marker-end="url(#flecha)"/>
+
+    <!-- los tres que no esperan -->
+    <rect x="500" y="200" width="160" height="50" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="580" y="221" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">semgrep</text>
+    <text x="580" y="240" fill="#999999" font-size="11" text-anchor="middle">el código · reglas propias</text>
+    <rect x="500" y="262" width="160" height="50" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="580" y="283" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">gitleaks</text>
+    <text x="580" y="302" fill="#999999" font-size="11" text-anchor="middle">el historial · GIT_DEPTH 0</text>
+    <rect x="500" y="324" width="160" height="50" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="580" y="345" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">osv-scanner</text>
+    <text x="580" y="364" fill="#999999" font-size="11" text-anchor="middle">el lockfile · CVSS</text>
+
+    <!-- arranque en el segundo 0 -->
+    <rect x="40" y="200" width="160" height="174" rx="6" fill="none" stroke="#666666" stroke-dasharray="5 4"/>
+    <text x="120" y="270" fill="#FAFAFA" font-size="13" text-anchor="middle">el repositorio</text>
+    <text x="120" y="290" fill="#999999" font-size="11" text-anchor="middle">no necesitan nada</text>
+    <text x="120" y="306" fill="#999999" font-size="11" text-anchor="middle">del pipeline</text>
+    <line x1="200" y1="225" x2="496" y2="225" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <line x1="200" y1="287" x2="496" y2="287" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <line x1="200" y1="349" x2="496" y2="349" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+
+    <!-- informes -->
+    <line x1="660" y1="130" x2="706" y2="190" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <line x1="660" y1="225" x2="706" y2="225" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <line x1="660" y1="287" x2="706" y2="250" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <line x1="660" y1="349" x2="706" y2="262" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <rect x="710" y="180" width="160" height="90" rx="6" fill="#2A2A2A" stroke="#554488" stroke-width="2"/>
+    <text x="790" y="204" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Test summary</text>
+    <text x="790" y="224" fill="#999999" font-size="11" text-anchor="middle">un JUnit por escáner</text>
+    <text x="790" y="241" fill="#999999" font-size="11" text-anchor="middle">widget de tests · Free</text>
+    <text x="790" y="258" fill="#999999" font-size="11" text-anchor="middle">+ SARIF, 30 días</text>
+
+    <!-- la puerta -->
+    <rect x="710" y="300" width="160" height="34" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="790" y="322" fill="#FAFAFA" font-size="12" text-anchor="middle">4 en verde → se fusiona</text>
+    <rect x="710" y="342" width="160" height="34" rx="6" fill="#2A2A2A" stroke="#E24329" stroke-width="2"/>
+    <text x="790" y="364" fill="#E24329" font-size="12" text-anchor="middle">1 en rojo → 405 · ci_must_pass</text>
+    <line x1="790" y1="270" x2="790" y2="296" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+
+    <text x="450" y="410" fill="#999999" font-size="12" text-anchor="middle">Medido en el laboratorio con la caché caliente: semgrep 8 s · gitleaks 5 s · osv-scanner 6 s · trivy 33 s</text>
+  </g>
+</svg>

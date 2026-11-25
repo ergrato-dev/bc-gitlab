@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">De hallazgo a decisión</title>
+  <desc id="desc">Un hallazgo en el pipeline de una merge request. Si es un secreto, primero se rota, después se quita del código y su huella va a .gitleaksignore con el motivo. Si no es un secreto y se puede arreglar, se arregla en la misma merge request: el código, la versión de la dependencia o la imagen base. Si no se puede arreglar, se escribe una excepción con motivo y fecha de caducidad en osv-scanner.toml o en .trivyignore.yaml, la aprueba su dueño en CODEOWNERS a través del job gobernanza, y se abre un issue con el plazo de docs/seguridad.md. Cuando llega la fecha, el escáner vuelve a contar el hallazgo solo y el pipeline vuelve a fallar.</desc>
+  <rect width="900" height="400" fill="#1F1F1F"/>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FC6D26"/>
+    </marker>
+    <marker id="flecha-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+    <text x="450" y="34" fill="#FAFAFA" font-size="17" font-weight="600" text-anchor="middle">Arreglar, aceptar con fecha o rotar</text>
+
+    <!-- hallazgo -->
+    <rect x="30" y="170" width="140" height="56" rx="6" fill="#2A2A2A" stroke="#E24329" stroke-width="2"/>
+    <text x="100" y="194" fill="#FAFAFA" font-size="14" font-weight="600" text-anchor="middle">Hallazgo</text>
+    <text x="100" y="213" fill="#999999" font-size="11" text-anchor="middle">job rojo en la MR</text>
+
+    <!-- preguntas -->
+    <rect x="220" y="80" width="150" height="44" rx="22" fill="none" stroke="#554488" stroke-width="2"/>
+    <text x="295" y="107" fill="#FAFAFA" font-size="13" text-anchor="middle">¿Es un secreto?</text>
+    <rect x="220" y="270" width="150" height="44" rx="22" fill="none" stroke="#554488" stroke-width="2"/>
+    <text x="295" y="297" fill="#FAFAFA" font-size="13" text-anchor="middle">¿Se puede arreglar?</text>
+    <line x1="170" y1="198" x2="230" y2="118" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+
+    <!-- rama secreto -->
+    <rect x="420" y="60" width="130" height="40" rx="6" fill="#2A2A2A" stroke="#E24329" stroke-width="2"/>
+    <text x="485" y="85" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">1. Rotar</text>
+    <rect x="570" y="60" width="130" height="40" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="635" y="85" fill="#FAFAFA" font-size="13" text-anchor="middle">2. Quitarlo</text>
+    <rect x="720" y="52" width="150" height="56" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="795" y="76" fill="#FAFAFA" font-size="13" text-anchor="middle">3. Huella con motivo</text>
+    <text x="795" y="95" fill="#999999" font-size="11" text-anchor="middle">.gitleaksignore</text>
+    <line x1="370" y1="96" x2="416" y2="84" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <text x="388" y="80" fill="#999999" font-size="11">sí</text>
+    <line x1="550" y1="80" x2="566" y2="80" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <line x1="700" y1="80" x2="716" y2="80" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <line x1="295" y1="124" x2="295" y2="266" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <text x="303" y="200" fill="#999999" font-size="11">no</text>
+
+    <!-- rama arreglo -->
+    <rect x="420" y="170" width="280" height="56" rx="6" fill="#2A2A2A" stroke="#FC6D26" stroke-width="2"/>
+    <text x="560" y="194" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Arreglar en la misma MR</text>
+    <text x="560" y="213" fill="#999999" font-size="11" text-anchor="middle">el código · la versión · la imagen base</text>
+    <line x1="350" y1="272" x2="416" y2="214" stroke="#FC6D26" stroke-width="1.5" marker-end="url(#flecha)"/>
+    <text x="388" y="236" fill="#999999" font-size="11">sí</text>
+
+    <!-- rama excepción -->
+    <rect x="420" y="280" width="200" height="66" rx="6" fill="#2A2A2A" stroke="#554488" stroke-width="2"/>
+    <text x="520" y="302" fill="#FAFAFA" font-size="13" font-weight="600" text-anchor="middle">Excepción con fecha</text>
+    <text x="520" y="321" fill="#999999" font-size="11" text-anchor="middle">osv-scanner.toml · ignoreUntil</text>
+    <text x="520" y="337" fill="#999999" font-size="11" text-anchor="middle">.trivyignore.yaml · expired_at</text>
+    <line x1="370" y1="300" x2="416" y2="306" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+    <text x="384" y="318" fill="#999999" font-size="11">no</text>
+    <rect x="650" y="280" width="220" height="66" rx="6" fill="#2A2A2A" stroke="#666666"/>
+    <text x="760" y="302" fill="#FAFAFA" font-size="13" text-anchor="middle">La aprueba su dueño</text>
+    <text x="760" y="321" fill="#999999" font-size="11" text-anchor="middle">CODEOWNERS + gobernanza</text>
+    <text x="760" y="337" fill="#999999" font-size="11" text-anchor="middle">issue con el plazo de docs/seguridad.md</text>
+    <line x1="620" y1="313" x2="646" y2="313" stroke="#666666" stroke-width="1.5" marker-end="url(#flecha-g)"/>
+
+    <!-- caducidad -->
+    <path d="M 520 346 Q 520 385 300 385 Q 100 385 100 230" fill="none" stroke="#E24329" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#flecha)"/>
+    <text x="330" y="378" fill="#E24329" font-size="12" text-anchor="middle">llega la fecha: el escáner lo vuelve a contar solo</text>
+  </g>
+</svg>

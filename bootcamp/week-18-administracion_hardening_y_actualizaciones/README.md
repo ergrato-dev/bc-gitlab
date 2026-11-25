@@ -147,6 +147,6 @@ Lo que el script **no** puede comprobar es que `root` tenga 2FA configurado de v
 
 | Anterior | Actual | Siguiente |
 |---|---|---|
-| [Semana 17 — API, webhooks y ChatOps](../week-17-api_webhooks_y_chatops/README.md) | **Semana 18** | Semana 19 — Seguridad del pipeline con herramientas OSS |
+| [Semana 17 — API, webhooks y ChatOps](../week-17-api_webhooks_y_chatops/README.md) | **Semana 18** | [Semana 19 — Seguridad del pipeline con herramientas OSS](../week-19-seguridad_del_pipeline_con_herramientas_oss/README.md) |
 
 [← Volver al inicio del bootcamp](../README.md)

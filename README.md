@@ -146,7 +146,7 @@ El índice con enlaces y el estado real de publicación está en [`bootcamp/READ
 | PostgreSQL | **16+** | Backend de GitLab; replicado en S23 |
 | Prometheus · Grafana · Loki | **3.14.0 · 13.1.4 · 3.6.11** | Observabilidad (S21) |
 | Keycloak | **26+** | OIDC para la instancia (S18) |
-| Semgrep · Gitleaks · OSV-Scanner · Trivy | **1.173.0 · 8.30.1 · 2.5.1 · 0.74.0** | Seguridad del pipeline (S19) |
+| Semgrep · Gitleaks · OSV-Scanner · Trivy | **1.185.0 · 8.30.0 · 2.7.0 · 0.76.2** | Seguridad del pipeline (S19) |
 | Syft · Cosign · Conftest | **1.51.0 · 3.1.3 · 0.69.0** | SBOM, firma y política como código (S20) |
 | SeaweedFS | **4.40** | Caché distribuida de runners (S15). Sustituye a MinIO — ver [stack-versions](./docs/stack-versions.md) |
 
@@ -168,8 +168,9 @@ Este bootcamp usa **CE puro**: sin gitlab.com, sin licencia EE, sin trials. Vari
 | Epics, iteraciones, roadmaps, weights | Premium | S05 | Hitos + etiquetas + tablero único |
 | Merge trains, merged results pipelines | Premium | S07 | Rebase obligatorio antes de fusionar |
 | Protected environments, deployment approvals | Premium | S14, S25 | Jobs manuales sobre rama protegida |
-| SAST, DAST, Dependency y Container Scanning nativos | Ultimate | S19 | Semgrep, Gitleaks, OSV-Scanner, Trivy |
-| Security Dashboard, vulnerability management | Ultimate | S19, S20 | Artefactos SARIF + informes de pipeline |
+| Widget de seguridad en la MR, Dependency Scanning, DAST, reglas propias en el SAST nativo, allowlist de Container Scanning | Ultimate | S19 | Componente `seguridad`: Semgrep con reglas propias, Gitleaks, OSV-Scanner y Trivy, con los hallazgos como JUnit en la MR (Free). Las plantillas `Jobs/SAST`, `Jobs/Secret-Detection` y `Jobs/Container-Scanning` **sí son Free**, pero en CE solo dejan JSON y llevan `allow_failure: true` |
+| Secret push protection | Ultimate | S19 | Gitleaks en el pipeline; para bloquear en el push, un server hook (S07) |
+| Security Dashboard, vulnerability management | Ultimate | S19, S20 | SARIF de 30 días por pipeline + un issue con `due_date` por hallazgo abierto |
 | Compliance frameworks | Ultimate | S20 | OPA / Conftest como gate de pipeline |
 | Audit events de instancia y grupo | Premium | S18 | Volcado de `/events` (menos campos, menos retención) |
 | Geo, DR multi-región, maintenance mode | Premium | S22 | Backup frío de una región, con el RPO real medido |
